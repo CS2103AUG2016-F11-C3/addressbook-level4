@@ -1,6 +1,8 @@
 package seedu.address.model;
 
 import javafx.collections.ObservableList;
+import seedu.address.model.item.Item;
+import seedu.address.model.item.UniqueItemList;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.person.UniquePersonList;
@@ -17,10 +19,12 @@ import java.util.stream.Collectors;
 public class AddressBook implements ReadOnlyAddressBook {
 
     private final UniquePersonList persons;
+    private final UniqueItemList items;
     private final UniqueTagList tags;
 
     {
         persons = new UniquePersonList();
+        items = new UniqueItemList();
         tags = new UniqueTagList();
     }
 
@@ -76,9 +80,9 @@ public class AddressBook implements ReadOnlyAddressBook {
      *
      * @throws UniquePersonList.DuplicatePersonException if an equivalent person already exists.
      */
-    public void addPerson(Person p) throws UniquePersonList.DuplicatePersonException {
-        syncTagsWithMasterList(p);
-        persons.add(p);
+    public void addItem(Item item) throws UniqueItemList.DuplicateItemException {
+        // syncTagsWithMasterList(item);
+        items.add(item);
     }
 
     /**
