@@ -279,7 +279,7 @@ public class LogicManagerTest {
             model.addItem(ft);
         }
 
-        assertCommandBehavior(commandWord + " 3", expectedMessage, model.getAddressBook(), floatingTaskList);
+        assertCommandBehaviorFT(commandWord + " 3", expectedMessage, model.getAddressBook(), floatingTaskList);
     }
 
     @Test
