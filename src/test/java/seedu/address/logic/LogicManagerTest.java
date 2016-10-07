@@ -504,6 +504,17 @@ public class LogicManagerTest {
             }
             return persons;
         }
+        
+        /**
+         * Generates a list of Floating Task based on the flags.
+         */
+        List<FloatingTask> generateFloatingTaskList(int numGenerated) throws Exception{
+            List<FloatingTask> floatingTasks = new ArrayList<>();
+            for(int i = 1; i <= numGenerated; i++){
+            	floatingTasks.add(generateFloatingTask(i));
+            }
+            return floatingTasks;
+        }
 
         List<Person> generatePersonList(Person... persons) {
             return Arrays.asList(persons);
