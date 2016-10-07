@@ -51,4 +51,9 @@ public abstract class Item {
 		return description.toString();
     }
 
+	public UniqueTagList getTags() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
