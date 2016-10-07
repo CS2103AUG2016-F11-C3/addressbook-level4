@@ -71,8 +71,8 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
-    public synchronized void addPerson(Person person) throws UniquePersonList.DuplicatePersonException {
-        addressBook.addPerson(person);
+    public synchronized void addItem(Person item) throws UniqueItemList.DuplicateItemException {
+        addressBook.addItem(item);
         updateFilteredListToShowAll();
         indicateAddressBookChanged();
     }
