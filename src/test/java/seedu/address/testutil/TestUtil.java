@@ -124,6 +124,10 @@ public class TestUtil {
         return Arrays.asList(samplePersonData);
     }
 
+    public static List<Item> generateSampleFloatingTaskData() {
+        return Arrays.asList(sampleFloatingTaskData);
+    }
+    
     /**
      * Appends the file name to the sandbox folder path.
      * Creates the sandbox folder if it doesn't exist.
