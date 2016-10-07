@@ -15,6 +15,7 @@ import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.item.*;
 import seedu.address.model.person.*;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
@@ -138,9 +139,9 @@ public class LogicManagerTest {
     @Test
     public void execute_clear() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        model.addPerson(helper.generatePerson(1));
-        model.addPerson(helper.generatePerson(2));
-        model.addPerson(helper.generatePerson(3));
+        model.addItem(helper.generateFloatingTask(1));
+        model.addItem(helper.generateFloatingTask(2));
+        model.addItem(helper.generateFloatingTask(3));
 
         assertCommandBehavior("clear", ClearCommand.MESSAGE_SUCCESS, new AddressBook(), Collections.emptyList());
     }
@@ -408,6 +409,17 @@ public class LogicManagerTest {
                     new Address("House of " + seed),
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1)))
             );
+        }
+        
+        /**
+         * Generates a valid floating task using the given seed.
+         * Running this function with the same parameter values guarantees the returned floating task will have the same state.
+         * Each unique seed will generate a unique FloatingTask object.
+         *
+         * @param seed used to generate the floating task data field values
+         */
+        FloatingTask generateFloatingTask(int seed) throws Exception {
+            return new FloatingTask(new Description("Floating Task " + seed));
         }
 
         /** Generates the correct add command based on the person given */
