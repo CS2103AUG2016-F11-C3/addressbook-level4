@@ -248,15 +248,15 @@ public class LogicManagerTest {
     private void assertIndexNotFoundBehaviorForCommand(String commandWord) throws Exception {
         String expectedMessage = MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
         TestDataHelper helper = new TestDataHelper();
-        List<Person> personList = helper.generatePersonList(2);
+        List<FloatingTask> floatingTaskList = helper.generateFloatingTaskList(2);
 
         // set AB state to 2 persons
         model.resetData(new AddressBook());
-        for (Person p : personList) {
-            model.addPerson(p);
+        for (FloatingTask ft : floatingTaskList) {
+            model.addItem(ft);
         }
 
-        assertCommandBehavior(commandWord + " 3", expectedMessage, model.getAddressBook(), personList);
+        assertCommandBehavior(commandWord + " 3", expectedMessage, model.getAddressBook(), floatingTaskList);
     }
 
     @Test
