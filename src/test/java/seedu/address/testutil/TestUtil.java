@@ -17,6 +17,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.commons.util.XmlUtil;
 import seedu.address.model.AddressBook;
+import seedu.address.model.item.*;
 import seedu.address.model.person.*;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
@@ -74,6 +75,28 @@ public class TestUtil {
                     new Person(new Name("George Best"), new Phone("9482442"), new Email("anna@google.com"), new Address("4th street"), new UniqueTagList()),
                     new Person(new Name("Hoon Meier"), new Phone("8482424"), new Email("stefan@mail.com"), new Address("little india"), new UniqueTagList()),
                     new Person(new Name("Ida Mueller"), new Phone("8482131"), new Email("hans@google.com"), new Address("chicago ave"), new UniqueTagList())
+            };
+        } catch (IllegalValueException e) {
+            assert false;
+            //not possible
+            return null;
+        }
+    }
+    
+    public static final Item[] sampleFloatingTaskData = getSampleFloatingTaskData();
+
+    private static Item[] getSampleFloatingTaskData() {
+        try {
+            return new Item[]{
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
             };
         } catch (IllegalValueException e) {
             assert false;
