@@ -494,9 +494,9 @@ public class LogicManagerTest {
         /**
          * Adds the given list of Persons to the given AddressBook
          */
-        void addToAddressBook(AddressBook addressBook, List<Person> personsToAdd) throws Exception{
-            for(Person p: personsToAdd){
-                addressBook.addPerson(p);
+        void addToAddressBook(AddressBook addressBook, List<Item> itemsToAdd) throws Exception{
+            for(Item item: itemsToAdd){
+                addressBook.addItem(item);
             }
         }
 
