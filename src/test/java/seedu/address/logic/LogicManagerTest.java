@@ -428,17 +428,13 @@ public class LogicManagerTest {
         }
 
         /** Generates the correct add command based on the person given */
-        String generateAddCommand(Person p) {
+        String generateAddCommand(FloatingTask item) {
             StringBuffer cmd = new StringBuffer();
 
             cmd.append("add ");
+            cmd.append("\"" + item.getDescription().toString() + "\"");
 
-            cmd.append(p.getName().toString());
-            cmd.append(" p/").append(p.getPhone());
-            cmd.append(" e/").append(p.getEmail());
-            cmd.append(" a/").append(p.getAddress());
-
-            UniqueTagList tags = p.getTags();
+            UniqueTagList tags = item.getTags();
             for(Tag t: tags){
                 cmd.append(" t/").append(t.tagName);
             }
