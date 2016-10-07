@@ -117,6 +117,29 @@ public class LogicManagerTest {
         assertEquals(expectedAddressBook, model.getAddressBook());
         assertEquals(expectedAddressBook, latestSavedAddressBook);
     }
+    
+    /**
+     * Executes the command and confirms that the result message is correct and
+     * also confirms that the following three parts of the LogicManager object's state are as expected:<br>
+     *      - the internal address book data are same as those in the {@code expectedAddressBook} <br>
+     *      - the backing list shown by UI matches the {@code shownList} <br>
+     *      - {@code expectedAddressBook} was saved to the storage file. <br>
+     */
+    private void assertCommandBehaviorFT(String inputCommand, String expectedMessage,
+                                       ReadOnlyAddressBook expectedAddressBook,
+                                       List<? extends ReadOnlyItem> expectedShownList) throws Exception {
+
+        //Execute the command
+        CommandResult result = logic.execute(inputCommand);
+
+        //Confirm the ui display elements should contain the right data
+        assertEquals(expectedMessage, result.feedbackToUser);
+        assertEquals(expectedShownList, model.getFilteredPersonList());
+
+        //Confirm the state of data (saved and in-memory) is as expected
+        assertEquals(expectedAddressBook, model.getAddressBook());
+        assertEquals(expectedAddressBook, latestSavedAddressBook);
+    }
 
 
     @Test
