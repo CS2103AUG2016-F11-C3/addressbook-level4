@@ -511,9 +511,9 @@ public class LogicManagerTest {
         /**
          * Adds the given list of Persons to the given model
          */
-        void addToModel(Model model, List<Person> personsToAdd) throws Exception{
-            for(Person p: personsToAdd){
-                model.addPerson(p);
+        void addToModel(Model model, List<Item> itemsToAdd) throws Exception{
+            for(Item item: itemsToAdd){
+                model.addItem(item);
             }
         }
 
