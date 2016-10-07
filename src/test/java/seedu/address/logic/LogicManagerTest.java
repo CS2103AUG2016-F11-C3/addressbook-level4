@@ -271,11 +271,11 @@ public class LogicManagerTest {
     private void assertIndexNotFoundBehaviorForCommand(String commandWord) throws Exception {
         String expectedMessage = MESSAGE_INVALID_PERSON_DISPLAYED_INDEX;
         TestDataHelper helper = new TestDataHelper();
-        List<FloatingTask> floatingTaskList = helper.generateFloatingTaskList(2);
+        List<Item> floatingTaskList = helper.generateFloatingTaskList(2);
 
         // set AB state to 2 persons
         model.resetData(new AddressBook());
-        for (FloatingTask ft : floatingTaskList) {
+        for (Item ft : floatingTaskList) {
             model.addItem(ft);
         }
 
@@ -296,17 +296,17 @@ public class LogicManagerTest {
     @Test
     public void execute_select_jumpsToCorrectPerson() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        List<Person> threePersons = helper.generatePersonList(3);
+        List<Item> threeItems = helper.generateFloatingTaskList(3);
 
-        AddressBook expectedAB = helper.generateAddressBook(threePersons);
-        helper.addToModel(model, threePersons);
+        AddressBook expectedAB = helper.generateAddressBook(threeItems);
+        helper.addToModel(model, threeItems);
 
         assertCommandBehavior("select 2",
                 String.format(SelectCommand.MESSAGE_SELECT_PERSON_SUCCESS, 2),
                 expectedAB,
                 expectedAB.getPersonList());
         assertEquals(1, targetedJumpIndex);
-        assertEquals(model.getFilteredPersonList().get(1), threePersons.get(1));
+        assertEquals(model.getFilteredPersonList().get(1), threeItems.get(1));
     }
 
 
