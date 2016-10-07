@@ -177,9 +177,9 @@ public class LogicManagerTest {
     public void execute_add_successful() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        Person toBeAdded = helper.adam();
+        FloatingTask toBeAdded = helper.swipeRoom();
         AddressBook expectedAB = new AddressBook();
-        expectedAB.addPerson(toBeAdded);
+        expectedAB.addItem(toBeAdded);
 
         // execute command and verify result
         assertCommandBehavior(helper.generateAddCommand(toBeAdded),
@@ -392,6 +392,11 @@ public class LogicManagerTest {
             Tag tag2 = new Tag("tag2");
             UniqueTagList tags = new UniqueTagList(tag1, tag2);
             return new Person(name, privatePhone, email, privateAddress, tags);
+        }
+        
+        FloatingTask swipeRoom() throws Exception {
+        	Description description = new Description("Swipe Room");
+        	return new FloatingTask(description);
         }
 
         /**
