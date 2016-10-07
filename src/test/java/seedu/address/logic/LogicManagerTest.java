@@ -193,17 +193,17 @@ public class LogicManagerTest {
     public void execute_addDuplicate_notAllowed() throws Exception {
         // setup expectations
         TestDataHelper helper = new TestDataHelper();
-        Person toBeAdded = helper.adam();
+        FloatingTask toBeAdded = helper.swipeRoom();
         AddressBook expectedAB = new AddressBook();
-        expectedAB.addPerson(toBeAdded);
+        expectedAB.addItem(toBeAdded);
 
         // setup starting state
-        model.addPerson(toBeAdded); // person already in internal address book
+        model.addItem(toBeAdded); // person already in internal address book
 
         // execute command and verify result
         assertCommandBehavior(
                 helper.generateAddCommand(toBeAdded),
-                AddCommand.MESSAGE_DUPLICATE_PERSON,
+                AddCommand.MESSAGE_DUPLICATE_ITEM,
                 expectedAB,
                 expectedAB.getPersonList());
 
