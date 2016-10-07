@@ -34,7 +34,7 @@ public class Parser {
                     + "(?<tagArguments>(?: t/[^/]+)*)"); // variable number of tags
     
     private static final Pattern FLOATING_TASK_ARGS_FORMAT =
-    		Pattern.compile("\\\"(.*)\\\"");	// floating task just have description in between quotes.
+    		Pattern.compile(".*\\\"(.*)\\\".*");	// floating task just have description in between quotes.
 
     public Parser() {}
 
@@ -103,7 +103,7 @@ public class Parser {
                     matcher.group("address"),
                     getTagsFromArgs(matcher.group("tagArguments"))
             );*/
-        	return new AddCommand(matcher.group("description"));
+        	return new AddCommand(matcher.group(1));
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
         }
