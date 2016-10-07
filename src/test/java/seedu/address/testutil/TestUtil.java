@@ -17,6 +17,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.commons.util.XmlUtil;
 import seedu.address.model.AddressBook;
+import seedu.address.model.item.*;
 import seedu.address.model.person.*;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
@@ -81,6 +82,28 @@ public class TestUtil {
             return null;
         }
     }
+    
+    public static final Item[] sampleFloatingTaskData = getSampleFloatingTaskData();
+
+    private static Item[] getSampleFloatingTaskData() {
+        try {
+            return new Item[]{
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
+                    new FloatingTask(new Description("Ali Muster")),
+            };
+        } catch (IllegalValueException e) {
+            assert false;
+            //not possible
+            return null;
+        }
+    }
 
     public static final Tag[] sampleTagData = getSampleTagData();
 
@@ -101,6 +124,10 @@ public class TestUtil {
         return Arrays.asList(samplePersonData);
     }
 
+    public static List<Item> generateSampleFloatingTaskData() {
+        return Arrays.asList(sampleFloatingTaskData);
+    }
+    
     /**
      * Appends the file name to the sandbox folder path.
      * Creates the sandbox folder if it doesn't exist.
