@@ -505,7 +505,7 @@ public class LogicManagerTest {
          * @param model The model to which the Persons will be added
          */
         void addToModel(Model model, int numGenerated) throws Exception{
-            addToModel(model, generatePersonList(numGenerated));
+            addToModel(model, generateFloatingTaskList(numGenerated));
         }
 
         /**
@@ -531,8 +531,8 @@ public class LogicManagerTest {
         /**
          * Generates a list of Floating Task based on the flags.
          */
-        List<FloatingTask> generateFloatingTaskList(int numGenerated) throws Exception{
-            List<FloatingTask> floatingTasks = new ArrayList<>();
+        List<Item> generateFloatingTaskList(int numGenerated) throws Exception{
+            List<Item> floatingTasks = new ArrayList<>();
             for(int i = 1; i <= numGenerated; i++){
             	floatingTasks.add(generateFloatingTask(i));
             }
