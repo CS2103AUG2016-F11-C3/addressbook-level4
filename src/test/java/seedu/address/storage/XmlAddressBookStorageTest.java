@@ -9,7 +9,9 @@ import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.commons.util.FileUtil;
 import seedu.address.model.AddressBook;
 import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.item.FloatingTask;
 import seedu.address.model.person.Person;
+import seedu.address.testutil.TypicalTestFloatingTasks;
 import seedu.address.testutil.TypicalTestPersons;
 
 import java.io.IOException;
@@ -71,14 +73,14 @@ public class XmlAddressBookStorageTest {
         assertEquals(original, new AddressBook(readBack));
 
         //Modify data, overwrite exiting file, and read back
-        original.addPerson(new Person(TypicalTestPersons.hoon));
+        original.addItem(new FloatingTask(TypicalTestFloatingTasks.task1));
         original.removePerson(new Person(TypicalTestPersons.alice));
         xmlAddressBookStorage.saveAddressBook(original, filePath);
         readBack = xmlAddressBookStorage.readAddressBook(filePath).get();
         assertEquals(original, new AddressBook(readBack));
 
         //Save and read without specifying file path
-        original.addPerson(new Person(TypicalTestPersons.ida));
+        original.addItem(new FloatingTask(TypicalTestFloatingTasks.task2));
         xmlAddressBookStorage.saveAddressBook(original); //file path not specified
         readBack = xmlAddressBookStorage.readAddressBook().get(); //file path not specified
         assertEquals(original, new AddressBook(readBack));
