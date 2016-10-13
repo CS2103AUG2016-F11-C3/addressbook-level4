@@ -1,92 +1,85 @@
 package seedu.address.model.item;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import seedu.address.commons.exceptions.DuplicateDataException;
 import seedu.address.commons.util.CollectionUtil;
+import seedu.address.commons.exceptions.DuplicateDataException;
+
+import java.util.*;
 
 /**
- * A list of Items that enforces uniqueness between its elements and does not
- * allow nulls.
+ * A list of persons that enforces uniqueness between its elements and does not allow nulls.
  *
  * Supports a minimal set of list operations.
  *
- * @see Item#equals(Object)
+ * @see Person#equals(Object)
  * @see CollectionUtil#elementsAreUnique(Collection)
  */
-public class UniqueItemList implements Iterable<ReadOnlyItem> {
+public class UniqueItemList implements Iterable<Item> {
 
     /**
      * Signals that an operation would have violated the 'no duplicates' property of the list.
      */
-	public static class DuplicateItemException extends DuplicateDataException {
-		protected DuplicateItemException() {
-			super("Operation would result in duplicate Items");
+    public static class DuplicateItemException extends DuplicateDataException {
+        protected DuplicateItemException() {
+            super("Operation would result in duplicate tasks");
         }
     }
 
     /**
-	 * Signals that an operation targeting a specified Item in the list would
-	 * fail because there is no such matching Item in the list.
-	 */
-	public static class ItemNotFoundException extends Exception {
-	}
+     * Signals that an operation targeting a specified person in the list would fail because
+     * there is no such matching person in the list.
+     */
+    public static class ItemNotFoundException extends Exception {}
 
-	private final ObservableList<ReadOnlyItem> internalList = FXCollections.observableArrayList();
+    private final ObservableList<Item> internalList = FXCollections.observableArrayList();
 
     /**
-	 * Constructs empty ItemList.
-	 */
+     * Constructs empty PersonList.
+     */
     public UniqueItemList() {}
 
     /**
-	 * Returns true if the list contains an equivalent Item as the given
-	 * argument.
-	 */
-	public boolean contains(ReadOnlyItem toCheck) {
+     * Returns true if the list contains an equivalent person as the given argument.
+     */
+    public boolean contains(ReadOnlyItem toCheck) {
         assert toCheck != null;
         return internalList.contains(toCheck);
     }
 
     /**
-	 * Adds a Item to the list.
-	 *
-	 * @throws DuplicateItemException
-	 *             if the Item to add is a duplicate of an existing Item in the
-	 *             list.
-	 */
-	public void add(ReadOnlyItem toAdd) throws DuplicateItemException {
+     * Adds a person to the list.
+     *
+     * @throws DuplicatePersonException if the person to add is a duplicate of an existing person in the list.
+     */
+    public void add(Item toAdd) throws DuplicateItemException {
         assert toAdd != null;
         if (contains(toAdd)) {
-			throw new DuplicateItemException();
+            throw new DuplicateItemException();
         }
         internalList.add(toAdd);
     }
 
     /**
-	 * Removes the equivalent Item from the list.
-	 *
-	 * @throws ItemNotFoundException
-	 *             if no such Item could be found in the list.
-	 */
-	public boolean remove(ReadOnlyItem toRemove) throws ItemNotFoundException {
+     * Removes the equivalent person from the list.
+     *
+     * @throws PersonNotFoundException if no such person could be found in the list.
+     */
+    public boolean remove(ReadOnlyItem toRemove) throws ItemNotFoundException {
         assert toRemove != null;
-		final boolean ItemFoundAndDeleted = internalList.remove(toRemove);
-		if (!ItemFoundAndDeleted) {
-			throw new ItemNotFoundException();
+        final boolean itemFoundAndDeleted = internalList.remove(toRemove);
+        if (!itemFoundAndDeleted) {
+            throw new ItemNotFoundException();
         }
-		return ItemFoundAndDeleted;
+        return itemFoundAndDeleted;
     }
 
-	public ObservableList<ReadOnlyItem> getInternalList() {
+    public ObservableList<Item> getInternalList() {
         return internalList;
     }
 
     @Override
-	public Iterator<ReadOnlyItem> iterator() {
+    public Iterator<Item> iterator() {
         return internalList.iterator();
     }
 
