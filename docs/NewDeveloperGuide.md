@@ -25,26 +25,24 @@ Priority | As a ... | I want to ... | So that I can...
 (For all use cases below, the `System` is Wudodo and the `Actor` is the user, unless specified otherwise)
 
 ### Use case: Add task
-**MSS**
+#### MSS
 1. User inputs task details
-2. System stores task details in database (???? WTF)
+2. System stores task details in database
 
-**Extensions**
+#### Extensions
 1a. User inputs details in incorrect format
 > System displays error message
 > Use case resumes at step 1
 
-
-
 ### Use case: Find next task
-**MSS**
+#### MSS
 1. User requests next task
 2. System shows suggested next task
 3. System prompts user for confirmation of task
 3. User confirms task
 (Use case ends)
 
-**Extensions**
+#### Extensions
 2a. No remaining incomplete tasks
 > System shows error message
 > Use case ends
@@ -54,14 +52,12 @@ Priority | As a ... | I want to ... | So that I can...
 > Use case resumes at step 2
 
 ### Use case: Mark task as completed
-
-**MSS**
+#### MSS
 1. User requests to complete a specific task in the list
 4. System marks task as completed
 (Use case ends)
 
-**Extensions**
-
+#### Extensions
 1a. The given task is invalid
 > 3a1. System shows an error message
 > Use case resumes at step 2
@@ -70,15 +66,14 @@ Priority | As a ... | I want to ... | So that I can...
 > Use case ends
 
 ### Use case: Delete task
-**MSS**
+#### MSS
 1. User requests to list tasks
 2. System shows a list of tasks
 3. User requests to delete a task in the list
 4. System deletes selected task from the list
 (Use case ends)
 
-**Extensions**
-
+#### Extensions
 2a. The list is empty
 > Use case ends
 
@@ -105,7 +100,7 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 
 ### Todoist[^1]
 
-Meets specifications:
+#### Meets Specifications
 - Setting deadlines allowed
 - Floating tasks allowed
 - Can easily mark items as done by clicking on them
@@ -115,13 +110,12 @@ Meets specifications:
 - Organization of inbox, as well as list of items due today and in the new week allows easy choice of what to-do item to do next
 - Keyword search (implemented with nifty shortcut!)
 
-
-Does not meet specifications:
+#### Does not meet specifications
 - Events cannot block off specific start and end times
 - Not Command Line Interface
 - Specify data storage location (but has its own cloud storage)
 
-Interesting features:
+#### Interesting features
 - Use of tagging to split to-do items into different categories
 - Use of colours to mark different levels of priority, drawing visual attention to high-priority items
 - Shortcut allows postponing to tomorrow, next week
@@ -131,25 +125,54 @@ Interesting features:
 
 
 ### Wunderlist
+#### Meets Specifications
+
+#### Does not meet specifications
+
+#### Intersting features
 
 
 ### Google Calendar
+#### Meets Specifications
+- Take in events with specified start and end times
+- Allow events with deadlines
+- Allow floating tasks
+- Click to check item as done
+- Keeps track of uncompleted deadlines/tasks in chronological order
+- Quick-add feature allows natural language adding of items
+- Keyword search
+- Track uncompleted to-do items past end time
+- Easily choose which to-do item to do next
+- Block out multiple tentative start/end times for an event
+
+#### Does not meet specifications
+- No command line interface
+- No local storage of event/task data
+- Cannot be accessed without an internet connection
+
+#### Interesting features
+- Excellent multi-platform integration (e.g. iOS, Android, Windows, Mac)
+- "All-day" events
+- Multiple layers for calendar (e.g. a calendar for work, a personal calendar, a school calendar overlayed on top of each other)
+- Color-coding for multiple calendars
+- Different levels of views - per day, per four days, per week, per month 
+- Import/export to iCalendar file (for Google Calendar, Outlook, iCal)
 
 ### Apple Reminders
-Meets specifications:
+#### Meets Specifications
 - Allows events with deadlines
 - Allows floating events
 - Click to mark item as done
 - Lists uncompleted items in chronological order past end-time (under "Scheduled")
 - Allows variable natural language input (buggy)
 
-Does not meet specifications:
+#### Does not meet specifications
 - Not command line-based UI
 - Cannot take in events with specified start time
 - Cannot specify data storage location
 - Keyword search is not very user-friendly
 
-Interesting features:
+#### Interesting features
 - Desktop reminders
 - Multiple separate to-do lists
 
