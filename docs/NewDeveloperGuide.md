@@ -126,17 +126,20 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 
 ### Wunderlist
 #### Meets Specifications
-- Complete keyboard-only interaction for creating, reading, updating and deleting tasks
+- Complete keyboard-only interaction for creating, reading, updating and deleting tasks (command line-like UI)
 - Quick-add feature allows natural language adding of items
 - Take in events with specified start and end times
 - Allow events with deadlines
+- Take in floating tasks  without user-specified start end times
 - Click to check item as done
 - Keeps track of uncompleted deadlines/tasks in chronological order
 - Keyword search
 - Track uncompleted to-do items past end time
 - Easily choose which to-do item to do next
+- Access to-do list without internet connection (only if not using web interface)
 
 #### Does not meet specifications
+- Data is locally stored but is not in a human-readable format
 
 #### Interesting features
 - Interface is very sleek and appealing
