@@ -126,11 +126,22 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 
 ### Wunderlist
 #### Meets Specifications
+- Complete keyboard-only interaction for creating, reading, updating and deleting tasks
+- Quick-add feature allows natural language adding of items
+- Take in events with specified start and end times
+- Allow events with deadlines
+- Click to check item as done
+- Keeps track of uncompleted deadlines/tasks in chronological order
+- Keyword search
+- Track uncompleted to-do items past end time
+- Easily choose which to-do item to do next
 
 #### Does not meet specifications
 
-#### Intersting features
-
+#### Interesting features
+- Interface is very sleek and appealing
+- To-do list sharing for collaborators
+- Excellent multi-platform integration (e.g. iOS, Android, Windows, Mac, web interface)
 
 ### Google Calendar
 #### Meets Specifications
@@ -151,12 +162,13 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 - Cannot be accessed without an internet connection
 
 #### Interesting features
-- Excellent multi-platform integration (e.g. iOS, Android, Windows, Mac)
+- Excellent multi-platform integration (e.g. iOS, Android, Windows, Mac, web interface)
 - "All-day" events
 - Multiple layers for calendar (e.g. a calendar for work, a personal calendar, a school calendar overlayed on top of each other)
 - Color-coding for multiple calendars
 - Different levels of views - per day, per four days, per week, per month 
 - Import/export to iCalendar file (for Google Calendar, Outlook, iCal)
+- Calendar sharing for collaborators
 
 ### Apple Reminders
 #### Meets Specifications
