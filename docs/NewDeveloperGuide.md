@@ -1,9 +1,9 @@
 ﻿# Developer Guide
 
-* [Appendix A: User Stories](##appendix-a-user-stories)
+* [Appendix A: User Stories](#appendix-a-user-stories)
 * [Appendix B: Use Cases](#appendix-b-use-cases)
 * [Appendic C: Non-Functional Requirements](#appendix-c-non-functional-requirements)
-* [Appendix D: Product Survey](#appendix-d--product-survey)
+* [Appendix D: Product Survey](#appendix-d-product-survey)
 
 ## Appendix A: User Stories
 Priorities: 
