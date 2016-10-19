@@ -29,7 +29,7 @@ Priority | As a ... | I want to ... | So that I can...
 `*`   | user | use natural language to type my commands| not have to remember complex commands
 `*`   | user | receive feedback when I am typing in commands | know whether I am typing in the command correctly
 `*`   | user | have the app autocomplete my task name | more quickly type in commands
-`*`   | power user | user keyboard shortcuts to access frequently-used features | more quickly access useful features
+`*`   | power user | use keyboard shortcuts to access frequently-used features | more quickly access useful features
 
 ## Appendix B: Use Cases
 (For all use cases below, the `System` is Wudodo and the `Actor` is the user, unless specified otherwise)
