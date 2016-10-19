@@ -2,7 +2,7 @@
 
 * [Appendix A: User Stories](#appendix-a-user-stories)
 * [Appendix B: Use Cases](#appendix-b-use-cases)
-* [Appendic C: Non-Functional Requirements](#appendix-c-non--functional-requirements)
+* [Appendic C: Non-Functional Requirements](#appendix-c-non-functional-product-requirements)
 * [Appendix D: Product Survey](#appendix-d-product-survey)
 
 ## Appendix A: User Stories
@@ -114,7 +114,7 @@ Priority | As a ... | I want to ... | So that I can...
 1a. The list is empty
 > Use case resumes at step 3
 
-## Appendix C: Non-functional Product Requirements
+## Appendix C: Non-Functional Product Requirements
 1. Should work on any mainstream OS as long as it has `Java 1.8.0_60` or higher installed.
 2. Should be able to hold up to 1000 items.
 3. Should come with automated unit tests and open source code.
@@ -127,6 +127,7 @@ Priority | As a ... | I want to ... | So that I can...
 
 ### Desired features
 This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~cs2103/AY1617S1/contents/handbook.html#handbook-project-product).
+
 1. Command line-based UI
 2. Take in events with specified start and end time
 2. Block out multiple tentative start/end times for an event
@@ -140,7 +141,7 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 8. Keyword search
 8. Specify data storage location
 
-### Todoist[^1]
+### Todoist
 
 #### Meets Specifications
 - Setting deadlines allowed
@@ -247,5 +248,4 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 #### Takeaways
 - Native support for Mac gives additional features (e.g. widgets, shortcuts in email etc.)
 
-[^1]: https://en.todoist.com/
 [^2]: https://support.todoist.com/hc/en-us/articles/205063212-Keyboard-shortcuts
