@@ -1,5 +1,10 @@
 ﻿# Developer Guide
 
+* [Appendix A: User Stories](#appendix-a--user-stories)
+* [Appendix B: Use Cases](#appendix-b--use-cases)
+* [Appendix C: Non Functional Requirements](#appendix-c--product-survey)
+
+[Appendix B: 
 ## Appendix A: User Stories
 Priorities: 
 - `* * *` -- high priority, must have
@@ -34,22 +39,18 @@ Priority | As a ... | I want to ... | So that I can...
 > System displays error message
 > Use case resumes at step 1
 
-### Use case: Find next task
+### Use case: Find  task
 #### MSS
-1. User requests next task
-2. System shows suggested next task
-3. System prompts user for confirmation of task
-3. User confirms task
+1. User inputs search string
+2. System shows matching tasks
 (Use case ends)
 
 #### Extensions
-2a. No remaining incomplete tasks
-> System shows error message
-> Use case ends
+1a. User inputs invalid search string
+> System displays errors message
 
-4a. User rejects suggested task
-> System looks for next suggested task
-> Use case resumes at step 2
+2a. No matching tasks
+> Use case ends
 
 ### Use case: Mark task as completed
 #### MSS
@@ -59,27 +60,49 @@ Priority | As a ... | I want to ... | So that I can...
 
 #### Extensions
 1a. The given task is invalid
-> 3a1. System shows an error message
-> Use case resumes at step 2
+> 1a1. System shows an error message
+> Use case resumes at step 1
 
 2a. Task is already completed
 > Use case ends
 
 ### Use case: Delete task
 #### MSS
-1. User requests to list tasks
-2. System shows a list of tasks
 3. User requests to delete a task in the list
 4. System deletes selected task from the list
 (Use case ends)
 
 #### Extensions
-2a. The list is empty
+1a. The given task is invalid
+>1a1. System shows an error message
+> Use case resumes at step 1
+
+1b. The given task is recurring
+> 1b1. System checks if user wants to delete this task or all succeeding tasks
+> 1b2. User selects desired choice
+> 1b3. System deletes selected tasks
+
+### Use case: List all tasks
+#### MSS
+1. User requests to list tasks
+2. System shows all tasks
+
+#### Extensions
+1a. The list is empty
 > Use case ends
 
-3a. The given task is invalid
-> 3a1. System shows an error message
+2a. The given task is invalid
+> 2a1. System shows an error message
 > Use case resumes at step 2
+
+### Use case: Clear list
+#### MSS
+1. User requests to clear list
+2. System clears list
+
+#### Extensions
+1a. The list is empty
+> Use case ends
 
 ## Appendix C: Product Review
 
@@ -123,6 +146,10 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 - Can schedule recurring events using natural language commands
 - Use of keyboard shortcuts while in app [^2]
 
+#### Takeaways:
+- Use of hashtags for tagging
+- Use of keyboard shortcuts
+- On-screen shortcuts for particular features (e.g. postponing, making event recurring)
 
 ### Wunderlist
 #### Meets Specifications
@@ -145,6 +172,9 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 - Interface is very sleek and appealing
 - To-do list sharing for collaborators
 - Excellent multi-platform integration (e.g. iOS, Android, Windows, Mac, web interface)
+
+#### Takeaways
+- Use of multiplatform integration
 
 ### Google Calendar
 #### Meets Specifications
@@ -173,6 +203,10 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 - Import/export to iCalendar file (for Google Calendar, Outlook, iCal)
 - Calendar sharing for collaborators
 
+#### Takeaways
+- Split pane views for tasks and events
+- Quick add functionality
+
 ### Apple Reminders
 #### Meets Specifications
 - Allows events with deadlines
@@ -190,6 +224,9 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 #### Interesting features
 - Desktop reminders
 - Multiple separate to-do lists
+
+#### Takeaways
+- Native support for Mac gives additional features (e.g. widgets, shortcuts in email etc.)
 
 [^1]: https://en.todoist.com/
 [^2]: https://support.todoist.com/hc/en-us/articles/205063212-Keyboard-shortcuts
