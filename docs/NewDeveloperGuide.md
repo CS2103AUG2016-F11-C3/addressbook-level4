@@ -2,7 +2,7 @@
 
 * [Appendix A: User Stories](#appendix-a-user-stories)
 * [Appendix B: Use Cases](#appendix-b-use-cases)
-* [Appendic C: Non-Functional Requirements](#appendix-c-non-functional-requirements)
+* [Appendic C: Non-Functional Requirements](#appendix-c-non--functional-requirements)
 * [Appendix D: Product Survey](#appendix-d-product-survey)
 
 ## Appendix A: User Stories
@@ -123,7 +123,7 @@ Priority | As a ... | I want to ... | So that I can...
 6. Should not use relational databases
 7. Should be reliant on CLI instead of GUI
 
-## Appendix D: Product Review
+## Appendix D: Product Survey
 
 ### Desired features
 This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~cs2103/AY1617S1/contents/handbook.html#handbook-project-product).
