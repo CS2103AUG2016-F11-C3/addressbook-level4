@@ -2,7 +2,8 @@
 
 * [Appendix A: User Stories](#appendix-a--user-stories)
 * [Appendix B: Use Cases](#appendix-b--use-cases)
-* [Appendix C: Non Functional Requirements](#appendix-c--product-survey)
+* [Appendic C: Non-Functional Requirements](#appendix-c--non-functional-requirements)
+* [Appendix D: Product Survey](#appendix-d--product-survey)
 
 [Appendix B: 
 ## Appendix A: User Stories
@@ -17,14 +18,18 @@ Priority | As a ... | I want to ... | So that I can...
 `* * *` | user | add a new event | 
 `* * *` | user | mark an event as completed |
 `* * *` | user | change details of an event | update events according to my schedule
+`* * *` | user | see whether an event is completed | know what events are incomplete
+`* * *` | user | search for an event by keywords |
 `* * *` | user | delete an event | remove entries that I cannot complete
 `* * *` | user | list all uncompleted events | see what I have left to do
 `* *`	| user | schedule multiple time blocks for an event | tentatively plan events
+`* *` | user | tag events using particular keywords | group related events
+`* *` | user | know what events are urgent | plan my time accordingly
 `*`		| user | sort events by deadline | know which events are urgent
 `*` 	| user with many tasks | sort events by priority | know which upcoming events are important
-
-(more to be added!)
-
+`*`   | user | use natural language to type my commands| not have to remember complex commands
+`*`   | user | receive feedback when I am typing in commands | know whether I am typing in the command correctly
+`*`   | user | have the app autocomplete my task name | more quickly type in commands
 
 ## Appendix B: Use Cases
 (For all use cases below, the `System` is Wudodo and the `Actor` is the user, unless specified otherwise)
@@ -36,7 +41,7 @@ Priority | As a ... | I want to ... | So that I can...
 
 #### Extensions
 1a. User inputs details in incorrect format
-> System displays error message
+> System displays error message and help text
 > Use case resumes at step 1
 
 ### Use case: Find  task
@@ -54,12 +59,12 @@ Priority | As a ... | I want to ... | So that I can...
 
 ### Use case: Mark task as completed
 #### MSS
-1. User requests to complete a specific task in the list
+1. User requests to complete a specific task in the list by index
 4. System marks task as completed
 (Use case ends)
 
 #### Extensions
-1a. The given task is invalid
+1a. The given task index is invalid
 > 1a1. System shows an error message
 > Use case resumes at step 1
 
@@ -68,12 +73,12 @@ Priority | As a ... | I want to ... | So that I can...
 
 ### Use case: Delete task
 #### MSS
-3. User requests to delete a task in the list
+3. User requests to delete a task in the list by specifying its index
 4. System deletes selected task from the list
 (Use case ends)
 
 #### Extensions
-1a. The given task is invalid
+1a. The given task index is invalid
 >1a1. System shows an error message
 > Use case resumes at step 1
 
@@ -84,7 +89,7 @@ Priority | As a ... | I want to ... | So that I can...
 
 ### Use case: List all tasks
 #### MSS
-1. User requests to list tasks
+1. User requests to list all tasks
 2. System shows all tasks
 
 #### Extensions
@@ -104,7 +109,10 @@ Priority | As a ... | I want to ... | So that I can...
 1a. The list is empty
 > Use case ends
 
-## Appendix C: Product Review
+## Appendix C: Non-functional Product Requirements
+
+
+## Appendix D: Product Review
 
 ### Desired features
 This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~cs2103/AY1617S1/contents/handbook.html#handbook-project-product).
