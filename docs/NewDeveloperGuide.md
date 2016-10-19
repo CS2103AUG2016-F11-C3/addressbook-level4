@@ -30,6 +30,7 @@ Priority | As a ... | I want to ... | So that I can...
 `*`   | user | use natural language to type my commands| not have to remember complex commands
 `*`   | user | receive feedback when I am typing in commands | know whether I am typing in the command correctly
 `*`   | user | have the app autocomplete my task name | more quickly type in commands
+`*`   | power user | user keyboard shortcuts to access frequently-used features | more quickly access useful features
 
 ## Appendix B: Use Cases
 (For all use cases below, the `System` is Wudodo and the `Actor` is the user, unless specified otherwise)
@@ -53,6 +54,7 @@ Priority | As a ... | I want to ... | So that I can...
 #### Extensions
 1a. User inputs invalid search string
 > System displays errors message
+> Use case resumes at step 1
 
 2a. No matching tasks
 > Use case ends
@@ -61,6 +63,7 @@ Priority | As a ... | I want to ... | So that I can...
 #### MSS
 1. User requests to complete a specific task in the list by index
 4. System marks task as completed
+3. System indicates successful mark as complete
 (Use case ends)
 
 #### Extensions
@@ -73,8 +76,9 @@ Priority | As a ... | I want to ... | So that I can...
 
 ### Use case: Delete task
 #### MSS
-3. User requests to delete a task in the list by specifying its index
-4. System deletes selected task from the list
+1. User requests to delete a task in the list by specifying its index
+2. System deletes selected task from the list
+3. System shows delete success message
 (Use case ends)
 
 #### Extensions
@@ -91,10 +95,11 @@ Priority | As a ... | I want to ... | So that I can...
 #### MSS
 1. User requests to list all tasks
 2. System shows all tasks
+3. System shows visual feedback that listing is done
 
 #### Extensions
 1a. The list is empty
-> Use case ends
+> Use case resumes at step 3
 
 2a. The given task is invalid
 > 2a1. System shows an error message
@@ -104,13 +109,20 @@ Priority | As a ... | I want to ... | So that I can...
 #### MSS
 1. User requests to clear list
 2. System clears list
+3. System displays visual feedback that clearing is done
 
 #### Extensions
 1a. The list is empty
-> Use case ends
+> Use case resumes at step 3
 
 ## Appendix C: Non-functional Product Requirements
-
+1. Should work on any mainstream OS as long as it has `Java 1.8.0_60` or higher installed.
+2. Should be able to hold up to 1000 items.
+3. Should come with automated unit tests and open source code.
+4. Should favor DOS style commands over Unix-style commands.
+5. Should save and retrieve data from local text files
+6. Should not use relational databases
+7. Should be reliant on CLI instead of GUI
 
 ## Appendix D: Product Review
 
