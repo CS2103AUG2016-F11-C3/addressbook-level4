@@ -180,7 +180,7 @@ public class Item implements ReadOnlyItem, Comparable<Item> {
             // both have same start datetime
             if(thisEnd.isBefore(otherEnd)) {
                 return -1;
-            } else if(endDate.isAfter(otherEnd)){
+            } else if(thisEnd.isAfter(otherEnd)){
                 return 1;
             }
         }
