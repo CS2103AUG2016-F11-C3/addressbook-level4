@@ -19,8 +19,9 @@ public class ItemCard extends UiPart implements Observer {
     private HBox cardPane;
     @FXML
 	private HBox tags;
+
 	@FXML
-	private Text description;
+	private Label description;
     @FXML
 	private Text type;
 	@FXML
