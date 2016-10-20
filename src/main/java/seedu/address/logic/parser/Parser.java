@@ -23,6 +23,7 @@ import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.DoneCommand;
+import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
@@ -40,7 +41,7 @@ public class Parser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
-    private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
+	private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
 
     private static final Pattern KEYWORDS_ARGS_FORMAT =
             Pattern.compile("(?<keywords>\\S+(?:\\s+\\S+)*)"); // one or more keywords separated by whitespace
@@ -54,6 +55,8 @@ public class Parser {
     
     private static final Pattern ITEM_DATA_ARGS_FORMAT =
     		Pattern.compile("(.*)\\\"(.*)\\\"(.*)");	// item has description and a string representing time to be processed
+
+	private static final Pattern ITEM_EDIT_ARGS_FORMAT = Pattern.compile("(?<targetIndex>\\d+) edit (?<arguments>.*)");
 
     public enum Field {
         NAME("name"), START_DATE("start_date"), END_DATE("end_date"), START_TIME("start_time"),
@@ -99,6 +102,9 @@ public class Parser {
 
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
+
+		case EditCommand.COMMAND_WORD:
+			return prepareEdit(arguments);
 
         case FindCommand.COMMAND_WORD:
             return prepareFind(arguments);
@@ -228,11 +234,12 @@ public class Parser {
     }
 
     /**
-     * Parses arguments in the context of the find person command.
-     *
-     * @param args full command args string
-     * @return the prepared command
-     */
+	 * Parses arguments in the context of the find item command.
+	 *
+	 * @param args
+	 *            full command args string
+	 * @return the prepared command
+	 */
     private Command prepareFind(String args) {
         final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
@@ -245,17 +252,37 @@ public class Parser {
         final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
         return new FindCommand(keywordSet);
     }
+    
+	/**
+	 * Parses arguments in the context of the Edit item command
+	 * 
+	 * @param args
+	 * @return
+	 */
+	private Command prepareEdit(String args) {
+		final Matcher matcher = ITEM_EDIT_ARGS_FORMAT.matcher(args.trim());
+		if (!matcher.matches()) {
+			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+		}
+		int index = Integer.parseInt(matcher.group("targetIndex"));
+		ArrayList<String> arguments = parseMultipleParameters(matcher.group("arguments"), ',');
+		try {
+			return new EditCommand(index, arguments);
+		} catch (IllegalValueException e) {
+			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+		}
+	}
 
-    /**
-     * splits multi-arguments into a nice ArrayList of strings
-     * @param params
-     *      comma-separated parameters
-     * @param delimiter
-     *      delimiting character
-     * @return
-     *      ArrayList<String> of parameters
-     * @author darren
-     */
+	/**
+	 * splits multi-arguments into a nice ArrayList of strings
+	 * 
+	 * @param params
+	 *            comma-separated parameters
+	 * @param delimiter
+	 *            delimiting character
+	 * @return ArrayList<String> of parameters
+	 * @author darren
+	 */
      public static ArrayList<String> parseMultipleParameters(String params, char delimiter) {
          CSVParser parser = new CSVParser(delimiter);
 
@@ -267,7 +294,7 @@ public class Parser {
                  tokens[i] = tokens[i].trim();
              }
 
-             return new ArrayList<String>(Arrays.asList(tokens));
+             return new ArrayList<>(Arrays.asList(tokens));
          } catch (IOException ioe) {
              System.out.println(ioe.getMessage());
          }
