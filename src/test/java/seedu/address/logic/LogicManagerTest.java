@@ -184,6 +184,7 @@ public class LogicManagerTest {
 		TestDataHelper helper = new TestDataHelper();
 		TaskBook expectedAB = helper.generateTaskBook(2);
 		List<? extends ReadOnlyItem> expectedList = expectedAB.getItemList();
+		
 
 		// prepare task book state
 		helper.addToModel(model, 2);
@@ -295,6 +296,7 @@ public class LogicManagerTest {
 		List<Item> fourItems = helper.generateItemList(p1, pTarget1, p2, pTarget2);
 		TaskBook expectedAB = helper.generateTaskBook(fourItems);
 		List<Item> expectedList = helper.generateItemList(pTarget1, pTarget2);
+		Collections.sort(expectedList);
 		helper.addToModel(model, fourItems);
 
 		assertCommandBehavior("find KEY", Command.getMessageForItemListShownSummary(expectedList.size()), expectedAB,
@@ -312,6 +314,7 @@ public class LogicManagerTest {
 		List<Item> fourItems = helper.generateItemList(p3, p1, p4, p2);
 		TaskBook expectedAB = helper.generateTaskBook(fourItems);
 		List<Item> expectedList = fourItems;
+        Collections.sort(expectedList);
 		helper.addToModel(model, fourItems);
 
 		assertCommandBehavior("find KEY", Command.getMessageForItemListShownSummary(expectedList.size()), expectedAB,
@@ -343,7 +346,6 @@ public class LogicManagerTest {
     @Test
     public void execute_done_marksCorrectItem() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        TaskBook testTB = helper.generateTaskBook(2);
         Item target = helper.generateItem(1);
         Item notTarget1 = helper.generateItem(2);
         Item notTarget2 = helper.generateItem(3);
@@ -351,9 +353,10 @@ public class LogicManagerTest {
 
         List<Item> expectedItems = helper.generateItemList(notTarget3, target, notTarget1, notTarget2);
         TaskBook expectedTB = helper.generateTaskBook(expectedItems);
+        Collections.sort(expectedItems);
         helper.addToModel(model, expectedItems);
         
-        assertCommandBehavior("done 2", DoneCommand.MESSAGE_DONE_ITEM_SUCCESS, expectedTB, expectedItems);
+        assertCommandBehavior("done 1", DoneCommand.MESSAGE_DONE_ITEM_SUCCESS, expectedTB, expectedItems);
 
         
     }
@@ -375,6 +378,17 @@ public class LogicManagerTest {
 
     }
 
+    @Test
+    public void execute_listIsSorted() throws Exception{
+        TestDataHelper helper = new TestDataHelper();
+        List<Item> expectedItems = helper.generateItemList(10);
+        TaskBook expectedTB = helper.generateTaskBook(expectedItems);
+        Collections.sort(expectedItems);
+        
+        assertCommandBehavior("list", ListCommand.MESSAGE_SUCCESS, expectedTB, expectedItems);
+
+    }
+    
 	/**
 	 * A utility class to generate test data.
 	 */
