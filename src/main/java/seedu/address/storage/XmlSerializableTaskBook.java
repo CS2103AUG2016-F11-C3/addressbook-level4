@@ -40,7 +40,6 @@ public class XmlSerializableTaskBook implements ReadOnlyTaskBook {
      */
     public XmlSerializableTaskBook(ReadOnlyTaskBook src) {
         items.addAll(src.getItemList().stream().map(XmlAdaptedItem::new).collect(Collectors.toList()));
-//        tags = src.getTagList();
     }
     
     /*
@@ -63,7 +62,6 @@ public class XmlSerializableTaskBook implements ReadOnlyTaskBook {
             try {
                 lists.add(i.toModelType());
             } catch (IllegalValueException e) {
-                //TODO: better error handling
             }
         }
         return lists;

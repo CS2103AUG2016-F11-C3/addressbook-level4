@@ -1,6 +1,7 @@
 package seedu.address.model.item;
 
 import java.time.LocalDateTime;
+import java.util.Observer;
 
 import seedu.address.model.tag.UniqueTagList;
 
@@ -78,4 +79,5 @@ public interface ReadOnlyItem {
 		}
 	}
 
+	public void addObserver(Observer o);
 }

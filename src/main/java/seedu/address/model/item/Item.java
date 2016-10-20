@@ -3,6 +3,7 @@ package seedu.address.model.item;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Objects;
+import java.util.Observable;
 
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
@@ -11,7 +12,7 @@ import seedu.address.model.tag.UniqueTagList;
  * Represents a Item in the address book. Guarantees: details are present and
  * not null, field values are validated.
  */
-public class Item implements ReadOnlyItem, Comparable<Item> {
+public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 
     private UniqueTagList tags;
     private Description description;
@@ -115,32 +116,47 @@ public class Item implements ReadOnlyItem, Comparable<Item> {
      */
     public void setTags(UniqueTagList replacement) {
         tags.setTags(replacement);
+		setChanged();
+		notifyObservers();
     }
 
     @Override
 	public void setIsDone(boolean doneness) {
         this.isDone = doneness;
+		setChanged();
+		notifyObservers();
     }
 
     public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
+		setChanged();
+		notifyObservers();
     }
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+		setChanged();
+		notifyObservers();
     }
 
     public void setRecurring(boolean isRecurring) {
         this.isRecurring = isRecurring;
+		setChanged();
+		notifyObservers();
     }
 
     public void setRecurInterval(Period recurInterval) {
         this.recurInterval = recurInterval;
+		setChanged();
+		notifyObservers();
     }
 
     public void setRecurEndDate(LocalDateTime recurEndDate) {
         this.recurEndDate = recurEndDate;
-    }
+		setChanged();
+		notifyObservers();
+		;
+	}
 
     @Override
     public int hashCode() {
