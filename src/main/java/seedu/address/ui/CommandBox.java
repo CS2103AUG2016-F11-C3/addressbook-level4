@@ -71,7 +71,7 @@ public class CommandBox extends UiPart {
 	@FXML
 	private void handleCommandInputChanged() {
 		previousCommandTest = commandTextField.getText();
-		resultDisplay.postMessage(previousCommandTest);
+		// resultDisplay.postMessage(previousCommandTest);
 	}
 
 
