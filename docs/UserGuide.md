@@ -241,24 +241,3 @@ Use the `undo` command to undo the most recent action.
 ```bash
 undo
 ```
-
-## Expected Functionality
-
-- CRUD (i.e., Create, Read, Update, Delete) support for tasks.
-- Support for multiple task types:
-
-| Type | Description |
-|------|-------------|
-|Events|has a definite start and end time.|
-|Deadlines|tasks that have to be done before a specific deadline.|
-|Floating tasks |tasks to be completed ‘someday’.|
-|Blocks|timeslots that are simply marked as blocked/busy with no definite name, deadline or start/end times.|
-
-- Simple search: A simple text search for finding an item if the user remembers some keywords from the item description. (start with a single parameter)
-  - Searching tasks by keyword
-- Enumerating tasks.
-  - In chronological order
-  - In alphabetical order
-- Finding the next most urgent thing to do.
-- Some way to keep track of which items are done and undone.
-- Undo operations
