@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Objects;
 
-import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -52,8 +51,7 @@ public class Item implements ReadOnlyItem, Comparable<Item> {
         this.startDate = start;
         this.endDate = end;
     }
-
-
+    
 	/**
 	 * constructor for an item with a definite end time only (non-recurring)
 	 * 
@@ -65,6 +63,14 @@ public class Item implements ReadOnlyItem, Comparable<Item> {
         assert !CollectionUtil.isAnyNull(desc);
         this.description = desc;
         this.endDate = end;
+    }
+    
+    /**
+     * Copy constructor to build an Item from a ReadOnlyItem
+     * @param source: ReadOnlyItem that can return Description, startDate and EndDate
+     */
+    public Item(ReadOnlyItem source) {
+        this(source.getDescription(), source.getStartDate(), source.getEndDate());
     }
 
     @Override
