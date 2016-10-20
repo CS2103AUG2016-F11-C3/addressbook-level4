@@ -1,15 +1,15 @@
 package seedu.address.testutil;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.Observable;
 
 import seedu.address.model.item.Description;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.tag.UniqueTagList;
 
-public class TestItem implements ReadOnlyItem {
+public class TestItem extends Observable implements ReadOnlyItem {
 
 
     private UniqueTagList tags;
@@ -30,7 +30,8 @@ public class TestItem implements ReadOnlyItem {
         this.description = description;
     }
 
-    public Description getDescription() {
+    @Override
+	public Description getDescription() {
         return description;
     }
     
@@ -60,7 +61,8 @@ public class TestItem implements ReadOnlyItem {
         this.isDone = false;
     }
     
-    public boolean getIsDone() {
+    @Override
+	public boolean getIsDone() {
         return this.isDone;
     }
 
@@ -111,5 +113,6 @@ public class TestItem implements ReadOnlyItem {
         sb.append("add \"" + this.getDescription().getFullDescription() + "\" from " + startTime + " to " + endTime);
         return sb.toString();
     }
+
 
 }
