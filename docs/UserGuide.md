@@ -194,14 +194,18 @@ delete 241 # delete the item with event ID 241
 ```
 
 ### Searching for a Task/Event
-#### Searching by Keyword
-You can search for specific events using keywords. The keywords are case-insensitive and can be simply part of the event name.
+You can search for specific events using keywords or event indices.
+
+The keywords are case-insensitive and can be simply part of the event name.
+
 ```bash
 # format
 find KEYWORD
 find EVENT_ID
 ```
+
 Fields: [`KEYWORD`](#descriptors), [`EVENT_ID`](#event-id)
+
 ```bash
 # examples
 find "cake"
