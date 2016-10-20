@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.util.StringUtil;
@@ -81,27 +82,25 @@ public class ModelManager extends ComponentManager implements Model {
     //=========== Filtered Item List Accessors ===============================================================
 
     @Override
-    public UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList() {
-        return new UnmodifiableObservableList<>(filteredItems);
-    }
-
-    @Override
     /**
-     * Updates list of items to show all items, sorting them in chronological order.
-     * 
+     * Returns a list sorted chronologically
      * @@author cara
      */
-    public void updateFilteredListToShowAll() {
-        filteredItems.setPredicate(null);
-        
-        //Temporary fix
+    public UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList() {
+        //TODO: implement Comparator in Item class
         Comparator<Item> chronologicalComparator = new Comparator<Item>(){
             @Override
             public int compare(Item x, Item y) {
                 return x.compareTo(y);
             }
         };
-        filteredItems.sort(chronologicalComparator);
+        SortedList<Item> sortedList = new SortedList<>(filteredItems, chronologicalComparator);
+        return new UnmodifiableObservableList<>(sortedList);
+    }
+
+    @Override
+    public void updateFilteredListToShowAll() {
+        filteredItems.setPredicate(null);
     }
 
     @Override
