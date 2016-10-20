@@ -5,7 +5,7 @@ import seedu.address.commons.exceptions.IllegalValueException;
 /**
  * Represents an Item's Description in the Todo List.
  */
-public class Description {
+public class Description implements Comparable<Description> {
 
 	public static final String MESSAGE_NAME_CONSTRAINTS = "Descriptions should be spaces or alphanumeric characters";
     public static final String NAME_VALIDATION_REGEX = "[\\p{Alnum} ]+";
@@ -62,6 +62,11 @@ public class Description {
     @Override
     public int hashCode() {
 		return fullDescription.hashCode();
+    }
+
+    @Override
+    public int compareTo(Description o) {
+        return fullDescription.compareTo(o.getFullDescription());
     }
 
 }
