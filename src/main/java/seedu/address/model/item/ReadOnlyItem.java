@@ -44,8 +44,10 @@ public interface ReadOnlyItem {
                 || (other != null // this is first to avoid NPE below
 						// state checks here onwards
                 && other.getDescription().equals(this.getDescription()) 
-                && other.getStartDate().equals(this.getStartDate())
-                && other.getEndDate().equals(this.getEndDate()));
+                && (other.getStartDate() == this.getStartDate() 
+                || other.getStartDate().equals(this.getStartDate()))
+                && (other.getEndDate() == this. getEndDate() ||
+                other.getEndDate().equals(this.getEndDate())));
     }
 
     /**
