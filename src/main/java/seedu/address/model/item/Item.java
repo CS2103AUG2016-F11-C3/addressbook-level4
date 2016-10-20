@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Objects;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -46,7 +47,7 @@ public class Item implements ReadOnlyItem, Comparable<Item> {
      * @author darren
      */
     public Item(Description desc, LocalDateTime start, LocalDateTime end) {
-        assert !CollectionUtil.isAnyNull(desc, start, end);
+        assert !CollectionUtil.isAnyNull(desc);
         this.description = desc;
         this.startDate = start;
         this.endDate = end;
@@ -61,7 +62,7 @@ public class Item implements ReadOnlyItem, Comparable<Item> {
 	 * @author darren
 	 */
     public Item(Description desc, LocalDateTime end) {
-        assert !CollectionUtil.isAnyNull(desc, end);
+        assert !CollectionUtil.isAnyNull(desc);
         this.description = desc;
         this.endDate = end;
     }
@@ -162,18 +163,22 @@ public class Item implements ReadOnlyItem, Comparable<Item> {
      * @author darren
      */
     public int compareTo(Item other) {
-        LocalDateTime otherStart = other.getStartDate();
-        LocalDateTime otherEnd = other.getEndDate();
-
-        if(startDate.isBefore(otherStart)) {
+        LocalDateTime thisStart, thisEnd, otherStart, otherEnd;
+        
+        thisStart = assignDummyLDT(startDate);
+        thisEnd = assignDummyLDT(endDate);
+        otherStart = assignDummyLDT(other.getStartDate());
+        otherEnd = assignDummyLDT(other.getEndDate());
+        
+        if(thisStart.isBefore(otherStart)) {
             // this item starts earlier
             return -1;
-        } else if(startDate.isAfter(otherStart)) {
+        } else if(thisStart.isAfter(otherStart)) {
             // this item starts later
             return 1;
         } else {
             // both have same start datetime
-            if(endDate.isBefore(otherEnd)) {
+            if(thisEnd.isBefore(otherEnd)) {
                 return -1;
             } else if(endDate.isAfter(otherEnd)){
                 return 1;
@@ -185,4 +190,18 @@ public class Item implements ReadOnlyItem, Comparable<Item> {
         return description.compareTo(other.getDescription());
     }
 
+    /**
+     * assign the max LocalDateTime as a dummy to a java.time.LocalDateTime
+     * object if necessary
+     * @param checkee
+     * @return
+     * @author darren
+     */
+    private LocalDateTime assignDummyLDT(LocalDateTime checkee) {
+        if(checkee == null) {
+            return LocalDateTime.MAX;
+        }
+        
+        return checkee;
+    }
 }
