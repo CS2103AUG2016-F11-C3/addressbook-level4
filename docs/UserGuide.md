@@ -137,26 +137,6 @@ Fields: [`TASK_NAME`](#descriptors)
 add "Schedule CS2103 Consult" 
 ```
 
-#### Blocking Slots
-Some tasks/events do not have a definite name or description, e.g. simply marking busy periods. The `DATE` field is optional; omitting it implies that the period to block is today.
-
-```bash
-# format
-block START_TIME to END_TIME                            # implicitly today
-block START_DATE to END_DATE                            # full-day block
-block START_TIME to END_TIME on DATE
-block START_TIME on START_DATE to END_TIME on END_DATE  # for multiday blocks
-```
-Fields: [`START_TIME`](#time), [`END_TIME`](#time), [`DATE`](#date), [`START_DATE`](#date), [`END_DATE`](#date)
-
-```bash
-# examples
-block 1600 to 1800
-block 0800 to 1300 on 5/10/2016
-block 14 October to 12/11/2016
-block 1200 on 12 October to 1400 on 14 October 2016
-```
-
 ### Updating an Event
 #### Editing Event Details
 Sometimes it is necessary to change the details of your event because life.
