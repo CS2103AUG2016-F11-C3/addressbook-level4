@@ -52,7 +52,7 @@ public class TaskBook implements ReadOnlyTaskBook {
     }
 
     public void resetData(Collection<? extends ReadOnlyItem> newItems) {
-        setItems(newItems.stream().map(FloatingTask::new).collect(Collectors.toList()));
+        setItems(newItems.stream().map(Item::new).collect(Collectors.toList()));
     }
 
     public void resetData(ReadOnlyTaskBook newData) {
