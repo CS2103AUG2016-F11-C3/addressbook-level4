@@ -37,7 +37,7 @@ public class DoneCommand extends Command {
             itemToComplete.setIsDone(true);
         }
 
-        return new CommandResult(MESSAGE_DONE_ITEM_SUCCESS);
+		return new CommandResult(MESSAGE_DONE_ITEM_SUCCESS, itemToComplete);
     }
 
 
