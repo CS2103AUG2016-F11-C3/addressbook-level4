@@ -19,7 +19,7 @@ public class ItemCardHandle extends GuiHandle {
     }
 
     protected String getTextFromLabel(String fieldId) {
-        return getTextFromLabel(fieldId, node);
+		return getTextFromLabel(fieldId, node);
     }
 
     public String getFullDescription() {

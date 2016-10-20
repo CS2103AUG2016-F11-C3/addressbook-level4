@@ -1,14 +1,15 @@
 package seedu.address.model;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import javafx.collections.ObservableList;
 import seedu.address.model.item.Item;
-import seedu.address.model.item.UniqueItemList;
 import seedu.address.model.item.ReadOnlyItem;
-import seedu.address.model.item.FloatingTask;
-
-
-import java.util.*;
-import java.util.stream.Collectors;
+import seedu.address.model.item.UniqueItemList;
 
 /**
  * Wraps all data at the task-book level
