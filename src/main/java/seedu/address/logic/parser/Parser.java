@@ -235,23 +235,12 @@ public class Parser {
 
     /**
 	 * Parses arguments in the context of the find item command.
+
 	 *
 	 * @param args
 	 *            full command args string
 	 * @return the prepared command
 	 */
-    private Command prepareFind(String args) {
-        final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
-        if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    FindCommand.MESSAGE_USAGE));
-        }
-
-        // keywords delimited by whitespace
-        final String[] keywords = matcher.group("keywords").split("\\s+");
-        final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
-        return new FindCommand(keywordSet);
-    }
     
 	/**
 	 * Parses arguments in the context of the Edit item command
@@ -271,6 +260,85 @@ public class Parser {
 		} catch (IllegalValueException e) {
 			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, e.getMessage()));
 		}
+	private Command prepareDelete(String args) {
+
+		Optional<Integer> index = parseIndex(args);
+		if (!index.isPresent()) {
+			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+		}
+
+		return new DeleteCommand(index.get());
+	}
+
+	/**
+	 * Parses arguments for done task command
+	 * 
+	 * @param args
+	 *            full command args string
+	 * @return the prepared done command
+	 * @author darren
+	 */
+	private Command prepareDone(String args) {
+		Optional<Integer> index = parseIndex(args);
+		if (!index.isPresent()) {
+			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DoneCommand.MESSAGE_USAGE));
+		}
+
+		return new DoneCommand(index.get());
+	}
+
+	/**
+	 * Parses arguments in the context of the select person command.
+	 *
+	 * @param args
+	 *            full command args string
+	 * @return the prepared command
+	 */
+	private Command prepareSelect(String args) {
+		Optional<Integer> index = parseIndex(args);
+		if (!index.isPresent()) {
+			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE));
+		}
+
+		return new SelectCommand(index.get());
+	}
+
+	/**
+	 * Returns the specified index in the {@code command} IF a positive unsigned
+	 * integer is given as the index. Returns an {@code Optional.empty()}
+	 * otherwise.
+	 */
+	private Optional<Integer> parseIndex(String command) {
+		final Matcher matcher = PERSON_INDEX_ARGS_FORMAT.matcher(command.trim());
+		if (!matcher.matches()) {
+			return Optional.empty();
+		}
+
+		String index = matcher.group("targetIndex");
+		if (!StringUtil.isUnsignedInteger(index)) {
+			return Optional.empty();
+		}
+		return Optional.of(Integer.parseInt(index));
+
+	}
+
+	/**
+	 * Parses arguments in the context of the find person command.
+	 *
+	 * @param args
+	 *            full command args string
+	 * @return the prepared command
+	 */
+	private Command prepareFind(String args) {
+		final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
+		if (!matcher.matches()) {
+			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+		}
+
+		// keywords delimited by whitespace
+		final String[] keywords = matcher.group("keywords").split("\\s+");
+		final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+		return new FindCommand(keywordSet);
 	}
 
 	/**
@@ -283,41 +351,42 @@ public class Parser {
 	 * @return ArrayList<String> of parameters
 	 * @author darren
 	 */
-     public static ArrayList<String> parseMultipleParameters(String params, char delimiter) {
-         CSVParser parser = new CSVParser(delimiter);
+	public static ArrayList<String> parseMultipleParameters(String params, char delimiter) {
+		CSVParser parser = new CSVParser(delimiter);
 
-         try {
-             String[] tokens = parser.parseLine(params);
+		try {
+			String[] tokens = parser.parseLine(params);
 
-             // strip leading and trailing whitespaces
-             for(int i = 0; i < tokens.length; i++) {
-                 tokens[i] = tokens[i].trim();
-             }
+			// strip leading and trailing whitespaces
+			for (int i = 0; i < tokens.length; i++) {
+				tokens[i] = tokens[i].trim();
+			}
 
-             return new ArrayList<>(Arrays.asList(tokens));
-         } catch (IOException ioe) {
-             System.out.println(ioe.getMessage());
-         }
+			return new ArrayList<>(Arrays.asList(tokens));
+		} catch (IOException ioe) {
+			System.out.println(ioe.getMessage());
+		}
 
-         return null;
-     }
-     
-     /**
-      * checks field names are valids
-      * @param fieldNames
-      *         an ArrayList<String> of field names
-      * @return true if all fields are valid, false otherwise
-      * @author darren
-      */
-     private static boolean fieldsAreValid(ArrayList<String> fieldNames) {
-         assert fieldNames != null;
-         for(String fieldName : fieldNames) {
-             try {
-                 Field ret = Field.valueOf(fieldName.toUpperCase());
-             } catch(IllegalArgumentException iae) {
-                 return false;
-             }
-         }
-         return true;   
-     }
+		return null;
+	}
+
+	/**
+	 * checks field names are valids
+	 * 
+	 * @param fieldNames
+	 *            an ArrayList<String> of field names
+	 * @return true if all fields are valid, false otherwise
+	 * @author darren
+	 */
+	private static boolean fieldsAreValid(ArrayList<String> fieldNames) {
+		assert fieldNames != null;
+		for (String fieldName : fieldNames) {
+			try {
+				Field ret = Field.valueOf(fieldName.toUpperCase());
+			} catch (IllegalArgumentException iae) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

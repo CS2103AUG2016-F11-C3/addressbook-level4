@@ -13,7 +13,7 @@ import seedu.address.model.tag.UniqueTagList;
  * Represents a Item in the address book. Guarantees: details are present and
  * not null, field values are validated.
  */
-public class Item extends Observable implements ReadOnlyItem {
+public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 
     private UniqueTagList tags;
     private Description description;
@@ -48,7 +48,7 @@ public class Item extends Observable implements ReadOnlyItem {
      * @author darren
      */
     public Item(Description desc, LocalDateTime start, LocalDateTime end) {
-    	assert desc != null;
+        assert !CollectionUtil.isAnyNull(desc);
         this.description = desc;
         this.startDate = start;
         this.endDate = end;
@@ -62,7 +62,7 @@ public class Item extends Observable implements ReadOnlyItem {
 	 * @author darren
 	 */
     public Item(Description desc, LocalDateTime end) {
-        assert !CollectionUtil.isAnyNull(desc, end);
+        assert !CollectionUtil.isAnyNull(desc);
         this.description = desc;
         this.endDate = end;
     }
@@ -183,4 +183,52 @@ public class Item extends Observable implements ReadOnlyItem {
                 && this.isSameStateAs((ReadOnlyItem) other));
     }
 
+    @Override
+    /**
+     * sort by start date then end date then alphabetically
+     * for UI chronological sort
+     * @author darren
+     */
+    public int compareTo(Item other) {
+        LocalDateTime thisStart, thisEnd, otherStart, otherEnd;
+        
+        thisStart = assignDummyLDT(startDate);
+        thisEnd = assignDummyLDT(endDate);
+        otherStart = assignDummyLDT(other.getStartDate());
+        otherEnd = assignDummyLDT(other.getEndDate());
+        
+        if(thisStart.isBefore(otherStart)) {
+            // this item starts earlier
+            return -1;
+        } else if(thisStart.isAfter(otherStart)) {
+            // this item starts later
+            return 1;
+        } else {
+            // both have same start datetime
+            if(thisEnd.isBefore(otherEnd)) {
+                return -1;
+            } else if(thisEnd.isAfter(otherEnd)){
+                return 1;
+            }
+        }
+        
+        // same start and end date
+        // sort alphabetically by description
+        return description.compareTo(other.getDescription());
+    }
+
+    /**
+     * assign the max LocalDateTime as a dummy to a java.time.LocalDateTime
+     * object if necessary
+     * @param checkee
+     * @return
+     * @author darren
+     */
+    private LocalDateTime assignDummyLDT(LocalDateTime checkee) {
+        if(checkee == null) {
+            return LocalDateTime.MAX;
+        }
+        
+        return checkee;
+    }
 }

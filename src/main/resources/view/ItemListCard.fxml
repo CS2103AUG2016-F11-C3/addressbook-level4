@@ -29,7 +29,7 @@
                             <children>
 			                    <HBox>
                                     <Text fx:id="id" styleClass="cell_big_label"></Text>
-                                    <Text fx:id="description" text="\$first" styleClass="cell_big_label"/>
+                                    <Label fx:id="description" text="\$first" styleClass="cell_big_label"/>
                                 </HBox>
                             </children>
                         </HBox>
