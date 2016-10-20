@@ -38,7 +38,6 @@ public class ResultDisplay extends UiPart {
 		displayTextFlow = new TextFlow();
 		displayTextFlow.getStyleClass().add("alert");
 		displayTextFlow.getStyleClass().add("alert-success");
-		displayTextFlow.setCenterShape(true);
 
 		headerText = new Text("Welcome! ");
 		messageText = new Text("The results of your commands will be shown here!");
@@ -53,6 +52,8 @@ public class ResultDisplay extends UiPart {
         mainPane.getChildren().add(resultDisplayArea);
         FxViewUtil.applyAnchorBoundaryParameters(mainPane, 0.0, 0.0, 0.0, 0.0);
         placeHolder.getChildren().add(mainPane);
+		hideDisplay();
+
     }
 
     @Override
@@ -71,13 +72,24 @@ public class ResultDisplay extends UiPart {
     }
 
     public void postMessage(String message) {
+		showDisplay();
 		headerText.setText("");
 		messageText.setText(message);
     }
 
 	public void postMessage(String header, String message) {
+		showDisplay();
 		headerText.setText(message);
 		messageText.setText(message);
+	}
+
+	public void showDisplay() {
+		placeHolder.setMinHeight(50);
+		placeHolder.setVisible(true);
+	}
+	public void hideDisplay() {
+		placeHolder.setMinHeight(0);
+		placeHolder.setVisible(false);
 	}
 
 }
