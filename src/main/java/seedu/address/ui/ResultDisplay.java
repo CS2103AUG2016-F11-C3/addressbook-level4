@@ -41,6 +41,7 @@ public class ResultDisplay extends UiPart {
 
 		headerText = new Text("Welcome! ");
 		messageText = new Text("The results of your commands will be shown here!");
+		messageText.setId("resultMessageText");
 		headerText.getStyleClass().add("strong");
 
 		displayTextFlow.getChildren().clear();
