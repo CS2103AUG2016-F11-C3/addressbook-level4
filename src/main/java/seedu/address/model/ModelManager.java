@@ -11,6 +11,7 @@ import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
 import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
 
+import java.util.Comparator;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -77,7 +78,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateTaskBookChanged();
     }
 
-    //=========== Filtered Person List Accessors ===============================================================
+    //=========== Filtered Item List Accessors ===============================================================
 
     @Override
     public UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList() {
@@ -85,8 +86,22 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    /**
+     * Updates list of items to show all items, sorting them in chronological order.
+     * 
+     * @@author cara
+     */
     public void updateFilteredListToShowAll() {
         filteredItems.setPredicate(null);
+        
+        //Temporary fix
+        Comparator<Item> chronologicalComparator = new Comparator<Item>(){
+            @Override
+            public int compare(Item x, Item y) {
+                return x.compareTo(y);
+            }
+        };
+        filteredItems.sort(chronologicalComparator);
     }
 
     @Override
