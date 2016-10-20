@@ -20,7 +20,7 @@ public class ItemCard extends UiPart implements Observer {
     @FXML
 	private HBox tags;
 	@FXML
-	private Text description;
+	private Label description;
     @FXML
 	private Text type;
 	@FXML
