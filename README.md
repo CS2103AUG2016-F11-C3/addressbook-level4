@@ -20,7 +20,7 @@
   
 ### Site Map
 * [User Guide](docs/UserGuide.md) 
-* [Developer Guide](docs/DeveloperGuide.md) 
+* [Developer Guide](docs/NewDeveloperGuide.md) 
 * [About Us](docs/AboutUs.md)
 * [Contact Us](docs/ContactUs.md)
 
