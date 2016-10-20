@@ -1,6 +1,7 @@
 package seedu.address.logic.commands;
 
 import java.time.LocalDateTime;
+
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.parser.DateTimeParser;
 import seedu.address.model.item.Description;
@@ -59,9 +60,9 @@ public class AddCommand extends Command {
 			model.addItem(toAdd);
 			// if user input something for time but it's not correct format
 			if (this.hasTimeString && (this.toAdd.getStartDate() == null || this.toAdd.getEndDate() == null)) {
-				return new CommandResult(MESSAGE_SUCCESS_TIME_NULL);
+				return new CommandResult(MESSAGE_SUCCESS_TIME_NULL, toAdd);
 			} else {
-				return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
+				return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd), toAdd);
 			}
 		} catch (UniqueItemList.DuplicateItemException e) {
 			return new CommandResult(MESSAGE_DUPLICATE_ITEM);
