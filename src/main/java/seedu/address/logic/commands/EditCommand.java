@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.parser.DateTimeParser;
 import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 
@@ -75,6 +76,9 @@ public class EditCommand extends Command {
 				} catch (IllegalValueException e) {
 				}
 				break;
+			case "start":
+			    toModify.setStartDate(new DateTimeParser(editField[1]).extractStartDate());
+			    break;
 			default:
 				break;
 			}
