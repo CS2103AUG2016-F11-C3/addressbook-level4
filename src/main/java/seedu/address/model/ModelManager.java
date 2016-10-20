@@ -76,6 +76,14 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
     }
+    
+    @Override
+    public synchronized void doneItem(ReadOnlyItem item) {
+        item.setIsDone(true);
+        updateFilteredListToShowAll();
+        indicateTaskBookChanged();
+    }
+
 
     //=========== Filtered Person List Accessors ===============================================================
 
