@@ -269,7 +269,7 @@ public class Parser {
 		try {
 			return new EditCommand(index, arguments);
 		} catch (IllegalValueException e) {
-			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, e.getMessage()));
 		}
 	}
 
