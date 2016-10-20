@@ -116,37 +116,44 @@ public class Item extends Observable implements ReadOnlyItem {
      */
     public void setTags(UniqueTagList replacement) {
         tags.setTags(replacement);
+		setChanged();
 		notifyObservers();
     }
 
     @Override
 	public void setIsDone(boolean doneness) {
         this.isDone = doneness;
+		setChanged();
 		notifyObservers();
     }
 
     public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
+		setChanged();
 		notifyObservers();
     }
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+		setChanged();
 		notifyObservers();
     }
 
     public void setRecurring(boolean isRecurring) {
         this.isRecurring = isRecurring;
+		setChanged();
 		notifyObservers();
     }
 
     public void setRecurInterval(Period recurInterval) {
         this.recurInterval = recurInterval;
+		setChanged();
 		notifyObservers();
     }
 
     public void setRecurEndDate(LocalDateTime recurEndDate) {
         this.recurEndDate = recurEndDate;
+		setChanged();
 		notifyObservers();
 		;
 	}
@@ -170,11 +177,5 @@ public class Item extends Observable implements ReadOnlyItem {
                 || (other instanceof ReadOnlyItem // instanceof handles nulls
                 && this.isSameStateAs((ReadOnlyItem) other));
     }
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-
-	}
 
 }
