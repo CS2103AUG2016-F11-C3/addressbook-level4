@@ -66,12 +66,12 @@ public class ItemCard extends UiPart{
 		if (this.item.getStartDate() != null) {
 			Label newLabel = new Label("Event");
 			newLabel.getStyleClass().add("lbl");
-			newLabel.getStyleClass().add("lbl-info");
+			newLabel.getStyleClass().add("lbl-warning");
 			labelList.add(newLabel);
 		} else {
 			Label newLabel = new Label("Task");
 			newLabel.getStyleClass().add("lbl");
-			newLabel.getStyleClass().add("lbl-info");
+			newLabel.getStyleClass().add("lbl-warning");
 			labelList.add(newLabel);
 			if (this.item.getIsDone()) {
 				newLabel = new Label("Done");
