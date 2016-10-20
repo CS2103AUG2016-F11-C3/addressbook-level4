@@ -374,7 +374,7 @@ public class LogicManagerTest {
         TaskBook expectedTB = helper.generateTaskBook(expectedItems);
         helper.addToModel(model, expectedItems);
         
-        assertCommandBehavior("done 2", DoneCommand.MESSAGE_DONE_ITEM_FAIL, expectedTB, expectedItems);
+        assertCommandBehavior("done 1", DoneCommand.MESSAGE_DONE_ITEM_FAIL, expectedTB, expectedItems);
 
     }
 
@@ -383,7 +383,7 @@ public class LogicManagerTest {
         TestDataHelper helper = new TestDataHelper();
         List<Item> expectedItems = helper.generateItemList(10);
         TaskBook expectedTB = helper.generateTaskBook(expectedItems);
-        Collections.sort(expectedItems);
+        //Collections.sort(expectedItems);
         
         assertCommandBehavior("list", ListCommand.MESSAGE_SUCCESS, expectedTB, expectedItems);
 
