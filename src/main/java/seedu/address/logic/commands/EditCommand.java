@@ -85,6 +85,11 @@ public class EditCommand extends Command {
 			case "by":
 			    toModify.setEndDate(new DateTimeParser(editField[1]).extractEndDate());
 			    break;
+			case "period":
+			    DateTimeParser parser = new DateTimeParser(editField[1]);
+			    toModify.setStartDate(parser.extractStartDate());
+			    toModify.setEndDate(parser.extractEndDate());
+			    break;
 			default:
 				break;
 			}
