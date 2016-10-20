@@ -73,7 +73,7 @@ The available field names:
 
 | `field_name` | Type | Description |
 |--------------|------|-------------|
-| `name`       | [descriptor](#descriptor) | Task/event name |
+| `name`       | [descriptor](#descriptors) | Task/event name |
 | `start`      | [datetime](#datetime) | Start datetime |
 | `end`        | [datetime](#datetime) | End datetime |
 | `period`     | [datetime](#datetime) | Start and end datetime |
