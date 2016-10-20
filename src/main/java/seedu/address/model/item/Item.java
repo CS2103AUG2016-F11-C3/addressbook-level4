@@ -5,6 +5,7 @@ import java.time.Period;
 import java.util.Objects;
 import java.util.Observable;
 
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -155,9 +156,13 @@ public class Item extends Observable implements ReadOnlyItem {
         this.recurEndDate = recurEndDate;
 		setChanged();
 		notifyObservers();
-		;
 	}
 
+	public void setDescription(String desc) throws IllegalValueException {
+		this.description.setFullDescription(desc);
+		setChanged();
+		notifyObservers();
+	}
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing
