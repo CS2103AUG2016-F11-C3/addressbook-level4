@@ -152,7 +152,7 @@ You can change multiple fields for the same event at the same time by separating
 
 ```bash
 # examples
-for 2 edit start to today 1600
+for 2412 edit start :today 1600
 for 10 edit by: 29 October 5pm
 for 4 edit end:1/2/2016 10:51am # edits the forth item currently listed
 for 5 edit period : 11 nov 4:30pm to 6:30pm
@@ -166,9 +166,10 @@ for 1 edit period: this friday 1600 to 1645
 #### Marking as Complete
 ```bash
 # format
+done EVENT_ID
 done CONTEXT_ID
 ```
-Fields: [`CONTEXT_ID`](#context-id)
+Fields: [`EVENT_ID`](#event-id), [`CONTEXT_ID`](#context-id)
 
 ```bash
 # examples
@@ -180,13 +181,16 @@ You can delete an event using its name. This is not the same as marking an event
 
 ```bash
 # format
+delete EVENT_ID
 delete CONTEXT_ID
 ```
-Fields: [`CONTEXT_ID`](#context-id)
+
+Fields: [`EVENT_ID`](#event-id), [`CONTEXT_ID`](#context-id)
 
 ```bash
 # examples
 delete 9 # deletes the ninth item displayed
+delete 241 # delete the item with event ID 241
 ```
 
 ### Searching for a Task/Event
