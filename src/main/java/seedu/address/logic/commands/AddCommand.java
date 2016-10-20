@@ -49,7 +49,6 @@ public class AddCommand extends Command {
 		LocalDateTime startTimeObj = parser.extractStartDate();
 		LocalDateTime endTimeObj = parser.extractEndDate();
 		this.toAdd = new Item(descriptionObj, startTimeObj, endTimeObj);
-		// System.out.println(toAdd.getStartDate().toString() + " " + toAdd.getEndDate().toString());
 	}
 
 	@Override
