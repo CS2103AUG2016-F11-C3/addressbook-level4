@@ -11,7 +11,7 @@ import seedu.address.model.tag.UniqueTagList;
  * Represents a Item in the address book. Guarantees: details are present and
  * not null, field values are validated.
  */
-public class Item implements ReadOnlyItem {
+public class Item implements ReadOnlyItem, Comparable<Item> {
 
     private UniqueTagList tags;
     private Description description;
@@ -153,6 +153,35 @@ public class Item implements ReadOnlyItem {
         return other == this // short circuit if same object
                 || (other instanceof ReadOnlyItem // instanceof handles nulls
                 && this.isSameStateAs((ReadOnlyItem) other));
+    }
+
+    @Override
+    /**
+     * sort by start date then end date then alphabetically
+     * for UI chronological sort
+     * @author darren
+     */
+    public int compareTo(Item other) {
+        LocalDateTime otherStart = other.getStartDate();
+        LocalDateTime otherEnd = other.getEndDate();
+
+        if(startDate.isBefore(otherStart)) {
+            // this item starts earlier
+            return -1;
+        } else if(startDate.isAfter(otherStart)) {
+            // this item starts later
+            return 1;
+        } else {
+            // both have same start datetime
+            if(endDate.isBefore(otherEnd)) {
+                return -1;
+            } else if(endDate.isAfter(otherEnd)){
+                return 1;
+            }
+        }
+        
+        // same start and end date
+        return 0;
     }
 
 }
