@@ -98,6 +98,7 @@ public class MainWindow extends UiPart {
         setWindowMinSize();
         setWindowDefaultSize(prefs);
         scene = new Scene(rootLayout);
+		scene.getStylesheets().add("bootstrapfx.css");
         primaryStage.setScene(scene);
 
         setAccelerators();
