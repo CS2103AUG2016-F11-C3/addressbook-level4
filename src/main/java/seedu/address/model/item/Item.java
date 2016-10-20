@@ -3,16 +3,16 @@ package seedu.address.model.item;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Objects;
+import java.util.Observable;
 
 import seedu.address.commons.util.CollectionUtil;
-import seedu.address.model.person.ReadOnlyPerson;
 import seedu.address.model.tag.UniqueTagList;
 
 /**
  * Represents a Item in the address book. Guarantees: details are present and
  * not null, field values are validated.
  */
-public class Item implements ReadOnlyItem {
+public class Item extends Observable implements ReadOnlyItem {
 
     private UniqueTagList tags;
     private Description description;
@@ -116,32 +116,40 @@ public class Item implements ReadOnlyItem {
      */
     public void setTags(UniqueTagList replacement) {
         tags.setTags(replacement);
+		notifyObservers();
     }
 
     @Override
 	public void setIsDone(boolean doneness) {
         this.isDone = doneness;
+		notifyObservers();
     }
 
     public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
+		notifyObservers();
     }
 
     public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
+		notifyObservers();
     }
 
     public void setRecurring(boolean isRecurring) {
         this.isRecurring = isRecurring;
+		notifyObservers();
     }
 
     public void setRecurInterval(Period recurInterval) {
         this.recurInterval = recurInterval;
+		notifyObservers();
     }
 
     public void setRecurEndDate(LocalDateTime recurEndDate) {
         this.recurEndDate = recurEndDate;
-    }
+		notifyObservers();
+		;
+	}
 
     @Override
     public int hashCode() {
@@ -162,5 +170,11 @@ public class Item implements ReadOnlyItem {
                 || (other instanceof ReadOnlyItem // instanceof handles nulls
                 && this.isSameStateAs((ReadOnlyItem) other));
     }
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+
+	}
 
 }

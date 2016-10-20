@@ -1,6 +1,8 @@
 package seedu.address.ui;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -9,7 +11,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import seedu.address.model.item.ReadOnlyItem;
 
-public class ItemCard extends UiPart{
+public class ItemCard extends UiPart implements Observer {
 
     private static final String FXML = "ItemListCard.fxml";
 
@@ -35,6 +37,7 @@ public class ItemCard extends UiPart{
         ItemCard card = new ItemCard();
         card.item = item;
         card.displayedIndex = displayedIndex;
+		item.addObserver(card);
         return UiPartLoader.loadUiPart(card);
     }
 
@@ -81,5 +84,12 @@ public class ItemCard extends UiPart{
 			}
 		}
 		return labelList;
+	}
+
+	// Use the observer pattern to be notified of changes in the underlying
+	// model
+	@Override
+	public void update(Observable o, Object arg) {
+		this.initialize();
 	}
 }
