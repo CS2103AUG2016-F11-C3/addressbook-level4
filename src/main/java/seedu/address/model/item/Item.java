@@ -181,7 +181,8 @@ public class Item implements ReadOnlyItem, Comparable<Item> {
         }
         
         // same start and end date
-        return 0;
+        // sort alphabetically by description
+        return description.compareTo(other.getDescription());
     }
 
 }
