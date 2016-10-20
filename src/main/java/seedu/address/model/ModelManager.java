@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.util.StringUtil;
@@ -11,6 +12,7 @@ import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
 import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
 
+import java.util.Comparator;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -77,11 +79,23 @@ public class ModelManager extends ComponentManager implements Model {
         indicateTaskBookChanged();
     }
 
-    //=========== Filtered Person List Accessors ===============================================================
+    //=========== Filtered Item List Accessors ===============================================================
 
     @Override
+    /**
+     * Returns a list sorted chronologically
+     * @@author cara
+     */
     public UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList() {
-        return new UnmodifiableObservableList<>(filteredItems);
+        //TODO: implement Comparator in Item class
+        Comparator<Item> chronologicalComparator = new Comparator<Item>(){
+            @Override
+            public int compare(Item x, Item y) {
+                return x.compareTo(y);
+            }
+        };
+        SortedList<Item> sortedList = new SortedList<>(filteredItems, chronologicalComparator);
+        return new UnmodifiableObservableList<>(sortedList);
     }
 
     @Override
