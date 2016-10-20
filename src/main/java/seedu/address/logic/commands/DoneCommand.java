@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
+import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 
 public class DoneCommand extends Command {
@@ -34,7 +35,7 @@ public class DoneCommand extends Command {
         if(itemToComplete.getIsDone()) {
             return new CommandResult(MESSAGE_DONE_ITEM_FAIL);
         } else {
-            itemToComplete.setIsDone(true);
+        	model.doneItem(itemToComplete);
         }
 
 		return new CommandResult(MESSAGE_DONE_ITEM_SUCCESS, itemToComplete);
