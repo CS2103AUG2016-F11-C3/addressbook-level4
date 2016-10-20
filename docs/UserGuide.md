@@ -5,7 +5,7 @@
 <!-- need to wait on our refactoring for addressbook-level4 -->
 1. Ensure you have Java version `1.8.0_60` or later installed.
 2. Download the latest `sudowudo.jar` from the releases tab.
-3. (work in progress)
+3. (WIP)
 
 ## Features
 <!-- each individual command -->
@@ -36,41 +36,47 @@ Dental Appointment   # invalid
 ```
 
 #### `event_id`
-Events can be assigned a numbers as an *identifier*. Each event/task has a unique `event_id`. The identifier does not need to be enclosed in quote marks.
+Events can be assigned a numbers as an *identifier*. Each event/task has a unique and persistent numerical `event_id`. The identifier does not need to be enclosed in quote marks.
 
-#### `time`
-Time is always expressed on a 24-hour clock, omitting the trailing "h".
+#### `context_id`
+Tasks and events are shown on the main interface of Sudowudo and paged. The `context_id` allows you to modify tasks and events that are shown on the interface based on the *contextual* identifier, i.e. the numerical index that is shown on the interface. The identifier does not need to be enclosed in quote marks.
 
+The `context_id` is not persistent and can change depending on what tasks/events are on the interface at the time. It is meant to provide a more convenient and interactive way to interact with tasks/events.
+
+#### `datetime`
+Dates and times are expressed together ("datetime") and have a natural format.
+
+Do not put commas in the `datetime` parameter!
+
+##### Examples of `datetime`
 ```bash
-1400     # 2pm (valid)
-1400h    # invalid!
-09:30    # invalid!
-08:00pm  # invalid!
+# for a period of time
+5 sept at 5pm to 6 sept at 6pm
+fifth november at 2130
+this wednesday 6pm to this saturday 7pm
+12/12/2016 9am to 25/12 1600
+
+# for a recurring period of time
+every monday 9-10am
+
+# for a deadline
+by 12/12/2016 at 1pm
+
+# for a recurring deadline
+every friday at 11:30pm
 ```
 
-#### `date`
-Dates can be expressed in multiple ways: naturally or using slash notation.
+### `field_name`
+The field names denote specific parts of a task/event.
 
-##### Natural Dates
-`date` can be expressed in a natural manner like in normal speech. The format for this is in the form of `day month year` or `day month`. These fields are separated by whitespace.
-
-`month` can be abbreviated to the first three letters, e.g. `October` and `Oct` are equivalent.
-
-Omitting the year will mean that the date will be implicitly assumed to be the current year.
-
-
-##### Slash Notation
-`date` can also be expressed using numerics and slashes in the format `dd/mm/yyyy`. Leading zeroes in the date or month can be omitted.
-
-##### Examples of `date`
-```bash
-14 October 2016  # valid natural form
-14 October       # valid natural form (implicitly 2016)
-14/10/2016       # valid slash notation
-08/01/2016       # valid slash notation
-8/1/2016         # valid slash notation
-8/01/2016        # valid slash notation
-```
+The available field names:
+| `field_name` | Type | Description |
+|--------------|------|-------------|
+| `name`       | [descriptor](#descriptor) | Task/event name |
+| `start`      | [datetime](#datetime) | Start datetime |
+| `end`        | [datetime](#datetime) | End datetime |
+| `period`     | [datetime](#datetime) | Start and end datetime
+| `by`         | [datetime](#datetime) | Deadline datetime
 
 ### Notes on Syntax Examples
 In the remainder of this section, note the following:
@@ -85,23 +91,17 @@ For an event with a definite start and end time, you can use the following synta
 
 ```bash
 # format
-add EVENT_NAME from START_TIME to END_TIME                              # implicitly the same day
-add EVENT_NAME from START_TIME to END_TIME on DATE
-add EVENT_NAME from START_TIME on START_DATE to END_TIME on END_DATE    # for multiday events
+add EVENT_NAME from DATETIME
 ```
 
-Fields: [`EVENT_NAME`](#descriptors), [`START_TIME`](#time), [`END_TIME`](#time), [`DATE`](#date), [`START_DATE`](#date), [`END_DATE`](#date)
+Fields: [`EVENT_NAME`](#descriptors), [`DATETIME`](#datetime)
 
 ```bash
 # examples
-add "Do laundry" from 1600 to 1700                                      # implicitly today
-
-add "Dental Appointment" from 1200 to 1600 on 14 October 2016
-add "Dental Appointment" from 1200 to 1600 on 14 October                # implicitly current year
-add "Dental Appointment" from 1200 to 1600 on 14/10/2016
-add "Dental Appointment" from 1200 to 1600 on 1/8/2016                  # strip leading zeroes
-
+add "Do laundry" from 1600 to 1700
 add "CS2103 Hackathon" from 1000 on 12 November to 1200 on 15 November  # multiday event
+add "Attempt tutorial" from 12/12/2016 9:30pm to 10:30pm
+add "Go to school" from 1800 fifth january till the sixth october at 9:30pm
 ```
 
 #### Deadlines
@@ -109,17 +109,17 @@ For a task with no definite start time but a definite end time (e.g. a homework 
 
 ```bash
 # format
-add TASK_NAME by TIME on DATE # with date and time
-add TASK_NAME by DATE         # no definite time
-add TASK_NAME by TIME         # implicitly the same day
+add TASK_NAME by DATETIME
 ```
 
-Fields: [`TASK_NAME`](#descriptors), [`TIME`](#time), [`DATE`](#date)
+Fields: [`TASK_NAME`](#descriptors), [`DATETIME`](#datetime)
 
 ```bash
 # examples
 add "CS2103 Tutorial 6" by 7 October
-add "CS2103 Peer Feedback" by 2359 on 27 Sep
+add "CS2103 Peer Feedback" by 2359h 27 Sep
+add "Walk dog" by 9:41pm
+add "Perform magic tricks" by two weeks from now
 ```
 
 #### Floating Tasks
@@ -162,55 +162,51 @@ Sometimes it is necessary to change the details of your event because life.
 
 ```bash
 # format
-for EVENT_NAME edit FIELD_NAME to NEW_DETAIL
 for EVENT_ID edit FIELD_NAME to NEW_DETAIL
+for CONTEXT_ID edit FIELD_NAME to NEW_DETAIL
 ```
-Fields: [`FIELD_NAME`](), [`EVENT_NAME`](#descriptors), [`EVENT_ID`](#event-id), `NEW_DETAIL`
+Fields: [`FIELD_NAME`](#field-name), [`EVENT_ID`](#event-id), [`CONTEXT_ID`](#context-id), `NEW_DETAIL`
 
 You can change multiple fields for the same event at the same time by separating multiple `FIELD_NAME` and `NEW_DETAIL` with a comma. The `FIELD_NAME` will correspond to the order of `NEW_DETAIL`.
 
 ```bash
 # examples
-for "Dental Appointment" edit start_time to 1600
-for "CS2103 Consult" edit date to 29 October
-for 124235 edit end_time to 1200
+for "Dental Appointment" edit start to today 1600
+for "CS2103 homework" edit by to 29 October 5pm
+for 4 edit end to 1/2/2016 10:51am # edits the forth item currently listed
+for "CS2103 Consult" edit period to 11 nov 4:30pm to 6:30pm
 
 # change multiple fields at the same time
-for "Dental Appointment" edit start_time,end_time to 1600,2000
-for "CS2103 Consult" edit start_time,end_time,date to 1200,2100,12 October 2016
+for "Dental Appointment" edit start,end to this friday 1600, this friday 1645
 ```
 
 #### Marking as Complete
 ```bash
 # format
-for EVENT_NAME done
-for EVENT_ID done
+done CONTEXT_ID
 ```
-Fields: [`EVENT_NAME`](#descriptors), [`EVENT_ID`](#event-id)
+Fields: [`CONTEXT_ID`](#context-id)
 
 ```bash
 # examples
-for "Dental Appointment" done
-for 124133 done
+done 3 # marks the third item displayed as done
 ```
 
-### Deleting an Event
-You can delete an event using its name. This is not the same as marking an event as complete (see [Marking as Complete](#marking-as-complete)).
+### Deleting a Task/Event
+You can delete an event using its name. This is not the same as marking an event as complete (see [Marking as Complete](#marking-as-complete)), as it removes the task/event from the record.
 
 ```bash
 # format
-for EVENT_NAME delete
-for EVENT_ID delete
+delete CONTEXT_ID
 ```
-Fields: [`EVENT_NAME`](#descriptors), [`EVENT_ID`](#event-id)
+Fields: [`CONTEXT_ID`](#context-id)
 
 ```bash
 # examples
-for "CS2103 Tutorial 3" delete
-for 124129 delete              # deletes event with ID 124294
+delete 9 # deletes the ninth item displayed
 ```
 
-### Searching for an Event
+### Searching for a Task/Event
 #### Searching by Keyword
 You can search for specific events using keywords. The keywords are case-insensitive and can be simply part of the event name.
 ```bash
@@ -226,21 +222,18 @@ find 12093
 ```
 
 ### Enumerating Tasks
-You can enumerate a list of all the events, sorted alphabetically or chronologically.
+You can enumerate a list of all the events and show it on the main interface.
+
 ```bash
 list        # lists all events by name in chronological order
-list long   # lists all events' name and details in chronological order
 ```
 
-### Next Thing to Do
-What good is a productivity app if it doesn't boss you around and tell you what to do?
-
-`next` can be used to return the next upcoming task, and can be chained successively to return the `n`-th upcoming task.
+### Paging
+The main interface of Sudowudo pages your upcoming tasks/events.
 
 ```bash
-next           # returns next task
-next next      # returns the 2nd upcoming task
-next next next # returns the 3rd upcoming task
+next           # shows next page of tasks/events
+back           # shows previous page of tasks/events
 ```
 
 ### Undoing
