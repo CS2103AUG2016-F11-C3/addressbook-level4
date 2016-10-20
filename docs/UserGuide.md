@@ -75,8 +75,8 @@ The available field names:
 | `name`       | [descriptor](#descriptor) | Task/event name |
 | `start`      | [datetime](#datetime) | Start datetime |
 | `end`        | [datetime](#datetime) | End datetime |
-| `period`     | [datetime](#datetime) | Start and end datetime
-| `by`         | [datetime](#datetime) | Deadline datetime
+| `period`     | [datetime](#datetime) | Start and end datetime |
+| `by`         | [datetime](#datetime) | Deadline datetime |
 
 ### Notes on Syntax Examples
 In the remainder of this section, note the following:
