@@ -70,6 +70,7 @@ every friday at 11:30pm
 The field names denote specific parts of a task/event.
 
 The available field names:
+
 | `field_name` | Type | Description |
 |--------------|------|-------------|
 | `name`       | [descriptor](#descriptor) | Task/event name |
