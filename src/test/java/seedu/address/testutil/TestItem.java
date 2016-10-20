@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.Observer;
 
 import seedu.address.model.item.Description;
 import seedu.address.model.item.ReadOnlyItem;
@@ -110,6 +111,12 @@ public class TestItem implements ReadOnlyItem {
         }
         sb.append("add \"" + this.getDescription().getFullDescription() + "\" from " + startTime + " to " + endTime);
         return sb.toString();
+    }
+
+    @Override
+    public void addObserver(Observer o) {
+        // TODO Auto-generated method stub
+        
     }
 
 }
