@@ -35,262 +35,291 @@ import seedu.address.logic.commands.SelectCommand;
  */
 public class Parser {
 
-    /**
-     * Used for initial separation of command word and args.
-     */
-    private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
+	/**
+	 * Used for initial separation of command word and args.
+	 */
+	private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
-    private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
+	private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
 
-    private static final Pattern KEYWORDS_ARGS_FORMAT =
-            Pattern.compile("(?<keywords>\\S+(?:\\s+\\S+)*)"); // one or more keywords separated by whitespace
+	private static final Pattern KEYWORDS_ARGS_FORMAT = Pattern.compile("(?<keywords>\\S+(?:\\s+\\S+)*)"); // one
+																											// or
+																											// more
+																											// keywords
+																											// separated
+																											// by
+																											// whitespace
 
-    private static final Pattern PERSON_DATA_ARGS_FORMAT = // '/' forward slashes are reserved for delimiter prefixes
-            Pattern.compile("(?<name>[^/]+)"
-                    + " (?<isPhonePrivate>p?)p/(?<phone>[^/]+)"
-                    + " (?<isEmailPrivate>p?)e/(?<email>[^/]+)"
-                    + " (?<isAddressPrivate>p?)a/(?<address>[^/]+)"
-                    + "(?<tagArguments>(?: t/[^/]+)*)"); // variable number of tags
-    
-    private static final Pattern ITEM_DATA_ARGS_FORMAT =
-    		Pattern.compile("(.*)\\\"(.*)\\\"(.*)");	// item has description and a string representing time to be processed
+	private static final Pattern PERSON_DATA_ARGS_FORMAT = // '/' forward
+															// slashes are
+															// reserved for
+															// delimiter
+															// prefixes
+			Pattern.compile("(?<name>[^/]+)" + " (?<isPhonePrivate>p?)p/(?<phone>[^/]+)"
+					+ " (?<isEmailPrivate>p?)e/(?<email>[^/]+)" + " (?<isAddressPrivate>p?)a/(?<address>[^/]+)"
+					+ "(?<tagArguments>(?: t/[^/]+)*)"); // variable number of
+															// tags
 
-    public enum Field {
-        NAME("name"), START_DATE("start_date"), END_DATE("end_date"), START_TIME("start_time"),
-        END_TIME("end_time"), DATE("date"), TIME("time");
+	private static final Pattern ITEM_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"(.*)");
+	private static final Pattern TASK_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"");
 
-        private String field_name;
+	public enum Field {
+		NAME("name"), START_DATE("start_date"), END_DATE("end_date"), START_TIME("start_time"), END_TIME(
+				"end_time"), DATE("date"), TIME("time");
 
-        Field(String name) {
-            this.field_name = name;
-        }
+		private String field_name;
 
-        public String getFieldName() {
-            return this.field_name;
-        }
-    }
+		Field(String name) {
+			this.field_name = name;
+		}
 
-    public Parser() {}
+		public String getFieldName() {
+			return this.field_name;
+		}
+	}
 
-    /**
-     * Parses user input into command for execution.
-     *
-     * @param userInput full user input string
-     * @return the command based on the user input
-     */
-    public Command parseCommand(String userInput) {
-        final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
-        if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
-        }
+	public Parser() {
+	}
 
-        final String commandWord = matcher.group("commandWord");
-        final String arguments = matcher.group("arguments");
-        switch (commandWord) {
+	/**
+	 * Parses user input into command for execution.
+	 *
+	 * @param userInput
+	 *            full user input string
+	 * @return the command based on the user input
+	 */
+	public Command parseCommand(String userInput) {
+		final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
+		if (!matcher.matches()) {
+			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
+		}
 
-        case AddCommand.COMMAND_WORD:
-            return prepareAdd(arguments);
+		final String commandWord = matcher.group("commandWord");
+		final String arguments = matcher.group("arguments");
+		switch (commandWord) {
 
-        case SelectCommand.COMMAND_WORD:
-            return prepareSelect(arguments);
+		case AddCommand.COMMAND_WORD:
+			return prepareAdd(arguments);
 
-        case DeleteCommand.COMMAND_WORD:
-            return prepareDelete(arguments);
+		case SelectCommand.COMMAND_WORD:
+			return prepareSelect(arguments);
 
-        case ClearCommand.COMMAND_WORD:
-            return new ClearCommand();
+		case DeleteCommand.COMMAND_WORD:
+			return prepareDelete(arguments);
 
-        case FindCommand.COMMAND_WORD:
-            return prepareFind(arguments);
+		case ClearCommand.COMMAND_WORD:
+			return new ClearCommand();
 
-        case ListCommand.COMMAND_WORD:
-            return new ListCommand();
+		case FindCommand.COMMAND_WORD:
+			return prepareFind(arguments);
 
-        case ExitCommand.COMMAND_WORD:
-            return new ExitCommand();
+		case ListCommand.COMMAND_WORD:
+			return new ListCommand();
 
-        case HelpCommand.COMMAND_WORD:
-            return new HelpCommand();
+		case ExitCommand.COMMAND_WORD:
+			return new ExitCommand();
 
-        case DoneCommand.COMMAND_WORD:
-            return prepareDone(arguments);
+		case HelpCommand.COMMAND_WORD:
+			return new HelpCommand();
 
-        default:
-            return new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
-        }
-    }
+		case DoneCommand.COMMAND_WORD:
+			return prepareDone(arguments);
 
-    /**
-     * Parses arguments in the context of the add person command.
-     *
-     * @param args full command args string
-     * @return the prepared command
-     */
-    private Command prepareAdd(String args){
-        final Matcher matcher = ITEM_DATA_ARGS_FORMAT.matcher(args.trim());
-        // Validate arg string format
-        if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-        }
-        try {
-        	// check if any thing before first quotation mark and return error if found
-        	String postFix = matcher.group(1).trim();
-        	if (!postFix.equals("")) {
-                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
-        	}
-        	String description = matcher.group(2).trim();
-        	String timeStr = matcher.group(3).trim();
-        	return new AddCommand(description, timeStr);
-        } catch (IllegalValueException ive) {
-            return new IncorrectCommand(ive.getMessage());
-        }
-    }
+		default:
+			return new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
+		}
+	}
 
-    /**
-     * Extracts the new person's tags from the add command's tag arguments string.
-     * Merges duplicate tag strings.
-     */
-    private static Set<String> getTagsFromArgs(String tagArguments) throws IllegalValueException {
-        // no tags
-        if (tagArguments.isEmpty()) {
-            return Collections.emptySet();
-        }
-        // replace first delimiter prefix, then split
-        final Collection<String> tagStrings = Arrays.asList(tagArguments.replaceFirst(" t/", "").split(" t/"));
-        return new HashSet<>(tagStrings);
-    }
+	/**
+	 * Parses arguments in the context of the add person command.
+	 *
+	 * @param args
+	 *            full command args string
+	 * @return the prepared command
+	 */
+	private Command prepareAdd(String args) {
+		final Matcher matcher = ITEM_DATA_ARGS_FORMAT.matcher(args.trim());
+		final Matcher matcher_task = TASK_DATA_ARGS_FORMAT.matcher(args.trim());
+		// Validate arg string format
+		if (!matcher.matches() && !matcher_task.matches()) {
+			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+		}
+		try {
+			if (matcher_task.matches()) {
+				String postFix = matcher.group(1).trim();
+				if (!postFix.equals("")) {
+					return new IncorrectCommand(
+							String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+				}
+				String description = matcher.group(2).trim();
+				return new AddCommand(description, "nonsensical data");
+				
+			} else {
+				// check if any thing before first quotation mark and return
+				// error
+				// if found
+				String postFix = matcher.group(1).trim();
+				if (!postFix.equals("")) {
+					return new IncorrectCommand(
+							String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+				}
+				String description = matcher.group(2).trim();
+				String timeStr = matcher.group(3).trim();
+				return new AddCommand(description, timeStr);
+			}
+		} catch (IllegalValueException ive) {
+			return new IncorrectCommand(ive.getMessage());
+		}
+	}
 
-    /**
-     * Parses arguments in the context of the delete person command.
-     *
-     * @param args full command args string
-     * @return the prepared command
-     */
-    private Command prepareDelete(String args) {
+	/**
+	 * Extracts the new person's tags from the add command's tag arguments
+	 * string. Merges duplicate tag strings.
+	 */
+	private static Set<String> getTagsFromArgs(String tagArguments) throws IllegalValueException {
+		// no tags
+		if (tagArguments.isEmpty()) {
+			return Collections.emptySet();
+		}
+		// replace first delimiter prefix, then split
+		final Collection<String> tagStrings = Arrays.asList(tagArguments.replaceFirst(" t/", "").split(" t/"));
+		return new HashSet<>(tagStrings);
+	}
 
-        Optional<Integer> index = parseIndex(args);
-        if(!index.isPresent()){
-            return new IncorrectCommand(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
-        }
+	/**
+	 * Parses arguments in the context of the delete person command.
+	 *
+	 * @param args
+	 *            full command args string
+	 * @return the prepared command
+	 */
+	private Command prepareDelete(String args) {
 
-        return new DeleteCommand(index.get());
-    }
+		Optional<Integer> index = parseIndex(args);
+		if (!index.isPresent()) {
+			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+		}
 
-    /**
-     * Parses arguments for done task command
-     * @param args full command args string
-     * @return the prepared done command
-     * @author darren
-     */
-    private Command prepareDone(String args) {
-        Optional<Integer> index = parseIndex(args);
-        if(!index.isPresent()){
-            return new IncorrectCommand(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DoneCommand.MESSAGE_USAGE));
-        }
+		return new DeleteCommand(index.get());
+	}
 
-        return new DoneCommand(index.get());   
-    }
+	/**
+	 * Parses arguments for done task command
+	 * 
+	 * @param args
+	 *            full command args string
+	 * @return the prepared done command
+	 * @author darren
+	 */
+	private Command prepareDone(String args) {
+		Optional<Integer> index = parseIndex(args);
+		if (!index.isPresent()) {
+			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DoneCommand.MESSAGE_USAGE));
+		}
 
-    /**
-     * Parses arguments in the context of the select person command.
-     *
-     * @param args full command args string
-     * @return the prepared command
-     */
-    private Command prepareSelect(String args) {
-        Optional<Integer> index = parseIndex(args);
-        if(!index.isPresent()){
-            return new IncorrectCommand(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE));
-        }
+		return new DoneCommand(index.get());
+	}
 
-        return new SelectCommand(index.get());
-    }
+	/**
+	 * Parses arguments in the context of the select person command.
+	 *
+	 * @param args
+	 *            full command args string
+	 * @return the prepared command
+	 */
+	private Command prepareSelect(String args) {
+		Optional<Integer> index = parseIndex(args);
+		if (!index.isPresent()) {
+			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE));
+		}
 
-    /**
-     * Returns the specified index in the {@code command} IF a positive unsigned integer is given as the index.
-     *   Returns an {@code Optional.empty()} otherwise.
-     */
-    private Optional<Integer> parseIndex(String command) {
-        final Matcher matcher = PERSON_INDEX_ARGS_FORMAT.matcher(command.trim());
-        if (!matcher.matches()) {
-            return Optional.empty();
-        }
+		return new SelectCommand(index.get());
+	}
 
-        String index = matcher.group("targetIndex");
-        if(!StringUtil.isUnsignedInteger(index)){
-            return Optional.empty();
-        }
-        return Optional.of(Integer.parseInt(index));
+	/**
+	 * Returns the specified index in the {@code command} IF a positive unsigned
+	 * integer is given as the index. Returns an {@code Optional.empty()}
+	 * otherwise.
+	 */
+	private Optional<Integer> parseIndex(String command) {
+		final Matcher matcher = PERSON_INDEX_ARGS_FORMAT.matcher(command.trim());
+		if (!matcher.matches()) {
+			return Optional.empty();
+		}
 
-    }
+		String index = matcher.group("targetIndex");
+		if (!StringUtil.isUnsignedInteger(index)) {
+			return Optional.empty();
+		}
+		return Optional.of(Integer.parseInt(index));
 
-    /**
-     * Parses arguments in the context of the find person command.
-     *
-     * @param args full command args string
-     * @return the prepared command
-     */
-    private Command prepareFind(String args) {
-        final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
-        if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT,
-                    FindCommand.MESSAGE_USAGE));
-        }
+	}
 
-        // keywords delimited by whitespace
-        final String[] keywords = matcher.group("keywords").split("\\s+");
-        final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
-        return new FindCommand(keywordSet);
-    }
+	/**
+	 * Parses arguments in the context of the find person command.
+	 *
+	 * @param args
+	 *            full command args string
+	 * @return the prepared command
+	 */
+	private Command prepareFind(String args) {
+		final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
+		if (!matcher.matches()) {
+			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+		}
 
-    /**
-     * splits multi-arguments into a nice ArrayList of strings
-     * @param params
-     *      comma-separated parameters
-     * @param delimiter
-     *      delimiting character
-     * @return
-     *      ArrayList<String> of parameters
-     * @author darren
-     */
-     public static ArrayList<String> parseMultipleParameters(String params, char delimiter) {
-         CSVParser parser = new CSVParser(delimiter);
+		// keywords delimited by whitespace
+		final String[] keywords = matcher.group("keywords").split("\\s+");
+		final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+		return new FindCommand(keywordSet);
+	}
 
-         try {
-             String[] tokens = parser.parseLine(params);
+	/**
+	 * splits multi-arguments into a nice ArrayList of strings
+	 * 
+	 * @param params
+	 *            comma-separated parameters
+	 * @param delimiter
+	 *            delimiting character
+	 * @return ArrayList<String> of parameters
+	 * @author darren
+	 */
+	public static ArrayList<String> parseMultipleParameters(String params, char delimiter) {
+		CSVParser parser = new CSVParser(delimiter);
 
-             // strip leading and trailing whitespaces
-             for(int i = 0; i < tokens.length; i++) {
-                 tokens[i] = tokens[i].trim();
-             }
+		try {
+			String[] tokens = parser.parseLine(params);
 
-             return new ArrayList<String>(Arrays.asList(tokens));
-         } catch (IOException ioe) {
-             System.out.println(ioe.getMessage());
-         }
+			// strip leading and trailing whitespaces
+			for (int i = 0; i < tokens.length; i++) {
+				tokens[i] = tokens[i].trim();
+			}
 
-         return null;
-     }
-     
-     /**
-      * checks field names are valids
-      * @param fieldNames
-      *         an ArrayList<String> of field names
-      * @return true if all fields are valid, false otherwise
-      * @author darren
-      */
-     private static boolean fieldsAreValid(ArrayList<String> fieldNames) {
-         assert fieldNames != null;
-         for(String fieldName : fieldNames) {
-             try {
-                 Field ret = Field.valueOf(fieldName.toUpperCase());
-             } catch(IllegalArgumentException iae) {
-                 return false;
-             }
-         }
-         return true;   
-     }
+			return new ArrayList<String>(Arrays.asList(tokens));
+		} catch (IOException ioe) {
+			System.out.println(ioe.getMessage());
+		}
+
+		return null;
+	}
+
+	/**
+	 * checks field names are valids
+	 * 
+	 * @param fieldNames
+	 *            an ArrayList<String> of field names
+	 * @return true if all fields are valid, false otherwise
+	 * @author darren
+	 */
+	private static boolean fieldsAreValid(ArrayList<String> fieldNames) {
+		assert fieldNames != null;
+		for (String fieldName : fieldNames) {
+			try {
+				Field ret = Field.valueOf(fieldName.toUpperCase());
+			} catch (IllegalArgumentException iae) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
