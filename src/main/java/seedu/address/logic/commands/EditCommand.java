@@ -81,8 +81,6 @@ public class EditCommand extends Command {
 			    toModify.setStartDate(new DateTimeParser(editField[1]).extractStartDate());
 			    break;
 			case "end":
-			    toModify.setEndDate(new DateTimeParser(editField[1]).extractEndDate());
-			    break;
 			case "by":
 			    toModify.setEndDate(new DateTimeParser(editField[1]).extractEndDate());
 			    break;
