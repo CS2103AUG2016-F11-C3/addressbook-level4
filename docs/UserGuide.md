@@ -5,7 +5,7 @@
 <!-- need to wait on our refactoring for addressbook-level4 -->
 1. Ensure you have Java version `1.8.0_60` or later installed.
 2. Download the latest `sudowudo.jar` from the releases tab.
-3. (WIP)
+3. Run `sudowudo.jar`
 
 ## Features
 <!-- each individual command -->
