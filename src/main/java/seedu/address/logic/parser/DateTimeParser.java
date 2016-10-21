@@ -40,6 +40,9 @@ public class DateTimeParser {
 		if (DateTimeParser.parser == null) {
 			DateTimeParser.parser = new PrettyTimeParser();
 		}
+		if (DateTimeParser.prettytime == null) {
+			DateTimeParser.prettytime = new PrettyTime();
+		}
 
         // perform natty parsing
 		this.dategroups = DateTimeParser.parser.parseSyntax(input);
@@ -55,6 +58,10 @@ public class DateTimeParser {
 
         return changeDateToLocalDateTime(this.dates.get(0));
     }
+    
+    public String extractPrettyRelativeStartDate() {
+        return extractPrettyRelativeDate(0);
+    }
 
     public LocalDateTime extractEndDate() {
         assert this.dates != null;
@@ -64,6 +71,13 @@ public class DateTimeParser {
         }
 
         return changeDateToLocalDateTime(this.dates.get(1));
+    }
+
+    public String extractPrettyRelativeEndDate() {
+        if (this.dates.size() < 2) {
+            return extractPrettyRelativeStartDate();
+        }
+        return extractPrettyRelativeDate(1);
     }
 
     public boolean isRecurring() {
@@ -87,6 +101,31 @@ public class DateTimeParser {
         Instant instant = date.toInstant().truncatedTo(ChronoUnit.SECONDS); // strip milliseconds
         return LocalDateTime.ofInstant(instant,
                 ZoneId.systemDefault());
+    }
+
+    /**
+     * Helper method for determining a human-readable relative date
+     * from the date tokens in the input string
+     * 
+     * Note that this is dependent on the local system time, e.g.
+     * the output from java.util.Date()
+     * 
+     * Examples of pretty relative dates:
+     * (for future dates)
+     * "3 weeks from now", "2 days from now", "12 minutes from now",
+     * "moments from now"
+     * 
+     * (for past dates)
+     * "3 weeks ago", "2 days ago", "12 minutes ago",
+     * "moments ago"
+     * 
+     * @param index
+     * @return
+     * @author darren
+     */
+    private String extractPrettyRelativeDate(int index) {
+        assert this.dates != null;
+        return prettytime.format(this.dates.get(index));
     }
 
     public DateGroup getDateGroup(int index) {
