@@ -7,6 +7,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 
+import org.ocpsoft.prettytime.PrettyTime;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 import org.ocpsoft.prettytime.nlp.parse.DateGroup;
 
@@ -23,6 +24,9 @@ public class DateTimeParser {
     // careful of name collision with our own Parser object
 	// static so we only need to initialize it once
 	private static PrettyTimeParser parser;
+	
+	// prettytime formatter
+	private static PrettyTime prettytime;
 
     // result from parser
     private List<DateGroup> dategroups;
