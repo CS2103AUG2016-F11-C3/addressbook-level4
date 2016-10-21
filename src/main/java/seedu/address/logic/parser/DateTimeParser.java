@@ -59,6 +59,20 @@ public class DateTimeParser {
         return changeDateToLocalDateTime(this.dates.get(0));
     }
     
+    /**
+     * Extracts a pretty relative start date
+     * 
+     * Examples of pretty relative dates:
+     * (for future dates)
+     * "3 weeks from now", "2 days from now", "12 minutes from now",
+     * "moments from now"
+     * 
+     * (for past dates)
+     * "3 weeks ago", "2 days ago", "12 minutes ago",
+     * "moments ago"
+     * @return
+     * @author darren
+     */
     public String extractPrettyRelativeStartDate() {
         return extractPrettyRelativeDate(0);
     }
@@ -73,6 +87,20 @@ public class DateTimeParser {
         return changeDateToLocalDateTime(this.dates.get(1));
     }
 
+    /**
+     * Extracts a pretty relative start date
+     * 
+     * Examples of pretty relative dates:
+     * (for future dates)
+     * "3 weeks from now", "2 days from now", "12 minutes from now",
+     * "moments from now"
+     * 
+     * (for past dates)
+     * "3 weeks ago", "2 days ago", "12 minutes ago",
+     * "moments ago"
+     * @return
+     * @author darren
+     */
     public String extractPrettyRelativeEndDate() {
         if (this.dates.size() < 2) {
             return extractPrettyRelativeStartDate();
