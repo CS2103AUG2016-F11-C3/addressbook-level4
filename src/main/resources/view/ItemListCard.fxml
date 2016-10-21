@@ -23,7 +23,6 @@
                     </padding>
                     <children>
 	                    <HBox fx:id="tags">
-	                    
 	                    </HBox>
                         <HBox spacing="5" alignment="CENTER_LEFT">
                             <children>
@@ -33,6 +32,8 @@
                                 </HBox>
                             </children>
                         </HBox>
+	                    <Text fx:id="dates">
+	                    </Text>
                     </children>
                 </VBox>
             </children>

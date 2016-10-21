@@ -25,6 +25,8 @@ public class ItemCard extends UiPart implements Observer {
 	private Text type;
 	@FXML
 	private Text id;
+	@FXML
+	private Text dates;
 
 	private ReadOnlyItem item;
     private int displayedIndex;
@@ -47,6 +49,14 @@ public class ItemCard extends UiPart implements Observer {
 		tags.getChildren().addAll(this.getTypeLabel());
 		description.setText(this.item.getDescription().getFullDescription());
         id.setText(displayedIndex + ". ");
+		if (this.item.getStartDate() != null) { // is event, so it's __ to ___
+			dates.setText(this.item.getStartDate() + " to " + this.item.getEndDate());
+		} else if (this.item.getEndDate() != null) {
+			// has due date, so it's "by ___"
+			dates.setText("by " + this.item.getStartDate());
+		} else {
+			dates.setText("");
+		}
     }
 
     public HBox getLayout() {
