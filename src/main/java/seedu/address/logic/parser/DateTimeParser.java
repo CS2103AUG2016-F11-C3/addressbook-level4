@@ -120,7 +120,9 @@ public class DateTimeParser {
      * "moments ago"
      * 
      * @param index
+     *      index of target java.util.Date inside DateTimeParser's List<Date>
      * @return
+     *      pretty relative date
      * @author darren
      */
     private String extractPrettyRelativeDate(int index) {
