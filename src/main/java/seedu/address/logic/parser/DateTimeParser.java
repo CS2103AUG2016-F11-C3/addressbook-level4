@@ -79,6 +79,15 @@ public class DateTimeParser {
         return extractPrettyRelativeDate(0);
     }
 
+    /**
+     * Extracts a pretty start date
+     * @return
+     * @author darren
+     */
+    public String extractPrettyStartDate() {
+        return extractPrettyDate(0);
+    }
+
     public LocalDateTime extractEndDate() {
         assert this.dates != null;
 
@@ -90,7 +99,7 @@ public class DateTimeParser {
     }
 
     /**
-     * Extracts a pretty relative start date
+     * Extracts a pretty relative end date
      * 
      * Examples of pretty relative dates:
      * (for future dates)
@@ -108,6 +117,18 @@ public class DateTimeParser {
             return extractPrettyRelativeStartDate();
         }
         return extractPrettyRelativeDate(1);
+    }
+    
+    /**
+     * Extracts a pretty end date
+     * @return
+     * @author darren
+     */
+    public String extractPrettyEndDate() {
+        if (this.dates.size() < 2) {
+            return extractPrettyStartDate();
+        }
+        return extractPrettyDate(1);
     }
 
     public boolean isRecurring() {
@@ -179,7 +200,7 @@ public class DateTimeParser {
      * @return
      *      pretty date for this week
      */
-    private String extractThisWeekPrettyDate(int index) {
+    private String extractPrettyDate(int index) {
         assert this.dates != null;
         
         LocalDateTime ldt = changeDateToLocalDateTime(this.dates.get(index));
