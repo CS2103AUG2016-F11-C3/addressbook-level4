@@ -193,7 +193,7 @@ public class DateTimeParser {
             hour = hour%12;
         }
         
-        return day.toString() + ", " + hour + ":" + String.format("%02d", minute) + computeMeridian(hour);
+        return toTitleCase(day.toString()) + ", " + hour + ":" + String.format("%02d", minute) + computeMeridian(hour);
     }
     
     /**
@@ -209,11 +209,28 @@ public class DateTimeParser {
      *      meridian of the hour
      * @author darren
      */
-    private String computeMeridian(int hour) {
+    private static String computeMeridian(int hour) {
         if(hour > 12) {
             return "PM";
         }
         return "AM";
+    }
+    
+    /**
+     * Transforms a String into a title-cased string.
+     * 
+     * The first letter of the string will be uppercase
+     * while every letter after will be lowercase.
+     * 
+     * @param string
+     *      string to be transformed
+     * @return
+     *      s in title case
+     * @author darren
+     */
+    private static String toTitleCase(String string) {
+        return string.substring(0, 1).toUpperCase() +
+                   string.substring(1).toLowerCase();
     }
     
     public DateGroup getDateGroup(int index) {
