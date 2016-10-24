@@ -1,7 +1,9 @@
 package seedu.address.logic.parser;
 
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -157,7 +159,63 @@ public class DateTimeParser {
         assert this.dates != null;
         return prettytime.format(this.dates.get(index));
     }
-
+    
+    /**
+     * Helper method for determining a human-readable pretty date
+     * from date tokens in the input string
+     * 
+     * This is independent of local system time, although it is
+     * intended for dates that are upcoming in the next 7 days as
+     * only the day of the week is indicated instead of a date.
+     * 
+     * This method does NOT check if the input date is within the
+     * next 7 days.
+     * 
+     * Examples:
+     * "Monday, 6:30AM"
+     * "Saturday, 12:37PM"
+     * 
+     * @param index
+     * @return
+     *      pretty date for this week
+     */
+    private String extractThisWeekPrettyDate(int index) {
+        assert this.dates != null;
+        
+        LocalDateTime ldt = changeDateToLocalDateTime(this.dates.get(index));
+        
+        DayOfWeek day = ldt.getDayOfWeek();
+        int hour = ldt.getHour();
+        int minute = ldt.getMinute();
+        
+        // convert to 12h time from 24h
+        if(hour > 12) {
+            hour = hour%12;
+        }
+        
+        return day.toString() + ", " + hour + ":" + String.format("%02d", minute) + computeMeridian(hour);
+    }
+    
+    /**
+     * Returns the meridian of a given hour
+     * 
+     * Examples:
+     * Returns "PM" if given hour is 23 (11PM)
+     * Returns "AM" if given hour is 11 (11AM)
+     * 
+     * @param hour
+     *      integer hour in 24h format
+     * @return
+     *      meridian of the hour
+     * @author darren
+     */
+    private String computeMeridian(int hour) {
+        if(hour > 12) {
+            return "PM";
+        }
+        return "AM";
+    }
+    
     public DateGroup getDateGroup(int index) {
         return this.dategroups.get(index);
     }
