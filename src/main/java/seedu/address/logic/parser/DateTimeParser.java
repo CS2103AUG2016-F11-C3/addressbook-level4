@@ -73,32 +73,6 @@ public class DateTimeParser {
         return changeDateToLocalDateTime(this.dates.get(0));
     }
 
-    /**
-     * Extracts a pretty relative start date
-     * 
-     * Examples of pretty relative dates: (for future dates) "3 weeks from now",
-     * "2 days from now", "12 minutes from now", "moments from now"
-     * 
-     * (for past dates) "3 weeks ago", "2 days ago", "12 minutes ago", "moments
-     * ago"
-     * 
-     * @return
-     * @author darren
-     */
-    public String extractPrettyRelativeStartDateTime() {
-        return extractPrettyRelativeDateTime(0);
-    }
-
-    /**
-     * Extracts a pretty start date
-     * 
-     * @return
-     * @author darren
-     */
-    public String extractPrettyStartDateTime() {
-        return extractPrettyDateTime(0);
-    }
-
     public LocalDateTime extractEndDate() {
         assert this.dates != null;
 
@@ -107,38 +81,6 @@ public class DateTimeParser {
         }
 
         return changeDateToLocalDateTime(this.dates.get(1));
-    }
-
-    /**
-     * Extracts a pretty relative end date
-     * 
-     * Examples of pretty relative dates: (for future dates) "3 weeks from now",
-     * "2 days from now", "12 minutes from now", "moments from now"
-     * 
-     * (for past dates) "3 weeks ago", "2 days ago", "12 minutes ago", "moments
-     * ago"
-     * 
-     * @return
-     * @author darren
-     */
-    public String extractPrettyRelativeEndDateTime() {
-        if (this.dates.size() < 2) {
-            return extractPrettyRelativeStartDateTime();
-        }
-        return extractPrettyRelativeDateTime(1);
-    }
-
-    /**
-     * Extracts a pretty end date
-     * 
-     * @return
-     * @author darren
-     */
-    public String extractPrettyEndDateTime() {
-        if (this.dates.size() < 2) {
-            return extractPrettyStartDateTime();
-        }
-        return extractPrettyDateTime(1);
     }
 
     public boolean isRecurring() {
@@ -159,22 +101,26 @@ public class DateTimeParser {
      * @return
      * @author darren
      */
-    public String extractPrettyItemCardDateTime() {
-        assert this.dates != null;
+    public static String extractPrettyItemCardDateTime(LocalDateTime start, LocalDateTime end) {
+        if(start == null && end == null) {
+            return EMPTY_STRING;
+        }
         
-        if(this.dates.size() < 2) {
-            return extractPrettyStartDateTime();
+        if(start == null) {
+            return extractPrettyDateTime(end);
+        }
+        
+        if(end == null) {
+            return extractPrettyDateTime(start);
         }
         
         // is an event with a definite start and end datetime
-        LocalDateTime start = changeDateToLocalDateTime(this.dates.get(0));
-        LocalDateTime end = changeDateToLocalDateTime(this.dates.get(1));
         if(isSameDay(start, end)) {
-            return extractPrettyStartDateTime() + " - " + extractTwelveHourTime(end);
+            return extractPrettyDateTime(start) + " - " + extractTwelveHourTime(end);
         }
         
         // not same day
-        return extractPrettyDateTime(0) + " - " + extractPrettyDateTime(1);
+        return extractPrettyDateTime(start) + " - " + extractPrettyDateTime(end);
     }
     
     /**
@@ -223,9 +169,8 @@ public class DateTimeParser {
      * @return pretty relative date
      * @author darren
      */
-    private String extractPrettyRelativeDateTime(int index) {
-        assert this.dates != null;
-        return prettytime.format(this.dates.get(index));
+    public static String extractPrettyRelativeDateTime(LocalDateTime ldt) {
+        return null;
     }
 
     /**
@@ -238,11 +183,7 @@ public class DateTimeParser {
      * @param index
      * @return pretty date for this week
      */
-    private String extractPrettyDateTime(int index) {
-        assert this.dates != null;
-
-        LocalDateTime ldt = changeDateToLocalDateTime(this.dates.get(index));
-
+    public static String extractPrettyDateTime(LocalDateTime ldt) {
         // add relative prefix (this/next <day of week>) if applicable
         if(computeDaysTo(ldt) < 14) {
             // is within the next two weeks
