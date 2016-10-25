@@ -39,8 +39,8 @@ public class DateTimeParser {
     
     public static final String EMPTY_STRING = "";
 
-    public static final DateTimeFormatter ABRIDGED_DATE_FORMAT = DateTimeFormatter.ofPattern("dd LLLL");
-    public static final DateTimeFormatter EXPLICIT_DATE_FORMAT = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+    public static final DateTimeFormatter ABRIDGED_DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMM");
+    public static final DateTimeFormatter EXPLICIT_DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy");
 
     public DateTimeParser(String input) {
         assert input != null;
@@ -206,6 +206,7 @@ public class DateTimeParser {
         }
         
         String dayOfWeek = toTitleCase(ldt.getDayOfWeek().toString());
+        String dayOfWeekShort = dayOfWeek.substring(0, 3);
         String minute = String.format("%02d", ldt.getMinute());
 
         // add relative prefix (this/next <day of week>) if applicable
@@ -215,7 +216,13 @@ public class DateTimeParser {
         }
 
         // explicit date; no relative prefix
-        return ldt.toLocalDate().toString() + ", " + hour + ":"
+        String prettyDateTime;
+        if(computeDaysTo(ldt) < 365) {
+            prettyDateTime = ldt.toLocalDate().format(ABRIDGED_DATE_FORMAT);
+        } else {
+            prettyDateTime = ldt.toLocalDate().format(EXPLICIT_DATE_FORMAT);
+        }
+        return dayOfWeekShort + " " + prettyDateTime + ", " + hour + ":"
                 + minute + meridian;
     }
 
@@ -244,9 +251,9 @@ public class DateTimeParser {
      * @return number of days between now to future LocalDateTime
      * @author darren
      */
-    public static int computeDaysTo(LocalDateTime ldt) {
+    public static long computeDaysTo(LocalDateTime ldt) {
         assert ldt.isAfter(LocalDateTime.now());
-        return Period.between(LocalDate.now(), ldt.toLocalDate()).getDays();
+        return ChronoUnit.DAYS.between(LocalDate.now(), ldt.toLocalDate());
     }
 
     /**
