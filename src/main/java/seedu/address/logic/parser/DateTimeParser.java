@@ -182,6 +182,9 @@ public class DateTimeParser {
      * @author darren
      */
     public static String extractPrettyRelativeDateTime(LocalDateTime ldt) {
+        if(ldt == null) {
+            return EMPTY_STRING;
+        }
         return prettytime.format(changeLocalDateTimeToDate(ldt));
     }
 
