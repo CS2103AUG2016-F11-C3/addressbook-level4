@@ -151,7 +151,6 @@ public class ModelManager extends ComponentManager implements Model {
 
         @Override
         public boolean run(ReadOnlyItem item) {
-            System.out.println(item.getAsText());
             return searchKeyWords.stream()
                     .filter(keyword -> StringUtil.containsIgnoreCase(item.getAsText(), keyword))
                     .findAny()
