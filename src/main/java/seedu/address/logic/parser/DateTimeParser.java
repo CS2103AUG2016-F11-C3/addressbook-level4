@@ -151,6 +151,33 @@ public class DateTimeParser {
     }
     
     /**
+     * Makes the pretty datetime line for an Item's card on the UI.
+     * 
+     * The UI should only be calling this method for displaying datetime
+     * of event on the Item's card on the agenda pane.
+     * 
+     * @return
+     * @author darren
+     */
+    public String extractPrettyItemCardDateTime() {
+        assert this.dates != null;
+        
+        if(this.dates.size() < 2) {
+            return extractPrettyStartDateTime();
+        }
+        
+        // is an event with a definite start and end datetime
+        LocalDateTime start = changeDateToLocalDateTime(this.dates.get(0));
+        LocalDateTime end = changeDateToLocalDateTime(this.dates.get(1));
+        if(isSameDay(start, end)) {
+            return extractPrettyStartDateTime() + " - " + extractTwelveHourTime(end);
+        }
+        
+        // not same day
+        return extractPrettyDateTime(0) + " - " + extractPrettyDateTime(1);
+    }
+    
+    /**
      * Checks if two given java.time.LocalDateTime objects are
      * of the same day.
      * 
