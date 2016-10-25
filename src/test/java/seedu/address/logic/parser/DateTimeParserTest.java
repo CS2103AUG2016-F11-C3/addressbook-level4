@@ -6,6 +6,7 @@ import static org.junit.Assert.assertEquals;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -107,4 +108,37 @@ public class DateTimeParserTest {
         assertEquals(false, parser.isRecurring());
     }
     
+    private static ArrayList<LocalDateTime> generateWeeklyLDTs() {
+        LocalDateTime day = LocalDateTime.of(2016, 10, 17, 12, 0); // Monday
+        ArrayList<LocalDateTime> week = new ArrayList<LocalDateTime>();
+
+        week.add(day);
+        
+        for(int i = 0; i < 6; i++) {
+            day = day.plusDays(1);
+            week.add(day);
+        }
+        
+        return week;
+    }
+    
+    @Test
+    public void extractLongDayOfWeekTest() {
+        ArrayList<LocalDateTime> weekLDTs = generateWeeklyLDTs();
+        String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+        
+        for(int i = 0; i < 7; i++) {
+            assertEquals(daysOfWeek[i], DateTimeParser.extractLongDayOfWeek(weekLDTs.get(i)));
+        }
+    }
+    
+    @Test
+    public void extractShortDayOfWeekTest() {
+        ArrayList<LocalDateTime> weekLDTs = generateWeeklyLDTs();
+        String[] daysOfWeek = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+        
+        for(int i = 0; i < 7; i++) {
+            assertEquals(daysOfWeek[i], DateTimeParser.extractShortDayOfWeek(weekLDTs.get(i)));
+        }
+    }
 }
