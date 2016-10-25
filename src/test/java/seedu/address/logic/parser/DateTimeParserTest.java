@@ -155,4 +155,19 @@ public class DateTimeParserTest {
         String expected = "6:31PM";
         assertEquals(expected, DateTimeParser.extractTwelveHourTime(evening));
     }
+    
+    @Test
+    public void extractTwelveHourTimeTest_Midnight() {
+        LocalDateTime evening = LocalDateTime.of(2016, 11, 11, 0, 0);
+        String expected = "12:00AM";
+        assertEquals(expected, DateTimeParser.extractTwelveHourTime(evening));
+    }
+
+    @Test
+    public void extractTwelveHourTimeTest_Midday() {
+        LocalDateTime evening = LocalDateTime.of(2016, 11, 11, 12, 0);
+        String expected = "12:00PM";
+        assertEquals(expected, DateTimeParser.extractTwelveHourTime(evening));
+    }
+    
 }
