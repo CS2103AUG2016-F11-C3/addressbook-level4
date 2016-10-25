@@ -245,6 +245,24 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     }
     
     /**
+     * Gets the pretty explicit datetime for this Item's start datetime
+     * e.g. "This Monday, 7:30PM" or "Mon 27 Nov, 9:30AM"
+     * @return
+     */
+    public String extractPrettyStartDateTime() {
+        return DateTimeParser.extractPrettyDateTime(this.startDate);
+    }
+
+    /**
+     * Gets the pretty explicit datetime for this Item's end datetime
+     * e.g. "This Monday, 7:30PM" or "Mon 27 Nov, 9:30AM"
+     * @return
+     */
+    public String extractPrettyEndDateTime() {
+        return DateTimeParser.extractPrettyDateTime(this.endDate);
+    }
+    
+    /**
      * Gets the pretty relative datetime for this Item's start datetime
      * e.g. "3 weeks from now"
      * @return EMPTY_STRING if datetime is null
