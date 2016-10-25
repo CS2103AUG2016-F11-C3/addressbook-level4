@@ -143,8 +143,8 @@ Sometimes it is necessary to change the details of your event because life.
 
 ```bash
 # format
-for EVENT_ID edit FIELD_NAME:NEW_DETAIL
-for CONTEXT_ID edit FIELD_NAME:NEW_DETAIL
+edit EVENT_ID FIELD_NAME:NEW_DETAIL
+edit CONTEXT_ID FIELD_NAME:NEW_DETAIL
 ```
 Fields: [`FIELD_NAME`](#field-name), [`EVENT_ID`](#event-id), [`CONTEXT_ID`](#context-id), `NEW_DETAIL`
 
@@ -152,15 +152,15 @@ You can change multiple fields for the same event at the same time by separating
 
 ```bash
 # examples
-for 2412 edit start :today 1600
-for 10 edit by: 29 October 5pm
-for 4 edit end:1/2/2016 10:51am # edits the forth item currently listed
-for 5 edit period : 11 nov 4:30pm to 6:30pm
+edit 2412 start :today 1600
+edit 10 by: 29 October 5pm
+edit 4 end:1/2/2016 10:51am # edits the forth item currently listed
+edit 5 period : 11 nov 4:30pm to 6:30pm
 
 # change multiple fields at the same time
 # both of these commands are equivalent
-for 1 edit start: this friday 1600, end:this friday 1645
-for 1 edit period: this friday 1600 to 1645
+edit 1 start: this friday 1600, end:this friday 1645
+edit 1 period: this friday 1600 to 1645
 ```
 
 #### Marking as Complete
