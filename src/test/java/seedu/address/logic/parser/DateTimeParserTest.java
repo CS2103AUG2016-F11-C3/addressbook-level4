@@ -170,4 +170,18 @@ public class DateTimeParserTest {
         assertEquals(expected, DateTimeParser.extractTwelveHourTime(evening));
     }
     
+    @Test
+    public void isSameDayTest_Positive() {
+        LocalDateTime ldt1 = LocalDateTime.of(2016, 11, 11, 11, 11);
+        LocalDateTime ldt2 = LocalDateTime.of(2016, 11, 11, 19, 46);
+        assertEquals(true, DateTimeParser.isSameDay(ldt1, ldt2));
+    }
+
+    @Test
+    public void isSameDayTest_Negative() {
+        LocalDateTime ldt1 = LocalDateTime.of(2016, 11, 11, 11, 11);
+        LocalDateTime ldt2 = LocalDateTime.of(2016, 11, 15, 19, 46);
+        assertEquals(false, DateTimeParser.isSameDay(ldt1, ldt2));
+    }
+    
 }
