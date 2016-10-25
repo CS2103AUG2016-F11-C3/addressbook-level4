@@ -279,6 +279,9 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
      * @author darren
      */
     public String extractPrettyRelativeEndDateTime() {
+        if(this.endDate == null) {
+            return extractPrettyRelativeStartDateTime();
+        }
         return DateTimeParser.extractPrettyRelativeDateTime(this.endDate);
     }
 }
