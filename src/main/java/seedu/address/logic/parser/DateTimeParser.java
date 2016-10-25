@@ -35,6 +35,8 @@ public class DateTimeParser {
     // result from parser
     private List<DateGroup> dategroups;
     private List<Date> dates;
+    
+    public static final String EMPTY_STRING = "";
 
     public DateTimeParser(String input) {
         assert input != null;
@@ -182,13 +184,7 @@ public class DateTimeParser {
      * Helper method for determining a human-readable pretty date from date
      * tokens in the input string
      * 
-     * This is independent of local system time, although it is intended for
-     * dates that are upcoming in the next 7 days as only the day of the week is
-     * indicated instead of a date.
-     * 
-     * This method does NOT check if the input date is within the next 7 days.
-     * 
-     * Examples: "Monday, 6:30AM" "Saturday, 12:37PM"
+     * Examples: "This Monday, 6:30AM", "Next Saturday, 12:37PM"
      * 
      * @param index
      * @return pretty date for this week
@@ -198,19 +194,43 @@ public class DateTimeParser {
 
         LocalDateTime ldt = changeDateToLocalDateTime(this.dates.get(index));
 
-        DayOfWeek day = ldt.getDayOfWeek();
-        int hour = ldt.getHour();
-        int minute = ldt.getMinute();
-
         // convert to 12h time from 24h
+        int hour = ldt.getHour();
+        String meridian = computeMeridian(hour);
         if (hour > 12) {
             hour = hour % 12;
         }
+        
+        String dayOfWeek = toTitleCase(ldt.getDayOfWeek().toString());
+        String minute = String.format("%02d", ldt.getMinute());
 
-        return toTitleCase(day.toString()) + ", " + hour + ":"
-                + String.format("%02d", minute) + computeMeridian(hour);
+        // add relative prefix (this/next <day of week>) if applicable
+        if(computeDaysTo(ldt) < 14) {
+            return makeRelativePrefix(ldt) + dayOfWeek + ", " + hour + ":"
+                    + minute + meridian;
+        }
+
+        // explicit date; no relative prefix
+        return ldt.toLocalDate().toString() + ", " + hour + ":"
+                + minute + meridian;
     }
 
+    /**
+     * Determine the appropriate relative prefix to use for reference to a DayOfWeek enum
+     * 
+     * @param ldt
+     * @return
+     * @author darren
+     */
+    private static String makeRelativePrefix(LocalDateTime ldt) {
+        if (computeDaysTo(ldt) < 7) {
+            return "This ";
+        } else if (computeDaysTo(ldt) < 14) {
+            return "Next ";
+        }
+        return EMPTY_STRING;
+    }
+    
     /**
      * Computes number of days between current system time to the given
      * java.time.LocalDateTime
