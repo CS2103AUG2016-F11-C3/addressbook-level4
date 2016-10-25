@@ -5,11 +5,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.logic.commands.*;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
+import seedu.address.commons.exceptions.DataConversionException;
+import seedu.address.commons.exceptions.DuplicateDataException;
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.events.model.TaskBookChangedEvent;
 import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
@@ -21,6 +25,7 @@ import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
+import seedu.address.model.tag.UniqueTagList.DuplicateTagException;
 import seedu.address.storage.StorageManager;
 import seedu.address.testutil.ItemBuilder;
 
@@ -41,6 +46,10 @@ public class LogicManagerTest {
 	 */
 	@Rule
 	public TemporaryFolder saveFolder = new TemporaryFolder();
+	
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
 
 	private Model model;
 	private Logic logic;
@@ -177,6 +186,85 @@ public class LogicManagerTest {
 		assertCommandBehavior(helper.generateAddCommand(toBeAdded),
 				String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded), expectedAB, expectedAB.getItemList());
 	}
+    
+    @Test
+    //@@author A0131560U
+    public void setTags_duplicateTags_duplicateDeleted() throws Exception{
+        UniqueTagList tags;
+        
+        thrown.expect(DuplicateDataException.class);
+        tags = new UniqueTagList(new Tag("important"),
+                                     new Tag("incredible"),
+                                     new Tag("important"),
+                                     new Tag("priority1"));
+            TestDataHelper helper = new TestDataHelper();
+            Item toBeAdded = helper.workingItemWithTagList(tags);
+            TaskBook expectedTB = new TaskBook();
+            expectedTB.addItem(toBeAdded);
+
+            assertCommandBehavior(helper.generateAddCommand(toBeAdded),
+                    String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded), expectedTB, expectedTB.getItemList());
+
+    }
+    
+    @Test
+    //@@author A0131560U
+    public void setTags_multipleValidTags_parsedCorrectly(){
+        try {
+            UniqueTagList tags;
+            tags = new UniqueTagList(new Tag("important"),
+                                     new Tag("incredible"),
+                                     new Tag("mustfinish"),
+                                     new Tag("priority1"));
+            TestDataHelper helper = new TestDataHelper();
+            Item toBeAdded = helper.workingItemWithTagList(tags);
+            TaskBook expectedTB = new TaskBook();
+            expectedTB.addItem(toBeAdded);
+
+            assertCommandBehavior(helper.generateAddCommand(toBeAdded),
+                    String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded), expectedTB, expectedTB.getItemList());
+        } catch (Exception e) {
+            e.printStackTrace();
+            assert false : "not possible";
+        }
+
+
+    }
+    
+    @Test
+    //@@author A0131560U
+    public void setTags_tagNotAlphaNum_errorMessageShown() throws Exception{
+        
+        thrown.expect(IllegalValueException.class);
+        UniqueTagList tags;
+        tags = new UniqueTagList(new Tag("hello!"));
+        TestDataHelper helper = new TestDataHelper();
+        Item toBeAdded = helper.workingItemWithTagList(tags);
+        String expectedMessage = String.format(Tag.MESSAGE_TAG_CONSTRAINTS);
+
+        assertCommandBehavior(helper.generateAddCommand(toBeAdded), expectedMessage);
+    }
+    
+    @Test
+    //@@author A0131560U
+    public void setTags_tagNotMarkedWithHashtag_nothingHappens(){
+        try {
+            UniqueTagList tags;
+            tags = new UniqueTagList();
+            TestDataHelper helper = new TestDataHelper();
+            Item toBeAdded = helper.workingItemWithTagList(tags);
+            TaskBook expectedTB = new TaskBook();
+            expectedTB.addItem(toBeAdded);
+
+            assertCommandBehavior("add \"Working item\" from October 10 10:10am to December 12 12:12pm tag tag tags",
+                    String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded), expectedTB, expectedTB.getItemList());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            assert false : "not possible";
+        }
+
+    }
 
 	@Test
 	public void execute_list_showsAllItems() throws Exception {
@@ -343,7 +431,6 @@ public class LogicManagerTest {
     @Test
     public void execute_done_marksCorrectItem() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        TaskBook testTB = helper.generateTaskBook(2);
         Item target = helper.generateItem(1);
         Item notTarget1 = helper.generateItem(2);
         Item notTarget2 = helper.generateItem(3);
@@ -380,22 +467,31 @@ public class LogicManagerTest {
 	 */
 	class TestDataHelper {
 
-		Item aLongEvent() throws Exception {
-			Description description = new Description("A long event");
-			LocalDateTime startDate = LocalDateTime.of(2016, 10, 10, 10, 10);
-			LocalDateTime endDate = LocalDateTime.of(2016, 12, 12, 12, 12);
-			return new Item(description, startDate, endDate);
-		}
+        Item aLongEvent() throws Exception {
+            Description description = new Description("A long event");
+            LocalDateTime startDate = LocalDateTime.of(2016, 10, 10, 10, 10);
+            LocalDateTime endDate = LocalDateTime.of(2016, 12, 12, 12, 12);
+            return new Item(description, startDate, endDate, new UniqueTagList());
+        }
+
+        Item workingItemWithTagList(UniqueTagList tags) throws Exception {
+            Description description = new Description("Working item");
+            LocalDateTime startDate = LocalDateTime.of(2016, 10, 10, 10, 10);
+            LocalDateTime endDate = LocalDateTime.of(2016, 10, 12, 12, 12);
+            return new Item(description, startDate, endDate, tags);
+        }
+
+
 
 		Item aFloatingTask() throws Exception {
 			Description description = new Description("A floating task");
-			return new Item(description, null, null);
+			return new Item(description, null, null, new UniqueTagList());
 		}
 
 		Item aDeadLine() throws Exception {
 			Description description = new Description("A deadline");
 			LocalDateTime endDate = LocalDateTime.of(2016, 12, 12, 12, 12);
-			return new Item(description, null, endDate);
+			return new Item(description, null, endDate, new UniqueTagList());
 		}
 		
 		/**
@@ -408,9 +504,9 @@ public class LogicManagerTest {
 		 *            used to generate the item data field values
 		 */
 		Item generateItem(int seed) throws Exception {
-			return new Item(new Description("Item " + seed)
-			// new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag"
-			// + Math.abs(seed + 1)))
+			return new Item(new Description("Item " + seed),
+			        new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag"
+			        + Math.abs(seed + 1)))
 			);
 		}
 
@@ -420,6 +516,9 @@ public class LogicManagerTest {
 			cmd.append("add ");
 			cmd.append("\"" + item.getDescription().toString() + "\"");
 			cmd.append("from " + item.getStartDate().toString() + " to " + item.getEndDate().toString());
+			for (Tag tag : item.getTags()){
+			    cmd.append(tag.toString());
+			}
 			return cmd.toString();
 		}
 
@@ -499,8 +598,8 @@ public class LogicManagerTest {
 		 * dummy values.
 		 */
 		Item generateItemWithName(String desc) throws Exception {
-			return new Item(new Description(desc)
-			// new UniqueTagList(new Tag("tag"))
+			return new Item(new Description(desc),
+			new UniqueTagList(new Tag("tag"))
 			);
 		}
 	}
