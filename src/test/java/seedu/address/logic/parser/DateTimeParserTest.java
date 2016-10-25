@@ -72,6 +72,13 @@ public class DateTimeParserTest {
         assertEquals(deadline, parser.extractEndDate());
     }
     
+    public static Date makeDate(int year, int month, int day, int hour, int minute) {
+        Calendar cal = Calendar.getInstance();
+        cal.clear();
+        cal.set(year, month-1, day, hour, minute); //month-1 because Calendar treats JANUARY as 0
+        return cal.getTime();
+    }
+
     @Test
     public void changeDateToLocalDateTimeTest() {
         int year = 2016;
@@ -80,10 +87,7 @@ public class DateTimeParserTest {
         int hour = 17;
         int minute = 0;
 
-        Calendar cal = Calendar.getInstance();
-        cal.clear();
-        cal.set(year, month-1, day, hour, minute); //month-1 because Calendar treats JANUARY as 0
-        Date date = cal.getTime();
+        Date date = makeDate(year, month, day, hour, minute);
 
         LocalDateTime answer = LocalDateTime.of(LocalDate.of(year, month, day), LocalTime.of(hour, minute));
         
@@ -98,10 +102,7 @@ public class DateTimeParserTest {
         int hour = 17;
         int minute = 0;
 
-        Calendar cal = Calendar.getInstance();
-        cal.clear();
-        cal.set(year, month-1, day, hour, minute); //month-1 because Calendar treats JANUARY as 0
-        Date date = cal.getTime();
+        Date date = makeDate(year, month, day, hour, minute);
 
         LocalDateTime ldt = LocalDateTime.of(LocalDate.of(year, month, day), LocalTime.of(hour, minute));
         
