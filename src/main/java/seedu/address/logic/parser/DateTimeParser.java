@@ -39,9 +39,12 @@ public class DateTimeParser {
     
     public static final String EMPTY_STRING = "";
 
+    // DateTime formatting patterns
     public static final DateTimeFormatter ABRIDGED_DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMM");
     public static final DateTimeFormatter EXPLICIT_DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy");
     public static final DateTimeFormatter TWELVE_HOUR_TIME = DateTimeFormatter.ofPattern("h:mma");
+    public static final DateTimeFormatter FULL_DAYOFWEEK = DateTimeFormatter.ofPattern("EEEE");
+    public static final DateTimeFormatter SHORT_DAYOFWEEK = DateTimeFormatter.ofPattern("EEE");
 
     public DateTimeParser(String input) {
         assert input != null;
@@ -213,13 +216,10 @@ public class DateTimeParser {
 
         LocalDateTime ldt = changeDateToLocalDateTime(this.dates.get(index));
 
-        String dayOfWeek = toTitleCase(ldt.getDayOfWeek().toString());
-        String dayOfWeekShort = dayOfWeek.substring(0, 3);
-
         // add relative prefix (this/next <day of week>) if applicable
         if(computeDaysTo(ldt) < 14) {
             // is within the next two weeks
-            return makeRelativePrefix(ldt) + dayOfWeek + ", " + extractTwelveHourTime(ldt);
+            return makeRelativePrefix(ldt) + extractDayOfWeek(ldt, true) + ", " + extractTwelveHourTime(ldt);
         }
 
         // explicit date; no relative prefix
@@ -231,7 +231,7 @@ public class DateTimeParser {
             // different years
             prettyDate = ldt.toLocalDate().format(EXPLICIT_DATE_FORMAT);
         }
-        return dayOfWeekShort + " " + prettyDate + ", " + extractTwelveHourTime(ldt);
+        return extractDayOfWeek(ldt, false) + " " + prettyDate + ", " + extractTwelveHourTime(ldt);
     }
 
     /**
@@ -244,6 +244,24 @@ public class DateTimeParser {
      */
     public static String extractTwelveHourTime(LocalDateTime ldt) {
         return ldt.toLocalTime().format(TWELVE_HOUR_TIME);
+    }
+    
+    /**
+     * Extracts the day-of-week component of a java.time.LocalDateTime object
+     * and returns it in long or short format (Monday or Mon)
+     * 
+     * @param ldt
+     * @param isLongFormat
+     *      result is long format?
+     * @return
+     *      day-of-week
+     * @author darren
+     */
+    public static String extractDayOfWeek(LocalDateTime ldt, boolean isLongFormat) {
+        if(isLongFormat) {
+            return ldt.toLocalDate().format(FULL_DAYOFWEEK);
+        }
+        return ldt.toLocalDate().format(SHORT_DAYOFWEEK);
     }
     
     /**
@@ -274,22 +292,6 @@ public class DateTimeParser {
     public static long computeDaysTo(LocalDateTime ldt) {
         assert ldt.isAfter(LocalDateTime.now());
         return ChronoUnit.DAYS.between(LocalDate.now(), ldt.toLocalDate());
-    }
-
-    /**
-     * Transforms a String into a title-cased string.
-     * 
-     * The first letter of the string will be uppercase while every letter after
-     * will be lowercase.
-     * 
-     * @param string
-     *            string to be transformed
-     * @return s in title case
-     * @author darren
-     */
-    public static String toTitleCase(String string) {
-        return string.substring(0, 1).toUpperCase()
-                + string.substring(1).toLowerCase();
     }
 
     public DateGroup getDateGroup(int index) {
