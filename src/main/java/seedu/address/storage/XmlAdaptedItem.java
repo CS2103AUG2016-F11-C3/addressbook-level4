@@ -3,9 +3,14 @@ package seedu.address.storage;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.parser.DateTimeParser;
 import seedu.address.model.item.*;
+import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.UniqueTagList;
+
 import javax.xml.bind.annotation.XmlElement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -22,6 +27,9 @@ public class XmlAdaptedItem {
     @XmlElement(required = true)
     private String endDate;
     
+    @XmlElement
+    private List<XmlAdaptedTag> tagged = new ArrayList<>();
+    
     
     /**
      * No-arg constructor for JAXB use.
@@ -30,7 +38,7 @@ public class XmlAdaptedItem {
 
 
     /**
-     * Converts a given Person into this class for JAXB use.
+     * Converts a given Item into this class for JAXB use.
      *
      * @param source future changes to this will not affect the created XmlAdaptedPerson
      */
@@ -51,6 +59,12 @@ public class XmlAdaptedItem {
         } else {
         	endDate = source.getEndDate().format(formatter);
         }
+            
+        tagged = new ArrayList<>();
+        for (Tag tag : source.getTags()) {
+            tagged.add(new XmlAdaptedTag(tag));
+        }
+
     }
 
     /**
@@ -62,6 +76,8 @@ public class XmlAdaptedItem {
         final Description description = new Description(this.description);
         LocalDateTime start;
         LocalDateTime end;
+        UniqueTagList tags;
+        
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         if (this.startDate.equals("")) {
         	start = null;
@@ -73,6 +89,13 @@ public class XmlAdaptedItem {
         } else {
         	end = LocalDateTime.parse(endDate, formatter);
         }
-        return new Item(description, start, end);
+        final List<Tag> itemTags = new ArrayList<>();
+        for (XmlAdaptedTag tag : tagged) {
+            itemTags.add(tag.toModelType());
+        }
+        
+        tags = new UniqueTagList(itemTags);
+
+        return new Item(description, start, end, tags);
     }
 }
