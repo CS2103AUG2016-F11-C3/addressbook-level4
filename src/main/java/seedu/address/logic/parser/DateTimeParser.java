@@ -145,6 +145,20 @@ public class DateTimeParser {
         return changeDateToLocalDateTime(
                 this.dategroups.get(0).getRecursUntil());
     }
+    
+    
+    /**
+     * Checks if two given java.time.LocalDateTime objects are
+     * of the same day.
+     * 
+     * @param ldt1
+     * @param ldt2
+     * @return true if they are both the same day, false otherwise
+     * @author darren
+     */
+    public static boolean isSameDay(LocalDateTime ldt1, LocalDateTime ldt2) {
+        return ldt1.toLocalDate().equals(ldt2.toLocalDate());
+    }
 
     /**
      * helper method for casting java.util.Date to java.time.LocalDateTime
@@ -188,7 +202,8 @@ public class DateTimeParser {
      * Helper method for determining a human-readable pretty date from date
      * tokens in the input string
      * 
-     * Examples: "This Monday, 6:30AM", "Next Saturday, 12:37PM"
+     * Examples: "This Monday, 6:30AM", "Next Saturday, 12:37PM",
+     * "Mon 27 November, 9:30PM"
      * 
      * @param index
      * @return pretty date for this week
