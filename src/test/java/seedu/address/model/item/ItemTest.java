@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import org.junit.Test;
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.tag.UniqueTagList;
 
 public class ItemTest {
 
@@ -20,8 +21,8 @@ public class ItemTest {
 	        Description dogWalk = new Description("walk the dog");
 	        Description snortCrack = new Description("snort cocaine");
 	        
-	        Item dog = new Item(dogWalk, elevenNov, twelveNov);
-	        Item crack = new Item(snortCrack, null, twelveNov);
+	        Item dog = new Item(dogWalk, elevenNov, twelveNov, new UniqueTagList());
+	        Item crack = new Item(snortCrack, null, twelveNov, new UniqueTagList());
 	        
 	        assertEquals(-1, dog.compareTo(crack));
 	    } catch(IllegalValueException ive) {
@@ -35,7 +36,7 @@ public class ItemTest {
 	    try {
 	        Description snortCrack = new Description("snort cocaine");
 	        
-	        Item crack = new Item(snortCrack, null, twelveNov);
+	        Item crack = new Item(snortCrack, null, twelveNov, new UniqueTagList());
 	        
 	        assertEquals(0, crack.compareTo(crack));
 	    } catch(IllegalValueException ive) {
@@ -50,8 +51,8 @@ public class ItemTest {
 	        Description dogWalk = new Description("walk the dog");
 	        Description snortCrack = new Description("snort cocaine");
 	        
-	        Item dog = new Item(dogWalk, elevenNov, twelveNov);
-	        Item crack = new Item(snortCrack, null, twelveNov);
+	        Item dog = new Item(dogWalk, elevenNov, twelveNov, new UniqueTagList());
+	        Item crack = new Item(snortCrack, null, twelveNov, new UniqueTagList());
 	        
 	        assertEquals(1, crack.compareTo(dog));
 	    } catch(IllegalValueException ive) {
@@ -66,8 +67,8 @@ public class ItemTest {
 	        Description dogWalk = new Description("walk the dog");
 	        Description snortCrack = new Description("snort cocaine");
 	        
-	        Item dog = new Item(dogWalk, null, null);
-	        Item crack = new Item(snortCrack, null, null);
+	        Item dog = new Item(dogWalk, null, null, new UniqueTagList());
+	        Item crack = new Item(snortCrack, null, null, new UniqueTagList());
 	        
 	        int result = crack.compareTo(dog)/(-1*crack.compareTo(dog));
 	        
@@ -77,4 +78,5 @@ public class ItemTest {
 	        System.out.println(ive.getMessage());
 	    }
     }
+
 }
