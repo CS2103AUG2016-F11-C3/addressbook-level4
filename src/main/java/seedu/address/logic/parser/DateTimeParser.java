@@ -81,8 +81,8 @@ public class DateTimeParser {
      * @return
      * @author darren
      */
-    public String extractPrettyRelativeStartDate() {
-        return extractPrettyRelativeDate(0);
+    public String extractPrettyRelativeStartDateTime() {
+        return extractPrettyRelativeDateTime(0);
     }
 
     /**
@@ -91,8 +91,8 @@ public class DateTimeParser {
      * @return
      * @author darren
      */
-    public String extractPrettyStartDate() {
-        return extractPrettyDate(0);
+    public String extractPrettyStartDateTime() {
+        return extractPrettyDateTime(0);
     }
 
     public LocalDateTime extractEndDate() {
@@ -117,11 +117,11 @@ public class DateTimeParser {
      * @return
      * @author darren
      */
-    public String extractPrettyRelativeEndDate() {
+    public String extractPrettyRelativeEndDateTime() {
         if (this.dates.size() < 2) {
-            return extractPrettyRelativeStartDate();
+            return extractPrettyRelativeStartDateTime();
         }
-        return extractPrettyRelativeDate(1);
+        return extractPrettyRelativeDateTime(1);
     }
 
     /**
@@ -130,11 +130,11 @@ public class DateTimeParser {
      * @return
      * @author darren
      */
-    public String extractPrettyEndDate() {
+    public String extractPrettyEndDateTime() {
         if (this.dates.size() < 2) {
-            return extractPrettyStartDate();
+            return extractPrettyStartDateTime();
         }
-        return extractPrettyDate(1);
+        return extractPrettyDateTime(1);
     }
 
     public boolean isRecurring() {
@@ -145,7 +145,6 @@ public class DateTimeParser {
         return changeDateToLocalDateTime(
                 this.dategroups.get(0).getRecursUntil());
     }
-    
     
     /**
      * Checks if two given java.time.LocalDateTime objects are
@@ -193,7 +192,7 @@ public class DateTimeParser {
      * @return pretty relative date
      * @author darren
      */
-    private String extractPrettyRelativeDate(int index) {
+    private String extractPrettyRelativeDateTime(int index) {
         assert this.dates != null;
         return prettytime.format(this.dates.get(index));
     }
@@ -208,7 +207,7 @@ public class DateTimeParser {
      * @param index
      * @return pretty date for this week
      */
-    private String extractPrettyDate(int index) {
+    private String extractPrettyDateTime(int index) {
         assert this.dates != null;
 
         LocalDateTime ldt = changeDateToLocalDateTime(this.dates.get(index));
