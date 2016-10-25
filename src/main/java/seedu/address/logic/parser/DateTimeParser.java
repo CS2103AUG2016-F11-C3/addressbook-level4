@@ -43,9 +43,9 @@ public class DateTimeParser {
     public static final DateTimeFormatter ABRIDGED_DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMM");
     public static final DateTimeFormatter EXPLICIT_DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy");
     public static final DateTimeFormatter TWELVE_HOUR_TIME = DateTimeFormatter.ofPattern("h:mma");
-    public static final DateTimeFormatter FULL_DAYOFWEEK = DateTimeFormatter.ofPattern("EEEE");
+    public static final DateTimeFormatter LONG_DAYOFWEEK = DateTimeFormatter.ofPattern("EEEE");
     public static final DateTimeFormatter SHORT_DAYOFWEEK = DateTimeFormatter.ofPattern("EEE");
-
+    
     public DateTimeParser(String input) {
         assert input != null;
         assert input.isEmpty() != true;
@@ -219,7 +219,7 @@ public class DateTimeParser {
         // add relative prefix (this/next <day of week>) if applicable
         if(computeDaysTo(ldt) < 14) {
             // is within the next two weeks
-            return makeRelativePrefix(ldt) + extractDayOfWeek(ldt, true) + ", " + extractTwelveHourTime(ldt);
+            return makeRelativePrefix(ldt) + extractLongDayOfWeek(ldt) + ", " + extractTwelveHourTime(ldt);
         }
 
         // explicit date; no relative prefix
@@ -231,7 +231,7 @@ public class DateTimeParser {
             // different years
             prettyDate = ldt.toLocalDate().format(EXPLICIT_DATE_FORMAT);
         }
-        return extractDayOfWeek(ldt, false) + " " + prettyDate + ", " + extractTwelveHourTime(ldt);
+        return extractShortDayOfWeek(ldt) + " " + prettyDate + ", " + extractTwelveHourTime(ldt);
     }
 
     /**
@@ -245,7 +245,7 @@ public class DateTimeParser {
     public static String extractTwelveHourTime(LocalDateTime ldt) {
         return ldt.toLocalTime().format(TWELVE_HOUR_TIME);
     }
-    
+
     /**
      * Extracts the day-of-week component of a java.time.LocalDateTime object
      * and returns it in long or short format (Monday or Mon)
@@ -257,11 +257,19 @@ public class DateTimeParser {
      *      day-of-week
      * @author darren
      */
-    public static String extractDayOfWeek(LocalDateTime ldt, boolean isLongFormat) {
+    private static String extractDayOfWeek(LocalDateTime ldt, boolean isLongFormat) {
         if(isLongFormat) {
-            return ldt.toLocalDate().format(FULL_DAYOFWEEK);
+            return ldt.toLocalDate().format(LONG_DAYOFWEEK);
         }
         return ldt.toLocalDate().format(SHORT_DAYOFWEEK);
+    }
+
+    public static String extractLongDayOfWeek(LocalDateTime ldt) {
+        return extractDayOfWeek(ldt, true);
+    }
+
+    public static String extractShortDayOfWeek(LocalDateTime ldt) {
+        return extractDayOfWeek(ldt, false);
     }
     
     /**
