@@ -41,6 +41,7 @@ public class DateTimeParser {
 
     public static final DateTimeFormatter ABRIDGED_DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMM");
     public static final DateTimeFormatter EXPLICIT_DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy");
+    public static final DateTimeFormatter TWELVE_HOUR_TIME = DateTimeFormatter.ofPattern("h:mma");
 
     public DateTimeParser(String input) {
         assert input != null;
@@ -212,21 +213,12 @@ public class DateTimeParser {
 
         LocalDateTime ldt = changeDateToLocalDateTime(this.dates.get(index));
 
-        // convert to 12h time from 24h
-        int hour = ldt.getHour();
-        String meridian = computeMeridian(hour);
-        if (hour > 12) {
-            hour = hour % 12;
-        }
-        
         String dayOfWeek = toTitleCase(ldt.getDayOfWeek().toString());
         String dayOfWeekShort = dayOfWeek.substring(0, 3);
-        String minute = String.format("%02d", ldt.getMinute());
 
         // add relative prefix (this/next <day of week>) if applicable
         if(computeDaysTo(ldt) < 14) {
-            return makeRelativePrefix(ldt) + dayOfWeek + ", " + hour + ":"
-                    + minute + meridian;
+            return makeRelativePrefix(ldt) + dayOfWeek + ", " + extractTwelveHourTime(ldt);
         }
 
         // explicit date; no relative prefix
@@ -236,10 +228,21 @@ public class DateTimeParser {
         } else {
             prettyDateTime = ldt.toLocalDate().format(EXPLICIT_DATE_FORMAT);
         }
-        return dayOfWeekShort + " " + prettyDateTime + ", " + hour + ":"
-                + minute + meridian;
+        return dayOfWeekShort + " " + prettyDateTime + ", " + extractTwelveHourTime(ldt);
     }
 
+    /**
+     * Extracts the time component of a java.time.LocalDateTime object
+     * and returns it in 12-hour format.
+     * 
+     * @param ldt
+     * @return
+     * @author darren
+     */
+    public static String extractTwelveHourTime(LocalDateTime ldt) {
+        return ldt.toLocalTime().format(TWELVE_HOUR_TIME);
+    }
+    
     /**
      * Determine the appropriate relative prefix to use for reference to a DayOfWeek enum
      * 
@@ -268,24 +271,6 @@ public class DateTimeParser {
     public static long computeDaysTo(LocalDateTime ldt) {
         assert ldt.isAfter(LocalDateTime.now());
         return ChronoUnit.DAYS.between(LocalDate.now(), ldt.toLocalDate());
-    }
-
-    /**
-     * Returns the meridian of a given hour
-     * 
-     * Examples: Returns "PM" if given hour is 23 (11PM) Returns "AM" if given
-     * hour is 11 (11AM)
-     * 
-     * @param hour
-     *            integer hour in 24h format
-     * @return meridian of the hour
-     * @author darren
-     */
-    public static String computeMeridian(int hour) {
-        if (hour > 12) {
-            return "PM";
-        }
-        return "AM";
     }
 
     /**
