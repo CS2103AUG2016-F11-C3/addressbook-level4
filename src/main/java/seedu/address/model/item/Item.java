@@ -7,6 +7,7 @@ import java.util.Observable;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.CollectionUtil;
+import seedu.address.logic.parser.DateTimeParser;
 import seedu.address.model.tag.UniqueTagList;
 
 /**
@@ -230,5 +231,36 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         }
         
         return checkee;
+    }
+    
+    /**
+     * Builds a pretty datetime line for this Item's card on the UI.
+     * 
+     * Nulls are handled by DateTimeParser.extractPrettyItemCardDateTime
+     * @return
+     * @author darren
+     */
+    public String extractPrettyItemCardDateTime() {
+        return DateTimeParser.extractPrettyItemCardDateTime(this.startDate, this.endDate);
+    }
+    
+    /**
+     * Gets the pretty relative datetime for this Item's start datetime
+     * e.g. "3 weeks from now"
+     * @return EMPTY_STRING if datetime is null
+     * @author darren
+     */
+    public String extractPrettyRelativeStartDateTime() {
+        return DateTimeParser.extractPrettyRelativeDateTime(this.startDate);
+    }
+
+    /**
+     * Gets the pretty relative datetime for this Item's end datetime
+     * e.g. "3 weeks from now"
+     * @return EMPTY_STRING if datetime is null
+     * @author darren
+     */
+    public String extractPrettyRelativeEndDateTime() {
+        return DateTimeParser.extractPrettyRelativeDateTime(this.endDate);
     }
 }
