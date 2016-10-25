@@ -236,7 +236,7 @@ public class DateTimeParser {
      * @return meridian of the hour
      * @author darren
      */
-    private static String computeMeridian(int hour) {
+    public static String computeMeridian(int hour) {
         if (hour > 12) {
             return "PM";
         }
@@ -254,7 +254,7 @@ public class DateTimeParser {
      * @return s in title case
      * @author darren
      */
-    private static String toTitleCase(String string) {
+    public static String toTitleCase(String string) {
         return string.substring(0, 1).toUpperCase()
                 + string.substring(1).toLowerCase();
     }
