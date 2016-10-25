@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.Period;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +38,9 @@ public class DateTimeParser {
     private List<Date> dates;
     
     public static final String EMPTY_STRING = "";
+
+    public static final DateTimeFormatter ABRIDGED_DATE_FORMAT = DateTimeFormatter.ofPattern("dd LLLL");
+    public static final DateTimeFormatter EXPLICIT_DATE_FORMAT = DateTimeFormatter.ofPattern("dd LLLL yyyy");
 
     public DateTimeParser(String input) {
         assert input != null;
