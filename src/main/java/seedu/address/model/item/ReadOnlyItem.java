@@ -42,10 +42,9 @@ public interface ReadOnlyItem {
 	 * Returns true if both have the same state. (interfaces cannot override
 	 * .equals)
 	 */
-	default boolean isSameStateAs(Object other) {
+	default boolean isSameStateAs(ReadOnlyItem other) {
 		return this == other
 				|| (other != null
-				&& (other instanceof ReadOnlyItem)
 				&& this.getDescription().equals(((ReadOnlyItem) other).getDescription()))
 		        && this.getTags().equals(((ReadOnlyItem) other).getTags());
 	}
