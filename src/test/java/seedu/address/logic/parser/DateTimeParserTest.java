@@ -141,4 +141,18 @@ public class DateTimeParserTest {
             assertEquals(daysOfWeek[i], DateTimeParser.extractShortDayOfWeek(weekLDTs.get(i)));
         }
     }
+    
+    @Test
+    public void extractTwelveHourTimeTest_Morning() {
+        LocalDateTime morning = LocalDateTime.of(2016, 11, 11, 11, 11);
+        String expected = "11:11AM";
+        assertEquals(expected, DateTimeParser.extractTwelveHourTime(morning));
+    }
+
+    @Test
+    public void extractTwelveHourTimeTest_Evening() {
+        LocalDateTime evening = LocalDateTime.of(2016, 11, 11, 18, 31);
+        String expected = "6:31PM";
+        assertEquals(expected, DateTimeParser.extractTwelveHourTime(evening));
+    }
 }
