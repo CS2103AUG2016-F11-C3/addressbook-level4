@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.Period;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -137,8 +138,7 @@ public class DateTimeParser {
     }
 
     /**
-     * helper method for casting java.util.Date to java.time.LocalDateTime
-     * safely
+     * Helper method for casting java.util.Date to java.time.LocalDateTime
      * 
      * @param date
      * @return
@@ -148,6 +148,18 @@ public class DateTimeParser {
         Instant instant = date.toInstant().truncatedTo(ChronoUnit.SECONDS); // strip
                                                                             // milliseconds
         return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+    }
+    
+    /**
+     * Helper method for casting java.time.LocalDateTime to java.util.Date
+     * 
+     * @param ldt
+     * @return
+     * @author darren
+     */
+    public static Date changeLocalDateTimeToDate(LocalDateTime ldt) {
+        Instant instant = ldt.atZone(ZoneId.systemDefault()).toInstant();
+        return Date.from(instant);
     }
 
     /**
