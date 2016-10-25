@@ -218,17 +218,20 @@ public class DateTimeParser {
 
         // add relative prefix (this/next <day of week>) if applicable
         if(computeDaysTo(ldt) < 14) {
+            // is within the next two weeks
             return makeRelativePrefix(ldt) + dayOfWeek + ", " + extractTwelveHourTime(ldt);
         }
 
         // explicit date; no relative prefix
-        String prettyDateTime;
+        String prettyDate;
         if(computeDaysTo(ldt) < 365) {
-            prettyDateTime = ldt.toLocalDate().format(ABRIDGED_DATE_FORMAT);
+            // same year
+            prettyDate = ldt.toLocalDate().format(ABRIDGED_DATE_FORMAT);
         } else {
-            prettyDateTime = ldt.toLocalDate().format(EXPLICIT_DATE_FORMAT);
+            // different years
+            prettyDate = ldt.toLocalDate().format(EXPLICIT_DATE_FORMAT);
         }
-        return dayOfWeekShort + " " + prettyDateTime + ", " + extractTwelveHourTime(ldt);
+        return dayOfWeekShort + " " + prettyDate + ", " + extractTwelveHourTime(ldt);
     }
 
     /**
