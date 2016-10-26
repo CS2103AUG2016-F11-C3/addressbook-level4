@@ -21,8 +21,8 @@ public class DeleteCommand extends Command {
             + "Example 1: " + COMMAND_WORD + " 1\n";
 
     public static final String MESSAGE_DELETE_ITEM_SUCCESS = "Deleted Task: %1$s";
-    public static final String MESSAGE_UNDO_SUCCESS = "Undo add task: %1$s";
-	public static final String MESSAGE_UNDO_FAILURE = "";
+    public static final String MESSAGE_UNDO_SUCCESS = "Undo delete task: %1$s";
+	public static final String MESSAGE_UNDO_FAILURE = "Undo failed!";
 
     public final int targetIndex;
     
@@ -60,7 +60,7 @@ public class DeleteCommand extends Command {
 		assert model != null;
 		try {
 			model.addItem(itemToAddBack);
-			return new CommandResult(MESSAGE_UNDO_SUCCESS);
+			return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, itemToAddBack), itemToAddBack);
 		} catch (UniqueItemList.DuplicateItemException e) {
 			return new CommandResult(MESSAGE_UNDO_FAILURE);
 		}
