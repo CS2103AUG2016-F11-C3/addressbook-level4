@@ -1,7 +1,6 @@
 package seedu.address.model;
 
 import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.util.StringUtil;
@@ -84,7 +83,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     /**
      * Returns a list sorted chronologically
-     * @@author cara
+     * @@author A0131560U
      */
     public UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList() {
         //TODO: implement Comparator in Item class
@@ -94,8 +93,8 @@ public class ModelManager extends ComponentManager implements Model {
                 return x.compareTo(y);
             }
         };
-        SortedList<Item> sortedList = new SortedList<>(filteredItems, chronologicalComparator);
-        return new UnmodifiableObservableList<>(sortedList);
+        //SortedList<Item> sortedList = new SortedList<>(filteredItems, chronologicalComparator);
+        return new UnmodifiableObservableList<>(filteredItems);
     }
 
     @Override
@@ -105,7 +104,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void updateFilteredItemList(Set<String> keywords){
-        updateFilteredItemList(new PredicateExpression(new DescriptionQualifier(keywords)));
+        updateFilteredItemList(new PredicateExpression(new DescriptionAndTagQualifier(keywords)));
     }
 
     private void updateFilteredItemList(Expression expression) {
@@ -143,24 +142,24 @@ public class ModelManager extends ComponentManager implements Model {
         String toString();
     }
 
-    private class DescriptionQualifier implements Qualifier {
-        private Set<String> descriptionKeyWords;
+    private class DescriptionAndTagQualifier implements Qualifier {
+        private Set<String> searchKeyWords;
 
-        DescriptionQualifier(Set<String> nameKeyWords) {
-            this.descriptionKeyWords = nameKeyWords;
+        DescriptionAndTagQualifier(Set<String> nameKeyWords) {
+            this.searchKeyWords = nameKeyWords;
         }
 
         @Override
         public boolean run(ReadOnlyItem item) {
-            return descriptionKeyWords.stream()
-                    .filter(keyword -> StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(), keyword))
+            return searchKeyWords.stream()
+                    .filter(keyword -> StringUtil.containsIgnoreCase(item.getAsText(), keyword))
                     .findAny()
                     .isPresent();
         }
 
         @Override
         public String toString() {
-            return "name=" + String.join(", ", descriptionKeyWords);
+            return "name=" + String.join(", ", searchKeyWords);
         }
     }
 
