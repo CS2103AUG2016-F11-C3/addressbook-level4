@@ -2,7 +2,9 @@ package seedu.address.logic.commands;
 
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
+import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
+import seedu.address.model.item.UniqueItemList;
 import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
 
 /**
@@ -19,8 +21,12 @@ public class DeleteCommand extends Command {
             + "Example 1: " + COMMAND_WORD + " 1\n";
 
     public static final String MESSAGE_DELETE_ITEM_SUCCESS = "Deleted Task: %1$s";
+    public static final String MESSAGE_UNDO_SUCCESS = "Undo add task: %1$s";
+	public static final String MESSAGE_UNDO_FAILURE = "";
 
     public final int targetIndex;
+    
+    private Item itemToAddBack;
 
     public DeleteCommand(int targetIndex) {
         this.targetIndex = targetIndex;
@@ -38,6 +44,7 @@ public class DeleteCommand extends Command {
         }
 
         ReadOnlyItem itemToDelete = lastShownList.get(targetIndex - 1);
+        itemToAddBack = new Item(itemToDelete);
 
         try {
             model.deleteItem(itemToDelete);
@@ -46,4 +53,16 @@ public class DeleteCommand extends Command {
         }
 		return new CommandResult(String.format(MESSAGE_DELETE_ITEM_SUCCESS, itemToDelete), itemToDelete);
     }
+
+
+	@Override
+	public CommandResult undo() {
+		assert model != null;
+		try {
+			model.addItem(itemToAddBack);
+			return new CommandResult(MESSAGE_UNDO_SUCCESS);
+		} catch (UniqueItemList.DuplicateItemException e) {
+			return new CommandResult(MESSAGE_UNDO_FAILURE);
+		}
+	}
 }
