@@ -3,11 +3,15 @@ package seedu.address.logic.commands;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import seedu.address.commons.core.Messages;
+import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.parser.DateTimeParser;
 import seedu.address.model.item.Description;
 import seedu.address.model.item.Item;
+import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
+import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.model.tag.UniqueTagList.DuplicateTagException;
@@ -30,6 +34,8 @@ public class AddCommand extends Command {
 	public static final String MESSAGE_SUCCESS = "New task added: %1$s";
 	public static final String MESSAGE_SUCCESS_TIME_NULL = "START or END time not found but new task added!";
 	public static final String MESSAGE_DUPLICATE_ITEM = "This task already exists in the to-do list";
+	public static final String MESSAGE_UNDO_SUCCESS = "Undo add task: %1$s";
+
 
 	private static final String DEFAULT_ITEM_NAME = "BLOCK";
 	
@@ -112,8 +118,12 @@ public class AddCommand extends Command {
 	
 	@Override
 	public CommandResult undo() {
-		
-		return null;
+		try {
+            model.deleteItem(toUndoAdd);
+        } catch (ItemNotFoundException infe) {
+            assert false : "The target item cannot be found";
+        }
+		return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, toUndoAdd), toUndoAdd);
 	}
 
 }
