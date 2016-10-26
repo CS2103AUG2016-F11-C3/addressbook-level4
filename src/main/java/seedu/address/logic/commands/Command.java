@@ -10,6 +10,7 @@ import seedu.address.model.Model;
  */
 public abstract class Command {
     protected Model model;
+    protected boolean hasUndo = false;
 
     /**
      * Constructs a feedback message to summarise an operation that displayed a listing of persons.
