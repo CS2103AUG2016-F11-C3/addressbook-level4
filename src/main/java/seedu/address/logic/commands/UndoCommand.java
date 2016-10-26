@@ -1,21 +1,27 @@
 package seedu.address.logic.commands;
 
+import java.util.EmptyStackException;
+
 public class UndoCommand extends Command {
 	
-	public static final String MESSAGE_UNDO_FAILURE = "";
 	public static final String COMMAND_WORD = "undo";
 	public static final String MESSAGE_FAILURE = "Unable to undo";
 
 	@Override
 	public CommandResult execute() {
 		hasUndo = false;
-		Command lastCommandOnStack = model.returnCommandFromStack();
-		return lastCommandOnStack.undo();
+		try {
+			Command lastCommandOnStack = model.returnCommandFromStack();
+			return lastCommandOnStack.undo();
+		} catch (EmptyStackException e) {
+			return new CommandResult(MESSAGE_FAILURE);
+		}
+		
 	}
 
 	@Override
     public CommandResult undo() {
-        return new CommandResult(MESSAGE_UNDO_FAILURE);
+        return new CommandResult(MESSAGE_FAILURE);
     }
 
 }
