@@ -5,6 +5,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.commands.Command;
+import seedu.address.logic.commands.UndoCommand;
 import seedu.address.commons.events.model.TaskBookChangedEvent;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.model.item.Item;
@@ -52,6 +53,7 @@ public class ModelManager extends ComponentManager implements Model {
     public ModelManager(ReadOnlyTaskBook initialData, UserPrefs userPrefs) {
         taskBook = new TaskBook(initialData);
         filteredItems = new FilteredList<>(taskBook.getItems());
+        commandStack = new Stack<Command>();
     }
 
     @Override
@@ -102,13 +104,15 @@ public class ModelManager extends ComponentManager implements Model {
 	public void addCommandToStack(Command command) {
 		assert command.getUndo() == true;
 		assert this.commandStack != null;
-		this.commandStack.add(command);
+		this.commandStack.push(command);
 	}
 
 	@Override
 	public Command returnCommandFromStack() throws EmptyStackException {
 		assert this.commandStack != null;
-		assert !this.commandStack.isEmpty();
+		if (this.commandStack.isEmpty()) {
+			throw new EmptyStackException();
+		}
 		return commandStack.pop();
 	}
 
