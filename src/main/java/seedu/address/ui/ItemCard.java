@@ -28,6 +28,8 @@ public class ItemCard extends UiPart implements Observer {
 	private Text id;
 	@FXML
 	private Text dates;
+	@FXML
+	private Text relativeDate;
 
 	private ReadOnlyItem item;
     private int displayedIndex;
@@ -51,6 +53,7 @@ public class ItemCard extends UiPart implements Observer {
 		description.setText(this.item.getDescription().getFullDescription());
         id.setText(displayedIndex + ". ");
 		dates.setText(item.extractPrettyItemCardDateTime());
+		relativeDate.setText(item.extractPrettyRelativeEndDateTime());
     }
 
     public HBox getLayout() {
