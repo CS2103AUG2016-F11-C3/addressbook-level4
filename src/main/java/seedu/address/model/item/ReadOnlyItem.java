@@ -80,4 +80,6 @@ public interface ReadOnlyItem {
 	}
 
 	public void addObserver(Observer o);
+
+	String extractPrettyItemCardDateTime();
 }
