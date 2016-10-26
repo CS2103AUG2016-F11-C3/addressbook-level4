@@ -27,6 +27,9 @@ public class XmlAdaptedItem {
     @XmlElement(required = true)
     private String endDate;
     
+    @XmlElement(required = true)
+    private String isDone;
+    
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
     
@@ -43,11 +46,10 @@ public class XmlAdaptedItem {
      * @param source future changes to this will not affect the created XmlAdaptedPerson
      */
     public XmlAdaptedItem(ReadOnlyItem source) {
-
+    	// get XML description
         description = source.getDescription().getFullDescription();
-        
+        // get XML date
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-          
         if (source.getStartDate() == null) {
         	startDate = "";
         } else {
@@ -59,12 +61,17 @@ public class XmlAdaptedItem {
         } else {
         	endDate = source.getEndDate().format(formatter);
         }
-            
+        // get XML isDone
+        if (source.getIsDone()) {
+        	isDone = "true";
+        } else {
+        	isDone = "false";
+        }
+        // get XML tags
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
         }
-
     }
 
     /**
