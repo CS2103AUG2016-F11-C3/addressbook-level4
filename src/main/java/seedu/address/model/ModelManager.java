@@ -1,19 +1,20 @@
 package seedu.address.model;
 
-import javafx.collections.transformation.FilteredList;
-import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.core.UnmodifiableObservableList;
-import seedu.address.commons.util.StringUtil;
-import seedu.address.commons.events.model.TaskBookChangedEvent;
-import seedu.address.commons.core.ComponentManager;
-import seedu.address.model.item.Item;
-import seedu.address.model.item.ReadOnlyItem;
-import seedu.address.model.item.UniqueItemList;
-import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
-
 import java.util.Comparator;
 import java.util.Set;
 import java.util.logging.Logger;
+
+import org.controlsfx.control.PropertySheet.Item;
+
+import javafx.collections.transformation.FilteredList;
+import seedu.address.commons.core.ComponentManager;
+import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.core.UnmodifiableObservableList;
+import seedu.address.commons.events.model.TaskBookChangedEvent;
+import seedu.address.commons.util.StringUtil;
+import seedu.address.model.item.ReadOnlyItem;
+import seedu.address.model.item.UniqueItemList;
+import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -115,7 +116,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     interface Expression {
         boolean satisfies(ReadOnlyItem item);
-        String toString();
+        @Override
+		String toString();
     }
 
     private class PredicateExpression implements Expression {
@@ -139,11 +141,12 @@ public class ModelManager extends ComponentManager implements Model {
 
     interface Qualifier {
         boolean run(ReadOnlyItem item);
-        String toString();
+        @Override
+		String toString();
     }
 
     private class DescriptionAndTagQualifier implements Qualifier {
-        private Set<String> searchKeyWords;
+		private Set<String> searchKeyWords;
 
         DescriptionAndTagQualifier(Set<String> nameKeyWords) {
             this.searchKeyWords = nameKeyWords;
@@ -152,7 +155,7 @@ public class ModelManager extends ComponentManager implements Model {
         @Override
         public boolean run(ReadOnlyItem item) {
             return searchKeyWords.stream()
-                    .filter(keyword -> StringUtil.containsIgnoreCase(item.getAsText(), keyword))
+					.filter(keyword -> new Keyword(keyword).search(item))
                     .findAny()
                     .isPresent();
         }
@@ -162,5 +165,22 @@ public class ModelManager extends ComponentManager implements Model {
             return "name=" + String.join(", ", searchKeyWords);
         }
     }
+
+	// Idea @@author A0092390E
+	private class Keyword {
+		private String keyword;
+
+		Keyword(String _keyword) {
+			keyword = _keyword;
+		}
+
+		public boolean search(ReadOnlyItem item){
+			if(true){
+				return StringUtil.containsIgnoreCase(item.getAsText(), keyword);
+			} else{
+				return StringUtil.containsIgnoreCase(item.getAsText(), keyword);
+			}
+		}
+	}
 
 }
