@@ -21,12 +21,10 @@ public class LogicManager extends ComponentManager implements Logic {
 
     private final Model model;
     private final Parser parser;
-    private final Stack<Command> commandStack;
 
     public LogicManager(Model model, Storage storage) {
         this.model = model;
         this.parser = new Parser();
-        this.commandStack = new Stack();
     }
 
     @Override
