@@ -10,6 +10,7 @@ import seedu.address.model.Model;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.storage.Storage;
 
+import java.util.Stack;
 import java.util.logging.Logger;
 
 /**
@@ -20,10 +21,12 @@ public class LogicManager extends ComponentManager implements Logic {
 
     private final Model model;
     private final Parser parser;
+    private final Stack commandStack;
 
     public LogicManager(Model model, Storage storage) {
         this.model = model;
         this.parser = new Parser();
+        this.commandStack = new Stack();
     }
 
     @Override
