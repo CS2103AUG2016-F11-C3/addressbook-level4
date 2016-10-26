@@ -7,6 +7,8 @@ package seedu.address.logic.commands;
 public class ListCommand extends Command {
 
     public static final String COMMAND_WORD = "list";
+    public static final String MESSAGE_UNDO_FAILURE = "";
+
 
     public static final String MESSAGE_SUCCESS = "Listed all tasks";
 
@@ -16,5 +18,10 @@ public class ListCommand extends Command {
     public CommandResult execute() {
         model.updateFilteredListToShowAll();
         return new CommandResult(MESSAGE_SUCCESS);
+    }
+
+    @Override
+    public CommandResult undo() {
+        return new CommandResult(MESSAGE_UNDO_FAILURE);
     }
 }
