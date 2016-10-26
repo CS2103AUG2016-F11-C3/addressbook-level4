@@ -35,7 +35,7 @@ public interface Model {
     void addCommandToStack(Command command);
     
     /** Add the command to stack for undo */
-    void executeCommandFromStack();
+    Command returnCommandFromStack();
 
     /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList();

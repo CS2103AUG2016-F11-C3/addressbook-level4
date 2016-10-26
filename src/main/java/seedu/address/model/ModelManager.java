@@ -1,6 +1,5 @@
 package seedu.address.model;
 
-import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
@@ -14,6 +13,7 @@ import seedu.address.model.item.UniqueItemList;
 import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
 
 import java.util.Comparator;
+import java.util.EmptyStackException;
 import java.util.Set;
 import java.util.Stack;
 import java.util.logging.Logger;
@@ -42,6 +42,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         taskBook = new TaskBook(src);
         filteredItems = new FilteredList<>(taskBook.getItems());
+        commandStack = new Stack<Command>();
     }
 
     public ModelManager() {
@@ -99,14 +100,16 @@ public class ModelManager extends ComponentManager implements Model {
 	
 	@Override
 	public void addCommandToStack(Command command) {
-		// TODO Auto-generated method stub
-		
+		assert command.getUndo() == true;
+		assert this.commandStack != null;
+		this.commandStack.add(command);
 	}
 
 	@Override
-	public void executeCommandFromStack() {
-		// TODO Auto-generated method stub
-		
+	public Command returnCommandFromStack() throws EmptyStackException {
+		assert this.commandStack != null;
+		assert !this.commandStack.isEmpty();
+		return commandStack.pop();
 	}
 
     //=========== Filtered Item List Accessors ===============================================================
