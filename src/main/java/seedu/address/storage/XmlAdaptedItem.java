@@ -83,8 +83,9 @@ public class XmlAdaptedItem {
         final Description description = new Description(this.description);
         LocalDateTime start;
         LocalDateTime end;
+        boolean isDone;
         UniqueTagList tags;
-        
+        // extract dates from XML data
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         if (this.startDate.equals("")) {
         	start = null;
@@ -96,13 +97,21 @@ public class XmlAdaptedItem {
         } else {
         	end = LocalDateTime.parse(endDate, formatter);
         }
+        // extract isDone from XML data
+        if (this.isDone.equals("true")) {
+        	isDone = true;
+        } else {
+        	isDone = false;
+        }
+        // extract tags from XML data
         final List<Tag> itemTags = new ArrayList<>();
         for (XmlAdaptedTag tag : tagged) {
             itemTags.add(tag.toModelType());
         }
-        
         tags = new UniqueTagList(itemTags);
 
-        return new Item(description, start, end, tags);
+        Item item = new Item(description, start, end, tags);
+        item.setIsDone(isDone);
+        return item;
     }
 }
