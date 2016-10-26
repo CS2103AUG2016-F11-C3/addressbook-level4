@@ -3,13 +3,10 @@ package seedu.address.logic.commands;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import seedu.address.commons.core.Messages;
-import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.parser.DateTimeParser;
 import seedu.address.model.item.Description;
 import seedu.address.model.item.Item;
-import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
 import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
 import seedu.address.model.tag.Tag;
@@ -35,6 +32,7 @@ public class AddCommand extends Command {
 	public static final String MESSAGE_SUCCESS_TIME_NULL = "START or END time not found but new task added!";
 	public static final String MESSAGE_DUPLICATE_ITEM = "This task already exists in the to-do list";
 	public static final String MESSAGE_UNDO_SUCCESS = "Undo add task: %1$s";
+	public static final String MESSAGE_UNDO_FAILURE = "";
 
 
 	private static final String DEFAULT_ITEM_NAME = "BLOCK";
@@ -118,6 +116,9 @@ public class AddCommand extends Command {
 	
 	@Override
 	public CommandResult undo() {
+		if (toUndoAdd == null) {
+			return new CommandResult(MESSAGE_UNDO_FAILURE);
+		}
 		try {
             model.deleteItem(toUndoAdd);
         } catch (ItemNotFoundException infe) {
