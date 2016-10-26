@@ -97,4 +97,10 @@ public class EditCommand extends Command {
 
 	}
 
+	@Override
+	public CommandResult undo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
