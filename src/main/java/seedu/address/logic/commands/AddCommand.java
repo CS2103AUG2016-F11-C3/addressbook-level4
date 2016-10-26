@@ -34,6 +34,7 @@ public class AddCommand extends Command {
 	private static final String DEFAULT_ITEM_NAME = "BLOCK";
 	
 	private final Item toAdd;
+	private Item toUndoAdd;
 	private boolean hasTimeString = false;
 
 	
@@ -96,14 +97,23 @@ public class AddCommand extends Command {
 			model.addItem(toAdd);
 			// if user input something for time but it's not correct format
 			if (this.hasTimeString && (this.toAdd.getStartDate() == null || this.toAdd.getEndDate() == null)) {
+				toUndoAdd = toAdd;
 				return new CommandResult(MESSAGE_SUCCESS_TIME_NULL, toAdd);
 			} else {
+				toUndoAdd = toAdd;
 				return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd), toAdd);
 			}
 		} catch (UniqueItemList.DuplicateItemException e) {
+			toUndoAdd = null;
 			return new CommandResult(MESSAGE_DUPLICATE_ITEM);
 		}
 
+	}
+	
+	@Override
+	public CommandResult undo() {
+		
+		return null;
 	}
 
 }
