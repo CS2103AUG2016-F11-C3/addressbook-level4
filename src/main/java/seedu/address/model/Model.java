@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import seedu.address.commons.core.UnmodifiableObservableList;
+import seedu.address.logic.commands.Command;
 import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
@@ -29,6 +30,12 @@ public interface Model {
     
     /** Set the item isDone field to true */
     void setNotDoneItem(Item item);
+    
+    /** Add the command to stack for undo */
+    void addCommandToStack(Command command);
+    
+    /** Add the command to stack for undo */
+    void executeCommandFromStack();
 
     /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList();

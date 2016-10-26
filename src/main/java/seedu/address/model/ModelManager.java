@@ -5,6 +5,7 @@ import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.util.StringUtil;
+import seedu.address.logic.commands.Command;
 import seedu.address.commons.events.model.TaskBookChangedEvent;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.model.item.Item;
@@ -14,6 +15,7 @@ import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
 
 import java.util.Comparator;
 import java.util.Set;
+import java.util.Stack;
 import java.util.logging.Logger;
 
 /**
@@ -25,6 +27,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     private final TaskBook taskBook;
     private final FilteredList<Item> filteredItems;
+    private Stack<Command> commandStack;
 
     /**
      * Initializes a ModelManager with the given AddressBook
@@ -91,6 +94,18 @@ public class ModelManager extends ComponentManager implements Model {
 		item.setIsDone(false);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
+		
+	}
+	
+	@Override
+	public void addCommandToStack(Command command) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void executeCommandFromStack() {
+		// TODO Auto-generated method stub
 		
 	}
 
