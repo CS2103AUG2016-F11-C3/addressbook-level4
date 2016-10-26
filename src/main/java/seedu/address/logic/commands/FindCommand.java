@@ -9,6 +9,7 @@ import java.util.Set;
 public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
+    public static final String MESSAGE_UNDO_FAILURE = "";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all persons whose names contain any of "
             + "the specified keywords (case-sensitive) and displays them as a list with index numbers.\n"
@@ -25,6 +26,11 @@ public class FindCommand extends Command {
     public CommandResult execute() {
         model.updateFilteredItemList(keywords);
         return new CommandResult(getMessageForItemListShownSummary(model.getFilteredItemList().size()));
+    }
+    
+    @Override
+    public CommandResult undo() {
+        return new CommandResult(MESSAGE_UNDO_FAILURE);
     }
 
 }
