@@ -40,5 +40,11 @@ public class DoneCommand extends Command {
 		return new CommandResult(MESSAGE_DONE_ITEM_SUCCESS, itemToComplete);
     }
 
+	@Override
+	public CommandResult undo() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
