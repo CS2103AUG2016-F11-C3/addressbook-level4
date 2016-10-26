@@ -16,6 +16,7 @@ public class ListCommand extends Command {
 
     @Override
     public CommandResult execute() {
+    	hasUndo = false;
         model.updateFilteredListToShowAll();
         return new CommandResult(MESSAGE_SUCCESS);
     }

@@ -30,6 +30,8 @@ public class SelectCommand extends Command {
 
     @Override
     public CommandResult execute() {
+    	
+    	hasUndo = false;
 
 		UnmodifiableObservableList<ReadOnlyItem> lastShownList = model.getFilteredItemList();
 

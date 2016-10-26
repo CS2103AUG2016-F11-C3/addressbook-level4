@@ -16,6 +16,7 @@ public class IncorrectCommand extends Command {
 
     @Override
     public CommandResult execute() {
+    	hasUndo = false;
         indicateAttemptToExecuteIncorrectCommand();
         return new CommandResult(feedbackToUser);
     }

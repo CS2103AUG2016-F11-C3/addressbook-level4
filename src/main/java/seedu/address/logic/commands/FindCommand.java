@@ -24,6 +24,7 @@ public class FindCommand extends Command {
 
     @Override
     public CommandResult execute() {
+    	hasUndo = false;
         model.updateFilteredItemList(keywords);
         return new CommandResult(getMessageForItemListShownSummary(model.getFilteredItemList().size()));
     }
