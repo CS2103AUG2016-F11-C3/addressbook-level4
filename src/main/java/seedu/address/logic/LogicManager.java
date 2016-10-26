@@ -33,7 +33,7 @@ public class LogicManager extends ComponentManager implements Logic {
         Command command = parser.parseCommand(commandText);
         command.setData(model);
         if (command.getUndo()) {
-        	commandStack.add(command);
+        	model.addCommandToStack(command);
         }
         return command.execute();
     }
