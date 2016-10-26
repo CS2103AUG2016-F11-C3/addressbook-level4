@@ -31,29 +31,27 @@ public class DoneCommand extends Command {
 		FilteredList<Item> lastShownList = model.getFilteredEditableItemList();
 		if (lastShownList.size() < targetIndex) {
 			indicateAttemptToExecuteIncorrectCommand();
+			hasUndo = false;
 			return new CommandResult(Messages.MESSAGE_INVALID_ITEM_DISPLAYED_INDEX);
 		}
 		Item itemToComplete = lastShownList.get(targetIndex - 1);
 
 		if (itemToComplete.getIsDone()) {
-			itemToUndone = null;
+			hasUndo = false;
 			return new CommandResult(MESSAGE_DONE_ITEM_FAIL);
 		} else {
 			itemToUndone = itemToComplete;
 			model.setDoneItem(itemToComplete);
+			hasUndo = true;
 		}
-
 		return new CommandResult(MESSAGE_DONE_ITEM_SUCCESS, itemToComplete);
 	}
 
 	@Override
 	public CommandResult undo() {
-		if (itemToUndone == null) {
-			return new CommandResult(MESSAGE_UNDO_FAILURE);
-		} else {
-			model.setNotDoneItem(itemToUndone);
-			return new CommandResult(MESSAGE_UNDO_SUCCESS, itemToUndone);
-		}
+		assert itemToUndone != null;
+		model.setNotDoneItem(itemToUndone);
+		return new CommandResult(MESSAGE_UNDO_SUCCESS, itemToUndone);
 	}
 
 }

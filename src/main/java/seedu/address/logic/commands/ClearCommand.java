@@ -23,12 +23,18 @@ public class ClearCommand extends Command {
     @Override
     public CommandResult execute() {
         assert model != null;
+        hasUndo = true;
         model.resetData(TaskBook.getEmptyTaskBook());
         return new CommandResult(MESSAGE_SUCCESS);
     }
 
+    /**
+     * Add back the deleted task book
+     * @@author A0144750J
+     */
 	@Override
 	public CommandResult undo() {
+		assert itemsToAddBack != null;
 		TaskBook savedTaskBook = new TaskBook();
     	savedTaskBook.resetData(itemsToAddBack);
 		model.resetData(savedTaskBook);

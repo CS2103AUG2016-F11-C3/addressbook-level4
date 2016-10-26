@@ -48,7 +48,9 @@ public class DeleteCommand extends Command {
 
         try {
             model.deleteItem(itemToDelete);
+            hasUndo = true;
         } catch (ItemNotFoundException infe) {
+        	hasUndo = false;
             assert false : "The target item cannot be missing";
         }
 		return new CommandResult(String.format(MESSAGE_DELETE_ITEM_SUCCESS, itemToDelete), itemToDelete);
