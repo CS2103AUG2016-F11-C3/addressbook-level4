@@ -6,6 +6,7 @@ import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
 
 import java.util.Set;
+import javafx.collections.transformation.FilteredList;
 
 /**
  * The API of the Model component.
@@ -32,6 +33,9 @@ public interface Model {
     /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList();
 
+    /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
+    FilteredList<Item> getFilteredEditableItemList();
+    
     /** Updates the filter of the filtered person list to show all persons */
     void updateFilteredListToShowAll();
 

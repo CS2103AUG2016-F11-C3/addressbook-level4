@@ -1,5 +1,6 @@
 package seedu.address.model;
 
+import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
@@ -101,7 +102,6 @@ public class ModelManager extends ComponentManager implements Model {
      * @@author A0131560U
      */
     public UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList() {
-        //TODO: implement Comparator in Item class
         Comparator<Item> chronologicalComparator = new Comparator<Item>(){
             @Override
             public int compare(Item x, Item y) {
@@ -111,6 +111,15 @@ public class ModelManager extends ComponentManager implements Model {
         //SortedList<Item> sortedList = new SortedList<>(filteredItems, chronologicalComparator);
         return new UnmodifiableObservableList<>(filteredItems);
     }
+    
+    /**
+     * Return a list of Item instead of ReadOnlyItem
+     * @@author A0144750J
+     */
+    @Override
+	public FilteredList<Item> getFilteredEditableItemList() {
+		return filteredItems;
+	}
 
     @Override
     public void updateFilteredListToShowAll() {

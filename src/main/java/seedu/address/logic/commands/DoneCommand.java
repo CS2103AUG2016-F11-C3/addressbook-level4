@@ -1,7 +1,9 @@
 package seedu.address.logic.commands;
 
+import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
+import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 
 public class DoneCommand extends Command {
@@ -22,19 +24,17 @@ public class DoneCommand extends Command {
 
     @Override
     public CommandResult execute() {
-        UnmodifiableObservableList<ReadOnlyItem> lastShownList = model.getFilteredItemList();
-
+        FilteredList<Item> lastShownList = model.getFilteredEditableItemList();
         if (lastShownList.size() < targetIndex) {
             indicateAttemptToExecuteIncorrectCommand();
 			return new CommandResult(Messages.MESSAGE_INVALID_ITEM_DISPLAYED_INDEX);
         }
-
-        ReadOnlyItem itemToComplete = lastShownList.get(targetIndex - 1);
+        Item itemToComplete = lastShownList.get(targetIndex - 1);
         
         if(itemToComplete.getIsDone()) {
             return new CommandResult(MESSAGE_DONE_ITEM_FAIL);
         } else {
-            itemToComplete.setIsDone(true);
+        	model.setDoneItem(itemToComplete);
         }
 
 		return new CommandResult(MESSAGE_DONE_ITEM_SUCCESS, itemToComplete);
