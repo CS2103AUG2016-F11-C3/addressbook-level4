@@ -51,8 +51,8 @@ public interface ReadOnlyItem {
 	default boolean isSameStateAs(ReadOnlyItem other) {
 		return this == other
 				|| (other != null
-				&& this.getDescription().equals(((ReadOnlyItem) other).getDescription()))
-		        && this.getTags().equals(((ReadOnlyItem) other).getTags());
+				&& this.getDescription().equals(other.getDescription()))
+		        && this.getTags().equals(other.getTags());
 	}
 
 	/**
@@ -86,4 +86,6 @@ public interface ReadOnlyItem {
 	String extractPrettyItemCardDateTime();
 
 	String extractPrettyRelativeEndDateTime();
+
+	public String getType();
 }
