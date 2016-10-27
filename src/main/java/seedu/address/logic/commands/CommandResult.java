@@ -14,7 +14,7 @@ public class CommandResult {
     public CommandResult(String feedbackToUser) {
         assert feedbackToUser != null;
         this.feedbackToUser = feedbackToUser;
-		this.clear = false;
+		this.clear = true;
 		this.item = null;
 	}
 
@@ -22,7 +22,7 @@ public class CommandResult {
 		assert feedbackToUser != null;
 		this.feedbackToUser = feedbackToUser;
 		this.item = itemToComplete;
-		this.clear = false;
+		this.clear = true;
 	}
 
 	public void setClear(boolean bool) {
