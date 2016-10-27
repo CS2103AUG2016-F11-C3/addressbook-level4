@@ -4,8 +4,10 @@ import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
@@ -34,7 +36,9 @@ import seedu.address.logic.commands.SelectCommand;
  */
 public class Parser {
 
-    private static final String EMPTY_STRING = "";
+    public static final String COMMAND_TAG_REGEX = "#(.*)";
+    public static final String COMMAND_DESCRIPTION_REGEX = "\"(.*)\"";
+
 
     /**
      * Used for initial separation of command word and args.
@@ -50,12 +54,16 @@ public class Parser {
     private static final Pattern TASK_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"");
 
     private static final String TASK_NO_DATE_DATA = "nothing";
+    private static final String EMPTY_STRING = "";
 
     private static final int COMMAND_DESCRIPTION_FIELD_NUMBER = 2;
     private static final int COMMAND_TYPE_FIELD_NUMBER = 1;
     private static final int COMMAND_TIME_FIELD_NUMBER = 3;
 
-    private static final String TAG_PREFIX = "#";
+    private static final Pattern COMMAND_DESCRIPTION_SEARCH_FORMAT = Pattern.compile("\"([^\"]*)\"");
+    private static final Pattern COMMAND_TAG_SEARCH_FORMAT = Pattern.compile("#([^ ]+)");
+
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     public enum Field {
         NAME("name"), START_DATE("start_date"), END_DATE("end_date"), START_TIME("start_time"), END_TIME(
@@ -152,18 +160,20 @@ public class Parser {
     }
 
     /**
-	 * Parses strings from given argument to delimit description, start/end time, tags
-	 * and creates a list for the tags 
-	 * @param itemMatch
-	 * @return new Command with separated description, start and end time strings, Set of tags
-	 * @throws IllegalValueException
-	 */
+     * Parses strings from given argument to delimit description, start/end
+     * time, tags and creates a list for the tags
+     * 
+     * @param itemMatch
+     * @return new Command with separated description, start and end time
+     *         strings, Set of tags
+     * @throws IllegalValueException
+     */
     private Command parseNewItem(final Matcher itemMatch, String args) throws IllegalValueException {
-        // check if any thing before first quotation mark and return error if found
+        // check if any thing before first quotation mark and return error if
+        // found
         String postFix = itemMatch.group(COMMAND_TYPE_FIELD_NUMBER).trim();
         if (!postFix.equals(EMPTY_STRING)) {
-        	return new IncorrectCommand(
-        			String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
         String description = itemMatch.group(COMMAND_DESCRIPTION_FIELD_NUMBER).trim();
         String timeStr = itemMatch.group(COMMAND_TIME_FIELD_NUMBER).trim();
@@ -175,7 +185,7 @@ public class Parser {
      * Parses strings from the given argument to delimit description and tags
      * 
      * @param itemMatch
-     * @param args 
+     * @param args
      * @return new Command with separated description, Set of tags, but no time
      *         information
      * @throws IllegalValueException
@@ -193,21 +203,22 @@ public class Parser {
     /**
      * Extracts the new person's tags from the add command's tag arguments
      * string. Merges duplicate tag strings.
+     * 
      * @@author A0131560U
      */
     private static Set<String> getTagsFromArgs(String arguments) throws IllegalValueException {
         assert arguments != null;
-        
+
         ArrayList<String> tagList = parseMultipleParameters(arguments.trim(), ' ');
 
         // no tags
         if (tagList.isEmpty()) {
             return Collections.emptySet();
         }
-        
+
         Set<String> tagSet = new HashSet<String>();
-        for (String tag : tagList){
-            if (tag.startsWith(TAG_PREFIX)){
+        for (String tag : tagList) {
+            if (tag.matches(COMMAND_TAG_REGEX)) {
                 tagSet.add(tag.replaceFirst("#", ""));
             }
         }
@@ -284,11 +295,12 @@ public class Parser {
     }
 
     /**
-     * Parses arguments in the context of the find person command.
+     * Parses arguments in the context of the find item command.
      *
      * @param args
      *            full command args string
      * @return the prepared command
+     * @@author A0131560U
      */
     private Command prepareFind(String args) {
         final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
@@ -296,10 +308,63 @@ public class Parser {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
 
-        // keywords delimited by whitespace
-        final String[] keywords = matcher.group("keywords").split("\\s+");
-        final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
+        // search for all phrases within double quotes
+        final Set<String> keywordSet = new HashSet<>();
+        args = extractKeywordsFromPattern(args, COMMAND_DESCRIPTION_SEARCH_FORMAT, keywordSet);
+        
+        // search for tags
+        args = extractKeywordsFromPattern(args, COMMAND_TAG_SEARCH_FORMAT, keywordSet);
+
+        if (!args.isEmpty()) {
+            boolean isDateTimeValid = extractDateTimeFromKeywords(args, keywordSet);
+            if (!isDateTimeValid){
+                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            }
+        }
+        
         return new FindCommand(keywordSet);
+    }
+
+    /**
+     * Extracts a valid DateTime from the provided arguments and adds them to the keywordSet,
+     * then returns true. If the arguments do not form a valid DateTime, returns false. 
+     * @param args
+     * @param keywordSet
+     * @return
+     */
+    private boolean extractDateTimeFromKeywords(String args, final Set<String> keywordSet) {
+        assert args != null;
+        assert !args.isEmpty();
+        assert keywordSet != null;
+        DateTimeParser dateArgs = new DateTimeParser(args);
+        
+        if (dateArgs.extractStartDate() != null){
+            keywordSet.add(dateArgs.extractStartDate().format(DATE_TIME_FORMATTER));
+            if (dateArgs.extractEndDate()!= null){
+                keywordSet.add(dateArgs.extractEndDate().format(DATE_TIME_FORMATTER));
+            }
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    /**
+     * Given a specific pattern, extracts all phrases that match the pattern and adds them
+     * to keywordSet. Returns args string without the keywords that were extracted.
+     * @param args
+     * @param searchFormat
+     * @return
+     * @@author A0131560U
+     */
+    private String extractKeywordsFromPattern(String args, Pattern searchFormat, Set<String> keywordSet) {
+        final Matcher matcher = searchFormat.matcher(args.trim());
+        while (matcher.find()) {
+            args = args.replace(matcher.group(), "").trim();
+            keywordSet.add(matcher.group());
+        }
+        return args;
     }
 
     /**
