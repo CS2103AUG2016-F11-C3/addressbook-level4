@@ -530,7 +530,7 @@ public class LogicManagerTest {
     }
     
     /**
-     * @author A0147609X
+     * @@author A0147609X
      * @throws Exception
      */
     @Test
