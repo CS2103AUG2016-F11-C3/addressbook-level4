@@ -107,7 +107,7 @@ public class ModelManager extends ComponentManager implements Model {
 		// if(filteredItems.getPredicate() != null){
 		// filteredItems.setPredicate(pred.and(filteredItems.getPredicate()));
 		// } else{
-		filteredItems.setPredicate(pred.and(filteredItems.getPredicate()));
+		filteredItems.setPredicate(pred);
 		// }
     }
 
@@ -159,10 +159,12 @@ public class ModelManager extends ComponentManager implements Model {
 
         @Override
         public boolean run(ReadOnlyItem item) {
-            return searchKeyWords.stream()
-					.filter(keyword -> new Keyword(keyword).search(item))
-                    .findAny()
-                    .isPresent();
+        	for (String keyword: searchKeyWords){
+        		if(!new Keyword(keyword).search(item)){
+        			return false;
+        		}
+        	}
+			return true;
         }
 
         @Override
