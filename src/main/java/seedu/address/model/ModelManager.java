@@ -95,7 +95,8 @@ public class ModelManager extends ComponentManager implements Model {
      * @@author A0131560U
      */
     public UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList() {
-        return new UnmodifiableObservableList<>(filteredItems);
+        SortedList<Item> sortedList = new SortedList<>(filteredItems, Item.chronologicalComparator);
+        return new UnmodifiableObservableList<>(sortedList);
     }
 
     @Override

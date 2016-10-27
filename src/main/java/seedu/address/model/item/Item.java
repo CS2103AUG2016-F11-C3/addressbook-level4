@@ -2,6 +2,7 @@ package seedu.address.model.item;
 
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Observable;
 
@@ -16,6 +17,13 @@ import seedu.address.model.tag.UniqueTagList;
  */
 public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 
+    public static final Comparator<Item> chronologicalComparator = new Comparator<Item>(){
+        @Override
+        public int compare(Item x, Item y) {
+            return x.compareTo(y);
+        }
+    };
+;
     private UniqueTagList tags;
     private Description description;
     private boolean isDone;
