@@ -30,17 +30,18 @@ import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.IncorrectCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.SelectCommand;
+import seedu.address.logic.commands.UndoCommand;
 
 /**
  * Parses user input.
  */
 public class Parser {
 
+    private static final String EMPTY_STRING = "";
     public static final String COMMAND_TAG_REGEX = "#(.*)";
     public static final String COMMAND_DESCRIPTION_REGEX = "\"(.*)\"";
     public static final String COMMAND_TAG_PREFIX = "#";
     public static final String COMMAND_DESCRIPTION_PREFIX = "\"";
-
 
     /**
      * Used for initial separation of command word and args.
@@ -56,7 +57,6 @@ public class Parser {
     private static final Pattern TASK_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"");
 
     private static final String TASK_NO_DATE_DATA = "nothing";
-    private static final String EMPTY_STRING = "";
 
     private static final int COMMAND_DESCRIPTION_FIELD_NUMBER = 2;
     private static final int COMMAND_TYPE_FIELD_NUMBER = 1;
@@ -130,6 +130,9 @@ public class Parser {
 
         case DoneCommand.COMMAND_WORD:
             return prepareDone(arguments);
+            
+        case UndoCommand.COMMAND_WORD:
+        	return new UndoCommand();
 
         default:
             return new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
@@ -163,14 +166,12 @@ public class Parser {
     }
 
     /**
-     * Parses strings from given argument to delimit description, start/end
-     * time, tags and creates a list for the tags
-     * 
-     * @param itemMatch
-     * @return new Command with separated description, start and end time
-     *         strings, Set of tags
-     * @throws IllegalValueException
-     */
+	 * Parses strings from given argument to delimit description, start/end time, tags
+	 * and creates a list for the tags 
+	 * @param itemMatch
+	 * @return new Command with separated description, start and end time strings, Set of tags
+	 * @throws IllegalValueException
+	 */
     private Command parseNewItem(final Matcher itemMatch, String args) throws IllegalValueException {
 		// check if any thing before first quotation mark and return error if
         // found
@@ -369,7 +370,6 @@ public class Parser {
         }
         return args;
     }
-
 
 	/**
 	 * Parses arguments in the context of the Edit item command

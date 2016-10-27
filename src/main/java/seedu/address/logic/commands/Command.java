@@ -10,6 +10,15 @@ import seedu.address.model.Model;
  */
 public abstract class Command {
     protected Model model;
+    protected boolean hasUndo = false;
+    
+    /**
+     * getter method for hasUndo
+     * @@author A0144750J
+     */
+    public boolean getUndo() {
+    	return hasUndo;
+    }
 
 	/**
 	 * Returns whether a command should result in clearing the command box.
@@ -31,10 +40,16 @@ public abstract class Command {
 
     /**
      * Executes the command and returns the result message.
-     *
      * @return feedback message of the operation result for display
      */
     public abstract CommandResult execute();
+    
+    /**
+     * Undo the result of previous execute and returns message.
+     * @return feedback message of the operation result for display
+     * @@author A0144750J
+     */
+    public abstract CommandResult undo();
 
     /**
      * Provides any needed dependencies to the command.

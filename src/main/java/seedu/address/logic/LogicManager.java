@@ -10,6 +10,7 @@ import seedu.address.model.Model;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.storage.Storage;
 
+import java.util.Stack;
 import java.util.logging.Logger;
 
 /**
@@ -26,12 +27,19 @@ public class LogicManager extends ComponentManager implements Logic {
         this.parser = new Parser();
     }
 
+    /**
+     * @@author A0144750J
+     */
     @Override
     public CommandResult execute(String commandText) {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         Command command = parser.parseCommand(commandText);
         command.setData(model);
-        return command.execute();
+        CommandResult result = command.execute();
+        if (command.getUndo()) {
+        	model.addCommandToStack(command);
+        }
+        return result;
     }
 
     @Override

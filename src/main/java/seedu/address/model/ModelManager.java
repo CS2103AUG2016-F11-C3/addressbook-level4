@@ -1,6 +1,9 @@
 package seedu.address.model;
 
+import java.util.Comparator;
+import java.util.EmptyStackException;
 import java.util.Set;
+import java.util.Stack;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 
@@ -10,6 +13,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.events.model.TaskBookChangedEvent;
 import seedu.address.commons.util.StringUtil;
+import seedu.address.logic.commands.Command;
 import seedu.address.logic.parser.DateTimeParser;
 import seedu.address.logic.parser.Parser;
 import seedu.address.model.item.Item;
@@ -26,6 +30,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     private final TaskBook taskBook;
     private final FilteredList<Item> filteredItems;
+    private Stack<Command> commandStack;
 
     /**
      * Initializes a ModelManager with the given AddressBook
@@ -40,6 +45,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         taskBook = new TaskBook(src);
         filteredItems = new FilteredList<>(taskBook.getItems());
+        commandStack = new Stack<>();
     }
 
     public ModelManager() {
@@ -49,6 +55,7 @@ public class ModelManager extends ComponentManager implements Model {
     public ModelManager(ReadOnlyTaskBook initialData, UserPrefs userPrefs) {
         taskBook = new TaskBook(initialData);
         filteredItems = new FilteredList<>(taskBook.getItems());
+        commandStack = new Stack<>();
     }
 
     @Override
@@ -80,12 +87,41 @@ public class ModelManager extends ComponentManager implements Model {
         indicateTaskBookChanged();
     }
     
+    // @@author A0144750J
     @Override
-    public synchronized void doneItem(ReadOnlyItem item) {
+	public void setDoneItem(Item item) {
     	item.setIsDone(true);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
-    }
+	}
+    
+    // @@author A0144750J
+	@Override
+	public void setNotDoneItem(Item item) {
+		item.setIsDone(false);
+        updateFilteredListToShowAll();
+        indicateTaskBookChanged();
+		
+	}
+	
+	// @@author A0144750J
+	@Override
+	public void addCommandToStack(Command command) {
+		assert command.getUndo() == true;
+		assert this.commandStack != null;
+		this.commandStack.push(command);
+	}
+
+	// @@author A0144750J
+	@Override
+	public Command returnCommandFromStack() throws EmptyStackException {
+		assert this.commandStack != null;
+		if (this.commandStack.isEmpty()) {
+			throw new EmptyStackException();
+		}
+		return commandStack.pop();
+	}
+
 
     //=========== Filtered Item List Accessors ===============================================================
 
@@ -95,8 +131,24 @@ public class ModelManager extends ComponentManager implements Model {
      * @@author A0131560U
      */
     public UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList() {
+        Comparator<Item> chronologicalComparator = new Comparator<Item>(){
+            @Override
+            public int compare(Item x, Item y) {
+                return x.compareTo(y);
+            }
+        };
+        //SortedList<Item> sortedList = new SortedList<>(filteredItems, chronologicalComparator);
         return new UnmodifiableObservableList<>(filteredItems);
     }
+    
+    /**
+     * Return a list of Item instead of ReadOnlyItem
+     * @@author A0144750J
+     */
+    @Override
+	public FilteredList<Item> getFilteredEditableItemList() {
+		return filteredItems;
+	}
 
     @Override
     public void updateFilteredListToShowAll() {

@@ -278,6 +278,19 @@ public class TestUtil {
         listOfItems.removeAll(asList(itemsToRemove));
         return listOfItems.toArray(new TestItem[listOfItems.size()]);
     }
+    
+    /**
+     * Mark an item as done
+     * @param items The list of items
+     * @param itemsToRemove The subset of items.
+     * @return The modified items after removal of the subset from items.
+     * @@author A0144750J
+     */
+    public static TestItem[] doneItemsFromList(final TestItem[] items, int index) {
+        List<TestItem> listOfItems = asList(items);
+        listOfItems.get(index).setIsDone(true);
+        return listOfItems.toArray(new TestItem[listOfItems.size()]);
+    }
 
 
     /**
@@ -287,6 +300,16 @@ public class TestUtil {
      */
     public static TestItem[] removeItemFromList(final TestItem[] list, int targetIndexInOneIndexedFormat) {
         return removeItemsFromList(list, list[targetIndexInOneIndexedFormat-1]);
+    }
+    
+    /**
+     * Return a copy of the list with the item at specified index marked done
+     * @param list original list to copy from
+     * @param targetIndexInOneIndexedFormat e.g. if the first element to be removed, 1 should be given as index.
+     * @@author A0144750J
+     */
+    public static TestItem[] doneItemFromList(final TestItem[] list, int targetIndexInOneIndexedFormat) {
+        return doneItemsFromList(list, targetIndexInOneIndexedFormat-1);
     }
 
     /**

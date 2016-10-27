@@ -7,6 +7,8 @@ package seedu.address.logic.commands;
 public class IncorrectCommand extends Command {
 
     public final String feedbackToUser;
+    public static final String MESSAGE_UNDO_FAILURE = "";
+
 
     public IncorrectCommand(String feedbackToUser){
         this.feedbackToUser = feedbackToUser;
@@ -14,9 +16,14 @@ public class IncorrectCommand extends Command {
 
     @Override
     public CommandResult execute() {
+    	hasUndo = false;
         indicateAttemptToExecuteIncorrectCommand();
         return new CommandResult(feedbackToUser);
     }
 
+    @Override
+    public CommandResult undo() {
+        return new CommandResult(MESSAGE_UNDO_FAILURE);
+    }
 }
 

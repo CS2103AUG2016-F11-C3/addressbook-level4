@@ -68,15 +68,30 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         this.description = desc;
         this.endDate = end;
         this.tags = new UniqueTagList(tags);
-
+    }
+    
+    /**
+	 * constructor for an item with all fields: description, start/end date, tags and isDone
+	 * 
+	 * @param desc
+	 * @param end
+	 * @@author A0144750J
+	 */
+    public Item(Description desc, LocalDateTime start, LocalDateTime end, UniqueTagList tags, boolean isDone) {
+        assert !CollectionUtil.isAnyNull(desc);
+        this.description = desc;
+        this.endDate = end;
+        this.tags = new UniqueTagList(tags);
+        this.setIsDone(isDone);
     }
     
     /**
      * Copy constructor to build an Item from a ReadOnlyItem
-     * @param source: ReadOnlyItem that can return Description, startDate and EndDate
+     * @param source: ReadOnlyItem that can return Description, startDate, endDate and isDone;
+     * @@author A0144750J
      */
     public Item(ReadOnlyItem source) {
-        this(source.getDescription(), source.getStartDate(), source.getEndDate(), source.getTags());
+        this(source.getDescription(), source.getStartDate(), source.getEndDate(), source.getTags(), source.getIsDone());
     }
 
     @Override
