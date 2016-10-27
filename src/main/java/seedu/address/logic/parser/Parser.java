@@ -55,6 +55,8 @@ public class Parser {
 
     private static final Pattern ITEM_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"(.*)");
     private static final Pattern TASK_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"");
+    
+    private static final Pattern ITEM_EDIT_ARGS_FORMAT = Pattern.compile("(?<targetIndex>\\d+)\\s+(?<arguments>.*)");
 
     private static final String TASK_NO_DATE_DATA = "nothing";
 
@@ -66,7 +68,6 @@ public class Parser {
     private static final Pattern COMMAND_TAG_SEARCH_FORMAT = Pattern.compile("#([^ ]+)");
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-	private static final Pattern ITEM_EDIT_ARGS_FORMAT = Pattern.compile("(?<targetIndex>\\d+) edit (?<arguments>.*)");
 
     public enum Field {
         NAME("name"), START_DATE("start_date"), END_DATE("end_date"), START_TIME("start_time"), END_TIME(
@@ -113,12 +114,12 @@ public class Parser {
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
 
-		case EditCommand.COMMAND_WORD:
-			return prepareEdit(arguments);
-
 		case FindCommand.COMMAND_WORD:
             return prepareFind(arguments);
 
+        case EditCommand.COMMAND_WORD:
+            return prepareEdit(arguments);
+            
         case ListCommand.COMMAND_WORD:
             return new ListCommand();
 
@@ -253,6 +254,7 @@ public class Parser {
      *            full command args string
      * @return the prepared done command
      * @author darren
+     * @@author A0147609X
      */
     private Command prepareDone(String args) {
         Optional<Integer> index = parseIndex(args);
@@ -330,12 +332,35 @@ public class Parser {
     }
 
     /**
-     * Extracts a valid DateTime from the provided arguments and adds them to the keywordSet,
-     * then returns true. If the arguments do not form a valid DateTime, returns false. 
+     * Parses arguments in the context of the Edit item command
+     * 
      * @param args
-     * @param keywordSet
      * @return
+     * @author yuchuan
      */
+    private Command prepareEdit(String args) {
+        final Matcher matcher = ITEM_EDIT_ARGS_FORMAT.matcher(args.trim());
+        if (!matcher.matches()) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        }
+        int index = Integer.parseInt(matcher.group("targetIndex"));
+        ArrayList<String> arguments = parseMultipleParameters(matcher.group("arguments"), ',');
+        try {
+            return new EditCommand(index, arguments);
+        } catch (IllegalValueException e) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, e.getMessage()));
+        }
+    }
+
+	/*
+	 * Extracts a valid DateTime from the provided arguments and adds them to
+	 * the keywordSet, then returns true. If the arguments do not form a valid
+	 * DateTime, returns false.
+	 * 
+	 * @param args
+	 * @param keywordSet
+	 * @return
+	 */
     private boolean extractDateTimeFromKeywords(String args, final Set<String> keywordSet) {
         assert args != null;
         assert !args.isEmpty();
@@ -370,26 +395,6 @@ public class Parser {
         }
         return args;
     }
-
-	/**
-	 * Parses arguments in the context of the Edit item command
-	 * 
-	 * @param args
-	 * @return
-	 */
-	private Command prepareEdit(String args) {
-		final Matcher matcher = ITEM_EDIT_ARGS_FORMAT.matcher(args.trim());
-		if (!matcher.matches()) {
-			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
-		}
-		int index = Integer.parseInt(matcher.group("targetIndex"));
-		ArrayList<String> arguments = parseMultipleParameters(matcher.group("arguments"), ',');
-		try {
-			return new EditCommand(index, arguments);
-		} catch (IllegalValueException e) {
-			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, e.getMessage()));
-		}
-	}
 
 
 	/**

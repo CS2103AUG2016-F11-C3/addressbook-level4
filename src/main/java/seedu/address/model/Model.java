@@ -1,5 +1,6 @@
 package seedu.address.model;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import javafx.collections.transformation.FilteredList;
@@ -25,6 +26,15 @@ public interface Model {
     /** Adds the given person */
     void addItem(Item item) throws UniqueItemList.DuplicateItemException;
     
+    /** Edit the given Item's description */
+    void setItemDesc(Item item, String desc);
+    
+    /** Edit the given Item's start datetime */
+    void setItemStart(Item item, LocalDateTime start);
+    
+    /** Edit the given Item's end datetime */
+    void setItemEnd(Item item, LocalDateTime end);
+    
     /** Set the item isDone field to true */
     // @@author A0144750J
     void setDoneItem(Item item);
@@ -40,8 +50,7 @@ public interface Model {
     /** Add the command to stack for undo */
     // @@author A0144750J
     Command returnCommandFromStack();
-    /** Set item to be done */
-    void doneItem(ReadOnlyItem item);
+
 
     /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList();
