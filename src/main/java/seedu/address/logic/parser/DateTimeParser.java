@@ -141,6 +141,17 @@ public class DateTimeParser {
     public static boolean isToday(LocalDateTime ldt) {
         return isSameDay(ldt, LocalDateTime.now());
     }
+    
+    /**
+     * Check if the given java.time.LocalDateTime object is the same
+     * date as the next day relative to the local system time
+     * @param ldt
+     * @return true if the LocalDateTime is for tomorrow, false otherwise
+     * @author darren
+     */
+    public static boolean isTomorrow(LocalDateTime ldt) {
+        return isSameDay(ldt, LocalDateTime.now().plusDays(1L));
+    }
 
     /**
      * Helper method for casting java.util.Date to java.time.LocalDateTime
