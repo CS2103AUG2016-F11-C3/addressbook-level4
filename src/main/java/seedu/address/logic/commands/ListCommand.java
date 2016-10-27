@@ -9,7 +9,7 @@ public class ListCommand extends Command {
     public static final String MESSAGE_UNDO_FAILURE = "";
 
 
-    public static final String MESSAGE_SUCCESS = "Listed all items %1$s";
+	public static final String MESSAGE_SUCCESS = "Listed all items of type %1$s";
     public static final String MESSAGE_INVALID_TYPE = "List argument is invalid";    
     
     public static final Object MESSAGE_USAGE = COMMAND_WORD + " lists items that match the given parameter "
@@ -63,7 +63,7 @@ public class ListCommand extends Command {
     public CommandResult execute() {
         model.updateFilteredListDefaultPredicate(itemType.getTypeName());
     	hasUndo = false;
-        return new CommandResult(MESSAGE_SUCCESS);
+		return new CommandResult(String.format(MESSAGE_SUCCESS, itemType));
     }
 
     @Override
