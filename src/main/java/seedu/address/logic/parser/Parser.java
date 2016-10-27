@@ -248,6 +248,7 @@ public class Parser {
      *            full command args string
      * @return the prepared done command
      * @author darren
+     * @@author A0147609X
      */
     private Command prepareDone(String args) {
         Optional<Integer> index = parseIndex(args);
@@ -342,6 +343,7 @@ public class Parser {
      *            delimiting character
      * @return ArrayList<String> of parameters
      * @author darren
+     * @@author A0147609X
      */
     public static ArrayList<String> parseMultipleParameters(String params, char delimiter) {
         CSVParser parser = new CSVParser(delimiter);
@@ -369,6 +371,7 @@ public class Parser {
      *            an ArrayList<String> of field names
      * @return true if all fields are valid, false otherwise
      * @author darren
+     * @@author A0147609X-unused
      */
     private static boolean fieldsAreValid(ArrayList<String> fieldNames) {
         assert fieldNames != null;
