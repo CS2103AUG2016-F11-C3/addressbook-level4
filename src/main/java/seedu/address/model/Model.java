@@ -6,6 +6,7 @@ import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import javafx.collections.transformation.FilteredList;
 
@@ -24,6 +25,15 @@ public interface Model {
 
     /** Adds the given person */
     void addItem(Item item) throws UniqueItemList.DuplicateItemException;
+    
+    /** Edit the given Item's description */
+    void setItemDesc(Item item, String desc);
+    
+    /** Edit the given Item's start datetime */
+    void setItemStart(Item item, LocalDateTime start);
+    
+    /** Edit the given Item's end datetime */
+    void setItemEnd(Item item, LocalDateTime end);
     
     /** Set the item isDone field to true */
     void setDoneItem(Item item);
