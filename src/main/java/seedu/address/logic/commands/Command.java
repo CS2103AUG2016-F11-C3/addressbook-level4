@@ -11,6 +11,14 @@ import seedu.address.model.Model;
 public abstract class Command {
     protected Model model;
 
+	/**
+	 * Returns whether a command should result in clearing the command box.
+	 * Defaults to true except where there is custom logic indicating otherwise.
+	 * 
+	 */
+	public boolean ClearOnExecute() {
+		return true;
+	}
     /**
      * Constructs a feedback message to summarise an operation that displayed a listing of persons.
      *
