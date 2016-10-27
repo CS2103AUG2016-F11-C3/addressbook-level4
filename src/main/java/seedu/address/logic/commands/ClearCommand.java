@@ -1,10 +1,10 @@
 package seedu.address.logic.commands;
 
-import java.util.List;
-
-import seedu.address.model.ReadOnlyTaskBook;
 import seedu.address.model.TaskBook;
+import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
+import seedu.address.model.item.UniqueItemList;
+import seedu.address.model.item.UniqueItemList.DuplicateItemException;
 
 /**
  * Clears the address book.
@@ -15,8 +15,10 @@ public class ClearCommand extends Command {
     public static final String MESSAGE_SUCCESS = "To-do list has been cleared!";
     public static final String MESSAGE_UNDO_SUCCESS = "Undo clear task list";
 	public static final String MESSAGE_UNDO_FAILURE = "";
+	public static final String MESSAGE_DUPLICATE_ITEM = "This task already exists in the to-do list";
+
     
-    private ReadOnlyTaskBook backUpTaskbook;
+    private UniqueItemList savedList;
 
     public ClearCommand() {    	
     }
@@ -25,7 +27,15 @@ public class ClearCommand extends Command {
     public CommandResult execute() {
         assert model != null;
         hasUndo = true;
-        backUpTaskbook = model.getTaskBook();
+        savedList = new UniqueItemList();
+        UniqueItemList oldList = model.getTaskBook().getUniqueItemList();
+        for (ReadOnlyItem i: oldList) {
+        	try {
+				savedList.add(new Item(i));
+			} catch (DuplicateItemException e) {
+				return new CommandResult(MESSAGE_DUPLICATE_ITEM);
+			}
+        }
         model.resetData(TaskBook.getEmptyTaskBook());
         return new CommandResult(MESSAGE_SUCCESS);
     }
@@ -36,8 +46,8 @@ public class ClearCommand extends Command {
      */
 	@Override
 	public CommandResult undo() {
-		assert backUpTaskbook != null;
-		model.resetData(backUpTaskbook);
+		assert savedList != null;
+		model.resetData(new TaskBook(savedList));
 		return new CommandResult(MESSAGE_UNDO_SUCCESS);
 	}
     
