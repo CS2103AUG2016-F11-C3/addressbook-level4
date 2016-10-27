@@ -88,6 +88,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     public Item(Description desc, LocalDateTime start, LocalDateTime end, UniqueTagList tags, boolean isDone) {
         assert !CollectionUtil.isAnyNull(desc);
         this.description = desc;
+		this.startDate = start;
         this.endDate = end;
         this.tags = new UniqueTagList(tags);
         this.setIsDone(isDone);
@@ -145,7 +146,8 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 	 * @return boolean, whether the item is or isn't
 	 * @@author A0092390E
 	 */
-    public boolean is(String query){
+    @Override
+	public boolean is(String query){
     	query = query.toLowerCase();
 		switch (query) {
 		case "done":
@@ -173,6 +175,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 	 *         [Event|Floating Task|Task]
 	 * @@author A0092390E
 	 */
+	@Override
 	public String getType() {
 		if (this.getStartDate() != null) {
 			return "Event";
