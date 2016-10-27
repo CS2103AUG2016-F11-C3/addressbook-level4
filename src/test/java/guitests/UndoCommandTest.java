@@ -2,17 +2,16 @@ package guitests;
 
 import guitests.guihandles.ItemCardHandle;
 import org.junit.Test;
-import seedu.address.logic.commands.AddCommand;
-import seedu.address.logic.commands.ClearCommand;
-import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.UndoCommand;
-import seedu.address.commons.core.Messages;
 import seedu.address.testutil.TestItem;
 import seedu.address.testutil.TestUtil;
-
 import static org.junit.Assert.assertTrue;
-import static seedu.address.logic.commands.DeleteCommand.MESSAGE_DELETE_ITEM_SUCCESS;
 
+/**
+ * GUI test for undo commands for each: Add, Delete, Clear, Done and Edit command
+ * @author Darren Le
+ * @@author A0144750J
+ */
 public class UndoCommandTest extends TaskBookGuiTest {
 
     @Test
@@ -57,10 +56,18 @@ public class UndoCommandTest extends TaskBookGuiTest {
     
     @Test
     public void undo_clear() {
+    	// clear a non-empty message and undo
         assertTrue(itemListPanel.isListMatching(td.getTypicalItems()));
         commandBox.runCommand("clear");
+        // undo should succeed
         commandBox.runCommand("undo");
         assertTrue(itemListPanel.isListMatching(td.getTypicalItems()));
+        
+    }
+    
+    @Test
+    public void undo_done() {
+    	
     }
  
     private void assertNotFound(TestItem itemToFind, TestItem... currentList) {
