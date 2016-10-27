@@ -14,7 +14,6 @@ public class ClearCommand extends Command {
     public static final String COMMAND_WORD = "clear";
     public static final String MESSAGE_SUCCESS = "To-do list has been cleared!";
     public static final String MESSAGE_UNDO_SUCCESS = "Undo clear task list";
-	public static final String MESSAGE_UNDO_FAILURE = "";
 	public static final String MESSAGE_DUPLICATE_ITEM = "This task already exists in the to-do list";
 
     
