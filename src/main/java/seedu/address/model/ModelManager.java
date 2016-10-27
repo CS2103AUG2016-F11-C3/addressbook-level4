@@ -49,17 +49,19 @@ public class ModelManager extends ComponentManager implements Model {
         taskBook = new TaskBook(src);
         filteredItems = new FilteredList<>(taskBook.getItems());
         commandStack = new Stack<>();
+        this.defaultPredicate = new QualifierPredicate(new TypeQualifier("item"));
     }
 
     public ModelManager() {
         this(new TaskBook(), new UserPrefs());
-        this.defaultPredicate = null;
+        this.defaultPredicate = new QualifierPredicate(new TypeQualifier("item"));
     }
 
     public ModelManager(ReadOnlyTaskBook initialData, UserPrefs userPrefs) {
         taskBook = new TaskBook(initialData);
         filteredItems = new FilteredList<>(taskBook.getItems());
         commandStack = new Stack<>();
+        this.defaultPredicate = new QualifierPredicate(new TypeQualifier("item"));
     }
 
     @Override

@@ -268,7 +268,7 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, 2);
-        assertCommandBehavior("list", ListCommand.MESSAGE_SUCCESS, expectedAB, expectedList);
+        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,""), expectedAB, expectedList);
     }
 
     /**
@@ -465,16 +465,16 @@ public class LogicManagerTest<E> {
     }
 
     @Test
-    public void execute_find_matchesIfAnyKeywordPresent() throws Exception {
+    public void execute_find_matchesIfAllKeywordsPresent() throws Exception {
         TestDataHelper helper = new TestDataHelper();
-        Item pTarget1 = helper.generateItemWithName("bla bla KEY bla");
-        Item pTarget2 = helper.generateItemWithName("bla rAnDoM bla bceofeia");
-        Item pTarget3 = helper.generateItemWithName("key key");
-        Item p1 = helper.generateItemWithName("sduauo");
+        Item pTarget = helper.generateItemWithName("bla rAnDoM bla key bceofeia");
+        Item p1 = helper.generateItemWithName("bla bla random bla");
+        Item p2 = helper.generateItemWithName("key key");
+        Item p3 = helper.generateItemWithName("sduauo");
 
-        List<Item> fourItems = helper.generateItemList(pTarget1, p1, pTarget2, pTarget3);
+        List<Item> fourItems = helper.generateItemList(p2, p1, p3, pTarget);
         TaskBook expectedAB = helper.generateTaskBook(fourItems);
-        List<Item> expectedList = helper.generateItemList(pTarget1, pTarget2, pTarget3);
+        List<Item> expectedList = helper.generateItemList(pTarget);
         helper.addToModel(model, fourItems);
 
         assertCommandBehavior("find \"key\" \"rAnDoM\"", Command.getMessageForItemListShownSummary(expectedList.size()),
