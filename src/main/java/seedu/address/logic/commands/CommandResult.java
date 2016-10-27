@@ -9,10 +9,12 @@ public class CommandResult {
 
     public final String feedbackToUser;
 	protected ReadOnlyItem item;
+	protected boolean clear;
 
     public CommandResult(String feedbackToUser) {
         assert feedbackToUser != null;
         this.feedbackToUser = feedbackToUser;
+		this.clear = false;
 		this.item = null;
 	}
 
@@ -20,8 +22,16 @@ public class CommandResult {
 		assert feedbackToUser != null;
 		this.feedbackToUser = feedbackToUser;
 		this.item = itemToComplete;
+		this.clear = false;
 	}
 
+	public void setClear(boolean bool) {
+		this.clear = bool;
+	}
+
+	public boolean getClear() {
+		return this.clear;
+	}
 	public ReadOnlyItem getItem() {
 		return this.item;
     }

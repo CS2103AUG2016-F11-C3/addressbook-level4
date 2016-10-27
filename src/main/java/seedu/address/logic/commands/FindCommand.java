@@ -32,7 +32,9 @@ public class FindCommand extends Command {
     @Override
     public CommandResult execute() {
         model.updateFilteredItemList(keywords);
-        return new CommandResult(getMessageForItemListShownSummary(model.getFilteredItemList().size()));
+		CommandResult res = new CommandResult(getMessageForItemListShownSummary(model.getFilteredItemList().size()));
+		res.setClear(false);
+		return res;
     }
 
 }
