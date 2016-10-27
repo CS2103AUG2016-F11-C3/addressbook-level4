@@ -17,30 +17,18 @@ public class ListCommand extends Command {
     public static final Object MESSAGE_USAGE = COMMAND_WORD + " lists items that match the given parameter "
             + "Parameter: \"OPTIONAL_TYPE_ARGUMENT (task, deadline, event)\" "
             + "Example: list task";
-    
-    private static final String LIST_TYPE_DEADLINE = "DEADLINE";
-    private static final String LIST_TYPE_EVENT = "EVENT";
-    private static final String LIST_TYPE_TASK = "TASK";
-    private static final String LIST_TYPE_ALL = "";
-
-    
-    private String limiter;
+        
+    private String itemType;
     
 
     public ListCommand(String argument) {
-        this.limiter = argument;
+        this.itemType = argument;
     }
 
     @Override
     //@@author A0131560U
     public CommandResult execute() {
-        switch (limiter){
-            case LIST_TYPE_DEADLINE:    model.updateFilteredListToShowDeadlines();
-            case LIST_TYPE_EVENT:       model.updateFilteredListToShowEvents();
-            case LIST_TYPE_TASK:        model.updateFilteredListToShowTasks();
-            case LIST_TYPE_ALL:         model.updateFilteredListToShowAll();
-            default: return new CommandResult(MESSAGE_INVALID_TYPE);
-        }
+        model.updateFilteredListDefaultPredicate(itemType);
         return new CommandResult(MESSAGE_SUCCESS);
     }
 }
