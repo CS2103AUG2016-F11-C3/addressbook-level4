@@ -39,14 +39,15 @@ public class DateTimeParser {
 
     public static final String EMPTY_STRING = "";
     public static final String SINGLE_WHITESPACE = " ";
-    
+
     // handy strings for making pretty dates
     public static final String TODAY_DATE_REF = "Today";
     public static final String TOMORROW_DATE_REF = "Tomorrow";
     public static final String NEXT_WEEK_REF = "Next" + SINGLE_WHITESPACE;
     public static final String THIS_WEEK_REF = "This" + SINGLE_WHITESPACE;
     public static final String PRETTY_COMMA_DELIMITER = "," + SINGLE_WHITESPACE;
-    public static final String PRETTY_TO_DELIMITER = SINGLE_WHITESPACE + "-" + SINGLE_WHITESPACE;
+    public static final String PRETTY_TO_DELIMITER = SINGLE_WHITESPACE + "-"
+            + SINGLE_WHITESPACE;
 
     // DateTime formatting patterns
     public static final DateTimeFormatter ABRIDGED_DATE_FORMAT = DateTimeFormatter
@@ -234,18 +235,20 @@ public class DateTimeParser {
     public static String extractPrettyDateTime(LocalDateTime ldt) {
         // special case for today/tomorrow relative to local system time
         if (isToday(ldt)) {
-            return TODAY_DATE_REF + PRETTY_COMMA_DELIMITER + extractTwelveHourTime(ldt);
+            return TODAY_DATE_REF + PRETTY_COMMA_DELIMITER
+                    + extractTwelveHourTime(ldt);
         }
 
         if (isTomorrow(ldt)) {
-            return TOMORROW_DATE_REF + PRETTY_COMMA_DELIMITER + extractTwelveHourTime(ldt);
+            return TOMORROW_DATE_REF + PRETTY_COMMA_DELIMITER
+                    + extractTwelveHourTime(ldt);
         }
 
         // add relative prefix (this/next <day of week>) if applicable
         if (computeDaysTo(ldt) < 14) {
             // is within the next two weeks
-            return makeRelativePrefix(ldt) + extractLongDayOfWeek(ldt) + PRETTY_COMMA_DELIMITER
-                    + extractTwelveHourTime(ldt);
+            return makeRelativePrefix(ldt) + extractLongDayOfWeek(ldt)
+                    + PRETTY_COMMA_DELIMITER + extractTwelveHourTime(ldt);
         }
 
         // explicit date; no relative prefix
@@ -257,8 +260,8 @@ public class DateTimeParser {
             // different years in start and end datetimes
             prettyDate = ldt.toLocalDate().format(EXPLICIT_DATE_FORMAT);
         }
-        return extractShortDayOfWeek(ldt) + SINGLE_WHITESPACE + prettyDate + PRETTY_COMMA_DELIMITER
-                + extractTwelveHourTime(ldt);
+        return extractShortDayOfWeek(ldt) + SINGLE_WHITESPACE + prettyDate
+                + PRETTY_COMMA_DELIMITER + extractTwelveHourTime(ldt);
     }
 
     /**
