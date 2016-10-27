@@ -135,6 +135,8 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 		switch (query) {
 		case "done":
 			return this.getIsDone();
+		case "undone":
+		    return !this.getIsDone();
 		case "event":
 			return this.getStartDate() != null;
 		case "task":
@@ -142,6 +144,8 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 		case "overdue":
 			return this.getEndDate() != null && this.getIsDone() == false
 					&& this.getEndDate().isAfter(LocalDateTime.now());
+		case "item":
+		    return true;
 		default:
 			return false;
 		}
