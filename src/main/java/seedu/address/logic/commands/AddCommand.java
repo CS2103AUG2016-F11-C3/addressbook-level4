@@ -49,7 +49,14 @@ public class AddCommand extends Command {
 		DateTimeParser parser = new DateTimeParser(timeStr);
 		LocalDateTime startTimeObj = parser.extractStartDate();
 		LocalDateTime endTimeObj = parser.extractEndDate();
-		this.toAdd = new Item(descriptionObj, startTimeObj, endTimeObj);
+		if(endTimeObj == null && startTimeObj != null) {
+		    // only one date token and it's parsed as startTime
+		    // use that as the end datetime instead and leave start
+		    // datetime as null
+		    this.toAdd = new Item(descriptionObj, null, startTimeObj);
+		} else {
+		    this.toAdd = new Item(descriptionObj, startTimeObj, endTimeObj);
+		}
 	}
 
 	@Override
