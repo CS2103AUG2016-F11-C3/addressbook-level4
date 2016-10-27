@@ -24,8 +24,8 @@ public class AddCommand extends Command {
     public static final String COMMAND_WORD = "add";
 
 	public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a task to the to-do list. "
-			+ "Parameters: \"EVENT_NAME\" from START_TIME to END_TIME on DATE" + "Example: " + COMMAND_WORD
-			+ "\"Be awesome\" from 1300 to 2359 on 07/10/2016";
+			+ "Parameters: \"EVENT_NAME\" from START_TIME to END_TIME on DATE #TAGS" + "Example: " + COMMAND_WORD
+			+ "\"Be awesome\" from 1300 to 2359 on 07/10/2016 #cool #nice";
 
 	public static final String MESSAGE_SUCCESS = "New task added: %1$s";
 	public static final String MESSAGE_SUCCESS_TIME_NULL = "START or END time not found but new task added!";
