@@ -33,6 +33,10 @@
                                 </HBox>
                             </children>
                         </HBox>
+	                    <Text fx:id="dates">
+	                    </Text>
+	                    <Text fx:id="relativeDate">
+	                    </Text>
                     </children>
                 </VBox>
             </children>
