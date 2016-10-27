@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javafx.collections.transformation.FilteredList;
@@ -100,19 +101,20 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredItemList(new PredicateExpression(new DescriptionAndTagQualifier(keywords)));
     }
 
-    private void updateFilteredItemList(Expression expression) {
-        filteredItems.setPredicate(expression::satisfies);
+	private void updateFilteredItemList(Predicate pred) {
+		(filteredItems.getPredicate()).and(pred);
+		filteredItems.setPredicate(pred);
     }
 
     //========== Inner classes/interfaces used for filtering ==================================================
 
     interface Expression {
-        boolean satisfies(ReadOnlyItem item);
+		boolean satisfies(ReadOnlyItem item);
         @Override
 		String toString();
     }
 
-    private class PredicateExpression implements Expression {
+	private class PredicateExpression implements Expression, Predicate<ReadOnlyItem> {
 
         private final Qualifier qualifier;
 
@@ -121,7 +123,7 @@ public class ModelManager extends ComponentManager implements Model {
         }
 
         @Override
-        public boolean satisfies(ReadOnlyItem item) {
+		public boolean satisfies(ReadOnlyItem item) {
             return qualifier.run(item);
         }
 
@@ -129,6 +131,12 @@ public class ModelManager extends ComponentManager implements Model {
         public String toString() {
             return qualifier.toString();
         }
+
+		@Override
+		public boolean test(ReadOnlyItem item) {
+			return qualifier.run(item);
+		}
+
     }
 
     interface Qualifier {
