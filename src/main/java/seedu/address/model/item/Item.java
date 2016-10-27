@@ -134,6 +134,23 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     }
 
 	/**
+	 * Returns the type of the item. Useful for Item cards and messages.
+	 * 
+	 * @return The type of the item, computed based on start/end dates.
+	 *         [Event|Floating Task|Task]
+	 * @@author A0092390E
+	 */
+	public String getType() {
+		if (this.getStartDate() != null) {
+			return "Event";
+		} else if (this.getEndDate() == null) {
+			return "Floating Task";
+		} else {
+			return "Task";
+		}
+	}
+
+	/**
 	 * Replaces this Item's tags with the tags in the argument tag list.
 	 */
     public void setTags(UniqueTagList replacement) {
@@ -260,7 +277,8 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
      * @return
      * @author darren
      */
-    public String extractPrettyItemCardDateTime() {
+    @Override
+	public String extractPrettyItemCardDateTime() {
         return DateTimeParser.extractPrettyItemCardDateTime(this.startDate, this.endDate);
     }
     
@@ -298,7 +316,8 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
      * @return EMPTY_STRING if datetime is null
      * @author darren
      */
-    public String extractPrettyRelativeEndDateTime() {
+    @Override
+	public String extractPrettyRelativeEndDateTime() {
         if(this.endDate == null) {
             return extractPrettyRelativeStartDateTime();
         }
