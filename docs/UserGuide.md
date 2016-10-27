@@ -139,20 +139,18 @@ add "Schedule CS2103 Consult"
 
 ### Updating an Event
 #### Editing Event Details
-Sometimes it is necessary to change the details of your event because life.
+Sometimes it is necessary to change the details of your event because life. Luckily, you can edit an item's description, start date/time and end date/time.
 
 ```bash
 # format
-edit EVENT_ID FIELD_NAME:NEW_DETAIL
 edit CONTEXT_ID FIELD_NAME:NEW_DETAIL
 ```
-Fields: [`FIELD_NAME`](#field-name), [`EVENT_ID`](#event-id), [`CONTEXT_ID`](#context-id), `NEW_DETAIL`
+Fields: [`CONTEXT_ID`](#context-id), [`FIELD_NAME`](#field-name), `NEW_DETAIL`
 
 You can change multiple fields for the same event at the same time by separating multiple `FIELD_NAME:NEW_DETAIL` parameters with a comma.
 
 ```bash
 # examples
-edit 2412 start :today 1600
 edit 10 by: 29 October 5pm
 edit 4 end:1/2/2016 10:51am # edits the forth item currently listed
 edit 5 period : 11 nov 4:30pm to 6:30pm
