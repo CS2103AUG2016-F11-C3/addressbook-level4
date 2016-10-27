@@ -86,7 +86,7 @@ public class DateTimeParser {
         assert this.dates != null;
 
         if (this.dates.size() < 2) {
-            return extractStartDate();
+            return null;
         }
 
         return changeDateToLocalDateTime(this.dates.get(1));
