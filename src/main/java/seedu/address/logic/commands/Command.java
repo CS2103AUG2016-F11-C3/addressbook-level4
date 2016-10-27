@@ -32,15 +32,14 @@ public abstract class Command {
 
     /**
      * Executes the command and returns the result message.
-     *
      * @return feedback message of the operation result for display
      */
     public abstract CommandResult execute();
     
     /**
-     * Undo the result of execute.
-     *
+     * Undo the result of previous execute and returns message.
      * @return feedback message of the operation result for display
+     * @@author A0144750J
      */
     public abstract CommandResult undo();
 

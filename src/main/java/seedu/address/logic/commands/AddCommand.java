@@ -15,6 +15,7 @@ import seedu.address.model.tag.UniqueTagList.DuplicateTagException;
 
 /**
  * Adds a person to the address book.
+ * @@author A0144750J
  */
 public class AddCommand extends Command {
 	

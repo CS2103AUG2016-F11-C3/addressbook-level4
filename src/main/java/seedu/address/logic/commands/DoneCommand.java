@@ -6,6 +6,10 @@ import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 
+/**
+ * 
+ * @@author A0144750J
+ */
 public class DoneCommand extends Command {
 	public static final String COMMAND_WORD = "done";
 

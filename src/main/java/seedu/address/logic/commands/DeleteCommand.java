@@ -56,7 +56,9 @@ public class DeleteCommand extends Command {
 		return new CommandResult(String.format(MESSAGE_DELETE_ITEM_SUCCESS, itemToDelete), itemToDelete);
     }
 
-
+    /**
+     * @@author A0144750J
+     */
 	@Override
 	public CommandResult undo() {
 		assert model != null;

@@ -27,6 +27,9 @@ public class LogicManager extends ComponentManager implements Logic {
         this.parser = new Parser();
     }
 
+    /**
+     * @@author A0144750J
+     */
     @Override
     public CommandResult execute(String commandText) {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
