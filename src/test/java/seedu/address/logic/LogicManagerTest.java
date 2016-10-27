@@ -267,7 +267,7 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, 2);
-        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,""), expectedAB, expectedList);
+        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"")), expectedAB, expectedList);
     }
 
     /**
