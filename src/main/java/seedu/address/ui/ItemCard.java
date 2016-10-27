@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import seedu.address.model.item.ReadOnlyItem;
+import seedu.address.model.tag.Tag;
 
 public class ItemCard extends UiPart implements Observer {
 
@@ -50,6 +51,7 @@ public class ItemCard extends UiPart implements Observer {
     public void initialize() {
     	tags.getChildren().clear();
 		tags.getChildren().addAll(this.getTypeLabel());
+		tags.getChildren().addAll(this.getTags());
 		description.setText(this.item.getDescription().getFullDescription());
         id.setText(displayedIndex + ". ");
 		dates.setText(item.extractPrettyItemCardDateTime());
@@ -70,25 +72,35 @@ public class ItemCard extends UiPart implements Observer {
         return FXML;
     }
 
+	/**
+	 * Adds the type and type-related tags to the item's list
+	 * 
+	 * @return
+	 */
 	private ArrayList<Label> getTypeLabel() {
 		ArrayList<Label> labelList = new ArrayList<>();
 		// To fix once we implement proper polymorphic Items
-		if (this.item.getStartDate() != null) {
-			Label newLabel = new Label("Event");
+		Label newLabel = new Label(this.item.getType());
+		newLabel.getStyleClass().add("lbl");
+		newLabel.getStyleClass().add("lbl-warning");
+		labelList.add(newLabel);
+		if (this.item.getIsDone()) {
+			newLabel = new Label("Done");
 			newLabel.getStyleClass().add("lbl");
-			newLabel.getStyleClass().add("lbl-warning");
+			newLabel.getStyleClass().add("lbl-success");
 			labelList.add(newLabel);
-		} else {
-			Label newLabel = new Label("Task");
+		}
+		return labelList;
+	}
+
+	private ArrayList<Label> getTags() {
+		ArrayList<Label> labelList = new ArrayList<>();
+		// To fix once we implement proper polymorphic Items
+		for (Tag tag : this.item.getTags()) {
+			Label newLabel = new Label(tag.tagName);
 			newLabel.getStyleClass().add("lbl");
-			newLabel.getStyleClass().add("lbl-warning");
+			newLabel.getStyleClass().add("lbl-info");
 			labelList.add(newLabel);
-			if (this.item.getIsDone()) {
-				newLabel = new Label("Done");
-				newLabel.getStyleClass().add("lbl");
-				newLabel.getStyleClass().add("lbl-success");
-				labelList.add(newLabel);
-			}
 		}
 		return labelList;
 	}
