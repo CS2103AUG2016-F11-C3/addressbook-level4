@@ -101,7 +101,7 @@ For an event with a definite start and end time, you can use the following synta
 add EVENT_NAME from DATETIME #optional #tags
 ```
 
-Fields: [`EVENT_NAME`], [`DATETIME`](#datetime), [`TAG(S)`](#tags)
+Fields: [`EVENT_NAME`](#descriptors), [`DATETIME`](#datetime), [`TAG(S)`](#tags)
 
 ```bash
 # examples
