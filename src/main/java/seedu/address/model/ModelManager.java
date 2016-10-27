@@ -1,10 +1,7 @@
 package seedu.address.model;
 
-import java.util.Comparator;
 import java.util.Set;
 import java.util.logging.Logger;
-
-import org.controlsfx.control.PropertySheet.Item;
 
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.ComponentManager;
@@ -12,6 +9,9 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.events.model.TaskBookChangedEvent;
 import seedu.address.commons.util.StringUtil;
+import seedu.address.logic.parser.DateTimeParser;
+import seedu.address.logic.parser.Parser;
+import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
 import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
@@ -87,14 +87,6 @@ public class ModelManager extends ComponentManager implements Model {
      * @@author A0131560U
      */
     public UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList() {
-        //TODO: implement Comparator in Item class
-        Comparator<Item> chronologicalComparator = new Comparator<Item>(){
-            @Override
-            public int compare(Item x, Item y) {
-                return x.compareTo(y);
-            }
-        };
-        //SortedList<Item> sortedList = new SortedList<>(filteredItems, chronologicalComparator);
         return new UnmodifiableObservableList<>(filteredItems);
     }
 
@@ -175,10 +167,19 @@ public class ModelManager extends ComponentManager implements Model {
 		}
 
 		public boolean search(ReadOnlyItem item){
-			if(true){
-				return StringUtil.containsIgnoreCase(item.getAsText(), keyword);
-			} else{
-				return StringUtil.containsIgnoreCase(item.getAsText(), keyword);
+			if(keyword.matches(Parser.COMMAND_DESCRIPTION_REGEX)){
+				return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(), 
+				        keyword.replace("\"", ""));
+			} else if (keyword.matches(Parser.COMMAND_TAG_REGEX)){
+				return StringUtil.containsIgnoreCase(item.getTags().listTags(), 
+				        keyword.replaceFirst("#", ""));
+			}
+			else {
+			    DateTimeParser parseDate = new DateTimeParser(keyword);
+			    return ((item.getStartDate() != null
+			            && DateTimeParser.isSameDay(item.getStartDate(), parseDate.extractStartDate())
+			            || (item.getEndDate() != null
+			            && DateTimeParser.isSameDay(item.getEndDate(),parseDate.extractStartDate()))));
 			}
 		}
 	}
