@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.*;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
@@ -488,6 +489,69 @@ public class LogicManagerTest {
 
         assertCommandBehavior("done 2", DoneCommand.MESSAGE_DONE_ITEM_FAIL, expectedTB, expectedItems);
 
+    }
+    
+    /**
+     * Test for invalid index input for edit command
+     * @throws Exception
+     * 
+     * @author darren
+     * @@author A0147609X
+     */
+    @Test
+    public void execute_editIndexNotFound_errorMessageShown() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        List<Item> itemList = helper.generateItemList(1);
+
+        // set taskbook state to one item
+        model.resetData(new TaskBook());
+        model.addItem(itemList.get(0));
+
+        String expectedMessage = MESSAGE_INVALID_ITEM_DISPLAYED_INDEX;
+        
+        assertCommandBehavior("edit 3 description:dog", expectedMessage, model.getTaskBook(), itemList);
+    }
+
+    /**
+     * @@author A0147609X
+     * @throws Exception
+     */
+    @Test
+    public void execute_editCommandSyntaxWrong_errorMessageShown() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        List<Item> itemList = helper.generateItemList(1);
+
+        // set taskbook state to one item
+        model.resetData(new TaskBook());
+        model.addItem(itemList.get(0));
+
+        String expectedMessage = String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
+        assertCommandBehavior("edit 1", expectedMessage, model.getTaskBook(), itemList);
+    }
+    
+    /**
+     * @author A0147609X
+     * @throws Exception
+     */
+    @Test
+    public void execute_editModifiesCorrectItem() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Item p1 = helper.generateItemWithName("bla bla KEY bla");
+        Item p2 = helper.generateItemWithName("bla KEY bla bceofeia");
+        Item p3 = helper.generateItemWithName("key key");
+        Item p4 = helper.generateItemWithName("KEy sduauo");
+        
+        String newDescription = "walk lion";
+        Item modified = helper.generateItemWithName(newDescription);
+
+        List<Item> fourItems = helper.generateItemList(p3, p1, p4, p2);
+        List<Item> expectedList = helper.generateItemList(modified, p1, p4, p2);
+        TaskBook expectedTB = helper.generateTaskBook(expectedList);
+        helper.addToModel(model, fourItems);
+
+        String editInputCommand = "edit 1 desc:" + newDescription;
+        String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, newDescription);
+        assertCommandBehavior(editInputCommand, expectedMessage, expectedTB, expectedList);
     }
 
     /**
