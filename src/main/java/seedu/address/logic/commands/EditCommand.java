@@ -18,8 +18,8 @@ public class EditCommand extends Command {
 	public static final String COMMAND_WORD = "edit";
 
 	public static final String MESSAGE_USAGE = COMMAND_WORD + "... edit ..." + ": Edits an existing item.\n"
-	        + "Syntax: for CONTEXT_ID edit FIELD:NEW_DETAIL\n"
-			+ "Example: " + COMMAND_WORD + " 2 edit start:2000 on 07/10/2016";
+	        + "Syntax: edit CONTEXT_ID FIELD:NEW_DETAIL\n"
+			+ "Example: " + COMMAND_WORD + " 2 start:tomorrow 6pm";
 
 	public static final String MESSAGE_SUCCESS = "Successfully edited: %1$s";
 	public static final String MESSAGE_DUPLICATE_ITEM = "This task already exists in the to-do list";
