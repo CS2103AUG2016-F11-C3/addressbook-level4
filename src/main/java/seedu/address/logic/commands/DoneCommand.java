@@ -35,7 +35,6 @@ public class DoneCommand extends Command {
 			return new CommandResult(Messages.MESSAGE_INVALID_ITEM_DISPLAYED_INDEX);
 		}
 		Item itemToComplete = lastShownList.get(targetIndex - 1);
-
 		if (itemToComplete.getIsDone()) {
 			hasUndo = false;
 			return new CommandResult(MESSAGE_DONE_ITEM_FAIL);

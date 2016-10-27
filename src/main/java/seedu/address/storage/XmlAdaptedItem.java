@@ -1,7 +1,6 @@
 package seedu.address.storage;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.parser.DateTimeParser;
 import seedu.address.model.item.*;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
@@ -42,7 +41,7 @@ public class XmlAdaptedItem {
 
     /**
      * Converts a given Item into this class for JAXB use.
-     *
+     * @@author A0144750J
      * @param source future changes to this will not affect the created XmlAdaptedPerson
      */
     public XmlAdaptedItem(ReadOnlyItem source) {
@@ -76,7 +75,7 @@ public class XmlAdaptedItem {
 
     /**
      * Converts this jaxb-friendly adapted item object into the model's Item object.
-     *
+     * @@author A0144750J
      * @throws IllegalValueException if there were any data constraints violated in the adapted person
      */
     public Item toModelType() throws IllegalValueException {
@@ -98,6 +97,7 @@ public class XmlAdaptedItem {
         	end = LocalDateTime.parse(endDate, formatter);
         }
         // extract isDone from XML data
+        assert !this.isDone.isEmpty();
         if (this.isDone.equals("true")) {
         	isDone = true;
         } else {
