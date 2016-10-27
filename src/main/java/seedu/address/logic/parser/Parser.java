@@ -22,6 +22,7 @@ import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.DoneCommand;
+import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
@@ -49,6 +50,8 @@ public class Parser {
 
     private static final Pattern ITEM_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"(.*)");
     private static final Pattern TASK_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"");
+    
+    private static final Pattern ITEM_EDIT_ARGS_FORMAT = Pattern.compile("(?<targetIndex>\\d+)\\s+(?<arguments>.*)");
 
     private static final String TASK_NO_DATE_DATA = "nothing";
 
@@ -108,6 +111,9 @@ public class Parser {
         case FindCommand.COMMAND_WORD:
             return prepareFind(arguments);
 
+        case EditCommand.COMMAND_WORD:
+            return prepareEdit(arguments);
+            
         case ListCommand.COMMAND_WORD:
             return new ListCommand();
 
@@ -304,6 +310,27 @@ public class Parser {
         final String[] keywords = matcher.group("keywords").split("\\s+");
         final Set<String> keywordSet = new HashSet<>(Arrays.asList(keywords));
         return new FindCommand(keywordSet);
+    }
+
+    /**
+     * Parses arguments in the context of the Edit item command
+     * 
+     * @param args
+     * @return
+     * @author yuchuan
+     */
+    private Command prepareEdit(String args) {
+        final Matcher matcher = ITEM_EDIT_ARGS_FORMAT.matcher(args.trim());
+        if (!matcher.matches()) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+        }
+        int index = Integer.parseInt(matcher.group("targetIndex"));
+        ArrayList<String> arguments = parseMultipleParameters(matcher.group("arguments"), ',');
+        try {
+            return new EditCommand(index, arguments);
+        } catch (IllegalValueException e) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, e.getMessage()));
+        }
     }
 
     /**
