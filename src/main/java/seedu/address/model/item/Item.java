@@ -112,10 +112,30 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     public LocalDateTime getRecurEndDate() {
         return recurEndDate;
     }
+    
+	/**
+	 * Flexible property querying, to support listing and filtering
+	 * 
+	 * @return boolean, whether the item is or isn't
+	 * @@author A0092390E
+	 */
+    public boolean is(String query){
+    	query = query.toLowerCase();
+		switch (query) {
+		case "done":
+			return this.getIsDone();
+		case "event":
+			return this.getStartDate() != null;
+		case "task":
+			return this.getStartDate() == null;
+		default:
+			return false;
+		}
+    }
 
-    /**
-     * Replaces this Item's tags with the tags in the argument tag list.
-     */
+	/**
+	 * Replaces this Item's tags with the tags in the argument tag list.
+	 */
     public void setTags(UniqueTagList replacement) {
         tags.setTags(replacement);
 		setChanged();
