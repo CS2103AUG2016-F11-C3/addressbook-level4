@@ -5,6 +5,7 @@ import org.junit.Test;
 import seedu.address.logic.commands.AddCommand;
 import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.logic.commands.UndoCommand;
 import seedu.address.commons.core.Messages;
 import seedu.address.testutil.TestItem;
 import seedu.address.testutil.TestUtil;
@@ -16,15 +17,23 @@ public class UndoCommandTest extends TaskBookGuiTest {
 
     @Test
     public void undo_add() {
-        //add one item
+        // add one item
         TestItem[] currentList = td.getTypicalItems();
         TestItem itemToAdd = td.help;
         commandBox.runCommand(itemToAdd.getAddCommand());
         currentList = TestUtil.addItemsToList(currentList, itemToAdd);
         
-        // undo add and check
+        // undo should succeed
         commandBox.runCommand("undo");
         assertNotFound(itemToAdd, currentList);
+        
+        // add a bad command
+        commandBox.runCommand("add \"wrong format add command from 2pm to 3pm tomorrow");
+        
+        // undo should fail
+        commandBox.runCommand("undo");
+        assertResultMessage(UndoCommand.MESSAGE_FAILURE);
+
     }
     
     @Test
@@ -34,7 +43,7 @@ public class UndoCommandTest extends TaskBookGuiTest {
     	int targetIndex = 1;
         commandBox.runCommand("delete " + targetIndex);
 
-        // undo delete and check
+        // undo should succeed
         commandBox.runCommand("undo");
         assertResultMessage("Undo delete task: Always brush teeth");
     }
