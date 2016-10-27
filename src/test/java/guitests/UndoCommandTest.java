@@ -41,7 +41,10 @@ public class UndoCommandTest extends TaskBookGuiTest {
     
     @Test
     public void undo_clear() {
-    	
+        assertTrue(itemListPanel.isListMatching(td.getTypicalItems()));
+        commandBox.runCommand("clear");
+        commandBox.runCommand("undo");
+        assertTrue(itemListPanel.isListMatching(td.getTypicalItems()));
     }
  
     private void assertNotFound(TestItem itemToFind, TestItem... currentList) {
