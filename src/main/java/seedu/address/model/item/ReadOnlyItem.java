@@ -32,6 +32,12 @@ public interface ReadOnlyItem {
 		return null;
 	}
 	
+    /**
+     * Flexible property querying, to support listing and filtering
+     * Returns boolean, whether the item does or doesn't match query*/
+    public boolean is(String query);
+
+	
 	/**
 	 * The returned TagList is a deep copy of the internal TagList, changes on
 	 * the returned list will not affect the person's internal tags.

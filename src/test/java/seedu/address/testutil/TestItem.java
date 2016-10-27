@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.Observable;
 
+import seedu.address.logic.parser.DateTimeParser;
 import seedu.address.model.item.Description;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.tag.UniqueTagList;
@@ -114,5 +115,65 @@ public class TestItem extends Observable implements ReadOnlyItem {
         return sb.toString();
     }
 
+    @Override
+    public boolean is(String query) {
+        query = query.toLowerCase();
+        switch (query) {
+        case "done":
+            return this.getIsDone();
+        case "undone":
+            return !this.getIsDone();
+        case "event":
+            return this.getStartDate() != null;
+        case "task":
+            return this.getStartDate() == null;
+        case "overdue":
+            return this.getEndDate() != null && this.getIsDone() == false
+                    && this.getEndDate().isAfter(LocalDateTime.now());
+        case "item":
+            return true;
+        default:
+            return false;
+        }
 
+    }
+
+
+    /**
+     * Gets the pretty explicit datetime for this Item's end datetime
+     * e.g. "This Monday, 7:30PM" or "Mon 27 Nov, 9:30AM"
+     * @return
+     */
+    public String extractPrettyEndDateTime() {
+        return DateTimeParser.extractPrettyDateTime(this.endDate);
+    }
+    
+    /**
+     * Gets the pretty relative datetime for this Item's start datetime
+     * e.g. "3 weeks from now"
+     * @return EMPTY_STRING if datetime is null
+     * @author darren
+     */
+    public String extractPrettyRelativeStartDateTime() {
+        return DateTimeParser.extractPrettyRelativeDateTime(this.startDate);
+    }
+
+    /**
+     * Gets the pretty relative datetime for this Item's end datetime
+     * e.g. "3 weeks from now"
+     * @return EMPTY_STRING if datetime is null
+     * @author darren
+     */
+    @Override
+    public String extractPrettyRelativeEndDateTime() {
+        if(this.endDate == null) {
+            return extractPrettyRelativeStartDateTime();
+        }
+        return DateTimeParser.extractPrettyRelativeDateTime(this.endDate);
+    }
+
+    @Override
+    public String extractPrettyItemCardDateTime() {
+        return DateTimeParser.extractPrettyDateTime(this.startDate);
+    }
 }

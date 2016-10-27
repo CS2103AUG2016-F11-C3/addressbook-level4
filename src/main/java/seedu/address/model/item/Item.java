@@ -2,6 +2,7 @@ package seedu.address.model.item;
 
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Observable;
 
@@ -16,6 +17,13 @@ import seedu.address.model.tag.UniqueTagList;
  */
 public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 
+    public static final Comparator<Item> chronologicalComparator = new Comparator<Item>(){
+        @Override
+        public int compare(Item x, Item y) {
+            return x.compareTo(y);
+        }
+    };
+;
     private UniqueTagList tags;
     private Description description;
     private boolean isDone;
@@ -80,6 +88,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     public Item(Description desc, LocalDateTime start, LocalDateTime end, UniqueTagList tags, boolean isDone) {
         assert !CollectionUtil.isAnyNull(desc);
         this.description = desc;
+		this.startDate = start;
         this.endDate = end;
         this.tags = new UniqueTagList(tags);
         this.setIsDone(isDone);
@@ -137,15 +146,23 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 	 * @return boolean, whether the item is or isn't
 	 * @@author A0092390E
 	 */
-    public boolean is(String query){
+    @Override
+	public boolean is(String query){
     	query = query.toLowerCase();
 		switch (query) {
 		case "done":
 			return this.getIsDone();
+		case "undone":
+		    return !this.getIsDone();
 		case "event":
 			return this.getStartDate() != null;
 		case "task":
 			return this.getStartDate() == null;
+		case "overdue":
+			return this.getEndDate() != null && this.getIsDone() == false
+					&& this.getEndDate().isAfter(LocalDateTime.now());
+		case "item":
+		    return true;
 		default:
 			return false;
 		}
@@ -158,6 +175,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 	 *         [Event|Floating Task|Task]
 	 * @@author A0092390E
 	 */
+	@Override
 	public String getType() {
 		if (this.getStartDate() != null) {
 			return "Event";

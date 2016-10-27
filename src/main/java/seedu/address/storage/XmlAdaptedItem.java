@@ -118,7 +118,6 @@ public class XmlAdaptedItem {
             itemTags.add(tag.toModelType());
         }
         tags = new UniqueTagList(itemTags);
-
 		Item itemToReturn = new Item(description, start, end, tags);
 		if (!isDone) {
 			itemToReturn.setIsDone(false);

@@ -196,9 +196,9 @@ delete 241 # delete the item with event ID 241
 ```
 
 ### Searching for a Task/Event
-You can search for specific events using keyphrases. Keyphrases are filtered according to whether they search through `Descriptor`s, `Tag`s or `DateTime`s.
+You can search for specific events using keyphrases. Keyphrases are filtered according to whether they search through `Descriptor`s, `Tag`s or `DateTime`s. Take note of your current [`list`](#enumerating-tasks) context, as this will affect what items are searched.
 
-The keyphrases are case-insensitive and can be simply part of the event name.
+The keyphrases are case-insensitive and can be simply part of the event name. All of the keyphrases must be matched for an item to be returned.
 
 ```bash
 # format
@@ -217,10 +217,15 @@ find "CS2103" #homework tomorrow        -> searches for CS2103 in descriptors, h
 ```
 
 ### Enumerating Tasks
-You can enumerate a list of all the events and show it on the main interface.
+You can enumerate a list of all the events and show it on the main interface. You can also limit your listings using specific meta-tags. List changes the context of your current window view, so that all future searches will occur within this context. For instance, `list task` -> `find "homework"` returns all tasks with the keyword 'homework' in the descriptions, but will not return any events with the keyword 'homework' in the description.
 
 ```bash
-list        # lists all events by name in chronological order
+list         # lists all tasks/events in chronological order
+list task    # lists all tasks, no events
+list event   # lists all events, no tasks
+list done    # lists all tasks/events that are done
+list undone  # opposite of list done, lists everything not done
+list overdue # lists all events/tasks with end date before the current time
 ```
 
 ### Paging
