@@ -37,16 +37,23 @@ public class DateTimeParser {
     // result from parser
     private List<DateGroup> dategroups;
     private List<Date> dates;
-    
+
     public static final String EMPTY_STRING = "";
+    public static final String TODAY_DATE_REF = "Today";
+    public static final String TOMORROW_DATE_REF = "Tomorrow";
 
     // DateTime formatting patterns
-    public static final DateTimeFormatter ABRIDGED_DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMM");
-    public static final DateTimeFormatter EXPLICIT_DATE_FORMAT = DateTimeFormatter.ofPattern("dd MMM yyyy");
-    public static final DateTimeFormatter TWELVE_HOUR_TIME = DateTimeFormatter.ofPattern("h:mma");
-    public static final DateTimeFormatter LONG_DAYOFWEEK = DateTimeFormatter.ofPattern("EEEE");
-    public static final DateTimeFormatter SHORT_DAYOFWEEK = DateTimeFormatter.ofPattern("EEE");
-    
+    public static final DateTimeFormatter ABRIDGED_DATE_FORMAT = DateTimeFormatter
+            .ofPattern("dd MMM");
+    public static final DateTimeFormatter EXPLICIT_DATE_FORMAT = DateTimeFormatter
+            .ofPattern("dd MMM yyyy");
+    public static final DateTimeFormatter TWELVE_HOUR_TIME = DateTimeFormatter
+            .ofPattern("h:mma");
+    public static final DateTimeFormatter LONG_DAYOFWEEK = DateTimeFormatter
+            .ofPattern("EEEE");
+    public static final DateTimeFormatter SHORT_DAYOFWEEK = DateTimeFormatter
+            .ofPattern("EEE");
+
     public DateTimeParser(String input) {
         assert input != null;
         assert input.isEmpty() != true;
@@ -86,41 +93,43 @@ public class DateTimeParser {
         return changeDateToLocalDateTime(
                 this.dategroups.get(0).getRecursUntil());
     }
-    
+
     /**
      * Makes the pretty datetime line for an Item's card on the UI.
      * 
-     * The UI should only be calling this method for displaying datetime
-     * of event on the Item's card on the agenda pane.
+     * The UI should only be calling this method for displaying datetime of
+     * event on the Item's card on the agenda pane.
      * 
      * @return
      * @author darren
      */
-    public static String extractPrettyItemCardDateTime(LocalDateTime start, LocalDateTime end) {
-        if(start == null && end == null) {
+    public static String extractPrettyItemCardDateTime(LocalDateTime start,
+            LocalDateTime end) {
+        if (start == null && end == null) {
             return EMPTY_STRING;
         }
-        
-        if(start == null) {
+
+        if (start == null) {
             return extractPrettyDateTime(end);
         }
-        
-        if(end == null) {
+
+        if (end == null) {
             return extractPrettyDateTime(start);
         }
-        
+
         // is an event with a definite start and end datetime
-        if(isSameDay(start, end)) {
-            return extractPrettyDateTime(start) + " - " + extractTwelveHourTime(end);
+        if (isSameDay(start, end)) {
+            return extractPrettyDateTime(start) + " - "
+                    + extractTwelveHourTime(end);
         }
-        
+
         // not same day
-        return extractPrettyDateTime(start) + " - " + extractPrettyDateTime(end);
+        return extractPrettyDateTime(start) + " - "
+                + extractPrettyDateTime(end);
     }
-    
+
     /**
-     * Checks if two given java.time.LocalDateTime objects are
-     * of the same day.
+     * Checks if two given java.time.LocalDateTime objects are of the same day.
      * 
      * @param ldt1
      * @param ldt2
@@ -130,10 +139,11 @@ public class DateTimeParser {
     public static boolean isSameDay(LocalDateTime ldt1, LocalDateTime ldt2) {
         return ldt1.toLocalDate().equals(ldt2.toLocalDate());
     }
-    
+
     /**
-     * Check if the given java.time.LocalDateTime object is the same
-     * date as the current date on local system time
+     * Check if the given java.time.LocalDateTime object is the same date as the
+     * current date on local system time
+     * 
      * @param ldt
      * @return true if the LocalDateTime is for today, false otherwise
      * @author darren
@@ -141,10 +151,11 @@ public class DateTimeParser {
     public static boolean isToday(LocalDateTime ldt) {
         return isSameDay(ldt, LocalDateTime.now());
     }
-    
+
     /**
-     * Check if the given java.time.LocalDateTime object is the same
-     * date as the next day relative to the local system time
+     * Check if the given java.time.LocalDateTime object is the same date as the
+     * next day relative to the local system time
+     * 
      * @param ldt
      * @return true if the LocalDateTime is for tomorrow, false otherwise
      * @author darren
@@ -165,7 +176,7 @@ public class DateTimeParser {
                                                                             // milliseconds
         return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
     }
-    
+
     /**
      * Helper method for casting java.time.LocalDateTime to java.util.Date
      * 
@@ -198,7 +209,7 @@ public class DateTimeParser {
      * @author darren
      */
     public static String extractPrettyRelativeDateTime(LocalDateTime ldt) {
-        if(ldt == null) {
+        if (ldt == null) {
             return EMPTY_STRING;
         }
         return prettytime.format(changeLocalDateTimeToDate(ldt));
@@ -208,34 +219,45 @@ public class DateTimeParser {
      * Helper method for determining a human-readable pretty date from date
      * tokens in the input string
      * 
-     * Examples: "This Monday, 6:30AM", "Next Saturday, 12:37PM",
-     * "Mon 27 November, 9:30PM"
+     * Examples: "This Monday, 6:30AM", "Next Saturday, 12:37PM", "Mon 27
+     * November, 9:30PM", "Today, 3:57PM"
      * 
      * @param index
      * @return pretty date for this week
      */
     public static String extractPrettyDateTime(LocalDateTime ldt) {
+        // special case for today/tomorrow relative to local system time
+        if (isToday(ldt)) {
+            return TODAY_DATE_REF + ", " + extractTwelveHourTime(ldt);
+        }
+
+        if (isTomorrow(ldt)) {
+            return TOMORROW_DATE_REF + ", " + extractTwelveHourTime(ldt);
+        }
+
         // add relative prefix (this/next <day of week>) if applicable
-        if(computeDaysTo(ldt) < 14) {
+        if (computeDaysTo(ldt) < 14) {
             // is within the next two weeks
-            return makeRelativePrefix(ldt) + extractLongDayOfWeek(ldt) + ", " + extractTwelveHourTime(ldt);
+            return makeRelativePrefix(ldt) + extractLongDayOfWeek(ldt) + ", "
+                    + extractTwelveHourTime(ldt);
         }
 
         // explicit date; no relative prefix
         String prettyDate;
-        if(computeDaysTo(ldt) < 365) {
-            // same year
+        if (computeDaysTo(ldt) < 365) {
+            // same year in start and end datetimes
             prettyDate = ldt.toLocalDate().format(ABRIDGED_DATE_FORMAT);
         } else {
-            // different years
+            // different years in start and end datetimes
             prettyDate = ldt.toLocalDate().format(EXPLICIT_DATE_FORMAT);
         }
-        return extractShortDayOfWeek(ldt) + " " + prettyDate + ", " + extractTwelveHourTime(ldt);
+        return extractShortDayOfWeek(ldt) + " " + prettyDate + ", "
+                + extractTwelveHourTime(ldt);
     }
 
     /**
-     * Extracts the time component of a java.time.LocalDateTime object
-     * and returns it in 12-hour format.
+     * Extracts the time component of a java.time.LocalDateTime object and
+     * returns it in 12-hour format.
      * 
      * @param ldt
      * @return
@@ -251,13 +273,13 @@ public class DateTimeParser {
      * 
      * @param ldt
      * @param isLongFormat
-     *      result is long format?
-     * @return
-     *      day-of-week
+     *            result is long format?
+     * @return day-of-week
      * @author darren
      */
-    private static String extractDayOfWeek(LocalDateTime ldt, boolean isLongFormat) {
-        if(isLongFormat) {
+    private static String extractDayOfWeek(LocalDateTime ldt,
+            boolean isLongFormat) {
+        if (isLongFormat) {
             return ldt.toLocalDate().format(LONG_DAYOFWEEK);
         }
         return ldt.toLocalDate().format(SHORT_DAYOFWEEK);
@@ -270,9 +292,10 @@ public class DateTimeParser {
     public static String extractShortDayOfWeek(LocalDateTime ldt) {
         return extractDayOfWeek(ldt, false);
     }
-    
+
     /**
-     * Determine the appropriate relative prefix to use for reference to a DayOfWeek enum
+     * Determine the appropriate relative prefix to use for reference to a
+     * DayOfWeek enum
      * 
      * @param ldt
      * @return
@@ -286,7 +309,7 @@ public class DateTimeParser {
         }
         return EMPTY_STRING;
     }
-    
+
     /**
      * Computes number of days between current system time to the given
      * java.time.LocalDateTime
