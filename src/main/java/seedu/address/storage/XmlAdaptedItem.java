@@ -1,7 +1,6 @@
 package seedu.address.storage;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.parser.DateTimeParser;
 import seedu.address.model.item.*;
 import javax.xml.bind.annotation.XmlElement;
 import java.time.LocalDateTime;
@@ -21,6 +20,9 @@ public class XmlAdaptedItem {
     
     @XmlElement(required = true)
     private String endDate;
+    
+    @XmlElement(required = true)
+    private String isDone;
     
     
     /**
@@ -51,6 +53,12 @@ public class XmlAdaptedItem {
         } else {
         	endDate = source.getEndDate().format(formatter);
         }
+        
+        if (source.getIsDone()) {
+        	isDone = "true";
+        } else {
+        	isDone = "false";
+        }
     }
 
     /**
@@ -73,6 +81,12 @@ public class XmlAdaptedItem {
         } else {
         	end = LocalDateTime.parse(endDate, formatter);
         }
-        return new Item(description, start, end);
+        Item itemToReturn = new Item(description, start, end);
+        if (isDone.equals("true")) {
+        	itemToReturn.setIsDone(true);
+        } else {
+        	itemToReturn.setIsDone(false);
+        }
+        return itemToReturn;
     }
 }

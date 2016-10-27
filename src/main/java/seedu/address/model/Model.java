@@ -22,6 +22,9 @@ public interface Model {
 
     /** Adds the given person */
     void addItem(Item item) throws UniqueItemList.DuplicateItemException;
+    
+    /** Set item to be done */
+    void doneItem(ReadOnlyItem item);
 
     /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList();
