@@ -69,8 +69,8 @@ public class Parser {
 	private static final Pattern ITEM_EDIT_ARGS_FORMAT = Pattern.compile("(?<targetIndex>\\d+) edit (?<arguments>.*)");
 
 	
-	public enum Type {
-	    TASK("task"), EVENT("event"), DONE("done"), ITEM("item");
+	private enum Type {
+	    TASK("task"), EVENT("event"), DONE("done"), ITEM("item"), OVERDUE("overdue"), UNDONE("undone");
 	    
         private String typeName;
 
@@ -475,7 +475,7 @@ public class Parser {
 	}
 
 	/**
-	 * checks field names are valids
+	 * checks field names are valid
 	 * 
 	 * @param fieldNames
 	 *            an ArrayList<String> of field names
