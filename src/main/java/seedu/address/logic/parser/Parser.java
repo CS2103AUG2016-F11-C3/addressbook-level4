@@ -47,16 +47,16 @@ public class Parser {
      */
     private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
-    private static final Pattern PERSON_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
-
     // one or more keywords separated by whitespace
     private static final Pattern KEYWORDS_ARGS_FORMAT = Pattern.compile("(?<keywords>\\S+(?:\\s+\\S+)*)");
 
-    private static final Pattern ITEM_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"(.*)");
+    private static final Pattern ITEM_DATA_ARGS_FORMAT = 
+            Pattern.compile("(.*)\\\"(.*)\\\"(.*)");    // item has description and a string representing time to be processed
     private static final Pattern TASK_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"");
 
     private static final String TASK_NO_DATE_DATA = "nothing";
     private static final String EMPTY_STRING = "";
+	private static final Pattern ITEM_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
 
     private static final int COMMAND_DESCRIPTION_FIELD_NUMBER = 2;
     private static final int COMMAND_TYPE_FIELD_NUMBER = 1;
@@ -64,13 +64,21 @@ public class Parser {
 
     private static final Pattern COMMAND_DESCRIPTION_SEARCH_FORMAT = Pattern.compile("\"([^\"]*)\"");
     private static final Pattern COMMAND_TAG_SEARCH_FORMAT = Pattern.compile("#([^ ]+)");
-
+    
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 	private static final Pattern ITEM_EDIT_ARGS_FORMAT = Pattern.compile("(?<targetIndex>\\d+) edit (?<arguments>.*)");
 
+	
+	public enum Type {TASK, DEADLINE, EVENT;}
+
     public enum Field {
-        NAME("name"), START_DATE("start_date"), END_DATE("end_date"), START_TIME("start_time"), END_TIME(
-                "end_time"), DATE("date"), TIME("time");
+        NAME("name"),
+        START_DATE("start_date"),
+        END_DATE("end_date"),
+        START_TIME("start_time"),
+        END_TIME("end_time"),
+        DATE("date"),
+        TIME("time");
 
         private String field_name;
 
@@ -120,7 +128,7 @@ public class Parser {
             return prepareFind(arguments);
 
         case ListCommand.COMMAND_WORD:
-            return new ListCommand();
+            return prepareList(arguments);
 
         case ExitCommand.COMMAND_WORD:
             return new ExitCommand();
@@ -136,17 +144,51 @@ public class Parser {
         }
 	};
 
+	/**
+     * Parses arguments in the context of the list item command.
+     * @param arguments
+     * @return
+     * @@author A0131560U
+     */
+    private Command prepareList(String argument) {
+        assert argument != null;
+        if (argument.isEmpty()){
+            return new ListCommand(EMPTY_STRING);
+        }
+        else if (isValidType(argument)){
+            return new ListCommand(argument.toUpperCase());
+        }
+        else{
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+        }
+    }
+
     /**
-	 * Parses arguments in the context of the add person command.
-	 *
-	 * @param args
-	 *            full command args string
-	 * @return the prepared command
-	 */
-	private Command prepareAdd(String args) {
-		final Matcher itemMatch = ITEM_DATA_ARGS_FORMAT.matcher(args.trim());
-		final Matcher taskMatch = TASK_DATA_ARGS_FORMAT.matcher(args.trim());
-        // Validate arg string format
+     * Checks if given String is a valid Type argument
+     * @param argument
+     * @return true if String is valid Type, false otherwise
+     * @@author A0131560U
+     */
+    private boolean isValidType(String argument) {
+        assert argument != null;
+        try{
+            Type.valueOf(argument.trim().toUpperCase());
+        } catch (IllegalArgumentException iae) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Parses arguments in the context of the add person command.
+     *
+     * @param args
+     *            full command args string
+     * @return the prepared command
+     */
+    private Command prepareAdd(String args) {
+        final Matcher itemMatch = ITEM_DATA_ARGS_FORMAT.matcher(args.trim());
+        final Matcher taskMatch = TASK_DATA_ARGS_FORMAT.matcher(args.trim()); // Validate arg string format
         if (!itemMatch.matches() && !taskMatch.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
@@ -156,7 +198,7 @@ public class Parser {
             } else {
                 return parseNewItem(itemMatch, args);
             }
-        	// check if any thing before first quotation mark and return error if found
+        // check if any thing before first quotation mark and return error if found
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
         }
@@ -284,7 +326,7 @@ public class Parser {
      * otherwise.
      */
     private Optional<Integer> parseIndex(String command) {
-        final Matcher matcher = PERSON_INDEX_ARGS_FORMAT.matcher(command.trim());
+        final Matcher matcher = ITEM_INDEX_ARGS_FORMAT.matcher(command.trim());
         if (!matcher.matches()) {
             return Optional.empty();
         }
@@ -390,7 +432,6 @@ public class Parser {
 			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, e.getMessage()));
 		}
 	}
-
 
 	/**
 	 * splits multi-arguments into a nice ArrayList of strings
