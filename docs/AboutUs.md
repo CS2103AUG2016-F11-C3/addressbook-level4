@@ -33,7 +33,7 @@ We are a project team for the module CS2103 - Software Engineering from the [Sch
 -----
 
 #### YUAN YUCHUAN
-<img src="images/Yuchaun.jpg" width="150"><br>
+<img src="images/Yuchuan.jpg" width="150"><br>
 
 **Responsibilities**: Logic
 
