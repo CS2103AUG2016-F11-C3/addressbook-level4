@@ -23,6 +23,9 @@ public class ExitCommand extends Command {
         return new CommandResult(MESSAGE_EXIT_ACKNOWLEDGEMENT);
     }
     
+    /**
+     * @@author A0144750J
+     */
     @Override
     public CommandResult undo() {
         return new CommandResult(MESSAGE_UNDO_FAILURE);

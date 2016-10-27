@@ -1,26 +1,27 @@
 package seedu.address.model;
 
-import javafx.collections.transformation.FilteredList;
-import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.core.UnmodifiableObservableList;
-import seedu.address.commons.util.StringUtil;
-import seedu.address.logic.commands.Command;
-import seedu.address.logic.commands.UndoCommand;
-import seedu.address.commons.events.model.TaskBookChangedEvent;
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.commons.core.ComponentManager;
-import seedu.address.model.item.Description;
-import seedu.address.model.item.Item;
-import seedu.address.model.item.ReadOnlyItem;
-import seedu.address.model.item.UniqueItemList;
-import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
-
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.EmptyStackException;
 import java.util.Set;
 import java.util.Stack;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
+
+import javafx.collections.transformation.FilteredList;
+import seedu.address.commons.core.ComponentManager;
+import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.core.UnmodifiableObservableList;
+import seedu.address.commons.events.model.TaskBookChangedEvent;
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.StringUtil;
+import seedu.address.logic.commands.Command;
+import seedu.address.logic.parser.DateTimeParser;
+import seedu.address.logic.parser.Parser;
+import seedu.address.model.item.Item;
+import seedu.address.model.item.ReadOnlyItem;
+import seedu.address.model.item.UniqueItemList;
+import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -46,7 +47,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         taskBook = new TaskBook(src);
         filteredItems = new FilteredList<>(taskBook.getItems());
-        commandStack = new Stack<Command>();
+        commandStack = new Stack<>();
     }
 
     public ModelManager() {
@@ -56,7 +57,7 @@ public class ModelManager extends ComponentManager implements Model {
     public ModelManager(ReadOnlyTaskBook initialData, UserPrefs userPrefs) {
         taskBook = new TaskBook(initialData);
         filteredItems = new FilteredList<>(taskBook.getItems());
-        commandStack = new Stack<Command>();
+        commandStack = new Stack<>();
     }
 
     @Override
@@ -88,7 +89,8 @@ public class ModelManager extends ComponentManager implements Model {
         indicateTaskBookChanged();
     }
     
-    public void setItemDesc(Item item, String desc) {
+    @Override
+	public void setItemDesc(Item item, String desc) {
         try {
             item.setDescription(desc);
             updateFilteredListToShowAll();
@@ -97,25 +99,29 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
     
-    public void setItemStart(Item item, LocalDateTime startDate) {
+    @Override
+	public void setItemStart(Item item, LocalDateTime startDate) {
         item.setStartDate(startDate);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
     }
 
-    public void setItemEnd(Item item, LocalDateTime endDate) {
+    @Override
+	public void setItemEnd(Item item, LocalDateTime endDate) {
         item.setEndDate(endDate);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
     }
     
+    // @@author A0144750J
     @Override
 	public void setDoneItem(Item item) {
     	item.setIsDone(true);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
 	}
-
+    
+    // @@author A0144750J
 	@Override
 	public void setNotDoneItem(Item item) {
 		item.setIsDone(false);
@@ -124,6 +130,7 @@ public class ModelManager extends ComponentManager implements Model {
 		
 	}
 	
+	// @@author A0144750J
 	@Override
 	public void addCommandToStack(Command command) {
 		assert command.getUndo() == true;
@@ -131,6 +138,7 @@ public class ModelManager extends ComponentManager implements Model {
 		this.commandStack.push(command);
 	}
 
+	// @@author A0144750J
 	@Override
 	public Command returnCommandFromStack() throws EmptyStackException {
 		assert this.commandStack != null;
@@ -139,6 +147,7 @@ public class ModelManager extends ComponentManager implements Model {
 		}
 		return commandStack.pop();
 	}
+
 
     //=========== Filtered Item List Accessors ===============================================================
 
@@ -174,46 +183,49 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void updateFilteredItemList(Set<String> keywords){
-        updateFilteredItemList(new PredicateExpression(new DescriptionAndTagQualifier(keywords)));
+		updateFilteredItemList(new QualifierPredicate(new DescriptionAndTagQualifier(keywords)));
     }
 
-    private void updateFilteredItemList(Expression expression) {
-        filteredItems.setPredicate(expression::satisfies);
+	private void updateFilteredItemList(Predicate pred) {
+		// Not used, to narrow searches the user has to type the entire search
+		// string in
+		// if(filteredItems.getPredicate() != null){
+		// filteredItems.setPredicate(pred.and(filteredItems.getPredicate()));
+		// } else{
+		filteredItems.setPredicate(pred);
+		// }
     }
 
     //========== Inner classes/interfaces used for filtering ==================================================
 
-    interface Expression {
-        boolean satisfies(ReadOnlyItem item);
-        String toString();
-    }
-
-    private class PredicateExpression implements Expression {
+	private class QualifierPredicate implements Predicate<ReadOnlyItem> {
 
         private final Qualifier qualifier;
 
-        PredicateExpression(Qualifier qualifier) {
+		QualifierPredicate(Qualifier qualifier) {
             this.qualifier = qualifier;
-        }
-
-        @Override
-        public boolean satisfies(ReadOnlyItem item) {
-            return qualifier.run(item);
         }
 
         @Override
         public String toString() {
             return qualifier.toString();
         }
+
+		@Override
+		public boolean test(ReadOnlyItem item) {
+			return qualifier.run(item);
+		}
+
     }
 
     interface Qualifier {
         boolean run(ReadOnlyItem item);
-        String toString();
+        @Override
+		String toString();
     }
 
     private class DescriptionAndTagQualifier implements Qualifier {
-        private Set<String> searchKeyWords;
+		private Set<String> searchKeyWords;
 
         DescriptionAndTagQualifier(Set<String> nameKeyWords) {
             this.searchKeyWords = nameKeyWords;
@@ -221,10 +233,12 @@ public class ModelManager extends ComponentManager implements Model {
 
         @Override
         public boolean run(ReadOnlyItem item) {
-            return searchKeyWords.stream()
-                    .filter(keyword -> StringUtil.containsIgnoreCase(item.getAsText(), keyword))
-                    .findAny()
-                    .isPresent();
+        	for (String keyword: searchKeyWords){
+        		if(!new Keyword(keyword).search(item)){
+        			return false;
+        		}
+        	}
+			return true;
         }
 
         @Override
@@ -232,5 +246,31 @@ public class ModelManager extends ComponentManager implements Model {
             return "name=" + String.join(", ", searchKeyWords);
         }
     }
+
+	// Idea @@author A0092390E
+	private class Keyword {
+		private String keyword;
+
+		Keyword(String _keyword) {
+			keyword = _keyword;
+		}
+
+		public boolean search(ReadOnlyItem item){
+			if(keyword.matches(Parser.COMMAND_DESCRIPTION_REGEX)){
+				return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(), 
+				        keyword.replace(Parser.COMMAND_DESCRIPTION_PREFIX, ""));
+			} else if (keyword.matches(Parser.COMMAND_TAG_REGEX)){
+				return StringUtil.containsIgnoreCase(item.getTags().listTags(), 
+				        keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, ""));
+			}
+			else {
+			    DateTimeParser parseDate = new DateTimeParser(keyword);
+			    return ((item.getStartDate() != null
+			            && DateTimeParser.isSameDay(item.getStartDate(), parseDate.extractStartDate())
+			            || (item.getEndDate() != null
+			            && DateTimeParser.isSameDay(item.getEndDate(),parseDate.extractStartDate()))));
+			}
+		}
+	}
 
 }

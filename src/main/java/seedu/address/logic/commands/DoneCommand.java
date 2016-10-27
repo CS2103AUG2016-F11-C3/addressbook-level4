@@ -2,10 +2,12 @@ package seedu.address.logic.commands;
 
 import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.Messages;
-import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.item.Item;
-import seedu.address.model.item.ReadOnlyItem;
 
+/**
+ * 
+ * @@author A0144750J
+ */
 public class DoneCommand extends Command {
 	public static final String COMMAND_WORD = "done";
 
@@ -40,6 +42,7 @@ public class DoneCommand extends Command {
 			model.setDoneItem(itemToComplete);
 			hasUndo = true;
 		}
+
 		return new CommandResult(MESSAGE_DONE_ITEM_SUCCESS, itemToComplete);
 	}
 

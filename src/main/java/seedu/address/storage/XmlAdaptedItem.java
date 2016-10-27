@@ -1,15 +1,18 @@
 package seedu.address.storage;
 
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.item.*;
-import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.UniqueTagList;
-
-import javax.xml.bind.annotation.XmlElement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.bind.annotation.XmlElement;
+
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.item.Description;
+import seedu.address.model.item.Item;
+import seedu.address.model.item.ReadOnlyItem;
+import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.UniqueTagList;
 
 
 /**
@@ -31,7 +34,7 @@ public class XmlAdaptedItem {
     
     @XmlElement
     private List<XmlAdaptedTag> tagged = new ArrayList<>();
-    
+
     
     /**
      * No-arg constructor for JAXB use.
@@ -70,6 +73,12 @@ public class XmlAdaptedItem {
         tagged = new ArrayList<>();
         for (Tag tag : source.getTags()) {
             tagged.add(new XmlAdaptedTag(tag));
+        }
+        
+        if (source.getIsDone()) {
+        	isDone = "true";
+        } else {
+        	isDone = "false";
         }
     }
 
@@ -110,8 +119,12 @@ public class XmlAdaptedItem {
         }
         tags = new UniqueTagList(itemTags);
 
-        Item item = new Item(description, start, end, tags);
-        item.setIsDone(isDone);
-        return item;
+		Item itemToReturn = new Item(description, start, end, tags);
+		if (isDone.equals(false)) {
+			itemToReturn.setIsDone(false);
+		} else {
+        	itemToReturn.setIsDone(true);
+        }
+        return itemToReturn;
     }
 }

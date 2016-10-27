@@ -1,14 +1,14 @@
 package seedu.address.model;
 
+import java.time.LocalDateTime;
+import java.util.Set;
+
+import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.logic.commands.Command;
 import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
-
-import java.time.LocalDateTime;
-import java.util.Set;
-import javafx.collections.transformation.FilteredList;
 
 /**
  * The API of the Model component.
@@ -36,16 +36,21 @@ public interface Model {
     void setItemEnd(Item item, LocalDateTime end);
     
     /** Set the item isDone field to true */
+    // @@author A0144750J
     void setDoneItem(Item item);
     
     /** Set the item isDone field to true */
+    // @@author A0144750J
     void setNotDoneItem(Item item);
     
     /** Add the command to stack for undo */
+    // @@author A0144750J
     void addCommandToStack(Command command);
     
     /** Add the command to stack for undo */
+    // @@author A0144750J
     Command returnCommandFromStack();
+
 
     /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList();

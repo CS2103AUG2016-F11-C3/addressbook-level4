@@ -20,6 +20,14 @@ public abstract class Command {
     	return hasUndo;
     }
 
+	/**
+	 * Returns whether a command should result in clearing the command box.
+	 * Defaults to true except where there is custom logic indicating otherwise.
+	 * 
+	 */
+	public boolean ClearOnExecute() {
+		return true;
+	}
     /**
      * Constructs a feedback message to summarise an operation that displayed a listing of persons.
      *
@@ -32,15 +40,14 @@ public abstract class Command {
 
     /**
      * Executes the command and returns the result message.
-     *
      * @return feedback message of the operation result for display
      */
     public abstract CommandResult execute();
     
     /**
-     * Undo the result of execute.
-     *
+     * Undo the result of previous execute and returns message.
      * @return feedback message of the operation result for display
+     * @@author A0144750J
      */
     public abstract CommandResult undo();
 

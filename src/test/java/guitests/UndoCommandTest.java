@@ -67,7 +67,13 @@ public class UndoCommandTest extends TaskBookGuiTest {
     
     @Test
     public void undo_done() {
-    	
+    	TestItem[] currentList = td.getTypicalItems();
+        int targetIndex = 1;
+        commandBox.runCommand("done " + targetIndex);
+        
+        // undo should succeed
+        commandBox.runCommand("undo");
+        assertResultMessage("Undo set done task: Always brush teeth");
     }
  
     private void assertNotFound(TestItem itemToFind, TestItem... currentList) {

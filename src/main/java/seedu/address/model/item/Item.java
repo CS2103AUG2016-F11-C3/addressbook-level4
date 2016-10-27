@@ -7,6 +7,7 @@ import java.util.Observable;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.util.CollectionUtil;
+import seedu.address.logic.parser.DateTimeParser;
 import seedu.address.model.tag.UniqueTagList;
 
 /**
@@ -129,10 +130,47 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     public LocalDateTime getRecurEndDate() {
         return recurEndDate;
     }
+    
+	/**
+	 * Flexible property querying, to support listing and filtering
+	 * 
+	 * @return boolean, whether the item is or isn't
+	 * @@author A0092390E
+	 */
+    public boolean is(String query){
+    	query = query.toLowerCase();
+		switch (query) {
+		case "done":
+			return this.getIsDone();
+		case "event":
+			return this.getStartDate() != null;
+		case "task":
+			return this.getStartDate() == null;
+		default:
+			return false;
+		}
+    }
 
-    /**
-     * Replaces this Item's tags with the tags in the argument tag list.
-     */
+	/**
+	 * Returns the type of the item. Useful for Item cards and messages.
+	 * 
+	 * @return The type of the item, computed based on start/end dates.
+	 *         [Event|Floating Task|Task]
+	 * @@author A0092390E
+	 */
+	public String getType() {
+		if (this.getStartDate() != null) {
+			return "Event";
+		} else if (this.getEndDate() == null) {
+			return "Floating Task";
+		} else {
+			return "Task";
+		}
+	}
+
+	/**
+	 * Replaces this Item's tags with the tags in the argument tag list.
+	 */
     public void setTags(UniqueTagList replacement) {
         tags.setTags(replacement);
 		setChanged();
@@ -276,5 +314,59 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         }
 
         return null;
+	}
+
+     /*
+     * Builds a pretty datetime line for this Item's card on the UI.
+     * 
+     * Nulls are handled by DateTimeParser.extractPrettyItemCardDateTime
+     * @return
+     * @author darren
+     */
+    @Override
+	public String extractPrettyItemCardDateTime() {
+        return DateTimeParser.extractPrettyItemCardDateTime(this.startDate, this.endDate);
+    }
+    
+    /**
+     * Gets the pretty explicit datetime for this Item's start datetime
+     * e.g. "This Monday, 7:30PM" or "Mon 27 Nov, 9:30AM"
+     * @return
+     */
+    public String extractPrettyStartDateTime() {
+        return DateTimeParser.extractPrettyDateTime(this.startDate);
+    }
+
+    /**
+     * Gets the pretty explicit datetime for this Item's end datetime
+     * e.g. "This Monday, 7:30PM" or "Mon 27 Nov, 9:30AM"
+     * @return
+     */
+    public String extractPrettyEndDateTime() {
+        return DateTimeParser.extractPrettyDateTime(this.endDate);
+    }
+    
+    /**
+     * Gets the pretty relative datetime for this Item's start datetime
+     * e.g. "3 weeks from now"
+     * @return EMPTY_STRING if datetime is null
+     * @author darren
+     */
+    public String extractPrettyRelativeStartDateTime() {
+        return DateTimeParser.extractPrettyRelativeDateTime(this.startDate);
+    }
+
+    /**
+     * Gets the pretty relative datetime for this Item's end datetime
+     * e.g. "3 weeks from now"
+     * @return EMPTY_STRING if datetime is null
+     * @author darren
+     */
+    @Override
+	public String extractPrettyRelativeEndDateTime() {
+        if(this.endDate == null) {
+            return extractPrettyRelativeStartDateTime();
+        }
+        return DateTimeParser.extractPrettyRelativeDateTime(this.endDate);
     }
 }
