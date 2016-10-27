@@ -113,23 +113,12 @@ public class ModelManager extends ComponentManager implements Model {
 
     //========== Inner classes/interfaces used for filtering ==================================================
 
-    interface Expression {
-		boolean satisfies(ReadOnlyItem item);
-        @Override
-		String toString();
-    }
-
-	private class PredicateExpression implements Expression, Predicate<ReadOnlyItem> {
+	private class PredicateExpression implements Predicate<ReadOnlyItem> {
 
         private final Qualifier qualifier;
 
         PredicateExpression(Qualifier qualifier) {
             this.qualifier = qualifier;
-        }
-
-        @Override
-		public boolean satisfies(ReadOnlyItem item) {
-            return qualifier.run(item);
         }
 
         @Override
