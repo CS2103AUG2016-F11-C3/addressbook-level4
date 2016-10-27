@@ -213,12 +213,12 @@ public class LogicManagerTest<E> {
     public void setTags_multipleValidTags_parsedCorrectly() {
         try {
             TestDataHelper helper = new TestDataHelper();
-            Item toBeAdded = helper.workingItemWithTags("important", "incredible", "mustfinish", "priority1");
+            Item toBeAdded = helper.workingItemWithTags("important", "mustfinish", "incredible", "priority1");
             TaskBook expectedTB = new TaskBook();
             expectedTB.addItem(toBeAdded);
 
             assertCommandBehavior(helper.generateAddCommand(toBeAdded),
-                    String.format(AddCommand.MESSAGE_SUCCESS_TIME_NULL, toBeAdded), expectedTB, expectedTB.getItemList());
+                    String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded), expectedTB, expectedTB.getItemList());
         } catch (Exception e) {
             e.printStackTrace();
             assert false : "not possible";
@@ -583,10 +583,10 @@ public class LogicManagerTest<E> {
         String generateAddCommand(Item item) {
             StringBuffer cmd = new StringBuffer();
             cmd.append("add ");
-            cmd.append("\"" + item.getDescription().toString() + "\"");
+            cmd.append("\"" + item.getDescription().toString() + "\" ");
             cmd.append("from " + item.getStartDate().toString() + " to " + item.getEndDate().toString());
             for (Tag tag : item.getTags()) {
-                cmd.append(tag.toString());
+                cmd.append(" " + tag.toString());
             }
             return cmd.toString();
         }
