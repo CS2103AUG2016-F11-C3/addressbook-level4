@@ -44,7 +44,7 @@
                   <AnchorPane fx:id="itemListPanelPlaceholder" VBox.vgrow="ALWAYS"/>
                </children>
             </VBox>
-            <AnchorPane fx:id="browserPlaceholder" prefWidth="100" >
+            <AnchorPane fx:id="urgentPanelPlaceholder" prefWidth="100" >
                 <padding>
                     <Insets top="10" bottom="10" left="10" right="10"/>
                 </padding>

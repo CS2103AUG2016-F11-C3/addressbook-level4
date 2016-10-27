@@ -13,7 +13,6 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.logic.Logic;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.item.ReadOnlyItem;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -29,7 +28,7 @@ public class MainWindow extends UiPart {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private BrowserPanel browserPanel;
+	private ItemListPanel urgentPanel;
     private ItemListPanel itemListPanel;
     private ResultDisplay resultDisplay;
     private StatusBarFooter statusBarFooter;
@@ -44,7 +43,7 @@ public class MainWindow extends UiPart {
     private String taskBookName;
 
     @FXML
-    private AnchorPane browserPlaceholder;
+    private AnchorPane urgentPanelPlaceholder;
 
     @FXML
     private AnchorPane commandBoxPlaceholder;
@@ -109,7 +108,7 @@ public class MainWindow extends UiPart {
     }
 
     void fillInnerParts() {
-        browserPanel = BrowserPanel.load(browserPlaceholder);
+		urgentPanel = ItemListPanel.load(primaryStage, urgentPanelPlaceholder, logic.getFilteredItemList());
         itemListPanel = ItemListPanel.load(primaryStage, getItemListPlaceholder(), logic.getFilteredItemList());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getTaskBookFilePath());
@@ -185,13 +184,5 @@ public class MainWindow extends UiPart {
 
     public ItemListPanel getItemListPanel() {
         return this.itemListPanel;
-    }
-
-    public void loadItemPage(ReadOnlyItem item) {
-        browserPanel.loadItemPage(item);
-    }
-
-    public void releaseResources() {
-        browserPanel.freeResources();
     }
 }
