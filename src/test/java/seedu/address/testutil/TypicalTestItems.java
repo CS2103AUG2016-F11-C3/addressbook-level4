@@ -6,7 +6,7 @@ import seedu.address.model.item.Item;
 import seedu.address.model.item.UniqueItemList;
 
 /**
- *
+ * @@author A0144750J
  */
 public class TypicalTestItems {
 

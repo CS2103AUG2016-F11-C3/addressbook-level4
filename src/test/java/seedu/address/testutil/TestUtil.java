@@ -284,7 +284,7 @@ public class TestUtil {
      * @param items The list of items
      * @param itemsToRemove The subset of items.
      * @return The modified items after removal of the subset from items.
-     * @@author: A0144750J
+     * @@author A0144750J
      */
     public static TestItem[] doneItemsFromList(final TestItem[] items, int index) {
         List<TestItem> listOfItems = asList(items);

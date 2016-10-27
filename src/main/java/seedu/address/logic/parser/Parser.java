@@ -130,9 +130,8 @@ public class Parser {
 
     /**
      * Parses arguments in the context of the add person command.
-     *
-     * @param args
-     *            full command args string
+     * @@author A0144750J
+     * @param args full command args string
      * @return the prepared command
      */
     private Command prepareAdd(String args) {

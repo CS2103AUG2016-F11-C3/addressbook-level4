@@ -10,7 +10,6 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * GUI test for undo commands for each: Add, Delete, Clear, Done and Edit command
- * @author Darren Le
  * @@author A0144750J
  */
 public class DoneCommandTest extends TaskBookGuiTest {

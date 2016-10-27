@@ -85,13 +85,15 @@ public class ModelManager extends ComponentManager implements Model {
         indicateTaskBookChanged();
     }
     
+    // @@author A0144750J
     @Override
 	public void setDoneItem(Item item) {
     	item.setIsDone(true);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
 	}
-
+    
+    // @@author A0144750J
 	@Override
 	public void setNotDoneItem(Item item) {
 		item.setIsDone(false);
@@ -100,6 +102,7 @@ public class ModelManager extends ComponentManager implements Model {
 		
 	}
 	
+	// @@author A0144750J
 	@Override
 	public void addCommandToStack(Command command) {
 		assert command.getUndo() == true;
@@ -107,6 +110,7 @@ public class ModelManager extends ComponentManager implements Model {
 		this.commandStack.push(command);
 	}
 
+	// @@author A0144750J
 	@Override
 	public Command returnCommandFromStack() throws EmptyStackException {
 		assert this.commandStack != null;

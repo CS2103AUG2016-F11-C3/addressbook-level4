@@ -26,15 +26,19 @@ public interface Model {
     void addItem(Item item) throws UniqueItemList.DuplicateItemException;
     
     /** Set the item isDone field to true */
+    // @@author A0144750J
     void setDoneItem(Item item);
     
     /** Set the item isDone field to true */
+    // @@author A0144750J
     void setNotDoneItem(Item item);
     
     /** Add the command to stack for undo */
+    // @@author A0144750J
     void addCommandToStack(Command command);
     
     /** Add the command to stack for undo */
+    // @@author A0144750J
     Command returnCommandFromStack();
 
     /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
