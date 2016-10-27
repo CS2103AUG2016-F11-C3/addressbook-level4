@@ -8,15 +8,12 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
 import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.logic.commands.*;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
-import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.commons.exceptions.DuplicateDataException;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.events.model.TaskBookChangedEvent;
-import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyTaskBook;
@@ -26,9 +23,7 @@ import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
-import seedu.address.model.tag.UniqueTagList.DuplicateTagException;
 import seedu.address.storage.StorageManager;
-import seedu.address.testutil.ItemBuilder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -148,8 +143,6 @@ public class LogicManagerTest<E> {
         }
         
         for (int i=0; i<expected.size(); i++){
-            System.out.println("Tags: " + actual.get(i).getTags().listTags());
-            System.out.println("Text: " + actual.get(i).getAsText());
             assertEquals(expected.get(i), actual.get(i));
         }
         return true;

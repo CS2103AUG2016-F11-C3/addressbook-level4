@@ -56,6 +56,8 @@ public interface ReadOnlyItem {
 		final StringBuilder builder = new StringBuilder();
 		builder.append(getDescription());
 		getTags().forEach(builder::append);
+		builder.append(getStartDate());
+		builder.append(getEndDate());
 		return builder.toString();
 	}
 
