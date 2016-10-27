@@ -96,7 +96,7 @@ public class EditCommand extends Command {
                 case "end":
                 case "by":
                     model.setItemEnd(itemToModify,
-                            new DateTimeParser(editField[1]).extractEndDate());
+                            new DateTimeParser(editField[1]).extractStartDate());
                     break;
                 case "period":
                     DateTimeParser parser = new DateTimeParser(editField[1]);
