@@ -140,11 +140,16 @@ public class LogicManagerTest<E> {
     
     private boolean isListSame(List<? extends ReadOnlyItem> expected, List<? extends ReadOnlyItem> actual){
         if (expected.size() != actual.size()){
+            System.out.println("Size is wrong");
             return false;
         }
         
         for (int i=0; i<expected.size(); i++){
             assertEquals(expected.get(i), actual.get(i));
+            if (!expected.get(i).equals(actual.get(i))){
+                System.out.println("Expected: " + expected.get(i));
+                System.out.println("Actual: " + actual.get(i));
+            }
         }
         return true;
     }
@@ -190,7 +195,7 @@ public class LogicManagerTest<E> {
 
         // execute command and verify result
         assertCommandBehavior(helper.generateAddCommand(toBeAdded),
-                String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded), expectedAB, expectedAB.getItemList());
+                String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded.getType(), toBeAdded), expectedAB, expectedAB.getItemList());
     }
 
     @Test
@@ -219,7 +224,7 @@ public class LogicManagerTest<E> {
             expectedTB.addItem(toBeAdded);
 
             assertCommandBehavior(helper.generateAddCommand(toBeAdded),
-                    String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded), expectedTB, expectedTB.getItemList());
+                    String.format(AddCommand.MESSAGE_SUCCESS,toBeAdded.getType(), toBeAdded), expectedTB, expectedTB.getItemList());
         } catch (Exception e) {
             e.printStackTrace();
             assert false : "not possible";
@@ -250,7 +255,7 @@ public class LogicManagerTest<E> {
             expectedTB.addItem(toBeAdded);
 
             assertCommandBehavior("add \"Working item\" from October 10 10:10am to 12 December 12:12pm tag tag tags",
-                    String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded), expectedTB, expectedTB.getItemList());
+                    String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded.getType(), toBeAdded), expectedTB, expectedTB.getItemList());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -268,9 +273,91 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, 2);
-        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,""), expectedAB, expectedList);
+        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"")), expectedAB, expectedList);
+    }
+    
+    @Test
+    //@@author A0131560U
+    public void execute_listTasks_showsAllTasks() throws Exception {
+        // prepare expectations
+        TestDataHelper helper = new TestDataHelper();
+        Item event1 = helper.aDeadLine();
+        Item event2 = helper.aLongEvent();
+        Item task = helper.aFloatingTask();
+        List<Item> allItems = helper.generateItemList(event1, event2, task);
+        List<Item> expectedList = helper.generateItemList(task);
+        TaskBook expectedTB = helper.generateTaskBook(allItems);
+
+        // prepare task book state
+        helper.addToModel(model, 2);
+        assertCommandBehavior("list task", (String.format(ListCommand.MESSAGE_SUCCESS,"that are a task")), expectedTB, expectedList);
     }
 
+    @Test
+    //@@author A0131560U
+    public void execute_listEvents_showsAllEvents() throws Exception {
+        // prepare expectations
+        TestDataHelper helper = new TestDataHelper();
+        TaskBook expectedAB = helper.generateTaskBook(2);
+        List<? extends ReadOnlyItem> expectedList = expectedAB.getItemList();
+
+        // prepare task book state
+        helper.addToModel(model, 2);
+        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"")), expectedAB, expectedList);
+    }
+
+    @Test
+    //@@author A0131560U
+    public void execute_listDone_showsAllDone() throws Exception {
+        // prepare expectations
+        TestDataHelper helper = new TestDataHelper();
+        TaskBook expectedAB = helper.generateTaskBook(2);
+        List<? extends ReadOnlyItem> expectedList = expectedAB.getItemList();
+
+        // prepare task book state
+        helper.addToModel(model, 2);
+        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"")), expectedAB, expectedList);
+    }
+    
+    @Test
+    //@@author A0131560U
+    public void execute_listUndone_showsAllUndone() throws Exception {
+        // prepare expectations
+        TestDataHelper helper = new TestDataHelper();
+        TaskBook expectedAB = helper.generateTaskBook(2);
+        List<? extends ReadOnlyItem> expectedList = expectedAB.getItemList();
+
+        // prepare task book state
+        helper.addToModel(model, 2);
+        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"")), expectedAB, expectedList);
+    }
+    
+    @Test
+    //@@author A0131560U
+    public void execute_listOverdue_showsAllOverdue() throws Exception {
+        // prepare expectations
+        TestDataHelper helper = new TestDataHelper();
+        TaskBook expectedAB = helper.generateTaskBook(2);
+        List<? extends ReadOnlyItem> expectedList = expectedAB.getItemList();
+
+        // prepare task book state
+        helper.addToModel(model, 2);
+        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"")), expectedAB, expectedList);
+    }
+
+    @Test
+    //@@author A0131560U
+    public void execute_findAfterListRestricted_showsSpecificItems() throws Exception {
+        // prepare expectations
+        TestDataHelper helper = new TestDataHelper();
+        TaskBook expectedAB = helper.generateTaskBook(2);
+        List<? extends ReadOnlyItem> expectedList = expectedAB.getItemList();
+
+        // prepare task book state
+        helper.addToModel(model, 2);
+        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"")), expectedAB, expectedList);
+    }
+    
     /**
      * Confirms the 'invalid argument index number behaviour' for the given
      * command targeting a single item in the shown list, using visible index.

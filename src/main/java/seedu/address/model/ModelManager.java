@@ -24,8 +24,8 @@ import seedu.address.model.item.UniqueItemList;
 import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
 
 /**
- * Represents the in-memory model of the address book data.
- * All changes to any model should be synchronized.
+ * Represents the in-memory model of the address book data. All changes to any
+ * model should be synchronized.
  */
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
@@ -36,8 +36,8 @@ public class ModelManager extends ComponentManager implements Model {
     private Stack<Command> commandStack;
 
     /**
-     * Initializes a ModelManager with the given AddressBook
-     * AddressBook and its variables should not be null
+     * Initializes a ModelManager with the given AddressBook AddressBook and its
+     * variables should not be null
      */
     public ModelManager(TaskBook src, UserPrefs userPrefs) {
         super();
@@ -92,7 +92,7 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
     }
-    
+
     @Override
 	public void setItemDesc(Item item, String desc) {
         try {
@@ -158,6 +158,7 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     /**
      * Returns a list sorted chronologically
+     * 
      * @@author A0131560U
      */
     public UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList() {
@@ -184,36 +185,36 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredListToShowAll() {
         filteredItems.setPredicate(null);
     }
-    
+
     @Override
-    public void updateFilteredListDefaultPredicate(String taskType){
+    public void updateFilteredListDefaultPredicate(String taskType) {
         defaultPredicate = new QualifierPredicate(new TypeQualifier(taskType));
         updateFilteredItemList(defaultPredicate);
     }
 
     @Override
-    public void updateFilteredItemList(Set<String> keywords){
-		updateFilteredItemList(new QualifierPredicate(new KeywordQualifier(keywords))
-		        .and(defaultPredicate));
+    public void updateFilteredItemList(Set<String> keywords) {
+        updateFilteredItemList(new QualifierPredicate(new KeywordQualifier(keywords)).and(defaultPredicate));
     }
 
-	private void updateFilteredItemList(Predicate pred) {
-		// Not used, to narrow searches the user has to type the entire search
-		// string in
-		// if(filteredItems.getPredicate() != null){
-		// filteredItems.setPredicate(pred.and(filteredItems.getPredicate()));
-		// } else{
-		filteredItems.setPredicate(pred);
-		// }
+    private void updateFilteredItemList(Predicate pred) {
+        // Not used, to narrow searches the user has to type the entire search
+        // string in
+        // if(filteredItems.getPredicate() != null){
+        // filteredItems.setPredicate(pred.and(filteredItems.getPredicate()));
+        // } else{
+        filteredItems.setPredicate(pred);
+        // }
     }
 
-    //========== Inner classes/interfaces used for filtering ==================================================
+    // ========== Inner classes/interfaces used for filtering
+    // ==================================================
 
-	private class QualifierPredicate implements Predicate<ReadOnlyItem> {
+    private class QualifierPredicate implements Predicate<ReadOnlyItem> {
 
         private final Qualifier qualifier;
 
-		QualifierPredicate(Qualifier qualifier) {
+        QualifierPredicate(Qualifier qualifier) {
             this.qualifier = qualifier;
         }
 
@@ -222,45 +223,44 @@ public class ModelManager extends ComponentManager implements Model {
             return qualifier.toString();
         }
 
-		@Override
-		public boolean test(ReadOnlyItem item) {
-			return qualifier.run(item);
-		}
+        @Override
+        public boolean test(ReadOnlyItem item) {
+            return qualifier.run(item);
+        }
 
     }
 
     interface Qualifier {
         boolean run(ReadOnlyItem item);
+
         @Override
-		String toString();
+        String toString();
     }
-    
+
     private class TypeQualifier implements Qualifier {
         private String type;
-        
+
         TypeQualifier(String type) {
             this.type = type;
         }
 
         @Override
         public boolean run(ReadOnlyItem item) {
-            if(!item.is(type)){
-                System.out.println(item.getAsText() + " is not a \"" + type + "\"");
+            if (!item.is(type)) {
                 return false;
             }
             return true;
         }
-        
+
         @Override
-        public String toString(){
+        public String toString() {
             return "type= " + type;
         }
-        
-        
+
     }
 
     private class KeywordQualifier implements Qualifier {
-		private Set<String> searchKeyWords;
+        private Set<String> searchKeyWords;
 
         KeywordQualifier(Set<String> nameKeyWords) {
             this.searchKeyWords = nameKeyWords;
@@ -268,12 +268,12 @@ public class ModelManager extends ComponentManager implements Model {
 
         @Override
         public boolean run(ReadOnlyItem item) {
-        	for (String keyword: searchKeyWords){
-        		if(!new Keyword(keyword).search(item)){
-        			return false;
-        		}
-        	}
-			return true;
+            for (String keyword : searchKeyWords) {
+                if (!new Keyword(keyword).search(item)) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         @Override
@@ -282,30 +282,29 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
-	// Idea @@author A0092390E
-	private class Keyword {
-		private String keyword;
+    // Idea @@author A0092390E
+    private class Keyword {
+        private String keyword;
 
-		Keyword(String _keyword) {
-			keyword = _keyword;
-		}
+        Keyword(String _keyword) {
+            keyword = _keyword;
+        }
 
-		public boolean search(ReadOnlyItem item){
-			if(keyword.matches(Parser.COMMAND_DESCRIPTION_REGEX)){
-				return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(), 
-				        keyword.replace(Parser.COMMAND_DESCRIPTION_PREFIX, ""));
-			} else if (keyword.matches(Parser.COMMAND_TAG_REGEX)){
-				return StringUtil.containsIgnoreCase(item.getTags().listTags(), 
-				        keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, ""));
-			}
-			else {
-			    DateTimeParser parseDate = new DateTimeParser(keyword);
-			    return ((item.getStartDate() != null
-			            && DateTimeParser.isSameDay(item.getStartDate(), parseDate.extractStartDate())
-			            || (item.getEndDate() != null
-			            && DateTimeParser.isSameDay(item.getEndDate(),parseDate.extractStartDate()))));
-			}
-		}
-	}
+        public boolean search(ReadOnlyItem item) {
+            if (keyword.matches(Parser.COMMAND_DESCRIPTION_REGEX)) {
+                return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(),
+                        keyword.replace(Parser.COMMAND_DESCRIPTION_PREFIX, ""));
+            } else if (keyword.matches(Parser.COMMAND_TAG_REGEX)) {
+                return StringUtil.containsIgnoreCase(item.getTags().listTags(),
+                        keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, ""));
+            } else {
+                DateTimeParser parseDate = new DateTimeParser(keyword);
+                return ((item.getStartDate() != null
+                        && DateTimeParser.isSameDay(item.getStartDate(), parseDate.extractStartDate())
+                        || (item.getEndDate() != null
+                                && DateTimeParser.isSameDay(item.getEndDate(), parseDate.extractStartDate()))));
+            }
+        }
+    }
 
 }
