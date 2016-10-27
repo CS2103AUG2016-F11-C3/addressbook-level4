@@ -15,14 +15,24 @@ public class DoneCommandTest extends TaskBookGuiTest {
 
     @Test
     public void done() {
-        // mark one item as done
+        // mark first item as done
         TestItem[] currentList = td.getTypicalItems();
         int targetIndex = 1;
+        assertDoneSuccess(targetIndex, currentList);
+        
+        // mark last item as done
+        currentList = TestUtil.doneItemFromList(currentList, targetIndex);
+        targetIndex = currentList.length;
+        assertDoneSuccess(targetIndex, currentList);
+        
+        //delete from the middle of the list
+        currentList = TestUtil.doneItemFromList(currentList, targetIndex);
+        targetIndex = currentList.length/2;
         assertDoneSuccess(targetIndex, currentList);
     }
     
     /**
-     * 
+     * Runs the done command to mark an item as done at specified index and confirms the result is correct.
      * @param targetIndexOneIndexed e.g. to delete the first person in the list, 1 should be given as the target index.
      * @param currentList A copy of the current list of persons (before deletion).
      */
