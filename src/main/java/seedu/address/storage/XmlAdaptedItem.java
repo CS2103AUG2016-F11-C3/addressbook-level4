@@ -120,7 +120,7 @@ public class XmlAdaptedItem {
         tags = new UniqueTagList(itemTags);
 
 		Item itemToReturn = new Item(description, start, end, tags);
-		if (isDone.equals(false)) {
+		if (!isDone) {
 			itemToReturn.setIsDone(false);
 		} else {
         	itemToReturn.setIsDone(true);

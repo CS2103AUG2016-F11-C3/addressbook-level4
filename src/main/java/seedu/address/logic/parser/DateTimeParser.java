@@ -1,5 +1,6 @@
 package seedu.address.logic.parser;
 
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -40,6 +41,7 @@ public class DateTimeParser {
     // handy strings for making pretty dates
     public static final String TODAY_DATE_REF = "Today";
     public static final String TOMORROW_DATE_REF = "Tomorrow";
+    public static final String LAST_WEEK_REF = "Last" + SINGLE_WHITESPACE;
     public static final String NEXT_WEEK_REF = "Next" + SINGLE_WHITESPACE;
     public static final String THIS_WEEK_REF = "This" + SINGLE_WHITESPACE;
     public static final String PRETTY_COMMA_DELIMITER = "," + SINGLE_WHITESPACE;
@@ -242,8 +244,8 @@ public class DateTimeParser {
         }
 
         // add relative prefix (this/next <day of week>) if applicable
-        if (computeDaysTo(ldt) < 14) {
-            // is within the next two weeks
+        if (computeDaysTo(ldt) < 14 && computeDaysTo(ldt) > -14) {
+            // is within the past/next two weeks
             return makeRelativePrefix(ldt) + extractLongDayOfWeek(ldt)
                     + PRETTY_COMMA_DELIMITER + extractTwelveHourTime(ldt);
         }
@@ -308,7 +310,11 @@ public class DateTimeParser {
      * @author darren
      */
     private static String makeRelativePrefix(LocalDateTime ldt) {
-        if (computeDaysTo(ldt) < 7) {
+        LocalDateTime startOfCurrentWeek = LocalDateTime.now().with(DayOfWeek.MONDAY);
+        LocalDateTime startOfNextWeek = startOfCurrentWeek.with(DayOfWeek.MONDAY);
+        if (computeDaysTo(ldt) > -14 && ldt.isBefore(startOfCurrentWeek)) {
+            return LAST_WEEK_REF;
+        } else if (computeDaysTo(ldt) < 7 && ldt.isBefore(startOfNextWeek)) {
             return THIS_WEEK_REF;
         } else if (computeDaysTo(ldt) < 14) {
             return NEXT_WEEK_REF;
@@ -326,7 +332,6 @@ public class DateTimeParser {
      * @author darren
      */
     public static long computeDaysTo(LocalDateTime ldt) {
-        assert ldt.isAfter(LocalDateTime.now());
         return ChronoUnit.DAYS.between(LocalDate.now(), ldt.toLocalDate());
     }
 
@@ -337,5 +342,5 @@ public class DateTimeParser {
     public String getDateTime() {
         return this.datetime;
     }
-
+    
 }
