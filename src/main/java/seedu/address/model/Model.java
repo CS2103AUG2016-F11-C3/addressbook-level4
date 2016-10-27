@@ -1,11 +1,11 @@
 package seedu.address.model;
 
+import java.util.Set;
+
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
-
-import java.util.Set;
 
 /**
  * The API of the Model component.
@@ -25,6 +25,11 @@ public interface Model {
 
     /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList();
+
+	/**
+	 * Returns the secondary list of items, that only updates on model changes
+	 **/
+	UnmodifiableObservableList<ReadOnlyItem> getSecondaryItemList();
 
     /** Updates the filter of the filtered person list to show all persons */
     void updateFilteredListToShowAll();

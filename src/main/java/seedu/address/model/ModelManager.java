@@ -1,20 +1,20 @@
 package seedu.address.model;
 
+import java.util.Comparator;
+import java.util.Set;
+import java.util.logging.Logger;
+
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
-import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.events.model.TaskBookChangedEvent;
-import seedu.address.commons.core.ComponentManager;
+import seedu.address.commons.util.StringUtil;
 import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
 import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
-
-import java.util.Comparator;
-import java.util.Set;
-import java.util.logging.Logger;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -24,7 +24,8 @@ public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
 
     private final TaskBook taskBook;
-    private final FilteredList<Item> filteredItems;
+	private FilteredList<Item> filteredItems;
+	private FilteredList<Item> secondaryItems;
 
     /**
      * Initializes a ModelManager with the given AddressBook
@@ -39,6 +40,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         taskBook = new TaskBook(src);
         filteredItems = new FilteredList<>(taskBook.getItems());
+		secondaryItems = new FilteredList<>(taskBook.getItems());
     }
 
     public ModelManager() {
@@ -48,6 +50,7 @@ public class ModelManager extends ComponentManager implements Model {
     public ModelManager(ReadOnlyTaskBook initialData, UserPrefs userPrefs) {
         taskBook = new TaskBook(initialData);
         filteredItems = new FilteredList<>(taskBook.getItems());
+		secondaryItems = new FilteredList<>(taskBook.getItems());
     }
 
     @Override
@@ -88,6 +91,15 @@ public class ModelManager extends ComponentManager implements Model {
      */
     public UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList() {
         //TODO: implement Comparator in Item class
+		return getUnmodifiableListFromItems(filteredItems);
+	}
+
+	@Override
+	public UnmodifiableObservableList<ReadOnlyItem> getSecondaryItemList() {
+		return getUnmodifiableListFromItems(secondaryItems);
+	}
+
+	private UnmodifiableObservableList<ReadOnlyItem> getUnmodifiableListFromItems(FilteredList<Item> filteredItems) {
         Comparator<Item> chronologicalComparator = new Comparator<Item>(){
             @Override
             public int compare(Item x, Item y) {
@@ -96,7 +108,7 @@ public class ModelManager extends ComponentManager implements Model {
         };
         SortedList<Item> sortedList = new SortedList<>(filteredItems, chronologicalComparator);
         return new UnmodifiableObservableList<>(sortedList);
-    }
+	}
 
     @Override
     public void updateFilteredListToShowAll() {
@@ -116,7 +128,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     interface Expression {
         boolean satisfies(ReadOnlyItem item);
-        String toString();
+        @Override
+		String toString();
     }
 
     private class PredicateExpression implements Expression {
@@ -140,7 +153,8 @@ public class ModelManager extends ComponentManager implements Model {
 
     interface Qualifier {
         boolean run(ReadOnlyItem item);
-        String toString();
+        @Override
+		String toString();
     }
 
     private class DescriptionQualifier implements Qualifier {
@@ -163,5 +177,6 @@ public class ModelManager extends ComponentManager implements Model {
             return "name=" + String.join(", ", descriptionKeyWords);
         }
     }
+
 
 }
