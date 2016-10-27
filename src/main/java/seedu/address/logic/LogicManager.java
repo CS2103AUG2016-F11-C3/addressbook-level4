@@ -1,5 +1,7 @@
 package seedu.address.logic;
 
+import java.util.logging.Logger;
+
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
@@ -9,8 +11,6 @@ import seedu.address.logic.parser.Parser;
 import seedu.address.model.Model;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.storage.Storage;
-
-import java.util.logging.Logger;
 
 /**
  * The main LogicManager of the app.
@@ -38,4 +38,9 @@ public class LogicManager extends ComponentManager implements Logic {
     public ObservableList<ReadOnlyItem> getFilteredItemList() {
         return model.getFilteredItemList();
     }
+
+	@Override
+	public ObservableList<ReadOnlyItem> getSecondaryItemList() {
+		return model.getSecondaryItemList();
+	}
 }

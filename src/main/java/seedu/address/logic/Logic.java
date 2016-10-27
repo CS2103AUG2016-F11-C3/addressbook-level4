@@ -15,7 +15,9 @@ public interface Logic {
      */
     CommandResult execute(String commandText);
 
-    /** Returns the filtered list of persons */
+	/** Returns the filtered list of items */
     ObservableList<ReadOnlyItem> getFilteredItemList();
 
+	/** Returns the secondary list of items, that only updates on model changes **/
+	ObservableList<ReadOnlyItem> getSecondaryItemList();
 }
