@@ -306,7 +306,7 @@ public class TestUtil {
      * Return a copy of the list with the item at specified index marked done
      * @param list original list to copy from
      * @param targetIndexInOneIndexedFormat e.g. if the first element to be removed, 1 should be given as index.
-     * @@author: A0144750J
+     * @@author A0144750J
      */
     public static TestItem[] doneItemFromList(final TestItem[] list, int targetIndexInOneIndexedFormat) {
         return doneItemsFromList(list, targetIndexInOneIndexedFormat-1);
