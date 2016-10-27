@@ -29,10 +29,10 @@ public class DateTimeParser {
     // natty parser object
     // careful of name collision with our own Parser object
     // static so we only need to initialize it once
-    private static PrettyTimeParser parser;
+    private static PrettyTimeParser parser = new PrettyTimeParser();
 
     // prettytime formatter
-    private static PrettyTime prettytime;
+    private static PrettyTime prettytime = new PrettyTime();
 
     // result from parser
     private List<DateGroup> dategroups;
@@ -52,12 +52,6 @@ public class DateTimeParser {
         assert input.isEmpty() != true;
 
         this.datetime = input;
-        if (DateTimeParser.parser == null) {
-            DateTimeParser.parser = new PrettyTimeParser();
-        }
-        if (DateTimeParser.prettytime == null) {
-            DateTimeParser.prettytime = new PrettyTime();
-        }
 
         // perform natty parsing
         this.dategroups = DateTimeParser.parser.parseSyntax(input);
@@ -135,6 +129,17 @@ public class DateTimeParser {
      */
     public static boolean isSameDay(LocalDateTime ldt1, LocalDateTime ldt2) {
         return ldt1.toLocalDate().equals(ldt2.toLocalDate());
+    }
+    
+    /**
+     * Check if the given java.time.LocalDateTime object is the same
+     * date as the current date on local system time
+     * @param ldt
+     * @return true if the LocalDateTime is for today, false otherwise
+     * @author darren
+     */
+    public static boolean isToday(LocalDateTime ldt) {
+        return isSameDay(ldt, LocalDateTime.now());
     }
 
     /**
