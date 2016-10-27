@@ -153,4 +153,12 @@ public class UniqueTagList implements Iterable<Tag> {
     public int hashCode() {
         return internalList.hashCode();
     }
+    
+    public String listTags(){
+        String tagList = new String();
+        for (Tag tag : internalList){
+            tagList.concat(tag.toString() + " ");
+        }
+        return tagList.trim();
+    }
 }
