@@ -250,4 +250,31 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         
         return checkee;
     }
+    
+    /**
+     * Returns a deep copy of the current Item
+     * 
+     * @return deep copy of this Item
+     * @@author A0144750J
+     */
+    public Item deepCopy() {
+        Item duplicate;
+        
+        // copy each field to new item
+        try {
+            duplicate = new Item(new Description("dummy"), null, null,
+                    new UniqueTagList());
+            duplicate.setDescription(
+                    this.getDescription().getFullDescription());
+	        duplicate.setStartDate(this.getStartDate());
+	        duplicate.setEndDate(this.getEndDate());
+	        duplicate.setIsDone(this.getIsDone());
+	        duplicate.setTags(this.getTags());
+	        return duplicate;
+        } catch (IllegalValueException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }
