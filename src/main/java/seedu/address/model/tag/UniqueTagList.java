@@ -157,8 +157,9 @@ public class UniqueTagList implements Iterable<Tag> {
     public String listTags(){
         String tagList = new String();
         for (Tag tag : internalList){
-            tagList.concat(tag.toString() + " ");
+            System.out.print(tag.toString());
+            tagList = tagList + tag.toString();
         }
-        return tagList.trim();
+        return tagList;
     }
 }
