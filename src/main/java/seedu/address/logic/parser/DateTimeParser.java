@@ -311,9 +311,10 @@ public class DateTimeParser {
      */
     private static String makeRelativePrefix(LocalDateTime ldt) {
         LocalDateTime startOfCurrentWeek = LocalDateTime.now().with(DayOfWeek.MONDAY);
+        LocalDateTime startOfNextWeek = startOfCurrentWeek.with(DayOfWeek.MONDAY);
         if (computeDaysTo(ldt) > -14 && ldt.isBefore(startOfCurrentWeek)) {
             return LAST_WEEK_REF;
-        } else if (computeDaysTo(ldt) < 7) {
+        } else if (computeDaysTo(ldt) < 7 && ldt.isBefore(startOfNextWeek)) {
             return THIS_WEEK_REF;
         } else if (computeDaysTo(ldt) < 14) {
             return NEXT_WEEK_REF;
