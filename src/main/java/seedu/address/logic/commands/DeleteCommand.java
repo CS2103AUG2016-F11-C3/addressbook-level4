@@ -22,7 +22,7 @@ public class DeleteCommand extends Command {
 
     public static final String MESSAGE_DELETE_ITEM_SUCCESS = "Deleted Task: %1$s";
     public static final String MESSAGE_UNDO_SUCCESS = "Undo delete task: %1$s";
-	public static final String MESSAGE_UNDO_FAILURE = "Undo failed!";
+	public static final String MESSAGE_UNDO_FAILURE = "Undo failed! Task already existed!";
 
     public final int targetIndex;
     
