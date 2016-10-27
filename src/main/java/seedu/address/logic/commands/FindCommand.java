@@ -9,6 +9,7 @@ import java.util.Set;
 public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
+    public static final String MESSAGE_UNDO_FAILURE = "";
 
 	/**
 	 * never clear the command box, in case the user wants to refine their query
@@ -31,10 +32,16 @@ public class FindCommand extends Command {
 
     @Override
     public CommandResult execute() {
+    	hasUndo = false;
         model.updateFilteredItemList(keywords);
 		CommandResult res = new CommandResult(getMessageForItemListShownSummary(model.getFilteredItemList().size()));
 		res.setClear(false);
 		return res;
+    }
+    
+    @Override
+    public CommandResult undo() {
+        return new CommandResult(MESSAGE_UNDO_FAILURE);
     }
 
 }

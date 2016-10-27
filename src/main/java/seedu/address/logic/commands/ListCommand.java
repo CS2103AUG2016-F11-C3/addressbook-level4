@@ -6,6 +6,8 @@ package seedu.address.logic.commands;
 public class ListCommand extends Command {
 
     public static final String COMMAND_WORD = "list";
+    public static final String MESSAGE_UNDO_FAILURE = "";
+
 
     public static final String MESSAGE_SUCCESS = "Listed all items %1$s";
     public static final String MESSAGE_INVALID_TYPE = "List argument is invalid";    
@@ -60,6 +62,12 @@ public class ListCommand extends Command {
     //@@author A0131560U
     public CommandResult execute() {
         model.updateFilteredListDefaultPredicate(itemType.getTypeName());
-        return new CommandResult(String.format(MESSAGE_SUCCESS, itemType.getTypeMessage()));
+    	hasUndo = false;
+        return new CommandResult(MESSAGE_SUCCESS);
+    }
+
+    @Override
+    public CommandResult undo() {
+        return new CommandResult(MESSAGE_UNDO_FAILURE);
     }
 }

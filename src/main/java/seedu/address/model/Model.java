@@ -1,11 +1,14 @@
 package seedu.address.model;
 
+import java.time.LocalDateTime;
+import java.util.Set;
+
+import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.UnmodifiableObservableList;
+import seedu.address.logic.commands.Command;
 import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
-
-import java.util.Set;
 
 /**
  * The API of the Model component.
@@ -23,13 +26,39 @@ public interface Model {
     /** Adds the given person */
     void addItem(Item item) throws UniqueItemList.DuplicateItemException;
     
-    /** Set item to be done */
-    void doneItem(ReadOnlyItem item);
+    /** Edit the given Item's description */
+    void setItemDesc(Item item, String desc);
+    
+    /** Edit the given Item's start datetime */
+    void setItemStart(Item item, LocalDateTime start);
+    
+    /** Edit the given Item's end datetime */
+    void setItemEnd(Item item, LocalDateTime end);
+    
+    /** Set the item isDone field to true */
+    // @@author A0144750J
+    void setDoneItem(Item item);
+    
+    /** Set the item isDone field to true */
+    // @@author A0144750J
+    void setNotDoneItem(Item item);
+    
+    /** Add the command to stack for undo */
+    // @@author A0144750J
+    void addCommandToStack(Command command);
+    
+    /** Add the command to stack for undo */
+    // @@author A0144750J
+    Command returnCommandFromStack();
+
 
     /** Returns the filtered item list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList();
 
-    /** Updates the filter of the filtered iftem list to show all persons */
+    /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
+    FilteredList<Item> getFilteredEditableItemList();
+    
+    /** Updates the filter of the filtered person list to show all persons */
     void updateFilteredListToShowAll();
 
     /** Updates the filter of the filtered item list to filter by the given keywords*/

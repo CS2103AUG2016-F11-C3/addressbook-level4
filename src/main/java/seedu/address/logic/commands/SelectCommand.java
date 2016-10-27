@@ -14,6 +14,8 @@ public class SelectCommand extends Command {
     public final int targetIndex;
 
     public static final String COMMAND_WORD = "select";
+	public static final String MESSAGE_UNDO_FAILURE = "";
+
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Selects the person identified by the index number used in the last person listing.\n"
@@ -28,6 +30,8 @@ public class SelectCommand extends Command {
 
     @Override
     public CommandResult execute() {
+    	
+    	hasUndo = false;
 
 		UnmodifiableObservableList<ReadOnlyItem> lastShownList = model.getFilteredItemList();
 
@@ -39,6 +43,11 @@ public class SelectCommand extends Command {
         EventsCenter.getInstance().post(new JumpToListRequestEvent(targetIndex - 1));
         return new CommandResult(String.format(MESSAGE_SELECT_PERSON_SUCCESS, targetIndex));
 
+    }
+    
+    @Override
+    public CommandResult undo() {
+        return new CommandResult(MESSAGE_UNDO_FAILURE);
     }
 
 }
