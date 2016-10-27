@@ -31,7 +31,7 @@ public interface ReadOnlyItem {
 	default LocalDateTime getEndDate() {
 		return null;
 	}
-
+	
 	/**
 	 * The returned TagList is a deep copy of the internal TagList, changes on
 	 * the returned list will not affect the person's internal tags.
@@ -45,28 +45,24 @@ public interface ReadOnlyItem {
 	default boolean isSameStateAs(ReadOnlyItem other) {
 		return this == other
 				|| (other != null
-				&& this.getDescription().equals(other.getDescription()));
+				&& this.getDescription().equals(((ReadOnlyItem) other).getDescription()))
+		        && this.getTags().equals(((ReadOnlyItem) other).getTags());
 	}
 
 	/**
-	 * Formats the Item as text, showing just the description
+	 * Formats the Item as text, showing the description and tags
 	 */
 	default String getAsText() {
 		final StringBuilder builder = new StringBuilder();
 		builder.append(getDescription());
-		// .append(" Phone: ")
-		// .append(getPhone())
-		// .append(" Email: ")
-		// .append(getEmail())
-		// .append(" Address: ")
-		// .append(getAddress())
-		// .append(" Tags: ");
 		getTags().forEach(builder::append);
+		builder.append(getStartDate());
+		builder.append(getEndDate());
 		return builder.toString();
 	}
 
 	/**
-	 * Returns a string representation of this Person's tags
+	 * Returns a string representation of this Item's tags
 	 */
 	default String tagsString() {
 		final StringBuffer buffer = new StringBuffer();

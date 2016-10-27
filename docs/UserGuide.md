@@ -1,4 +1,4 @@
-﻿# Sudowudo User Guide
+# Sudowudo User Guide
 
 ## Quick Start
 <!-- for getting the thing to actually work -->
@@ -35,13 +35,18 @@ Descriptors are words/phrases used for identification, such as for the name of a
 Dental Appointment   # invalid
 ```
 
-#### `event_id`
-Events can be assigned a numbers as an *identifier*. Each event/task has a unique and persistent numerical `event_id`. The identifier does not need to be enclosed in quote marks.
-
 #### `context_id`
 Tasks and events are shown on the main interface of Sudowudo and paged. The `context_id` allows you to modify tasks and events that are shown on the interface based on the *contextual* identifier, i.e. the numerical index that is shown on the interface. The identifier does not need to be enclosed in quote marks.
 
 The `context_id` is not persistent and can change depending on what tasks/events are on the interface at the time. It is meant to provide a more convenient and interactive way to interact with tasks/events.
+
+#### `tags`
+Tags are single-word markers that can be added to a task. Each task can have as many `tags` as you want. Hashtags are used to denote a tag.
+
+```bash
+#important # valid
+important  # invalid
+```
 
 #### `datetime`
 Dates and times are expressed together ("datetime") and have a natural format.
@@ -74,6 +79,7 @@ The available field names:
 | `field_name` | Type | Description |
 |--------------|------|-------------|
 | `name`       | [descriptor](#descriptors) | Task/event name |
+| `tag`       | [tag](#tags) | Task/event tag |
 | `start`      | [datetime](#datetime) | Start datetime |
 | `end`        | [datetime](#datetime) | End datetime |
 | `period`     | [datetime](#datetime) | Start and end datetime |
@@ -92,16 +98,16 @@ For an event with a definite start and end time, you can use the following synta
 
 ```bash
 # format
-add EVENT_NAME from DATETIME
+add EVENT_NAME from DATETIME #optional #tags
 ```
 
-Fields: [`EVENT_NAME`](#descriptors), [`DATETIME`](#datetime)
+Fields: [`EVENT_NAME`](#descriptors), [`DATETIME`](#datetime), [`TAG(S)`](#tags)
 
 ```bash
 # examples
-add "Do laundry" from 1600 to 1700
-add "CS2103 Hackathon" from 1000 on 12 November to 1200 on 15 November  # multiday event
-add "Attempt tutorial" from 12/12/2016 9:30pm to 10:30pm
+add "Do laundry" from 1600 to 1700 #chores
+add "CS2103 Hackathon" from 1000 on 12 November to 1200 on 15 November      # multiday event
+add "Attempt tutorial" from 12/12/2016 9:30pm to 10:30pm #optional #tags    # multiple tags
 add "Go to school" from 1800 fifth january till the sixth october at 9:30pm
 ```
 
@@ -110,17 +116,17 @@ For a task with no definite start time but a definite end time (e.g. a homework 
 
 ```bash
 # format
-add TASK_NAME by DATETIME
+add TASK_NAME by DATETIME #optional #tags
 ```
 
-Fields: [`TASK_NAME`](#descriptors), [`DATETIME`](#datetime)
+Fields: [`TASK_NAME`](#descriptors), [`DATETIME`](#datetime), [`TAG(S)`](#tags)
 
 ```bash
 # examples
 add "CS2103 Tutorial 6" by 7 October
 add "CS2103 Peer Feedback" by 2359h 27 Sep
 add "Walk dog" by 9:41pm
-add "Perform magic tricks" by two weeks from now
+add "Perform magic tricks" by two weeks from now #job
 ```
 
 #### Floating Tasks
@@ -128,9 +134,9 @@ Floating tasks do not have a definite start or end time.
 
 ```bash
 # format
-add TASK_NAME
+add TASK_NAME #optional #tags
 ```
-Fields: [`TASK_NAME`](#descriptors)
+Fields: [`TASK_NAME`](#descriptors), [`TAG(S)`](#tags)
 
 ```bash
 # examples
@@ -143,10 +149,9 @@ Sometimes it is necessary to change the details of your event because life.
 
 ```bash
 # format
-for EVENT_ID edit FIELD_NAME:NEW_DETAIL
 for CONTEXT_ID edit FIELD_NAME:NEW_DETAIL
 ```
-Fields: [`FIELD_NAME`](#field-name), [`EVENT_ID`](#event-id), [`CONTEXT_ID`](#context-id), `NEW_DETAIL`
+Fields: [`FIELD_NAME`](#field-name), [`CONTEXT_ID`](#context-id), `NEW_DETAIL`
 
 You can change multiple fields for the same event at the same time by separating multiple `FIELD_NAME:NEW_DETAIL` parameters with a comma.
 
@@ -166,10 +171,9 @@ for 1 edit period: this friday 1600 to 1645
 #### Marking as Complete
 ```bash
 # format
-done EVENT_ID
 done CONTEXT_ID
 ```
-Fields: [`EVENT_ID`](#event-id), [`CONTEXT_ID`](#context-id)
+Fields: [`CONTEXT_ID`](#context-id)
 
 ```bash
 # examples
@@ -181,11 +185,10 @@ You can delete an event using its name. This is not the same as marking an event
 
 ```bash
 # format
-delete EVENT_ID
 delete CONTEXT_ID
 ```
 
-Fields: [`EVENT_ID`](#event-id), [`CONTEXT_ID`](#context-id)
+Field: [`CONTEXT_ID`](#context-id)
 
 ```bash
 # examples
@@ -194,22 +197,24 @@ delete 241 # delete the item with event ID 241
 ```
 
 ### Searching for a Task/Event
-You can search for specific events using keywords or event indices.
+You can search for specific events using keyphrases. Keyphrases are filtered according to whether they search through `Descriptor`s, `Tag`s or `DateTime`s.
 
-The keywords are case-insensitive and can be simply part of the event name.
+The keyphrases are case-insensitive and can be simply part of the event name.
 
 ```bash
 # format
-find KEYWORD
-find EVENT_ID
+find "DESCRIPTOR KEYPHRASE" "KEYPHRASE" -> searches descriptors for partial matches
+find #TAGPHRASE                         -> searches tags for partial matches
+find from tomorrow to tuesday           -> searches for exact matches to the date specified
 ```
 
-Fields: [`KEYWORD`](#descriptors), [`EVENT_ID`](#event-id)
+Fields: [`DESCRIPTOR KEYPHRASE`](#descriptors), [`TAG KEYWORD`](#tags), [`DATETIME KEYPHRASE`](#datetime)
 
 ```bash
 # examples
 find "cake"
-find 12093
+find "CS2103" #homework tomorrow        -> searches for CS2103 in descriptors, homework in tags,
+                                           and looks for dates matching the date of 'tomorrow'
 ```
 
 ### Enumerating Tasks

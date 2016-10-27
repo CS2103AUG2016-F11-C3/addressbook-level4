@@ -42,7 +42,7 @@ public class Tag {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof Tag // instanceof handles nulls
-                && this.tagName.equals(((Tag) other).tagName)); // state check
+                && this.toString().equals(((Tag) other).toString())); // state check
     }
 
     @Override
@@ -54,7 +54,7 @@ public class Tag {
      * Format state as text for viewing.
      */
     public String toString() {
-        return '[' + tagName + ']';
+        return '#' + tagName;
     }
 
 }

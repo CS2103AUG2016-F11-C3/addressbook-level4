@@ -31,13 +31,12 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     /**
      * constructor for floating item
      */
-    public Item(Description desc) {
+    public Item(Description desc, UniqueTagList tags) {
         // assert !CollectionUtil.isAnyNull(name, phone, email, address, tags);
         assert desc != null;
         this.description = desc;
         this.isDone = false;
-        // this.tags = new UniqueTagList(tags); // protect internal tags from
-        // changes in the arg list
+        this.tags = new UniqueTagList(tags);
     }
 
     /**
@@ -48,11 +47,12 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
      * @param end
      * @author darren
      */
-    public Item(Description desc, LocalDateTime start, LocalDateTime end) {
+    public Item(Description desc, LocalDateTime start, LocalDateTime end, UniqueTagList tags) {
         assert !CollectionUtil.isAnyNull(desc);
         this.description = desc;
         this.startDate = start;
         this.endDate = end;
+        this.tags = new UniqueTagList(tags);
     }
     
 	/**
@@ -61,11 +61,14 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 	 * @param desc
 	 * @param end
 	 * @author darren
+	 * @@author A0131560U
 	 */
-    public Item(Description desc, LocalDateTime end) {
+    public Item(Description desc, LocalDateTime end, UniqueTagList tags) {
         assert !CollectionUtil.isAnyNull(desc);
         this.description = desc;
         this.endDate = end;
+        this.tags = new UniqueTagList(tags);
+
     }
     
     /**
@@ -73,7 +76,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
      * @param source: ReadOnlyItem that can return Description, startDate and EndDate
      */
     public Item(ReadOnlyItem source) {
-        this(source.getDescription(), source.getStartDate(), source.getEndDate());
+        this(source.getDescription(), source.getStartDate(), source.getEndDate(), source.getTags());
     }
 
     @Override
@@ -159,6 +162,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 		notifyObservers();
     }
 
+    
     @Override
 	public void setIsDone(boolean doneness) {
         this.isDone = doneness;

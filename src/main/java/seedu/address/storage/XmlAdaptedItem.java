@@ -1,10 +1,18 @@
 package seedu.address.storage;
 
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.item.*;
-import javax.xml.bind.annotation.XmlElement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.annotation.XmlElement;
+
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.model.item.Description;
+import seedu.address.model.item.Item;
+import seedu.address.model.item.ReadOnlyItem;
+import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.UniqueTagList;
 
 
 /**
@@ -21,6 +29,9 @@ public class XmlAdaptedItem {
     @XmlElement(required = true)
     private String endDate;
     
+    @XmlElement
+    private List<XmlAdaptedTag> tagged = new ArrayList<>();
+
     @XmlElement(required = true)
     private String isDone;
     
@@ -32,7 +43,7 @@ public class XmlAdaptedItem {
 
 
     /**
-     * Converts a given Person into this class for JAXB use.
+     * Converts a given Item into this class for JAXB use.
      *
      * @param source future changes to this will not affect the created XmlAdaptedPerson
      */
@@ -53,6 +64,12 @@ public class XmlAdaptedItem {
         } else {
         	endDate = source.getEndDate().format(formatter);
         }
+            
+        tagged = new ArrayList<>();
+        for (Tag tag : source.getTags()) {
+            tagged.add(new XmlAdaptedTag(tag));
+        }
+
         
         if (source.getIsDone()) {
         	isDone = "true";
@@ -70,6 +87,8 @@ public class XmlAdaptedItem {
         final Description description = new Description(this.description);
         LocalDateTime start;
         LocalDateTime end;
+        UniqueTagList tags;
+        
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         if (this.startDate.equals("")) {
         	start = null;
@@ -81,11 +100,18 @@ public class XmlAdaptedItem {
         } else {
         	end = LocalDateTime.parse(endDate, formatter);
         }
-        Item itemToReturn = new Item(description, start, end);
-        if (isDone.equals("true")) {
+        final List<Tag> itemTags = new ArrayList<>();
+        for (XmlAdaptedTag tag : tagged) {
+            itemTags.add(tag.toModelType());
+        }
+        
+        tags = new UniqueTagList(itemTags);
+
+		Item itemToReturn = new Item(description, start, end, tags);
+		if (isDone == null || isDone.equals("false")) {
+			itemToReturn.setIsDone(false);
+		} else {
         	itemToReturn.setIsDone(true);
-        } else {
-        	itemToReturn.setIsDone(false);
         }
         return itemToReturn;
     }

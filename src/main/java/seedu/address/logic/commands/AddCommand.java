@@ -1,12 +1,16 @@
 package seedu.address.logic.commands;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.parser.DateTimeParser;
 import seedu.address.model.item.Description;
 import seedu.address.model.item.Item;
 import seedu.address.model.item.UniqueItemList;
+import seedu.address.model.tag.Tag;
+import seedu.address.model.tag.UniqueTagList;
+import seedu.address.model.tag.UniqueTagList.DuplicateTagException;
 
 /**
  * Adds a person to the address book.
@@ -15,11 +19,13 @@ public class AddCommand extends Command {
 	
 	
 
-	public static final String COMMAND_WORD = "add";
+	private static final String EMPTY_STRING = "";
+
+    public static final String COMMAND_WORD = "add";
 
 	public static final String MESSAGE_USAGE = COMMAND_WORD + ": Adds a task to the to-do list. "
-			+ "Parameters: \"EVENT_NAME\" from START_TIME to END_TIME on DATE" + "Example: " + COMMAND_WORD
-			+ "\"Be awesome\" from 1300 to 2359 on 07/10/2016";
+			+ "Parameters: \"EVENT_NAME\" from START_TIME to END_TIME on DATE #TAGS" + "Example: " + COMMAND_WORD
+			+ "\"Be awesome\" from 1300 to 2359 on 07/10/2016 #cool #nice";
 
 	public static final String MESSAGE_SUCCESS = "New %1$s added: %2$s";
 	public static final String MESSAGE_SUCCESS_TIME_NULL = "START or END time not found but new %1$s added!";
@@ -37,27 +43,58 @@ public class AddCommand extends Command {
 	 * @param timeStr: the whole string containing start time and end time to be parsed. Not required
 	 * @throws IllegalValueException
 	 */
-	public AddCommand(String descriptionStr, String timeStr) throws IllegalValueException {
-		assert descriptionStr != null;
-		if (descriptionStr.equals("")) {
-			descriptionStr = DEFAULT_ITEM_NAME;
-		}
-		if (timeStr != null && !timeStr.equals("")) {
-			hasTimeString = true;
-		}
-		Description descriptionObj = new Description(descriptionStr);
-		DateTimeParser parser = new DateTimeParser(timeStr);
-		LocalDateTime startTimeObj = parser.extractStartDate();
-		LocalDateTime endTimeObj = parser.extractEndDate();
-		if(endTimeObj == null && startTimeObj != null) {
-		    // only one date token and it's parsed as startTime
-		    // use that as the end datetime instead and leave start
-		    // datetime as null
-		    this.toAdd = new Item(descriptionObj, null, startTimeObj);
+	public AddCommand(String descriptionStr, String timeStr, Set<String> tags) throws IllegalValueException {
+		Description descriptionObj = setDescription(descriptionStr);
+
+		setHasTimeString(timeStr);
+		LocalDateTime startTimeObj = setStartDateTime(timeStr);
+		LocalDateTime endTimeObj = setEndDateTime(timeStr);
+		UniqueTagList tagObj = setTagList(tags);
+		if (endTimeObj == null && startTimeObj != null) {
+			// only one date token and it's parsed as startTime
+			// use that as the end datetime instead and leave start
+			// datetime as null
+			this.toAdd = new Item(descriptionObj, null, startTimeObj, tagObj);
 		} else {
-		    this.toAdd = new Item(descriptionObj, startTimeObj, endTimeObj);
+			this.toAdd = new Item(descriptionObj, startTimeObj, endTimeObj, tagObj);
 		}
 	}
+
+    private UniqueTagList setTagList(Set<String> tags) throws DuplicateTagException, IllegalValueException {
+        UniqueTagList tagObj = new UniqueTagList();
+		
+		for (String tagArg : tags){
+		    tagObj.add(new Tag(tagArg));
+		}
+        return tagObj;
+    }
+
+    private void setHasTimeString(String timeStr) {
+        if (timeStr != null && !timeStr.equals(EMPTY_STRING)) {
+			hasTimeString = true;
+		}
+    }
+
+    private LocalDateTime setEndDateTime(String timeStr) {
+        DateTimeParser parser = new DateTimeParser(timeStr);
+		LocalDateTime endTimeObj = parser.extractEndDate();
+		return endTimeObj;
+    }
+
+    private LocalDateTime setStartDateTime(String timeStr) {
+        DateTimeParser parser = new DateTimeParser(timeStr);
+		LocalDateTime startTimeObj = parser.extractStartDate();
+        return startTimeObj;
+    }
+
+    private Description setDescription(String descriptionStr) throws IllegalValueException {
+        assert descriptionStr != null;
+		if (descriptionStr.equals(EMPTY_STRING)) {
+			descriptionStr = DEFAULT_ITEM_NAME;
+		}
+	    Description descriptionObj = new Description(descriptionStr);
+        return descriptionObj;
+    }
 
 	@Override
 	public CommandResult execute() {

@@ -10,18 +10,18 @@ public class FindCommandTest extends TaskBookGuiTest {
 
     @Test
     public void find_nonEmptyList() {
-        assertFindResult("find Move"); //no results
-        assertFindResult("find grass", td.frolick, td.grass); //multiple results
+        assertFindResult("find \"move\""); //no results
+        assertFindResult("find \"grass\"", td.frolick, td.grass); //multiple results
 
         //find after deleting one result
         commandBox.runCommand("delete 1");
-        assertFindResult("find grass",td.grass);
+        assertFindResult("find \"grass\"",td.grass);
     }
 
     @Test
     public void find_emptyList(){
         commandBox.runCommand("clear");
-        assertFindResult("find asymptote"); //no results
+        assertFindResult("find #asymptote"); //no results
     }
 
     @Test

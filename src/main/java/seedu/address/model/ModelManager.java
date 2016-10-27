@@ -1,20 +1,21 @@
 package seedu.address.model;
 
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.logging.Logger;
+
 import javafx.collections.transformation.FilteredList;
-import javafx.collections.transformation.SortedList;
+import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
-import seedu.address.commons.util.StringUtil;
 import seedu.address.commons.events.model.TaskBookChangedEvent;
-import seedu.address.commons.core.ComponentManager;
+import seedu.address.commons.util.StringUtil;
+import seedu.address.logic.parser.DateTimeParser;
+import seedu.address.logic.parser.Parser;
 import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
 import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
-
-import java.util.Comparator;
-import java.util.Set;
-import java.util.logging.Logger;
 
 /**
  * Represents the in-memory model of the address book data.
@@ -91,18 +92,10 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     /**
      * Returns a list sorted chronologically
-     * @@author cara
+     * @@author A0131560U
      */
     public UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList() {
-        //TODO: implement Comparator in Item class
-        Comparator<Item> chronologicalComparator = new Comparator<Item>(){
-            @Override
-            public int compare(Item x, Item y) {
-                return x.compareTo(y);
-            }
-        };
-        SortedList<Item> sortedList = new SortedList<>(filteredItems, chronologicalComparator);
-        return new UnmodifiableObservableList<>(sortedList);
+        return new UnmodifiableObservableList<>(filteredItems);
     }
 
     @Override
@@ -112,63 +105,94 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void updateFilteredItemList(Set<String> keywords){
-        updateFilteredItemList(new PredicateExpression(new DescriptionQualifier(keywords)));
+		updateFilteredItemList(new QualifierPredicate(new DescriptionAndTagQualifier(keywords)));
     }
 
-    private void updateFilteredItemList(Expression expression) {
-        filteredItems.setPredicate(expression::satisfies);
+	private void updateFilteredItemList(Predicate pred) {
+		// Not used, to narrow searches the user has to type the entire search
+		// string in
+		// if(filteredItems.getPredicate() != null){
+		// filteredItems.setPredicate(pred.and(filteredItems.getPredicate()));
+		// } else{
+		filteredItems.setPredicate(pred);
+		// }
     }
 
     //========== Inner classes/interfaces used for filtering ==================================================
 
-    interface Expression {
-        boolean satisfies(ReadOnlyItem item);
-        String toString();
-    }
-
-    private class PredicateExpression implements Expression {
+	private class QualifierPredicate implements Predicate<ReadOnlyItem> {
 
         private final Qualifier qualifier;
 
-        PredicateExpression(Qualifier qualifier) {
+		QualifierPredicate(Qualifier qualifier) {
             this.qualifier = qualifier;
-        }
-
-        @Override
-        public boolean satisfies(ReadOnlyItem item) {
-            return qualifier.run(item);
         }
 
         @Override
         public String toString() {
             return qualifier.toString();
         }
+
+		@Override
+		public boolean test(ReadOnlyItem item) {
+			return qualifier.run(item);
+		}
+
     }
 
     interface Qualifier {
         boolean run(ReadOnlyItem item);
-        String toString();
+        @Override
+		String toString();
     }
 
-    private class DescriptionQualifier implements Qualifier {
-        private Set<String> descriptionKeyWords;
+    private class DescriptionAndTagQualifier implements Qualifier {
+		private Set<String> searchKeyWords;
 
-        DescriptionQualifier(Set<String> nameKeyWords) {
-            this.descriptionKeyWords = nameKeyWords;
+        DescriptionAndTagQualifier(Set<String> nameKeyWords) {
+            this.searchKeyWords = nameKeyWords;
         }
 
         @Override
         public boolean run(ReadOnlyItem item) {
-            return descriptionKeyWords.stream()
-                    .filter(keyword -> StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(), keyword))
-                    .findAny()
-                    .isPresent();
+        	for (String keyword: searchKeyWords){
+        		if(!new Keyword(keyword).search(item)){
+        			return false;
+        		}
+        	}
+			return true;
         }
 
         @Override
         public String toString() {
-            return "name=" + String.join(", ", descriptionKeyWords);
+            return "name=" + String.join(", ", searchKeyWords);
         }
     }
+
+	// Idea @@author A0092390E
+	private class Keyword {
+		private String keyword;
+
+		Keyword(String _keyword) {
+			keyword = _keyword;
+		}
+
+		public boolean search(ReadOnlyItem item){
+			if(keyword.matches(Parser.COMMAND_DESCRIPTION_REGEX)){
+				return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(), 
+				        keyword.replace(Parser.COMMAND_DESCRIPTION_PREFIX, ""));
+			} else if (keyword.matches(Parser.COMMAND_TAG_REGEX)){
+				return StringUtil.containsIgnoreCase(item.getTags().listTags(), 
+				        keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, ""));
+			}
+			else {
+			    DateTimeParser parseDate = new DateTimeParser(keyword);
+			    return ((item.getStartDate() != null
+			            && DateTimeParser.isSameDay(item.getStartDate(), parseDate.extractStartDate())
+			            || (item.getEndDate() != null
+			            && DateTimeParser.isSameDay(item.getEndDate(),parseDate.extractStartDate()))));
+			}
+		}
+	}
 
 }

@@ -65,10 +65,10 @@ public class TestUtil {
     private static Item[] getSampleItemData() {
         try {
             return new Item[]{
-                    new Item(new Description("go to the doctor")),
-                    new Item(new Description("Read a book")),
-                    new Item(new Description("Eat vegetables and drink wine")),
-                    new Item(new Description("59106810293"))
+                    new Item(new Description("go to the doctor"), new UniqueTagList(getSampleTagData())),
+                    new Item(new Description("Read a book"), new UniqueTagList()),
+                    new Item(new Description("Eat vegetables and drink wine"), new UniqueTagList()),
+                    new Item(new Description("59106810293"), new UniqueTagList(getSampleTagData()))
             };
         } catch (IllegalValueException e) {
             assert false;
@@ -82,8 +82,8 @@ public class TestUtil {
     private static Tag[] getSampleTagData() {
         try {
             return new Tag[]{
-                    new Tag("relatives"),
-                    new Tag("friends")
+                    new Tag("important"),
+                    new Tag("homework")
             };
         } catch (IllegalValueException e) {
             assert false;

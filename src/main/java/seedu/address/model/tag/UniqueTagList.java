@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.commons.util.CollectionUtil;
 import seedu.address.commons.exceptions.DuplicateDataException;
+import seedu.address.commons.exceptions.IllegalValueException;
 
 import java.util.*;
 
@@ -118,6 +119,18 @@ public class UniqueTagList implements Iterable<Tag> {
         }
         internalList.add(toAdd);
     }
+    
+    //@@author A0131560U
+    public boolean delete(Tag toDelete) throws IllegalValueException{
+        assert toDelete != null;
+        boolean isDeleted;
+        try{
+            isDeleted = internalList.remove(toDelete);
+        } catch (Exception e){
+            throw new IllegalValueException("Could not find " + toDelete.toString());
+        }
+        return isDeleted;
+    }
 
     @Override
     public Iterator<Tag> iterator() {
@@ -132,12 +145,20 @@ public class UniqueTagList implements Iterable<Tag> {
     public boolean equals(Object other) {
         return other == this // short circuit if same object
                 || (other instanceof UniqueTagList // instanceof handles nulls
-                && this.internalList.equals(
-                ((UniqueTagList) other).internalList));
+                && this.getInternalList().equals(
+                ((UniqueTagList) other).getInternalList()));
     }
 
     @Override
     public int hashCode() {
         return internalList.hashCode();
+    }
+    
+    public String listTags(){
+        String tagList = new String();
+        for (Tag tag : internalList){
+            tagList = tagList + tag.toString();
+        }
+        return tagList;
     }
 }
