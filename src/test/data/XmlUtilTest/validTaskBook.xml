@@ -4,11 +4,15 @@
         <description>help</description>
 		<startDate></startDate>
 		<endDate></endDate>
+		<tagged>thing</tagged>
     </items>
     <items>
         <description>hello 1</description>
 		<startDate></startDate>
 		<endDate></endDate>
+		<tagged>thing</tagged>
+	  <tagged>thing1</tagged>
+	  <tagged>thing2</tagged>
     </items>
     <items>
         <description>ooh</description>
@@ -19,6 +23,9 @@
         <description>yer a wizard arry</description>
 		<startDate></startDate>
 		<endDate></endDate>
+		<tagged>thing</tagged>
+		<tagged>thing2</tagged>
+		<tagged>thing3</tagged>
     </items>
     <items>
         <description>eat a chicken</description>
