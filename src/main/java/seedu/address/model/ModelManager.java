@@ -7,12 +7,15 @@ import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.UndoCommand;
 import seedu.address.commons.events.model.TaskBookChangedEvent;
+import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.core.ComponentManager;
+import seedu.address.model.item.Description;
 import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
 import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.EmptyStackException;
 import java.util.Set;
@@ -81,6 +84,27 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public synchronized void addItem(Item item) throws UniqueItemList.DuplicateItemException {
         taskBook.addItem(item);
+        updateFilteredListToShowAll();
+        indicateTaskBookChanged();
+    }
+    
+    public void setItemDesc(Item item, String desc) {
+        try {
+            item.setDescription(desc);
+            updateFilteredListToShowAll();
+            indicateTaskBookChanged();
+        } catch (IllegalValueException ive) {
+        }
+    }
+    
+    public void setItemStart(Item item, LocalDateTime startDate) {
+        item.setStartDate(startDate);
+        updateFilteredListToShowAll();
+        indicateTaskBookChanged();
+    }
+
+    public void setItemEnd(Item item, LocalDateTime endDate) {
+        item.setEndDate(endDate);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
     }
