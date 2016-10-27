@@ -98,7 +98,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void updateFilteredItemList(Set<String> keywords){
-        updateFilteredItemList(new PredicateExpression(new DescriptionAndTagQualifier(keywords)));
+		updateFilteredItemList(new QualifierPredicate(new DescriptionAndTagQualifier(keywords)));
     }
 
 	private void updateFilteredItemList(Predicate pred) {
@@ -113,11 +113,11 @@ public class ModelManager extends ComponentManager implements Model {
 
     //========== Inner classes/interfaces used for filtering ==================================================
 
-	private class PredicateExpression implements Predicate<ReadOnlyItem> {
+	private class QualifierPredicate implements Predicate<ReadOnlyItem> {
 
         private final Qualifier qualifier;
 
-        PredicateExpression(Qualifier qualifier) {
+		QualifierPredicate(Qualifier qualifier) {
             this.qualifier = qualifier;
         }
 
