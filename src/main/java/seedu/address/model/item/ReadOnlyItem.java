@@ -76,4 +76,8 @@ public interface ReadOnlyItem {
 	}
 
 	public void addObserver(Observer o);
+
+	String extractPrettyItemCardDateTime();
+
+	String extractPrettyRelativeEndDateTime();
 }

@@ -5,19 +5,22 @@
 		<startDate></startDate>
 		<endDate></endDate>
 		<tagged>thing</tagged>
+		<isDone>false</isDone>
     </items>
     <items>
         <description>hello 1</description>
 		<startDate></startDate>
 		<endDate></endDate>
 		<tagged>thing</tagged>
-	  <tagged>thing1</tagged>
-	  <tagged>thing2</tagged>
+		  <tagged>thing1</tagged>
+		  <tagged>thing2</tagged>
+		<isDone>false</isDone>
     </items>
     <items>
         <description>ooh</description>
 		<startDate></startDate>
 		<endDate></endDate>
+		<isDone>false</isDone>
     </items>
     <items>
         <description>yer a wizard arry</description>
@@ -26,20 +29,24 @@
 		<tagged>thing</tagged>
 		<tagged>thing2</tagged>
 		<tagged>thing3</tagged>
+		<isDone>false</isDone>
     </items>
     <items>
         <description>eat a chicken</description>
 		<startDate></startDate>
 		<endDate></endDate>
+		<isDone>false</isDone>
     </items>
     <items>
         <description>Wash dishes</description>
 		<startDate></startDate>
 		<endDate></endDate>
+		<isDone>false</isDone>
     </items>
     <items>
         <description>Trip down the stairs</description>
 		<startDate></startDate>
 		<endDate></endDate>
+		<isDone>false</isDone>
     </items>
 </taskbook>

@@ -34,7 +34,7 @@ public class DoneCommand extends Command {
         if(itemToComplete.getIsDone()) {
             return new CommandResult(MESSAGE_DONE_ITEM_FAIL);
         } else {
-            itemToComplete.setIsDone(true);
+        	model.doneItem(itemToComplete);
         }
 
 		return new CommandResult(MESSAGE_DONE_ITEM_SUCCESS, itemToComplete);

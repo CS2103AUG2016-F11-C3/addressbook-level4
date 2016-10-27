@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
@@ -24,6 +23,7 @@ import seedu.address.logic.commands.ClearCommand;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.DeleteCommand;
 import seedu.address.logic.commands.DoneCommand;
+import seedu.address.logic.commands.EditCommand;
 import seedu.address.logic.commands.ExitCommand;
 import seedu.address.logic.commands.FindCommand;
 import seedu.address.logic.commands.HelpCommand;
@@ -66,6 +66,7 @@ public class Parser {
     private static final Pattern COMMAND_TAG_SEARCH_FORMAT = Pattern.compile("#([^ ]+)");
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+	private static final Pattern ITEM_EDIT_ARGS_FORMAT = Pattern.compile("(?<targetIndex>\\d+) edit (?<arguments>.*)");
 
     public enum Field {
         NAME("name"), START_DATE("start_date"), END_DATE("end_date"), START_TIME("start_time"), END_TIME(
@@ -82,14 +83,12 @@ public class Parser {
         }
     }
 
-    public Parser() {
-    }
+    public Parser() {}
 
     /**
      * Parses user input into command for execution.
      *
-     * @param userInput
-     *            full user input string
+     * @param userInput full user input string
      * @return the command based on the user input
      */
     public Command parseCommand(String userInput) {
@@ -114,7 +113,10 @@ public class Parser {
         case ClearCommand.COMMAND_WORD:
             return new ClearCommand();
 
-        case FindCommand.COMMAND_WORD:
+		case EditCommand.COMMAND_WORD:
+			return prepareEdit(arguments);
+
+		case FindCommand.COMMAND_WORD:
             return prepareFind(arguments);
 
         case ListCommand.COMMAND_WORD:
@@ -132,30 +134,29 @@ public class Parser {
         default:
             return new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
         }
-    }
+	};
 
     /**
-     * Parses arguments in the context of the add person command.
-     *
-     * @param args
-     *            full command args string
-     * @return the prepared command
-     */
-    private Command prepareAdd(String args) {
-        final Matcher itemMatch = ITEM_DATA_ARGS_FORMAT.matcher(args.trim());
-        final Matcher taskMatch = TASK_DATA_ARGS_FORMAT.matcher(args.trim());
-
+	 * Parses arguments in the context of the add person command.
+	 *
+	 * @param args
+	 *            full command args string
+	 * @return the prepared command
+	 */
+	private Command prepareAdd(String args) {
+		final Matcher itemMatch = ITEM_DATA_ARGS_FORMAT.matcher(args.trim());
+		final Matcher taskMatch = TASK_DATA_ARGS_FORMAT.matcher(args.trim());
         // Validate arg string format
         if (!itemMatch.matches() && !taskMatch.matches()) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
-
         try {
             if (taskMatch.matches()) {
                 return parseNewTask(itemMatch, args);
             } else {
                 return parseNewItem(itemMatch, args);
             }
+        	// check if any thing before first quotation mark and return error if found
         } catch (IllegalValueException ive) {
             return new IncorrectCommand(ive.getMessage());
         }
@@ -171,7 +172,7 @@ public class Parser {
      * @throws IllegalValueException
      */
     private Command parseNewItem(final Matcher itemMatch, String args) throws IllegalValueException {
-        // check if any thing before first quotation mark and return error if
+		// check if any thing before first quotation mark and return error if
         // found
         String postFix = itemMatch.group(COMMAND_TYPE_FIELD_NUMBER).trim();
         if (!postFix.equals(EMPTY_STRING)) {
@@ -218,7 +219,7 @@ public class Parser {
             return Collections.emptySet();
         }
 
-        Set<String> tagSet = new HashSet<String>();
+        Set<String> tagSet = new HashSet<>();
         for (String tag : tagList) {
             if (tag.matches(COMMAND_TAG_REGEX)) {
                 tagSet.add(tag.replaceFirst("#", ""));
@@ -369,52 +370,74 @@ public class Parser {
         return args;
     }
 
-    /**
-     * splits multi-arguments into a nice ArrayList of strings
-     * 
-     * @param params
-     *            comma-separated parameters
-     * @param delimiter
-     *            delimiting character
-     * @return ArrayList<String> of parameters
-     * @author darren
-     */
-    public static ArrayList<String> parseMultipleParameters(String params, char delimiter) {
-        CSVParser parser = new CSVParser(delimiter);
 
-        try {
-            String[] tokens = parser.parseLine(params);
+	/**
+	 * Parses arguments in the context of the Edit item command
+	 * 
+	 * @param args
+	 * @return
+	 */
+	private Command prepareEdit(String args) {
+		final Matcher matcher = ITEM_EDIT_ARGS_FORMAT.matcher(args.trim());
+		if (!matcher.matches()) {
+			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+		}
+		int index = Integer.parseInt(matcher.group("targetIndex"));
+		ArrayList<String> arguments = parseMultipleParameters(matcher.group("arguments"), ',');
+		try {
+			return new EditCommand(index, arguments);
+		} catch (IllegalValueException e) {
+			return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, e.getMessage()));
+		}
+	}
 
-            // strip leading and trailing whitespaces
-            for (int i = 0; i < tokens.length; i++) {
-                tokens[i] = tokens[i].trim();
-            }
 
-            return new ArrayList<String>(Arrays.asList(tokens));
-        } catch (IOException ioe) {
-            System.out.println(ioe.getMessage());
-        }
+	/**
+	 * splits multi-arguments into a nice ArrayList of strings
+	 * 
+	 * @param params
+	 *            comma-separated parameters
+	 * @param delimiter
+	 *            delimiting character
+	 * @return ArrayList<String> of parameters
+	 * @author darren
+	 */
+	public static ArrayList<String> parseMultipleParameters(String params, char delimiter) {
+		CSVParser parser = new CSVParser(delimiter);
 
-        return null;
-    }
+		try {
+			String[] tokens = parser.parseLine(params);
 
-    /**
-     * checks field names are valids
-     * 
-     * @param fieldNames
-     *            an ArrayList<String> of field names
-     * @return true if all fields are valid, false otherwise
-     * @author darren
-     */
-    private static boolean fieldsAreValid(ArrayList<String> fieldNames) {
-        assert fieldNames != null;
-        for (String fieldName : fieldNames) {
-            try {
-                Field ret = Field.valueOf(fieldName.toUpperCase());
-            } catch (IllegalArgumentException iae) {
-                return false;
-            }
-        }
-        return true;
-    }
+			// strip leading and trailing whitespaces
+			for (int i = 0; i < tokens.length; i++) {
+				tokens[i] = tokens[i].trim();
+			}
+
+			return new ArrayList<>(Arrays.asList(tokens));
+		} catch (IOException ioe) {
+			System.out.println(ioe.getMessage());
+		}
+
+		return null;
+	}
+
+	/**
+	 * checks field names are valids
+	 * 
+	 * @param fieldNames
+	 *            an ArrayList<String> of field names
+	 * @return true if all fields are valid, false otherwise
+	 * @author darren
+	 */
+	private static boolean fieldsAreValid(ArrayList<String> fieldNames) {
+		assert fieldNames != null;
+		for (String fieldName : fieldNames) {
+			try {
+				Field ret = Field.valueOf(fieldName.toUpperCase());
+			} catch (IllegalArgumentException iae) {
+				return false;
+			}
+		}
+		return true;
+	}
 }
