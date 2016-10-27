@@ -102,8 +102,13 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
 	private void updateFilteredItemList(Predicate pred) {
-		(filteredItems.getPredicate()).and(pred);
-		filteredItems.setPredicate(pred);
+		// Not used, to narrow searches the user has to type the entire search
+		// string in
+		// if(filteredItems.getPredicate() != null){
+		// filteredItems.setPredicate(pred.and(filteredItems.getPredicate()));
+		// } else{
+		filteredItems.setPredicate(pred.and(filteredItems.getPredicate()));
+		// }
     }
 
     //========== Inner classes/interfaces used for filtering ==================================================
