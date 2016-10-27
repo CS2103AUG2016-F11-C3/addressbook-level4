@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import java.util.ArrayList;
 
+import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.exceptions.IllegalValueException;
@@ -16,7 +17,7 @@ public class EditCommand extends Command {
 	
 	
 
-	public static final String COMMAND_WORD = "for";
+	public static final String COMMAND_WORD = "edit";
 
 	public static final String MESSAGE_USAGE = COMMAND_WORD + "... edit ..." + ": Edits an existing item.\n"
 	        + "Syntax: for CONTEXT_ID edit FIELD:NEW_DETAIL\n"
@@ -31,7 +32,7 @@ public class EditCommand extends Command {
 
 	private static final String DEFAULT_ITEM_NAME = "BLOCK";
 	
-	private Item toModify;
+	private Item itemToModify;
 	private boolean hasTimeString = false;
 	public final int targetIndex;
 	private ArrayList<String[]> editFields;
@@ -59,41 +60,39 @@ public class EditCommand extends Command {
 
 	@Override
 	public CommandResult execute() {
-		UnmodifiableObservableList<ReadOnlyItem> lastShownList = model.getFilteredItemList();
+	    FilteredList<Item> lastShownList = model.getFilteredEditableItemList();
+
 		if (lastShownList.size() < targetIndex) {
 			indicateAttemptToExecuteIncorrectCommand();
+			hasUndo = false;
 			return new CommandResult(Messages.MESSAGE_INVALID_ITEM_DISPLAYED_INDEX);
 		}
-		toModify = (Item) lastShownList.get(this.targetIndex - 1);
-		// if user input something for time but it's not correct format
-//			if (this.hasTimeString && (this.toModify.getStartDate() == null || this.toModify.getEndDate() == null)) {
-//				return new CommandResult(MESSAGE_SUCCESS_TIME_NULL, toModify);
+
+		itemToModify = lastShownList.get(this.targetIndex - 1);
+
 		for (String[] editField : editFields) {
 			switch (editField[0]) {
 			case "desc":
 			case "description":
-				try {
-					toModify.setDescription(editField[1]);
-				} catch (IllegalValueException e) {
-				}
+			    model.setItemDesc(itemToModify, editField[1]);
 				break;
 			case "start":
-			    toModify.setStartDate(new DateTimeParser(editField[1]).extractStartDate());
+			    model.setItemStart(itemToModify, new DateTimeParser(editField[1]).extractStartDate());
 			    break;
 			case "end":
 			case "by":
-			    toModify.setEndDate(new DateTimeParser(editField[1]).extractEndDate());
+			    model.setItemEnd(itemToModify, new DateTimeParser(editField[1]).extractEndDate());
 			    break;
 			case "period":
 			    DateTimeParser parser = new DateTimeParser(editField[1]);
-			    toModify.setStartDate(parser.extractStartDate());
-			    toModify.setEndDate(parser.extractEndDate());
+			    model.setItemStart(itemToModify, parser.extractStartDate());
+			    model.setItemEnd(itemToModify, parser.extractEndDate());
 			    break;
 			default:
 				break;
 			}
 		}
-		return new CommandResult(String.format(MESSAGE_SUCCESS, toModify), toModify);
+		return new CommandResult(String.format(MESSAGE_SUCCESS, itemToModify), itemToModify);
 
 	}
 
