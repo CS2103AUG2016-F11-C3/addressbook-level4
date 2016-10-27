@@ -26,12 +26,11 @@ public class DateTimeParser {
     // the part of the command that contains the temporal part of the command
     private String datetime;
 
-    // natty parser object
+    // PrettyTimeParser object
     // careful of name collision with our own Parser object
-    // static so we only need to initialize it once
     private static PrettyTimeParser parser = new PrettyTimeParser();
 
-    // prettytime formatter
+    // PrettyTime formatter
     private static PrettyTime prettytime = new PrettyTime();
 
     // result from parser
@@ -39,8 +38,15 @@ public class DateTimeParser {
     private List<Date> dates;
 
     public static final String EMPTY_STRING = "";
+    public static final String SINGLE_WHITESPACE = " ";
+    
+    // handy strings for making pretty dates
     public static final String TODAY_DATE_REF = "Today";
     public static final String TOMORROW_DATE_REF = "Tomorrow";
+    public static final String NEXT_WEEK_REF = "Next" + SINGLE_WHITESPACE;
+    public static final String THIS_WEEK_REF = "This" + SINGLE_WHITESPACE;
+    public static final String PRETTY_COMMA_DELIMITER = "," + SINGLE_WHITESPACE;
+    public static final String PRETTY_TO_DELIMITER = SINGLE_WHITESPACE + "-" + SINGLE_WHITESPACE;
 
     // DateTime formatting patterns
     public static final DateTimeFormatter ABRIDGED_DATE_FORMAT = DateTimeFormatter
@@ -60,7 +66,7 @@ public class DateTimeParser {
 
         this.datetime = input;
 
-        // perform natty parsing
+        // perform parsing
         this.dategroups = DateTimeParser.parser.parseSyntax(input);
         this.dates = DateTimeParser.parser.parse(input);
     }
@@ -119,12 +125,12 @@ public class DateTimeParser {
 
         // is an event with a definite start and end datetime
         if (isSameDay(start, end)) {
-            return extractPrettyDateTime(start) + " - "
+            return extractPrettyDateTime(start) + PRETTY_TO_DELIMITER
                     + extractTwelveHourTime(end);
         }
 
         // not same day
-        return extractPrettyDateTime(start) + " - "
+        return extractPrettyDateTime(start) + PRETTY_TO_DELIMITER
                 + extractPrettyDateTime(end);
     }
 
@@ -228,17 +234,17 @@ public class DateTimeParser {
     public static String extractPrettyDateTime(LocalDateTime ldt) {
         // special case for today/tomorrow relative to local system time
         if (isToday(ldt)) {
-            return TODAY_DATE_REF + ", " + extractTwelveHourTime(ldt);
+            return TODAY_DATE_REF + PRETTY_COMMA_DELIMITER + extractTwelveHourTime(ldt);
         }
 
         if (isTomorrow(ldt)) {
-            return TOMORROW_DATE_REF + ", " + extractTwelveHourTime(ldt);
+            return TOMORROW_DATE_REF + PRETTY_COMMA_DELIMITER + extractTwelveHourTime(ldt);
         }
 
         // add relative prefix (this/next <day of week>) if applicable
         if (computeDaysTo(ldt) < 14) {
             // is within the next two weeks
-            return makeRelativePrefix(ldt) + extractLongDayOfWeek(ldt) + ", "
+            return makeRelativePrefix(ldt) + extractLongDayOfWeek(ldt) + PRETTY_COMMA_DELIMITER
                     + extractTwelveHourTime(ldt);
         }
 
@@ -251,7 +257,7 @@ public class DateTimeParser {
             // different years in start and end datetimes
             prettyDate = ldt.toLocalDate().format(EXPLICIT_DATE_FORMAT);
         }
-        return extractShortDayOfWeek(ldt) + " " + prettyDate + ", "
+        return extractShortDayOfWeek(ldt) + SINGLE_WHITESPACE + prettyDate + PRETTY_COMMA_DELIMITER
                 + extractTwelveHourTime(ldt);
     }
 
@@ -303,9 +309,9 @@ public class DateTimeParser {
      */
     private static String makeRelativePrefix(LocalDateTime ldt) {
         if (computeDaysTo(ldt) < 7) {
-            return "This ";
+            return THIS_WEEK_REF;
         } else if (computeDaysTo(ldt) < 14) {
-            return "Next ";
+            return NEXT_WEEK_REF;
         }
         return EMPTY_STRING;
     }
