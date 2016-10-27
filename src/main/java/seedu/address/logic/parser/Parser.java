@@ -38,6 +38,8 @@ public class Parser {
 
     public static final String COMMAND_TAG_REGEX = "#(.*)";
     public static final String COMMAND_DESCRIPTION_REGEX = "\"(.*)\"";
+    public static final String COMMAND_TAG_PREFIX = "#";
+    public static final String COMMAND_DESCRIPTION_PREFIX = "\"";
 
 
     /**

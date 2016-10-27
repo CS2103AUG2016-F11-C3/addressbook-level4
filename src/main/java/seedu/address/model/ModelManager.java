@@ -169,10 +169,10 @@ public class ModelManager extends ComponentManager implements Model {
 		public boolean search(ReadOnlyItem item){
 			if(keyword.matches(Parser.COMMAND_DESCRIPTION_REGEX)){
 				return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(), 
-				        keyword.replace("\"", ""));
+				        keyword.replace(Parser.COMMAND_DESCRIPTION_PREFIX, ""));
 			} else if (keyword.matches(Parser.COMMAND_TAG_REGEX)){
 				return StringUtil.containsIgnoreCase(item.getTags().listTags(), 
-				        keyword.replaceFirst("#", ""));
+				        keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, ""));
 			}
 			else {
 			    DateTimeParser parseDate = new DateTimeParser(keyword);
