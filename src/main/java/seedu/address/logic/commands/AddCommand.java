@@ -21,8 +21,8 @@ public class AddCommand extends Command {
 			+ "Parameters: \"EVENT_NAME\" from START_TIME to END_TIME on DATE" + "Example: " + COMMAND_WORD
 			+ "\"Be awesome\" from 1300 to 2359 on 07/10/2016";
 
-	public static final String MESSAGE_SUCCESS = "New task added: %1$s";
-	public static final String MESSAGE_SUCCESS_TIME_NULL = "START or END time not found but new task added!";
+	public static final String MESSAGE_SUCCESS = "New %1$s added: %2$s";
+	public static final String MESSAGE_SUCCESS_TIME_NULL = "START or END time not found but new %1$s added!";
 	public static final String MESSAGE_DUPLICATE_ITEM = "This task already exists in the to-do list";
 
 	private static final String DEFAULT_ITEM_NAME = "BLOCK";
@@ -65,10 +65,10 @@ public class AddCommand extends Command {
 		try {
 			model.addItem(toAdd);
 			// if user input something for time but it's not correct format
-			if (this.hasTimeString && (this.toAdd.getStartDate() == null || this.toAdd.getEndDate() == null)) {
-				return new CommandResult(MESSAGE_SUCCESS_TIME_NULL, toAdd);
+			if (this.hasTimeString && (this.toAdd.getStartDate() == null && this.toAdd.getEndDate() == null)) {
+				return new CommandResult(String.format(MESSAGE_SUCCESS_TIME_NULL, toAdd.getType()), toAdd);
 			} else {
-				return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd), toAdd);
+				return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd.getType(), toAdd), toAdd);
 			}
 		} catch (UniqueItemList.DuplicateItemException e) {
 			return new CommandResult(MESSAGE_DUPLICATE_ITEM);
