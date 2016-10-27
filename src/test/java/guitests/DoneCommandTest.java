@@ -1,6 +1,8 @@
 package guitests;
 
 import org.junit.Test;
+
+import seedu.address.commons.core.Messages;
 import seedu.address.logic.commands.DoneCommand;
 import seedu.address.testutil.TestItem;
 import seedu.address.testutil.TestUtil;
@@ -29,6 +31,10 @@ public class DoneCommandTest extends TaskBookGuiTest {
         currentList = TestUtil.doneItemFromList(currentList, targetIndex);
         targetIndex = currentList.length/2;
         assertDoneSuccess(targetIndex, currentList);
+        
+        // invalid index, expect error
+        commandBox.runCommand("done " + currentList.length + 1);
+        assertResultMessage(Messages.MESSAGE_INVALID_ITEM_DISPLAYED_INDEX);
     }
     
     /**
