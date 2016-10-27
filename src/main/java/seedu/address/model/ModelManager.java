@@ -26,6 +26,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     private final TaskBook taskBook;
     private final FilteredList<Item> filteredItems;
+    private Predicate defaultPredicate;
 
     /**
      * Initializes a ModelManager with the given AddressBook
@@ -44,6 +45,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     public ModelManager() {
         this(new TaskBook(), new UserPrefs());
+        this.defaultPredicate = null;
     }
 
     public ModelManager(ReadOnlyTaskBook initialData, UserPrefs userPrefs) {
@@ -102,10 +104,17 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredListToShowAll() {
         filteredItems.setPredicate(null);
     }
+    
+    @Override
+    public void updateFilteredListDefaultPredicate(String taskType){
+        defaultPredicate = new QualifierPredicate(new TypeQualifier(taskType));
+        updateFilteredItemList(defaultPredicate);
+    }
 
     @Override
     public void updateFilteredItemList(Set<String> keywords){
-		updateFilteredItemList(new QualifierPredicate(new DescriptionAndTagQualifier(keywords)));
+		updateFilteredItemList(new QualifierPredicate(new KeywordQualifier(keywords))
+		        .and(defaultPredicate));
     }
 
 	private void updateFilteredItemList(Predicate pred) {
@@ -145,11 +154,35 @@ public class ModelManager extends ComponentManager implements Model {
         @Override
 		String toString();
     }
+    
+    private class TypeQualifier implements Qualifier {
+        private String type;
+        
+        TypeQualifier(String type) {
+            this.type = type;
+        }
 
-    private class DescriptionAndTagQualifier implements Qualifier {
+        @Override
+        public boolean run(ReadOnlyItem item) {
+            if(!item.is(type)){
+                System.out.println(item.getAsText() + " is not a \"" + type + "\"");
+                return false;
+            }
+            return true;
+        }
+        
+        @Override
+        public String toString(){
+            return "type= " + type;
+        }
+        
+        
+    }
+
+    private class KeywordQualifier implements Qualifier {
 		private Set<String> searchKeyWords;
 
-        DescriptionAndTagQualifier(Set<String> nameKeyWords) {
+        KeywordQualifier(Set<String> nameKeyWords) {
             this.searchKeyWords = nameKeyWords;
         }
 
@@ -165,7 +198,7 @@ public class ModelManager extends ComponentManager implements Model {
 
         @Override
         public String toString() {
-            return "name=" + String.join(", ", searchKeyWords);
+            return "keywords=" + String.join(", ", searchKeyWords);
         }
     }
 

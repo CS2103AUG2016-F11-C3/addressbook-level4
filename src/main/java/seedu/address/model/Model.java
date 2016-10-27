@@ -14,10 +14,10 @@ public interface Model {
     /** Clears existing backing model and replaces with the provided new data. */
     void resetData(ReadOnlyTaskBook newData);
 
-    /** Returns the AddressBook */
+    /** Returns the TaskBook */
     ReadOnlyTaskBook getTaskBook();
 
-    /** Deletes the given person. */
+    /** Deletes the given item. */
     void deleteItem(ReadOnlyItem target) throws UniqueItemList.ItemNotFoundException;
 
     /** Adds the given person */
@@ -26,13 +26,16 @@ public interface Model {
     /** Set item to be done */
     void doneItem(ReadOnlyItem item);
 
-    /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
+    /** Returns the filtered item list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList();
 
-    /** Updates the filter of the filtered person list to show all persons */
+    /** Updates the filter of the filtered iftem list to show all persons */
     void updateFilteredListToShowAll();
 
-    /** Updates the filter of the filtered person list to filter by the given keywords*/
+    /** Updates the filter of the filtered item list to filter by the given keywords*/
     void updateFilteredItemList(Set<String> keywords);
+
+    /** Updates the default filter of the item list to filter by a specific task type limiter */
+    void updateFilteredListDefaultPredicate(String taskType);
 
 }
