@@ -2,6 +2,7 @@ package seedu.address.logic.commands;
 
 import java.util.List;
 
+import seedu.address.model.ReadOnlyTaskBook;
 import seedu.address.model.TaskBook;
 import seedu.address.model.item.ReadOnlyItem;
 
@@ -12,18 +13,19 @@ public class ClearCommand extends Command {
 
     public static final String COMMAND_WORD = "clear";
     public static final String MESSAGE_SUCCESS = "To-do list has been cleared!";
+    public static final String MESSAGE_UNDO_SUCCESS = "Undo clear task list";
+	public static final String MESSAGE_UNDO_FAILURE = "";
     
-    private final List<ReadOnlyItem> itemsToAddBack;
+    private ReadOnlyTaskBook backUpTaskbook;
 
-    public ClearCommand() {
-    	itemsToAddBack = model.getTaskBook().getItemList();
-    	
+    public ClearCommand() {    	
     }
     
     @Override
     public CommandResult execute() {
         assert model != null;
         hasUndo = true;
+        backUpTaskbook = model.getTaskBook();
         model.resetData(TaskBook.getEmptyTaskBook());
         return new CommandResult(MESSAGE_SUCCESS);
     }
@@ -34,11 +36,9 @@ public class ClearCommand extends Command {
      */
 	@Override
 	public CommandResult undo() {
-		assert itemsToAddBack != null;
-		TaskBook savedTaskBook = new TaskBook();
-    	savedTaskBook.resetData(itemsToAddBack);
-		model.resetData(savedTaskBook);
-		return null;
+		assert backUpTaskbook != null;
+		model.resetData(backUpTaskbook);
+		return new CommandResult(MESSAGE_UNDO_SUCCESS);
 	}
     
 }
