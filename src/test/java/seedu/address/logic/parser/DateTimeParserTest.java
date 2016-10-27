@@ -66,10 +66,8 @@ public class DateTimeParserTest {
 
         LocalDateTime deadline = LocalDateTime.of(LocalDate.of(1996, 11, 12), LocalTime.of(17, 0));
 
-        // extractStartDate and extractEndDate return the same thing if there's only
-        // one date token inside the input string
         assertEquals(deadline, parser.extractStartDate());
-        assertEquals(deadline, parser.extractEndDate());
+        assertEquals(null, parser.extractEndDate());
     }
     
     public static Date makeDate(int year, int month, int day, int hour, int minute) {
