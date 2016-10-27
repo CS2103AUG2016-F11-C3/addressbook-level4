@@ -83,8 +83,8 @@ public class CommandBox extends UiPart {
         /* We assume the command is correct. If it is incorrect, the command box will be changed accordingly
          * in the event handling code {@link #handleIncorrectCommandAttempted}
          */
-        setStyleToIndicateCorrectCommand();
         mostRecentResult = logic.execute(previousCommandTest);
+		setStyleToIndicateCorrectCommand(mostRecentResult.getClear());
         resultDisplay.postMessage(mostRecentResult.feedbackToUser);
         logger.info("Result: " + mostRecentResult.feedbackToUser);
     }
@@ -92,9 +92,11 @@ public class CommandBox extends UiPart {
     /**
      * Sets the command box style to indicate a correct command.
      */
-    private void setStyleToIndicateCorrectCommand() {
+	private void setStyleToIndicateCorrectCommand(boolean clear) {
         commandTextField.getStyleClass().remove("error");
-        commandTextField.setText("");
+		if (clear) {
+			commandTextField.setText("");
+		}
     }
 
     @Subscribe

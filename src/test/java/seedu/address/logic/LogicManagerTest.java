@@ -11,11 +11,9 @@ import seedu.address.commons.core.EventsCenter;
 import seedu.address.logic.commands.*;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
-import seedu.address.commons.exceptions.DataConversionException;
 import seedu.address.commons.exceptions.DuplicateDataException;
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.commons.events.model.TaskBookChangedEvent;
-import seedu.address.model.AddressBook;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyTaskBook;
@@ -25,9 +23,7 @@ import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
-import seedu.address.model.tag.UniqueTagList.DuplicateTagException;
 import seedu.address.storage.StorageManager;
-import seedu.address.testutil.ItemBuilder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,7 +35,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.*;
 
-public class LogicManagerTest {
+public class LogicManagerTest<E> {
 
     /**
      * See https://github.com/junit-team/junit4/wiki/rules#temporaryfolder-rule
@@ -128,7 +124,7 @@ public class LogicManagerTest {
 
         // Confirm the ui display elements should contain the right data
         assertEquals(expectedMessage, result.feedbackToUser);
-        assertEquals(expectedShownList, model.getFilteredItemList());
+        assertTrue(isListSame(expectedShownList, model.getFilteredItemList()));
 
         // Confirm the state of data (saved and in-memory) is as expected
         assertEquals(expectedTaskBook, model.getTaskBook());
@@ -139,6 +135,17 @@ public class LogicManagerTest {
     public void execute_unknownCommandWord() throws Exception {
         String unknownCommand = "uicfhmowqewca";
         assertCommandBehavior(unknownCommand, MESSAGE_UNKNOWN_COMMAND);
+    }
+    
+    private boolean isListSame(List<? extends ReadOnlyItem> expected, List<? extends ReadOnlyItem> actual){
+        if (expected.size() != actual.size()){
+            return false;
+        }
+        
+        for (int i=0; i<expected.size(); i++){
+            assertEquals(expected.get(i), actual.get(i));
+        }
+        return true;
     }
 
     @Test
@@ -206,7 +213,7 @@ public class LogicManagerTest {
     public void setTags_multipleValidTags_parsedCorrectly() {
         try {
             TestDataHelper helper = new TestDataHelper();
-            Item toBeAdded = helper.workingItemWithTags("important", "incredible", "mustfinish", "priority1");
+            Item toBeAdded = helper.workingItemWithTags("important", "mustfinish", "incredible", "priority1");
             TaskBook expectedTB = new TaskBook();
             expectedTB.addItem(toBeAdded);
 
@@ -233,7 +240,7 @@ public class LogicManagerTest {
 
     @Test
     // @@author A0131560U
-    public void setTags_tagNotMarkedWithHashtag_nothingHappens() {
+    public void setTags_tagNotMarkedWithHashtag_successfulWithoutTags() {
         try {
             UniqueTagList tags;
             TestDataHelper helper = new TestDataHelper();
@@ -241,7 +248,7 @@ public class LogicManagerTest {
             TaskBook expectedTB = new TaskBook();
             expectedTB.addItem(toBeAdded);
 
-            assertCommandBehavior("add \"Working item\" from October 10 10:10am to December 12 12:12pm tag tag tags",
+            assertCommandBehavior("add \"Working item\" from October 10 10:10am to 12 December 12:12pm tag tag tags",
                     String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded), expectedTB, expectedTB.getItemList());
 
         } catch (Exception e) {
@@ -378,7 +385,7 @@ public class LogicManagerTest {
         List<Item> expectedList = helper.generateItemList(pTarget1, pTarget2, pTarget3);
         helper.addToModel(model, fourItems);
 
-        assertCommandBehavior("find KEY", Command.getMessageForItemListShownSummary(expectedList.size()), expectedAB,
+        assertCommandBehavior("find \"KEY\"", Command.getMessageForItemListShownSummary(expectedList.size()), expectedAB,
                 expectedList);
     }
 
@@ -396,13 +403,13 @@ public class LogicManagerTest {
         List<Item> expectedList = helper.generateItemList(pTarget1, pTarget2);
         helper.addToModel(model, fourItems);
 
-        assertCommandBehavior("find KEY", Command.getMessageForItemListShownSummary(expectedList.size()), expectedAB,
+        assertCommandBehavior("find #KEY", Command.getMessageForItemListShownSummary(expectedList.size()), expectedAB,
                 expectedList);
     }
 
     @Test
     // @@author A0131560U
-    public void execute_find_onlySearchTags() throws Exception {
+    public void execute_find_searchTags() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         Item pTarget1 = helper.workingItemWithTags("working", "KOY", "KAY");
         Item pTarget2 = helper.workingItemWithTags("K1E", "workING12085", "KAYaKey");
@@ -419,6 +426,27 @@ public class LogicManagerTest {
     }
     
     @Test
+    // @@author A0131560U
+    public void execute_find_searchDate() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Item pTarget1 = helper.workingItemWithDates("yup",LocalDateTime.of(2016, 10, 9, 10, 10),
+                                                    LocalDateTime.of(2016, 12, 12, 20, 20));
+        Item pTarget2 = helper.workingItemWithDates("yep",LocalDateTime.of(2016, 12, 12, 21, 20));
+        Item p2 = helper.workingItemWithDates("no");
+        Item p1 = helper.workingItemWithDates("nop",LocalDateTime.of(2016, 9, 10, 10, 10),
+                                                    LocalDateTime.of(2016, 11, 12, 20, 20));
+
+        List<Item> fourItems = helper.generateItemList(p1, pTarget1, pTarget2, p2);
+        TaskBook expectedAB = helper.generateTaskBook(fourItems);
+        List<Item> expectedList = helper.generateItemList(pTarget1, pTarget2);
+        helper.addToModel(model, fourItems);
+
+        assertCommandBehavior("find 12 december", Command.getMessageForItemListShownSummary(expectedList.size()), expectedAB,
+                expectedList);
+    }
+    
+    @Test
+    //@@author A0131560U
     public void execute_find_isNotCaseSensitive() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         Item p1 = helper.generateItemWithName("bla bla KEY bla");
@@ -431,7 +459,7 @@ public class LogicManagerTest {
         List<Item> expectedList = fourItems;
         helper.addToModel(model, fourItems);
 
-        assertCommandBehavior("find KEY", Command.getMessageForItemListShownSummary(expectedList.size()), expectedAB,
+        assertCommandBehavior("find \"KEY\"", Command.getMessageForItemListShownSummary(expectedList.size()), expectedAB,
                 expectedList);
     }
 
@@ -448,7 +476,7 @@ public class LogicManagerTest {
         List<Item> expectedList = helper.generateItemList(pTarget1, pTarget2, pTarget3);
         helper.addToModel(model, fourItems);
 
-        assertCommandBehavior("find key rAnDoM", Command.getMessageForItemListShownSummary(expectedList.size()),
+        assertCommandBehavior("find \"key\" \"rAnDoM\"", Command.getMessageForItemListShownSummary(expectedList.size()),
                 expectedAB, expectedList);
     }
 
@@ -505,13 +533,27 @@ public class LogicManagerTest {
         Item workingItemWithTags(String... tagged) throws Exception {
             Description description = new Description("Working item");
             LocalDateTime startDate = LocalDateTime.of(2016, 10, 10, 10, 10);
-            LocalDateTime endDate = LocalDateTime.of(2016, 10, 12, 12, 12);
+            LocalDateTime endDate = LocalDateTime.of(2016, 12, 12, 12, 12);
             UniqueTagList tags = new UniqueTagList();
             for (String tag : tagged) {
                 tags.add(new Tag(tag));
             }
             return new Item(description, startDate, endDate, tags);
         }
+        
+        Item workingItemWithDates(String desc, LocalDateTime... times) throws Exception {
+            Description description = new Description(desc);
+            LocalDateTime startDate = null, endDate = null;
+            if (times.length > 0){
+                 startDate = times[0];
+            }
+            if (times.length > 1){
+                endDate = times[1];
+            }
+            UniqueTagList tags = new UniqueTagList();
+            return new Item(description, startDate, endDate, tags);
+        }
+
 
         Item aFloatingTask() throws Exception {
             Description description = new Description("A floating task");
@@ -541,10 +583,10 @@ public class LogicManagerTest {
         String generateAddCommand(Item item) {
             StringBuffer cmd = new StringBuffer();
             cmd.append("add ");
-            cmd.append("\"" + item.getDescription().toString() + "\"");
+            cmd.append("\"" + item.getDescription().toString() + "\" ");
             cmd.append("from " + item.getStartDate().toString() + " to " + item.getEndDate().toString());
             for (Tag tag : item.getTags()) {
-                cmd.append(tag.toString());
+                cmd.append(" " + tag.toString());
             }
             return cmd.toString();
         }

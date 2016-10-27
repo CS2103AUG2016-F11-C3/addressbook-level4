@@ -1,13 +1,13 @@
 package seedu.address.model;
 
+import java.util.Set;
+
+import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.logic.commands.Command;
 import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
-
-import java.util.Set;
-import javafx.collections.transformation.FilteredList;
 
 /**
  * The API of the Model component.
@@ -40,6 +40,8 @@ public interface Model {
     /** Add the command to stack for undo */
     // @@author A0144750J
     Command returnCommandFromStack();
+    /** Set item to be done */
+    void doneItem(ReadOnlyItem item);
 
     /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList();
