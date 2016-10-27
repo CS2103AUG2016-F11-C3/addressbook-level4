@@ -145,26 +145,27 @@ add "Schedule CS2103 Consult"
 
 ### Updating an Event
 #### Editing Event Details
-Sometimes it is necessary to change the details of your event because life. Luckily, you can edit an item's description, start date/time and end date/time.
+Sometimes it is necessary to change the details of your event because life.
 
 ```bash
 # format
-edit CONTEXT_ID FIELD_NAME:NEW_DETAIL
+for CONTEXT_ID edit FIELD_NAME:NEW_DETAIL
 ```
-Fields: [`CONTEXT_ID`](#context-id), [`FIELD_NAME`](#field-name), `NEW_DETAIL`
+Fields: [`FIELD_NAME`](#field-name), [`CONTEXT_ID`](#context-id), `NEW_DETAIL`
 
 You can change multiple fields for the same event at the same time by separating multiple `FIELD_NAME:NEW_DETAIL` parameters with a comma.
 
 ```bash
 # examples
-edit 10 by: 29 October 5pm
-edit 4 end:1/2/2016 10:51am # edits the forth item currently listed
-edit 5 period : 11 nov 4:30pm to 6:30pm
+for 2412 edit start :today 1600
+for 10 edit by: 29 October 5pm
+for 4 edit end:1/2/2016 10:51am # edits the forth item currently listed
+for 5 edit period : 11 nov 4:30pm to 6:30pm
 
 # change multiple fields at the same time
 # both of these commands are equivalent
-edit 1 start: this friday 1600, end:this friday 1645
-edit 1 period: this friday 1600 to 1645
+for 1 edit start: this friday 1600, end:this friday 1645
+for 1 edit period: this friday 1600 to 1645
 ```
 
 #### Marking as Complete
@@ -196,9 +197,9 @@ delete 241 # delete the item with event ID 241
 ```
 
 ### Searching for a Task/Event
-You can search for specific events using keyphrases. Keyphrases are filtered according to whether they search through `Descriptor`s, `Tag`s or `DateTime`s.
+You can search for specific events using keyphrases. Keyphrases are filtered according to whether they search through `Descriptor`s, `Tag`s or `DateTime`s. Take note of your current [`list`](#enumerating-tasks) context, as this will affect what items are searched.
 
-The keyphrases are case-insensitive and can be simply part of the event name.
+The keyphrases are case-insensitive and can be simply part of the event name. All of the keyphrases must be matched for an item to be returned.
 
 ```bash
 # format
@@ -217,10 +218,15 @@ find "CS2103" #homework tomorrow        -> searches for CS2103 in descriptors, h
 ```
 
 ### Enumerating Tasks
-You can enumerate a list of all the events and show it on the main interface.
+You can enumerate a list of all the events and show it on the main interface. You can also limit your listings using specific meta-tags. List changes the context of your current window view, so that all future searches will occur within this context. For instance, `list task` -> `find "homework"` returns all tasks with the keyword 'homework' in the descriptions, but will not return any events with the keyword 'homework' in the description.
 
 ```bash
-list        # lists all events by name in chronological order
+list         # lists all tasks/events in chronological order
+list task    # lists all tasks, no events
+list event   # lists all events, no tasks
+list done    # lists all tasks/events that are done
+list undone  # opposite of list done, lists everything not done
+list overdue # lists all events/tasks with end date before the current time
 ```
 
 ### Paging
