@@ -69,7 +69,19 @@ public class Parser {
 	private static final Pattern ITEM_EDIT_ARGS_FORMAT = Pattern.compile("(?<targetIndex>\\d+) edit (?<arguments>.*)");
 
 	
-	public enum Type {TASK, DEADLINE, EVENT;}
+	public enum Type {
+	    TASK("task"), EVENT("event"), DONE("done"), ITEM("item");
+	    
+        private String typeName;
+
+        Type(String name) {
+            this.typeName = name;
+        }
+
+        public String getTypeName() {
+            return this.typeName;
+        }
+	}
 
     public enum Field {
         NAME("name"),
@@ -153,10 +165,10 @@ public class Parser {
     private Command prepareList(String argument) {
         assert argument != null;
         if (argument.isEmpty()){
-            return new ListCommand(EMPTY_STRING);
+            return new ListCommand(Type.ITEM.getTypeName());
         }
         else if (isValidType(argument)){
-            return new ListCommand(argument.toUpperCase());
+            return new ListCommand(argument.trim().toLowerCase());
         }
         else{
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
