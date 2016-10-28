@@ -176,4 +176,16 @@ public class TestItem extends Observable implements ReadOnlyItem {
     public String extractPrettyItemCardDateTime() {
         return DateTimeParser.extractPrettyDateTime(this.startDate);
     }
+
+	@Override
+	public String getType() {
+		if (this.getStartDate() != null) {
+			return "Event";
+		} else if (this.getEndDate() == null) {
+			return "Floating Task";
+		} else {
+			return "Task";
+		}
+
+	}
 }
