@@ -606,12 +606,12 @@ public class LogicManagerTest<E> {
 
     }
     
+     //@@author A0147609X
     /**
      * Test for invalid index input for edit command
      * @throws Exception
      * 
      * @author darren
-     * @@author A0147609X
      */
     @Test
     public void execute_editIndexNotFound_errorMessageShown() throws Exception {
@@ -626,10 +626,12 @@ public class LogicManagerTest<E> {
         
         assertCommandBehavior("edit 3 description:dog", expectedMessage, model.getTaskBook(), itemList);
     }
+    //@@author
 
+    //@@author A0147609X
     /**
-     * @@author A0147609X
      * @throws Exception
+     * @author darren
      */
     @Test
     public void execute_editCommandSyntaxWrong_errorMessageShown() throws Exception {
@@ -643,9 +645,10 @@ public class LogicManagerTest<E> {
         String expectedMessage = String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
         assertCommandBehavior("edit 1", expectedMessage, model.getTaskBook(), itemList);
     }
+    //@@author
     
+    //@@author A0147609X
     /**
-     * @@author A0147609X
      * @throws Exception
      */
     @Test
@@ -668,6 +671,7 @@ public class LogicManagerTest<E> {
         String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, newDescription);
         assertCommandBehavior(editInputCommand, expectedMessage, expectedTB, expectedList);
     }
+    //@@author
 
     /**
      * A utility class to generate test data.

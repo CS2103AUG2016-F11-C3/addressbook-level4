@@ -47,6 +47,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         this.tags = new UniqueTagList(tags);
     }
 
+    //@@author A0147609X
     /**
      * constructor for an item with a definite
      * start and end time (non-recurring)
@@ -62,6 +63,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         this.endDate = end;
         this.tags = new UniqueTagList(tags);
     }
+    //@@author
     
 	/**
 	 * constructor for an item with a definite end time only (non-recurring)
@@ -258,6 +260,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
                 && this.isSameStateAs((ReadOnlyItem) other));
     }
 
+    //@@author A0147609X
     @Override
     /**
      * sort by start date then end date then alphabetically
@@ -306,12 +309,14 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         
         return checkee;
     }
+    //@@author
     
+    //@@author A0144750J
     /**
      * Returns a deep copy of the current Item
      * 
      * @return deep copy of this Item
-     * @@author A0144750J
+     * @author duc
      */
     public Item deepCopy() {
         Item duplicate;
@@ -333,8 +338,10 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 
         return null;
 	}
+    //@@author
 
-     /*
+    //@@author A0147609X
+     /**
      * Builds a pretty datetime line for this Item's card on the UI.
      * 
      * Nulls are handled by DateTimeParser.extractPrettyItemCardDateTime
@@ -350,6 +357,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
      * Gets the pretty explicit datetime for this Item's start datetime
      * e.g. "This Monday, 7:30PM" or "Mon 27 Nov, 9:30AM"
      * @return
+     * @author darren
      */
     public String extractPrettyStartDateTime() {
         return DateTimeParser.extractPrettyDateTime(this.startDate);
@@ -359,6 +367,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
      * Gets the pretty explicit datetime for this Item's end datetime
      * e.g. "This Monday, 7:30PM" or "Mon 27 Nov, 9:30AM"
      * @return
+     * @author darren
      */
     public String extractPrettyEndDateTime() {
         return DateTimeParser.extractPrettyDateTime(this.endDate);
@@ -387,4 +396,5 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         }
         return DateTimeParser.extractPrettyRelativeDateTime(this.endDate);
     }
+    //@@author
 }

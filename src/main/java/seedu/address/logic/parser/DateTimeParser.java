@@ -14,11 +14,11 @@ import org.ocpsoft.prettytime.PrettyTime;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 import org.ocpsoft.prettytime.nlp.parse.DateGroup;
 
+//@@author A0147609X
 /**
  * For parsing dates and times in Sudowudo command input
  * 
  * @author darren
- * @@author A0147609X
  */
 public class DateTimeParser {
     // the part of the command that contains the temporal part of the command

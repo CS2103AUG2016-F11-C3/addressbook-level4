@@ -12,6 +12,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
+//@@author A0147609X
 /**
  * beware of tests involving relative dates as the current date
  * is taken to be the current system time (whoever is building)
