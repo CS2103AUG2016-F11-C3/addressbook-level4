@@ -4,6 +4,7 @@
 * [Appendix B: Use Cases](#appendix-b-use-cases)
 * [Appendic C: Non-Functional Requirements](#appendix-c-non-functional-product-requirements)
 * [Appendix D: Product Survey](#appendix-d-product-survey)
+
 <!--- @@author A0131560U --->
 ## Appendix A: User Stories
 Priorities: 
@@ -30,7 +31,9 @@ Priority | As a ... | I want to ... | So that I can...
 `*`   | user | receive feedback when I am typing in commands | know whether I am typing in the command correctly
 `*`   | user | have the app autocomplete my task name | more quickly type in commands
 `*`   | power user | use keyboard shortcuts to access frequently-used features | more quickly access useful features
+<!--- @@author --->
 
+<!--- @@author A0131560U --->
 ## Appendix B: Use Cases
 (For all use cases below, the `System` is Wudodo and the `Actor` is the user, unless specified otherwise)
 
@@ -57,7 +60,9 @@ Priority | As a ... | I want to ... | So that I can...
 
 2a. No matching tasks
 > Use case ends
+<!--- @@author --->
 
+<!--- @@author A0092390E --->
 ### Use case: Mark task as completed
 #### MSS
 1. User requests to complete a specific task in the list by index
@@ -89,7 +94,9 @@ Priority | As a ... | I want to ... | So that I can...
 > 1b1. System checks if user wants to delete this task or all succeeding tasks
 > 1b2. User selects desired choice
 > 1b3. System deletes selected tasks
+<!--- @@author --->
 
+<!--- @@author A0131560U --->
 ### Use case: List all tasks
 #### MSS
 1. User requests to list all tasks
@@ -103,7 +110,9 @@ Priority | As a ... | I want to ... | So that I can...
 2a. The given task is invalid
 > 2a1. System shows an error message
 > Use case resumes at step 2
+<!--- @@author --->
 
+<!--- @@author A0144750J --->
 ### Use case: Clear list
 #### MSS
 1. User requests to clear list
@@ -113,7 +122,9 @@ Priority | As a ... | I want to ... | So that I can...
 #### Extensions
 1a. The list is empty
 > Use case resumes at step 3
+<!--- @@author --->
 
+<!--- @@author A0131560U --->
 ## Appendix C: Non-Functional Product Requirements
 1. Should work on any mainstream OS as long as it has `Java 1.8.0_60` or higher installed.
 2. Should be able to hold up to 1000 items.
@@ -122,7 +133,9 @@ Priority | As a ... | I want to ... | So that I can...
 5. Should save and retrieve data from local text files
 6. Should not use relational databases
 7. Should be reliant on CLI instead of GUI
+<!--- @@author --->
 
+<!--- @@author A0131560U --->
 ## Appendix D: Product Survey
 
 ### Desired features
@@ -171,6 +184,8 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 - Use of keyboard shortcuts
 - On-screen shortcuts for particular features (e.g. postponing, making event recurring)
 <!--- @@author --->
+
+<!--- @@author A0147609X --->
 ### Wunderlist
 #### Meets Specifications
 - Complete keyboard-only interaction for creating, reading, updating and deleting tasks (command line-like UI)
@@ -195,8 +210,9 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 
 #### Takeaways
 - Use of multiplatform integration
+<!--- @@author --->
 
-<!--- @@author A0131560U --->
+<!--- @@author A0147609X --->
 ### Google Calendar
 #### Meets Specifications
 - Take in events with specified start and end times
@@ -227,7 +243,9 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 #### Takeaways
 - Split pane views for tasks and events
 - Quick add functionality
+<!--- @@author --->
 
+<!--- @@author A0131560U --->
 ### Apple Reminders
 #### Meets Specifications
 - Allows events with deadlines
@@ -250,3 +268,4 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 - Native support for Mac gives additional features (e.g. widgets, shortcuts in email etc.)
 
 [^2]: https://support.todoist.com/hc/en-us/articles/205063212-Keyboard-shortcuts
+<!--- @@author --->
