@@ -386,12 +386,12 @@ public class Parser {
     }
 
     /**
-     * Parses arguments in the context of the Edit item command
-     * 
-     * @param args
-     * @return
-     * @author yuchuan
-     */
+	 * Parses arguments in the context of the Edit item command
+	 * 
+	 * @param args
+	 * @return
+	 * @@author A0092390E
+	 */
     private Command prepareEdit(String args) {
         final Matcher matcher = ITEM_EDIT_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
