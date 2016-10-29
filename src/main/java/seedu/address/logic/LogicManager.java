@@ -28,6 +28,9 @@ public class LogicManager extends ComponentManager implements Logic {
     }
 
     /**
+     * Call on parser to parse a command 
+     * Return command result after executing
+     * Add command to undo stack if applicable
      * @@author A0144750J
      */
     @Override
@@ -42,6 +45,7 @@ public class LogicManager extends ComponentManager implements Logic {
         return result;
     }
 
+    // @@author
     @Override
     public ObservableList<ReadOnlyItem> getFilteredItemList() {
         return model.getFilteredItemList();

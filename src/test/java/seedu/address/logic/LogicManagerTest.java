@@ -182,6 +182,7 @@ public class LogicManagerTest<E> {
         assertCommandBehavior("clear", ClearCommand.MESSAGE_SUCCESS, new TaskBook(), Collections.emptyList());
     }
 
+    //@@author A0144750J
     @Test
     public void execute_add_invalidArgsFormat() throws Exception {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE);
@@ -192,6 +193,7 @@ public class LogicManagerTest<E> {
         assertCommandBehavior("add wrong args \"format\"", expectedMessage);
     }
 
+    //@@author A0144750J
     @Test
     public void execute_add_successful() throws Exception {
         // setup expectations

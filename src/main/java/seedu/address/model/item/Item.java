@@ -104,6 +104,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         this(source.getDescription(), source.getStartDate(), source.getEndDate(), source.getTags(), source.getIsDone());
     }
 
+    //@@author 
     @Override
     public UniqueTagList getTags() {
         return this.tags;

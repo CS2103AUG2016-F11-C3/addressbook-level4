@@ -184,6 +184,7 @@ public class ModelManager extends ComponentManager implements Model {
 		return filteredItems;
 	}
 
+    // @@author
     @Override
     public void updateFilteredListToShowAll() {
         filteredItems.setPredicate(null);

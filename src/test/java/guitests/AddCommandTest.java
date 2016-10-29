@@ -11,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 
 public class AddCommandTest extends TaskBookGuiTest {
 
+    //@@author A0144750J
     @Test
     public void add() {
         //add one item
@@ -32,7 +33,8 @@ public class AddCommandTest extends TaskBookGuiTest {
         commandBox.runCommand("adds Johnny");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
     }
-
+    
+    //@@author A0144750J-reused
     private void assertAddSuccess(TestItem itemToAdd, TestItem... currentList) {
         commandBox.runCommand(itemToAdd.getAddCommand());
 
