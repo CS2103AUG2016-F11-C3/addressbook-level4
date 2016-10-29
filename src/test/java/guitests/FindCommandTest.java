@@ -9,6 +9,7 @@ import static org.junit.Assert.assertTrue;
 public class FindCommandTest extends TaskBookGuiTest {
 
     @Test
+    //@@author A0131560U
     public void find_nonEmptyList() {
         assertFindResult("find \"move\""); //no results
         assertFindResult("find \"grass\"", td.frolick, td.grass); //multiple results
@@ -19,12 +20,14 @@ public class FindCommandTest extends TaskBookGuiTest {
     }
 
     @Test
+    //@@author A0131560U
     public void find_emptyList(){
         commandBox.runCommand("clear");
         assertFindResult("find #asymptote"); //no results
     }
 
     @Test
+    //@@author
     public void find_invalidCommand_fail() {
         commandBox.runCommand("findgeorge");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);

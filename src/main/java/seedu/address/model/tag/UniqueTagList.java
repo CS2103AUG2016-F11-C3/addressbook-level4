@@ -133,6 +133,7 @@ public class UniqueTagList implements Iterable<Tag> {
     }
 
     @Override
+    //@@author
     public Iterator<Tag> iterator() {
         return internalList.iterator();
     }
@@ -154,6 +155,7 @@ public class UniqueTagList implements Iterable<Tag> {
         return internalList.hashCode();
     }
     
+    //@@author A0131560U
     public String listTags(){
         String tagList = new String();
         for (Tag tag : internalList){

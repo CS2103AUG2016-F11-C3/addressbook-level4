@@ -70,6 +70,7 @@ public class Parser {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 	
+    //@@author A0131560U
 	private enum Type {
 	    TASK("task"), EVENT("event"), DONE("done"), ITEM("item"), OVERDUE("overdue"), UNDONE("undone");
 	    
@@ -83,6 +84,7 @@ public class Parser {
             return this.typeName;
         }
 	}
+	//@@author
 
     public enum Field {
         NAME("name"),
@@ -195,6 +197,7 @@ public class Parser {
         return true;
     }
 
+    //@@author
     /**
      * Parses arguments in the context of the add person command.
      *
@@ -284,6 +287,7 @@ public class Parser {
         return tagSet;
     }
 
+
     /**
      * Parses arguments in the context of the delete person command.
      *
@@ -291,6 +295,7 @@ public class Parser {
      *            full command args string
      * @return the prepared command
      */
+    //@@author
     private Command prepareDelete(String args) {
 
         Optional<Integer> index = parseIndex(args);
@@ -385,7 +390,7 @@ public class Parser {
         
         return new FindCommand(keywordSet);
     }
-
+    //@@A0092390E
     /**
      * Parses arguments in the context of the Edit item command
      * 
@@ -393,6 +398,7 @@ public class Parser {
      * @return
      * @author yuchuan
      */
+
     private Command prepareEdit(String args) {
         final Matcher matcher = ITEM_EDIT_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
@@ -451,6 +457,7 @@ public class Parser {
         return args;
     }
 
+    //@@author
 
 	 //@@author A0147609X
 	/**

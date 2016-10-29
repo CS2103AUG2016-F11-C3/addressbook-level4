@@ -40,6 +40,8 @@ Tasks and events are shown on the main interface of Sudowudo and paged. The `con
 
 The `context_id` is not persistent and can change depending on what tasks/events are on the interface at the time. It is meant to provide a more convenient and interactive way to interact with tasks/events.
 
+<!--- @@author A0131560U --->
+
 #### `tags`
 Tags are single-word markers that can be added to a task. Each task can have as many `tags` as you want. Hashtags are used to denote a tag.
 
@@ -47,6 +49,7 @@ Tags are single-word markers that can be added to a task. Each task can have as 
 #important # valid
 important  # invalid
 ```
+<!--- @@author --->
 
 #### `datetime`
 Dates and times are expressed together ("datetime") and have a natural format.
@@ -195,6 +198,7 @@ delete 9 # deletes the ninth item displayed
 delete 241 # delete the item with event ID 241
 ```
 
+<!--- @@author A0131560U --->
 ### Searching for a Task/Event
 You can search for specific events using keyphrases. Keyphrases are filtered according to whether they search through `Descriptor`s, `Tag`s or `DateTime`s. Take note of your current [`list`](#enumerating-tasks) context, as this will affect what items are searched.
 
@@ -227,6 +231,7 @@ list done    # lists all tasks/events that are done
 list undone  # opposite of list done, lists everything not done
 list overdue # lists all events/tasks with end date before the current time
 ```
+<!--- @@author --->
 
 ### Paging
 The main interface of Sudowudo pages your upcoming tasks/events.

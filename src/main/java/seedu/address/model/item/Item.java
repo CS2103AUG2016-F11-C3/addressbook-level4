@@ -71,7 +71,6 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 	 * @param desc
 	 * @param end
 	 * @author darren
-	 * @@author A0131560U
 	 */
     public Item(Description desc, LocalDateTime end, UniqueTagList tags) {
         assert !CollectionUtil.isAnyNull(desc);
