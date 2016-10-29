@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
@@ -156,20 +157,13 @@ public class ModelManager extends ComponentManager implements Model {
     //=========== Filtered Item List Accessors ===============================================================
 
     @Override
+    //@@author A0131560U
     /**
      * Returns a list sorted chronologically
-     * 
-     * @@author A0131560U
      */
     public UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList() {
-        Comparator<Item> chronologicalComparator = new Comparator<Item>(){
-            @Override
-            public int compare(Item x, Item y) {
-                return x.compareTo(y);
-            }
-        };
-        //SortedList<Item> sortedList = new SortedList<>(filteredItems, chronologicalComparator);
-        return new UnmodifiableObservableList<>(filteredItems);
+        SortedList<Item> sortedList = new SortedList<>(filteredItems, Item.chronologicalComparator);
+        return new UnmodifiableObservableList<>(sortedList);
     }
     
     /**
@@ -187,6 +181,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     @Override
+    //@@author A0131560U
     public void updateFilteredListDefaultPredicate(String taskType) {
         defaultPredicate = new QualifierPredicate(new TypeQualifier(taskType));
         updateFilteredItemList(defaultPredicate);
@@ -198,8 +193,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 
     private void updateFilteredItemList(Predicate pred) {
-        // Not used, to narrow searches the user has to type the entire search
-        // string in
+        // Not used, to narrow searches the user has to type the entire search string in
         // if(filteredItems.getPredicate() != null){
         // filteredItems.setPredicate(pred.and(filteredItems.getPredicate()));
         // } else{
@@ -207,8 +201,7 @@ public class ModelManager extends ComponentManager implements Model {
         // }
     }
 
-    // ========== Inner classes/interfaces used for filtering
-    // ==================================================
+    // ========== Inner classes/interfaces used for filtering ==================================================
 
     private class QualifierPredicate implements Predicate<ReadOnlyItem> {
 
@@ -237,6 +230,7 @@ public class ModelManager extends ComponentManager implements Model {
         String toString();
     }
 
+    //@@author A0131560U
     private class TypeQualifier implements Qualifier {
         private String type;
 
@@ -259,6 +253,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     }
 
+    //@@author A0131560U
     private class KeywordQualifier implements Qualifier {
         private Set<String> searchKeyWords;
 
@@ -282,7 +277,8 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
-    // Idea @@author A0092390E
+    // @@author A0092390E-idea
+    //@@author A0131560U
     private class Keyword {
         private String keyword;
 
