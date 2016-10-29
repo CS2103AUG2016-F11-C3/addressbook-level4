@@ -724,7 +724,7 @@ public class LogicManagerTest<E> {
             return new Item(description, startDate, endDate, tags);
         }
 
-
+        //@@author
         Item aFloatingTask() throws Exception {
             Description description = new Description("A floating task");
             return new Item(description, null, null, new UniqueTagList());
