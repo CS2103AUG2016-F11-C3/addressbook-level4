@@ -1,6 +1,12 @@
 package guitests.guihandles;
 
 
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 import guitests.GuiRobot;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -11,14 +17,10 @@ import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.testutil.TestUtil;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import static org.junit.Assert.assertTrue;
-
 /**
  * Provides a handle for the panel containing the item list.
+ * 
+ * @@author A0092390E
  */
 public class ItemListPanelHandle extends GuiHandle {
 

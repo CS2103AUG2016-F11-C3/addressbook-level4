@@ -116,7 +116,7 @@ public class TestItem extends Observable implements ReadOnlyItem {
         return sb.toString();
     }
 
-    //@@author 
+	// @@author A0092390E
     @Override
     public boolean is(String query) {
         query = query.toLowerCase();
