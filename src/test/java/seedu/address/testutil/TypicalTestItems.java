@@ -12,6 +12,7 @@ public class TypicalTestItems {
 
     public static TestItem always, bags, cs2103, dover, eating, frolick, grass, help, indeed;
 
+    //@@author A0144750J
     public TypicalTestItems() {
         try {
             always  = new ItemBuilder().withDescription("Always brush teeth").withDates("no date info").withTags("important","priority").build();
@@ -30,6 +31,7 @@ public class TypicalTestItems {
         }
     }
 
+    //@@author A0144750J
     public static void loadTaskBookWithSampleData(TaskBook tb) {
 
         try {
@@ -45,10 +47,12 @@ public class TypicalTestItems {
         }
     }
 
+    //@@author A0144750J
     public TestItem[] getTypicalItems() {
         return new TestItem[]{always, bags, cs2103, dover, eating, frolick, grass};
     }
 
+    //@@author A0144750J-reused
     public TaskBook getTypicalTaskBook(){
         TaskBook tb = new TaskBook();
         loadTaskBookWithSampleData(tb);

@@ -95,6 +95,7 @@ public class TestItem extends Observable implements ReadOnlyItem {
         this.isDone = doneness;
     }
     
+    //@@author A0144750J
     public String getAddCommand() {
     	assert this.getDescription() != null;
         StringBuilder sb = new StringBuilder();
@@ -115,6 +116,7 @@ public class TestItem extends Observable implements ReadOnlyItem {
         return sb.toString();
     }
 
+    //@@author 
     @Override
     public boolean is(String query) {
         query = query.toLowerCase();

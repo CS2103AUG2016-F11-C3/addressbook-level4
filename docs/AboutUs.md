@@ -1,5 +1,7 @@
 # About Us
 
+<!-- @@author A0144750J -->
+
 We are a project team for the module CS2103 - Software Engineering from the [School of Computing, National University of Singapore](http://www.comp.nus.edu.sg).
 
 ## Project Team

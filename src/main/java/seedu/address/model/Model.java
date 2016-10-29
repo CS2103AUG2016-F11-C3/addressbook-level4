@@ -53,6 +53,7 @@ public interface Model {
 
 
     /** Returns the filtered item list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
+    // @@author
     UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList();
 
     /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */

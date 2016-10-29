@@ -1,20 +1,20 @@
-package seedu.address.model;
+# A0144750Jreused
+###### \java\seedu\address\model\ReadOnlyTaskBook.java
+``` java
+ */
+public interface ReadOnlyTaskBook {
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
+    UniqueItemList getUniqueItemList();
 
-import javafx.collections.ObservableList;
-import seedu.address.model.item.Item;
-import seedu.address.model.item.ReadOnlyItem;
-import seedu.address.model.item.UniqueItemList;
+    /**
+     * Returns an unmodifiable view of persons list
+     */
+    List<ReadOnlyItem> getItemList();
 
-/**
- * Wraps all data at the task-book level
- * Duplicates are not allowed (by .equals comparison)
- * @@author A0144750J-reused
+}
+```
+###### \java\seedu\address\model\TaskBook.java
+``` java
  */
 public class TaskBook implements ReadOnlyTaskBook {
 
@@ -120,3 +120,4 @@ public class TaskBook implements ReadOnlyTaskBook {
     }
 
 }
+```
