@@ -1,10 +1,10 @@
-﻿# Developer Guide
+# Developer Guide
 
 * [Appendix A: User Stories](#appendix-a-user-stories)
 * [Appendix B: Use Cases](#appendix-b-use-cases)
 * [Appendic C: Non-Functional Requirements](#appendix-c-non-functional-product-requirements)
 * [Appendix D: Product Survey](#appendix-d-product-survey)
-
+<!--- @@author A0131560U --->
 ## Appendix A: User Stories
 Priorities: 
 - `* * *` -- high priority, must have
@@ -170,7 +170,7 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 - Use of hashtags for tagging
 - Use of keyboard shortcuts
 - On-screen shortcuts for particular features (e.g. postponing, making event recurring)
-
+<!--- @@author --->
 ### Wunderlist
 #### Meets Specifications
 - Complete keyboard-only interaction for creating, reading, updating and deleting tasks (command line-like UI)
@@ -196,6 +196,7 @@ This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~c
 #### Takeaways
 - Use of multiplatform integration
 
+<!--- @@author A0131560U --->
 ### Google Calendar
 #### Meets Specifications
 - Take in events with specified start and end times
