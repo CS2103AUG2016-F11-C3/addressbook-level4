@@ -1,5 +1,5 @@
 # A0144750Jreused
-###### \java\guitests\AddCommandTest.java
+###### /java/guitests/AddCommandTest.java
 ``` java
     private void assertAddSuccess(TestItem itemToAdd, TestItem... currentList) {
         commandBox.runCommand(itemToAdd.getAddCommand());
@@ -15,7 +15,7 @@
 
 }
 ```
-###### \java\seedu\address\testutil\TypicalTestItems.java
+###### /java/seedu/address/testutil/TypicalTestItems.java
 ``` java
     public TaskBook getTypicalTaskBook(){
         TaskBook tb = new TaskBook();
