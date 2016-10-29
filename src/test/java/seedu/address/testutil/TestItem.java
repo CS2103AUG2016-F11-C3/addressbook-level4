@@ -176,4 +176,9 @@ public class TestItem extends Observable implements ReadOnlyItem {
     public String extractPrettyItemCardDateTime() {
         return DateTimeParser.extractPrettyDateTime(this.startDate);
     }
+
+    @Override
+    public String getType() {
+        return null;
+    }
 }
