@@ -93,6 +93,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateTaskBookChanged();
     }
 
+    //@@author A0147609X
     @Override
 	public void setItemDesc(Item item, String desc) {
         try {
@@ -102,20 +103,25 @@ public class ModelManager extends ComponentManager implements Model {
         } catch (IllegalValueException ive) {
         }
     }
+    //@@author
     
+    //@@author A0147609X
     @Override
 	public void setItemStart(Item item, LocalDateTime startDate) {
         item.setStartDate(startDate);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
     }
+    //@@author
 
+    //@@author A0147609X
     @Override
 	public void setItemEnd(Item item, LocalDateTime endDate) {
         item.setEndDate(endDate);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
     }
+    //@@author
     
     // @@author A0144750J
     @Override
@@ -124,6 +130,7 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
 	}
+    //@@author
     
     // @@author A0144750J
 	@Override
@@ -131,8 +138,8 @@ public class ModelManager extends ComponentManager implements Model {
 		item.setIsDone(false);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
-		
 	}
+    //@@author
 	
 	// @@author A0144750J
 	@Override
@@ -141,6 +148,7 @@ public class ModelManager extends ComponentManager implements Model {
 		assert this.commandStack != null;
 		this.commandStack.push(command);
 	}
+    //@@author
 
 	// @@author A0144750J
 	@Override
@@ -151,6 +159,7 @@ public class ModelManager extends ComponentManager implements Model {
 		}
 		return commandStack.pop();
 	}
+    //@@author
 
 
     //=========== Filtered Item List Accessors ===============================================================
