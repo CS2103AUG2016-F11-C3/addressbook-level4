@@ -14,6 +14,7 @@ import seedu.address.model.tag.UniqueTagList;
 /**
  * Represents a Item in the address book. Guarantees: details are present and
  * not null, field values are validated.
+ * 
  */
 public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 
@@ -104,7 +105,8 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         this(source.getDescription(), source.getStartDate(), source.getEndDate(), source.getTags(), source.getIsDone());
     }
 
-    //@@author 
+	/* @@author A0092390E */
+
     @Override
     public UniqueTagList getTags() {
         return this.tags;

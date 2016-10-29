@@ -18,6 +18,14 @@ public class CommandResult {
 		this.item = null;
 	}
 
+	/**
+	 * Additional constructor for CommandResult to indicate the item that
+	 * changed, if any.
+	 * 
+	 * @param feedbackToUser
+	 * @param itemToComplete
+	 * @@author A0092390E
+	 */
 	public CommandResult(String feedbackToUser, ReadOnlyItem itemToComplete) {
 		assert feedbackToUser != null;
 		this.feedbackToUser = feedbackToUser;

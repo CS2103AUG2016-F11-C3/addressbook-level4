@@ -10,6 +10,8 @@ import seedu.address.commons.util.FxViewUtil;
 
 /**
  * A ui for the status bar that is displayed at the header of the application.
+ * 
+ * @@author A0092390E
  */
 public class ResultDisplay extends UiPart {
     public static final String RESULT_DISPLAY_ID = "resultDisplay";

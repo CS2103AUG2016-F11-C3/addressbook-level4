@@ -12,6 +12,8 @@ import seedu.address.model.tag.UniqueTagList;
 
 /**
  * Adds a person to the address book.
+ * 
+ * @@author A0092390E
  */
 public class EditCommand extends Command {
 
