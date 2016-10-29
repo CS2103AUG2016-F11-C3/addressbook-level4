@@ -197,6 +197,10 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredItemList(new QualifierPredicate(new KeywordQualifier(keywords)).and(defaultPredicate));
     }
 
+	/*
+	 * @@author A0092390E
+	 * 
+	 */
     private void updateFilteredItemList(Predicate pred) {
         // Not used, to narrow searches the user has to type the entire search
         // string in
