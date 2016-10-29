@@ -279,6 +279,9 @@ public class ModelManager extends ComponentManager implements Model {
 
     // @@author A0092390E-idea
     //@@author A0131560U
+    /**
+     * Given an item, returns true if the item matches this keyword, and false otherwise.
+     */
     private class Keyword {
         private String keyword;
 
@@ -288,18 +291,30 @@ public class ModelManager extends ComponentManager implements Model {
 
         public boolean search(ReadOnlyItem item) {
             if (keyword.matches(Parser.COMMAND_DESCRIPTION_REGEX)) {
-                return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(),
-                        keyword.replace(Parser.COMMAND_DESCRIPTION_PREFIX, ""));
+                return matchesDescription(item);
             } else if (keyword.matches(Parser.COMMAND_TAG_REGEX)) {
-                return StringUtil.containsIgnoreCase(item.getTags().listTags(),
-                        keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, ""));
+                return matchesTags(item);
             } else {
-                DateTimeParser parseDate = new DateTimeParser(keyword);
-                return ((item.getStartDate() != null
-                        && DateTimeParser.isSameDay(item.getStartDate(), parseDate.extractStartDate())
-                        || (item.getEndDate() != null
-                                && DateTimeParser.isSameDay(item.getEndDate(), parseDate.extractStartDate()))));
+                return matchesDates(item);
             }
+        }
+
+        private boolean matchesDates(ReadOnlyItem item) {
+            DateTimeParser parseDate = new DateTimeParser(keyword);
+            return ((item.getStartDate() != null
+                    && DateTimeParser.isSameDay(item.getStartDate(), parseDate.extractStartDate())
+                    || (item.getEndDate() != null
+                            && DateTimeParser.isSameDay(item.getEndDate(), parseDate.extractStartDate()))));
+        }
+
+        private boolean matchesTags(ReadOnlyItem item) {
+            return StringUtil.containsIgnoreCase(item.getTags().listTags(),
+                    keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, ""));
+        }
+
+        private boolean matchesDescription(ReadOnlyItem item) {
+            return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(),
+                    keyword.replace(Parser.COMMAND_DESCRIPTION_PREFIX, ""));
         }
     }
 
