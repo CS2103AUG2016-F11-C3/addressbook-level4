@@ -301,6 +301,7 @@ public class Parser {
         return new DeleteCommand(index.get());
     }
 
+    //@@author A0147609X
     /**
      * Parses arguments for done task command
      * 
@@ -308,7 +309,6 @@ public class Parser {
      *            full command args string
      * @return the prepared done command
      * @author darren
-     * @@author A0147609X
      */
     private Command prepareDone(String args) {
         Optional<Integer> index = parseIndex(args);
@@ -318,6 +318,7 @@ public class Parser {
 
         return new DoneCommand(index.get());
     }
+    //@@author
 
     /**
      * Parses arguments in the context of the select person command.
@@ -480,6 +481,7 @@ public class Parser {
 
 		return null;
 	}
+	//@@author 
 
 	 //@@author A0147609X-unused
 	/**
@@ -501,4 +503,5 @@ public class Parser {
 		}
 		return true;
 	}
+	//@@author
 }
