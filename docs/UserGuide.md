@@ -1,5 +1,6 @@
 # Sudowudo User Guide
 
+<!-- @@author A0144750J -->
 ## Quick Start
 <!-- for getting the thing to actually work -->
 <!-- need to wait on our refactoring for addressbook-level4 -->
@@ -34,11 +35,14 @@ Descriptors are words/phrases used for identification, such as for the name of a
 "Dental Appointment" # valid
 Dental Appointment   # invalid
 ```
+<!-- @@author -->
 
+<!-- @@author A0092390E -->
 #### `context_id`
 Tasks and events are shown on the main interface of Sudowudo and paged. The `context_id` allows you to modify tasks and events that are shown on the interface based on the *contextual* identifier, i.e. the numerical index that is shown on the interface. The identifier does not need to be enclosed in quote marks.
 
 The `context_id` is not persistent and can change depending on what tasks/events are on the interface at the time. It is meant to provide a more convenient and interactive way to interact with tasks/events.
+<!-- @@author -->
 
 <!--- @@author A0131560U --->
 
@@ -51,6 +55,7 @@ important  # invalid
 ```
 <!--- @@author --->
 
+<!--- @@author A0147609X --->
 #### `datetime`
 Dates and times are expressed together ("datetime") and have a natural format.
 
@@ -94,6 +99,7 @@ In the remainder of this section, note the following:
 1. Fields that are in uppercase are *user parameters*.
 2. The order of parameters in command formats is fixed.
 3. Commands that begin with `for` have autocomplete to assist the user.
+
 
 ### Adding an Event
 #### Start and End Times
@@ -145,7 +151,9 @@ Fields: [`TASK_NAME`](#descriptors), [`TAG(S)`](#tags)
 # examples
 add "Schedule CS2103 Consult" 
 ```
+<!--- @@author --->
 
+<!--- @@author A0092390E --->
 ### Updating an Event
 #### Editing Event Details
 Sometimes it is necessary to change the details of your event because life. Luckily, you can edit an item's description, start date/time and end date/time.
@@ -169,7 +177,9 @@ edit 5 period : 11 nov 4:30pm to 6:30pm
 edit 1 start: this friday 1600, end:this friday 1645
 edit 1 period: this friday 1600 to 1645
 ```
+<!-- @@author -->
 
+<!-- @@author A0144750J -->
 #### Marking as Complete
 ```bash
 # format
@@ -181,7 +191,9 @@ Fields: [`CONTEXT_ID`](#context-id)
 # examples
 done 3 # marks the third item displayed as done
 ```
+<!--- @@author --->
 
+<!--- @@author A0147609X --->
 ### Deleting a Task/Event
 You can delete an event using its name. This is not the same as marking an event as complete (see [Marking as Complete](#marking-as-complete)), as it removes the task/event from the record.
 
@@ -197,6 +209,7 @@ Field: [`CONTEXT_ID`](#context-id)
 delete 9 # deletes the ninth item displayed
 delete 241 # delete the item with event ID 241
 ```
+<!--- @@author --->
 
 <!--- @@author A0131560U --->
 ### Searching for a Task/Event
@@ -233,6 +246,7 @@ list overdue # lists all events/tasks with end date before the current time
 ```
 <!--- @@author --->
 
+<!--- @@author A0092390E --->
 ### Paging
 The main interface of Sudowudo pages your upcoming tasks/events.
 
@@ -240,9 +254,12 @@ The main interface of Sudowudo pages your upcoming tasks/events.
 next           # shows next page of tasks/events
 back           # shows previous page of tasks/events
 ```
+<!--- @@author --->
 
+<!--- @@author A0144750J--->
 ### Undoing
 Use the `undo` command to undo the most recent action.
 ```bash
 undo
 ```
+<!--- @@author --->
