@@ -25,7 +25,7 @@ We are a project team [CS2103AUG2016-F11-C3](https://github.com/CS2103AUG2016-F1
 
 -----
 
-#### CARA LEONG SU-YI
+#### [CARA LEONG SU-YI](https://github.com/craaaa)
 <img src="images/Cara.jpg" width="150"><br>
 
 - Component in charge of: [Model](https://github.com/CS2103AUG2016-F11-C3/main/blob/master/src/main/java/seedu/address/model/ModelManager.java)
@@ -42,7 +42,7 @@ We are a project team [CS2103AUG2016-F11-C3](https://github.com/CS2103AUG2016-F1
 
 -----
 
-#### DARREN WEE ZHE YU
+#### [DARREN WEE ZHE YU](https://github.com/darrenwee)
 <img src="images/Darren.jpg" width="150"><br>
 * Components in charge of: [`Parser`](https://github.com/CS2103AUG2016-F11-C3/main/blob/master/src/main/java/seedu/address/logic/parser/Parser.java), [`DateTimeParser`](https://github.com/CS2103AUG2016-F11-C3/main/blob/master/src/main/java/seedu/address/logic/parser/DateTimeParser.java)
 * Aspects/tools in charge of: Regex, `PrettyTime`, `opencsv`
@@ -56,9 +56,10 @@ We are a project team [CS2103AUG2016-F11-C3](https://github.com/CS2103AUG2016-F1
    - Polymorphic `Item` class (with Yuchuan, Duc, Cara)
    - Miscellaneous parsing methods
    - Wrappers for `DateTimeParser` in `Item`
+
 -----
 
-#### LE MINH DUC
+#### [LE MINH DUC](https://github.com/acuodancer)
 <img src="images/MinhDuc.jpg" width="150"><br>
 
 * Components in charge of: [Logic]()
@@ -77,7 +78,7 @@ We are a project team [CS2103AUG2016-F11-C3](https://github.com/CS2103AUG2016-F1
 
 -----
 
-#### YUAN YUCHUAN
+#### [YUAN YUCHUAN](https://github.com/yyc)
 <img src="images/Yuchuan.png" width="150"><br>
 
 - Components in charge of: [UI](), code integration, `Item`
@@ -90,4 +91,5 @@ We are a project team [CS2103AUG2016-F11-C3](https://github.com/CS2103AUG2016-F1
 - Other major contributions:
   - [`Parser`](https://github.com/CS2103AUG2016-F11-C3/main/blob/master/src/main/java/seedu/address/logic/parser/Parser.java), [`DateTimeParser`](https://github.com/CS2103AUG2016-F11-C3/main/blob/master/src/main/java/seedu/address/logic/parser/DateTimeParser.java)
   - `find` Command
+
 -----
