@@ -78,7 +78,7 @@ We are a project team [CS2103AUG2016-F11-C3](https://github.com/CS2103AUG2016-F1
 -----
 
 #### YUAN YUCHUAN
-<img src="images/Yuchuan.jpg" width="150"><br>
+<img src="images/Yuchuan.png" width="150"><br>
 
 - Components in charge of: [UI](), code integration, `Item`
 - Aspects/tools in charge of: Regex, JavaFX
