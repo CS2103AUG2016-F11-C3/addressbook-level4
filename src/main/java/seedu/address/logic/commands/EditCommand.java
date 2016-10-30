@@ -12,6 +12,8 @@ import seedu.address.model.tag.UniqueTagList;
 
 /**
  * Adds a person to the address book.
+ * 
+ * @@author A0092390E
  */
 public class EditCommand extends Command {
 
@@ -36,6 +38,7 @@ public class EditCommand extends Command {
     public final int targetIndex;
     private ArrayList<String[]> editFields;
 
+    //@@author A0092390E
     /**
      * Constructor using raw strings
      * 
@@ -59,12 +62,13 @@ public class EditCommand extends Command {
         previousTemplate = new Item(new Description("dummy"), null, null,
                 new UniqueTagList());
     }
+    //@@author
 
+    //@@author A0147609X
     /**
      * Executes the edit command.
      * 
-     * @author darren
-     * @@author A0147609X
+     * @author darren yuchuan
      */
     @Override
     public CommandResult execute() {
@@ -113,6 +117,7 @@ public class EditCommand extends Command {
                 itemToModify);
 
     }
+    //@@author
 
     /**
      * @@author A0144750J

@@ -9,6 +9,7 @@ import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
@@ -93,6 +94,7 @@ public class ModelManager extends ComponentManager implements Model {
         indicateTaskBookChanged();
     }
 
+    //@@author A0147609X
     @Override
 	public void setItemDesc(Item item, String desc) {
         try {
@@ -102,20 +104,25 @@ public class ModelManager extends ComponentManager implements Model {
         } catch (IllegalValueException ive) {
         }
     }
+    //@@author
     
+    //@@author A0147609X
     @Override
 	public void setItemStart(Item item, LocalDateTime startDate) {
         item.setStartDate(startDate);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
     }
+    //@@author
 
+    //@@author A0147609X
     @Override
 	public void setItemEnd(Item item, LocalDateTime endDate) {
         item.setEndDate(endDate);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
     }
+    //@@author
     
     // @@author A0144750J
     @Override
@@ -124,6 +131,7 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
 	}
+    //@@author
     
     // @@author A0144750J
 	@Override
@@ -131,8 +139,8 @@ public class ModelManager extends ComponentManager implements Model {
 		item.setIsDone(false);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
-		
 	}
+    //@@author
 	
 	// @@author A0144750J
 	@Override
@@ -141,6 +149,7 @@ public class ModelManager extends ComponentManager implements Model {
 		assert this.commandStack != null;
 		this.commandStack.push(command);
 	}
+    //@@author
 
 	// @@author A0144750J
 	@Override
@@ -151,25 +160,19 @@ public class ModelManager extends ComponentManager implements Model {
 		}
 		return commandStack.pop();
 	}
+    //@@author
 
 
     //=========== Filtered Item List Accessors ===============================================================
 
     @Override
+    //@@author A0131560U
     /**
      * Returns a list sorted chronologically
-     * 
-     * @@author A0131560U
      */
     public UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList() {
-        Comparator<Item> chronologicalComparator = new Comparator<Item>(){
-            @Override
-            public int compare(Item x, Item y) {
-                return x.compareTo(y);
-            }
-        };
-        //SortedList<Item> sortedList = new SortedList<>(filteredItems, chronologicalComparator);
-        return new UnmodifiableObservableList<>(filteredItems);
+        SortedList<Item> sortedList = new SortedList<>(filteredItems, Item.chronologicalComparator);
+        return new UnmodifiableObservableList<>(sortedList);
     }
     
     /**
@@ -181,12 +184,14 @@ public class ModelManager extends ComponentManager implements Model {
 		return filteredItems;
 	}
 
+    // @@author
     @Override
     public void updateFilteredListToShowAll() {
         filteredItems.setPredicate(null);
     }
 
     @Override
+    //@@author A0131560U
     public void updateFilteredListDefaultPredicate(String taskType) {
         defaultPredicate = new QualifierPredicate(new TypeQualifier(taskType));
         updateFilteredItemList(defaultPredicate);
@@ -197,9 +202,12 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredItemList(new QualifierPredicate(new KeywordQualifier(keywords)).and(defaultPredicate));
     }
 
+	/*
+	 * @@author A0092390E
+	 * 
+	 */
     private void updateFilteredItemList(Predicate pred) {
-        // Not used, to narrow searches the user has to type the entire search
-        // string in
+        // Not used, to narrow searches the user has to type the entire search string in
         // if(filteredItems.getPredicate() != null){
         // filteredItems.setPredicate(pred.and(filteredItems.getPredicate()));
         // } else{
@@ -207,8 +215,7 @@ public class ModelManager extends ComponentManager implements Model {
         // }
     }
 
-    // ========== Inner classes/interfaces used for filtering
-    // ==================================================
+    // ========== Inner classes/interfaces used for filtering ==================================================
 
     private class QualifierPredicate implements Predicate<ReadOnlyItem> {
 
@@ -237,6 +244,7 @@ public class ModelManager extends ComponentManager implements Model {
         String toString();
     }
 
+    //@@author A0131560U
     private class TypeQualifier implements Qualifier {
         private String type;
 
@@ -259,6 +267,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     }
 
+    //@@author A0131560U
     private class KeywordQualifier implements Qualifier {
         private Set<String> searchKeyWords;
 
@@ -282,7 +291,11 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
 
-    // Idea @@author A0092390E
+    // @@author A0092390E-idea
+    //@@author A0131560U
+    /**
+     * Given an item, returns true if the item matches this keyword, and false otherwise.
+     */
     private class Keyword {
         private String keyword;
 
@@ -292,18 +305,30 @@ public class ModelManager extends ComponentManager implements Model {
 
         public boolean search(ReadOnlyItem item) {
             if (keyword.matches(Parser.COMMAND_DESCRIPTION_REGEX)) {
-                return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(),
-                        keyword.replace(Parser.COMMAND_DESCRIPTION_PREFIX, ""));
+                return matchesDescription(item);
             } else if (keyword.matches(Parser.COMMAND_TAG_REGEX)) {
-                return StringUtil.containsIgnoreCase(item.getTags().listTags(),
-                        keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, ""));
+                return matchesTags(item);
             } else {
-                DateTimeParser parseDate = new DateTimeParser(keyword);
-                return ((item.getStartDate() != null
-                        && DateTimeParser.isSameDay(item.getStartDate(), parseDate.extractStartDate())
-                        || (item.getEndDate() != null
-                                && DateTimeParser.isSameDay(item.getEndDate(), parseDate.extractStartDate()))));
+                return matchesDates(item);
             }
+        }
+
+        private boolean matchesDates(ReadOnlyItem item) {
+            DateTimeParser parseDate = new DateTimeParser(keyword);
+            return ((item.getStartDate() != null
+                    && DateTimeParser.isSameDay(item.getStartDate(), parseDate.extractStartDate())
+                    || (item.getEndDate() != null
+                            && DateTimeParser.isSameDay(item.getEndDate(), parseDate.extractStartDate()))));
+        }
+
+        private boolean matchesTags(ReadOnlyItem item) {
+            return StringUtil.containsIgnoreCase(item.getTags().listTags(),
+                    keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, ""));
+        }
+
+        private boolean matchesDescription(ReadOnlyItem item) {
+            return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(),
+                    keyword.replace(Parser.COMMAND_DESCRIPTION_PREFIX, ""));
         }
     }
 

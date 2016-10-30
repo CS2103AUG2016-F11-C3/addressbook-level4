@@ -70,6 +70,7 @@ public class Parser {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
 	
+    //@@author A0131560U
 	private enum Type {
 	    TASK("task"), EVENT("event"), DONE("done"), ITEM("item"), OVERDUE("overdue"), UNDONE("undone");
 	    
@@ -83,6 +84,7 @@ public class Parser {
             return this.typeName;
         }
 	}
+	//@@author
 
     public enum Field {
         NAME("name"),
@@ -195,12 +197,14 @@ public class Parser {
         return true;
     }
 
+    //@@author
     /**
      * Parses arguments in the context of the add person command.
      *
      * @param args
      *            full command args string
      * @return the prepared command
+     * @@author A0144750J
      */
     private Command prepareAdd(String args) {
         final Matcher itemMatch = ITEM_DATA_ARGS_FORMAT.matcher(args.trim());
@@ -284,6 +288,7 @@ public class Parser {
         return tagSet;
     }
 
+
     /**
      * Parses arguments in the context of the delete person command.
      *
@@ -291,6 +296,7 @@ public class Parser {
      *            full command args string
      * @return the prepared command
      */
+    //@@author
     private Command prepareDelete(String args) {
 
         Optional<Integer> index = parseIndex(args);
@@ -301,6 +307,7 @@ public class Parser {
         return new DeleteCommand(index.get());
     }
 
+    //@@author A0147609X
     /**
      * Parses arguments for done task command
      * 
@@ -308,7 +315,6 @@ public class Parser {
      *            full command args string
      * @return the prepared done command
      * @author darren
-     * @@author A0147609X
      */
     private Command prepareDone(String args) {
         Optional<Integer> index = parseIndex(args);
@@ -318,6 +324,7 @@ public class Parser {
 
         return new DoneCommand(index.get());
     }
+    //@@author
 
     /**
      * Parses arguments in the context of the select person command.
@@ -384,14 +391,14 @@ public class Parser {
         
         return new FindCommand(keywordSet);
     }
-
+    //@@A0092390E
     /**
-     * Parses arguments in the context of the Edit item command
-     * 
-     * @param args
-     * @return
-     * @author yuchuan
-     */
+	 * Parses arguments in the context of the Edit item command
+	 * 
+	 * @param args
+	 * @return
+	 * @@author A0092390E
+	 */
     private Command prepareEdit(String args) {
         final Matcher matcher = ITEM_EDIT_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
@@ -412,8 +419,12 @@ public class Parser {
 	 * DateTime, returns false.
 	 * 
 	 * @param args
+	 * 
 	 * @param keywordSet
+	 * 
 	 * @return
+	 * 
+	 * @@author A0147609X
 	 */
     private boolean extractDateTimeFromKeywords(String args, final Set<String> keywordSet) {
         assert args != null;
@@ -450,7 +461,9 @@ public class Parser {
         return args;
     }
 
+    //@@author
 
+	 //@@author A0147609X
 	/**
 	 * splits multi-arguments into a nice ArrayList of strings
 	 * 
@@ -479,7 +492,9 @@ public class Parser {
 
 		return null;
 	}
+	//@@author 
 
+	 //@@author A0147609X-unused
 	/**
 	 * checks field names are valid
 	 * 
@@ -499,4 +514,5 @@ public class Parser {
 		}
 		return true;
 	}
+	//@@author
 }

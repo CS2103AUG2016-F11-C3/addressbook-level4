@@ -1,9 +1,10 @@
 package seedu.address.testutil;
 
 import java.time.LocalDateTime;
+
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.parser.DateTimeParser;
-import seedu.address.model.item.*;
+import seedu.address.model.item.Description;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -14,12 +15,12 @@ public class ItemBuilder {
     public ItemBuilder(){
         this.item = new TestItem();
     }
-    
+    //@@author A0131560U
     public ItemBuilder withDescription(String description) throws IllegalValueException{
         this.item.setDescription(new Description(description));
         return this;
     }
-        
+    //@@author A0144750J
     public ItemBuilder withDates(String startdate) throws IllegalValueException{
     	DateTimeParser parser = new DateTimeParser(startdate);
 		LocalDateTime startTimeObj = parser.extractStartDate();
@@ -29,6 +30,7 @@ public class ItemBuilder {
 		return this;
     }
     
+    //@@author
     public ItemBuilder withTags(String... tags) throws IllegalValueException{
         UniqueTagList replacement = new UniqueTagList(); 
         for (String tag : tags){

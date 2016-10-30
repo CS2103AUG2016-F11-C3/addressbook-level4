@@ -3,8 +3,6 @@ package seedu.address.logic.commands;
 import java.util.EmptyStackException;
 
 /**
- * 
- * @author Darren Le
  * @@author A0144750J
  */
 public class UndoCommand extends Command {

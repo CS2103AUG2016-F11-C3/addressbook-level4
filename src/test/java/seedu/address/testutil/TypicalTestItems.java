@@ -12,6 +12,7 @@ public class TypicalTestItems {
 
     public static TestItem always, bags, cs2103, dover, eating, frolick, grass, help, indeed;
 
+    //@@author A0131560U
     public TypicalTestItems() {
         try {
             always  = new ItemBuilder().withDescription("Always brush teeth").withDates("no date info").withTags("important","priority").build();
@@ -21,6 +22,7 @@ public class TypicalTestItems {
             eating  = new ItemBuilder().withDescription("eat 1 child").withDates("by Friday").withTags("ohdear","feefifofum").build();
             frolick = new ItemBuilder().withDescription("frolick in the grass").withDates("from tomorrow to Sunday").build();
             grass   = new ItemBuilder().withDescription("You are allergic to grass").withDates("by next week").build();
+            //@@author A0144750J
             //Manually added
             help    = new ItemBuilder().withDescription("Read help instructions").withDates("no date info").build();
             indeed  = new ItemBuilder().withDescription("Indeed this is a test item").withDates("22/10/2016 to december 12").build();
@@ -30,6 +32,7 @@ public class TypicalTestItems {
         }
     }
 
+    //@@author A0144750J
     public static void loadTaskBookWithSampleData(TaskBook tb) {
 
         try {
@@ -45,10 +48,12 @@ public class TypicalTestItems {
         }
     }
 
+    //@@author A0144750J
     public TestItem[] getTypicalItems() {
         return new TestItem[]{always, bags, cs2103, dover, eating, frolick, grass};
     }
 
+    //@@author A0144750J-reused
     public TaskBook getTypicalTaskBook(){
         TaskBook tb = new TaskBook();
         loadTaskBookWithSampleData(tb);

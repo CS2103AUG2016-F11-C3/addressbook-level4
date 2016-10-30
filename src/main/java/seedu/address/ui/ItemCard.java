@@ -76,6 +76,7 @@ public class ItemCard extends UiPart implements Observer {
 	 * Adds the type and type-related tags to the item's list
 	 * 
 	 * @return
+	 * @@author A0092390E
 	 */
 	private ArrayList<Label> getTypeLabel() {
 		ArrayList<Label> labelList = new ArrayList<>();

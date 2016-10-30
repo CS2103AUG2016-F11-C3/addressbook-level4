@@ -57,6 +57,7 @@ public class DeleteCommand extends Command {
     }
 
     /**
+     * Undo deletion by adding back the item to the list
      * @@author A0144750J
      */
 	@Override
