@@ -2,6 +2,7 @@ package seedu.address.model.tag;
 
 
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.logic.parser.Parser;
 
 /**
  * Represents a Tag in the address book.
@@ -9,7 +10,8 @@ import seedu.address.commons.exceptions.IllegalValueException;
  */
 public class Tag {
 
-    public static final String MESSAGE_TAG_CONSTRAINTS = "Tags names should be alphanumeric";
+    public static final String MESSAGE_TAG_CONSTRAINTS = "Tags names should be alphanumeric and"
+            + " cannot be the following words: \'done\', \'event\', \'task\', \'overdue\', \'(un)done\'";
     public static final String TAG_VALIDATION_REGEX = "\\p{Alnum}+";
 
     public String tagName;
@@ -33,9 +35,12 @@ public class Tag {
 
     /**
      * Returns true if a given string is a valid tag name.
+     * The tag must be alphanumeric, and cannot take the name of a type meta-tag,
+     * e.g. Event, Task, Done
      */
     public static boolean isValidTagName(String test) {
-        return test.matches(TAG_VALIDATION_REGEX);
+        return test.matches(TAG_VALIDATION_REGEX) &&
+                !Parser.isValidType(test);
     }
 
     @Override
