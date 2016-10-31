@@ -17,14 +17,24 @@ import seedu.address.model.tag.UniqueTagList;
  * 
  */
 public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
+    
+    //@@author A0131560U
+    public enum Type {
+        TASK("task"), EVENT("event"), DONE("done"), ITEM("item"), OVERDUE("overdue"), UNDONE("undone");
+        
+        private String typeName;
 
-    public static final Comparator<Item> chronologicalComparator = new Comparator<Item>(){
-        @Override
-        public int compare(Item x, Item y) {
-            return x.compareTo(y);
+        Type(String name) {
+            this.typeName = name;
         }
-    };
-;
+
+        public String getTypeName() {
+            return this.typeName;
+        }
+    }
+    //@@author
+
+    
     private UniqueTagList tags;
     private Description description;
     private boolean isDone;
@@ -399,4 +409,11 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         return DateTimeParser.extractPrettyRelativeDateTime(this.endDate);
     }
     //@@author
+    
+    public static final Comparator<Item> chronologicalComparator = new Comparator<Item>(){
+        @Override
+        public int compare(Item x, Item y) {
+            return x.compareTo(y);
+        }
+    };
 }
