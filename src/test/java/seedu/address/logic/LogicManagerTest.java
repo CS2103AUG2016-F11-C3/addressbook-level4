@@ -298,7 +298,6 @@ public class LogicManagerTest<E> {
         TaskBook expectedTB = helper.generateTaskBook(allItems);
 
         // prepare task book state
-        helper.addToModel(model, 2);
         assertCommandBehavior("list task", (String.format(ListCommand.MESSAGE_SUCCESS,"TASK")), expectedTB, expectedList);
     }
 
@@ -312,7 +311,7 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, 2);
-        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"")), expectedAB, expectedList);
+        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"ITEM")), expectedAB, expectedList);
     }
 
     @Test
@@ -338,7 +337,7 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, 2);
-        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"")), expectedAB, expectedList);
+        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"ITEM")), expectedAB, expectedList);
     }
     
     @Test
@@ -351,7 +350,7 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, 2);
-        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"")), expectedAB, expectedList);
+        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"ITEM")), expectedAB, expectedList);
     }
 
     @Test
@@ -672,11 +671,11 @@ public class LogicManagerTest<E> {
         Item p3 = helper.generateItemWithName("key key");
         Item p4 = helper.generateItemWithName("KEy sduauo");
         
-        String newDescription = "ba lion";
+        String newDescription = "walk the lion";
         Item modified = helper.generateItemWithName(newDescription);
 
         List<Item> fourItems = helper.generateItemList(p3, p1, p4, p2);
-        List<Item> expectedList = helper.generateItemList(modified, p3, p4, p2);
+        List<Item> expectedList = helper.generateItemList(p1, p4, p2, modified);
         TaskBook expectedTB = helper.generateTaskBook(expectedList);
         helper.addToModel(model, fourItems);
 
