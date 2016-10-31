@@ -282,7 +282,7 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, 2);
-        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"")), expectedAB, expectedList);
+        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"ITEM")), expectedAB, expectedList);
     }
     
     @Test
@@ -299,7 +299,7 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, 2);
-        assertCommandBehavior("list task", (String.format(ListCommand.MESSAGE_SUCCESS,"that are a task")), expectedTB, expectedList);
+        assertCommandBehavior("list task", (String.format(ListCommand.MESSAGE_SUCCESS,"TASK")), expectedTB, expectedList);
     }
 
     @Test
@@ -325,7 +325,7 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, 2);
-        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"")), expectedAB, expectedList);
+        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"ITEM")), expectedAB, expectedList);
     }
     
     @Test
@@ -364,7 +364,7 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, 2);
-        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"")), expectedAB, expectedList);
+        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"ITEM")), expectedAB, expectedList);
     }
     
     //@@author
@@ -615,7 +615,7 @@ public class LogicManagerTest<E> {
         TaskBook expectedTB = helper.generateTaskBook(expectedItems);
         helper.addToModel(model, expectedItems);
 
-        assertCommandBehavior("done 2", DoneCommand.MESSAGE_DONE_ITEM_FAIL, expectedTB, expectedItems);
+        assertCommandBehavior("done 1", DoneCommand.MESSAGE_DONE_ITEM_FAIL, expectedTB, expectedItems);
 
     }
     
@@ -672,11 +672,11 @@ public class LogicManagerTest<E> {
         Item p3 = helper.generateItemWithName("key key");
         Item p4 = helper.generateItemWithName("KEy sduauo");
         
-        String newDescription = "walk lion";
+        String newDescription = "ba lion";
         Item modified = helper.generateItemWithName(newDescription);
 
         List<Item> fourItems = helper.generateItemList(p3, p1, p4, p2);
-        List<Item> expectedList = helper.generateItemList(modified, p1, p4, p2);
+        List<Item> expectedList = helper.generateItemList(modified, p3, p4, p2);
         TaskBook expectedTB = helper.generateTaskBook(expectedList);
         helper.addToModel(model, fourItems);
 
@@ -829,7 +829,9 @@ public class LogicManagerTest<E> {
         }
 
         List<Item> generateItemList(Item... items) {
-            return Arrays.asList(items);
+            List<Item> itemList = Arrays.asList(items);
+            Collections.sort(itemList);
+            return itemList;
         }
 
         /**
