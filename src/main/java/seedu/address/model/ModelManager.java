@@ -344,13 +344,18 @@ public class ModelManager extends ComponentManager implements Model {
         }
 
         /**
-         * Checks if the item's tags match the keyword.
+         * Checks if the item's tags (or types, if the tag string actually
+         * aliases to a type meta-tag) match the keyword.
          * @param item
          * @return
          */
         private boolean matchesTags(ReadOnlyItem item) {
-            return StringUtil.containsIgnoreCase(item.getTags().listTags(),
-                    keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, ""));
+            keyword = keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, "");
+            if (isKeywordType()){
+                return item.is(keyword);
+            }
+
+            return StringUtil.containsIgnoreCase(item.getTags().listTags(),keyword);
         }
 
         /**
@@ -361,6 +366,10 @@ public class ModelManager extends ComponentManager implements Model {
         private boolean matchesDescription(ReadOnlyItem item) {
             return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(),
                     keyword.replace(Parser.COMMAND_DESCRIPTION_PREFIX, ""));
+        }
+        
+        private boolean isKeywordType(){
+            return Parser.isValidType(keyword);
         }
     }
 
