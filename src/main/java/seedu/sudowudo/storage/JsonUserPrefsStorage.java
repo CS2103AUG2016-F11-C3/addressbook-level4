@@ -1,9 +1,9 @@
-package seedu.address.storage;
+package seedu.sudowudo.storage;
 
-import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.exceptions.DataConversionException;
-import seedu.address.commons.util.FileUtil;
-import seedu.address.model.UserPrefs;
+import seedu.sudowudo.commons.core.LogsCenter;
+import seedu.sudowudo.commons.exceptions.DataConversionException;
+import seedu.sudowudo.commons.util.FileUtil;
+import seedu.sudowudo.model.UserPrefs;
 
 import java.io.File;
 import java.io.IOException;

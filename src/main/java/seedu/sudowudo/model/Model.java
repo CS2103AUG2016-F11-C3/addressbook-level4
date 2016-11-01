@@ -1,14 +1,14 @@
-package seedu.address.model;
+package seedu.sudowudo.model;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
 import javafx.collections.transformation.FilteredList;
-import seedu.address.commons.core.UnmodifiableObservableList;
-import seedu.address.logic.commands.Command;
-import seedu.address.model.item.Item;
-import seedu.address.model.item.ReadOnlyItem;
-import seedu.address.model.item.UniqueItemList;
+import seedu.sudowudo.commons.core.UnmodifiableObservableList;
+import seedu.sudowudo.logic.commands.Command;
+import seedu.sudowudo.model.item.Item;
+import seedu.sudowudo.model.item.ReadOnlyItem;
+import seedu.sudowudo.model.item.UniqueItemList;
 
 /**
  * The API of the Model component.

@@ -1,6 +1,6 @@
-package seedu.address.logic.commands;
+package seedu.sudowudo.logic.commands;
 
-import seedu.address.model.item.ReadOnlyItem;
+import seedu.sudowudo.model.item.ReadOnlyItem;
 
 /**
  * Represents the result of a command execution.

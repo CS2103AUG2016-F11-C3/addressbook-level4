@@ -1,11 +1,11 @@
-package seedu.address.model.tag;
+package seedu.sudowudo.model.tag;
 
 
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.parser.Parser;
+import seedu.sudowudo.commons.exceptions.IllegalValueException;
+import seedu.sudowudo.logic.parser.Parser;
 
 /**
- * Represents a Tag in the address book.
+ * Represents a Tag in the task book.
  * Guarantees: immutable; name is valid as declared in {@link #isValidTagName(String)}
  */
 public class Tag {

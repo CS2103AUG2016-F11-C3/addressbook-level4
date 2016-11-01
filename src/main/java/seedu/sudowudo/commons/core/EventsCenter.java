@@ -1,7 +1,7 @@
-package seedu.address.commons.core;
+package seedu.sudowudo.commons.core;
 
 import com.google.common.eventbus.EventBus;
-import seedu.address.commons.events.BaseEvent;
+import seedu.sudowudo.commons.events.BaseEvent;
 
 import java.util.logging.Logger;
 

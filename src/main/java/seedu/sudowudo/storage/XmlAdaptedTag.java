@@ -1,8 +1,7 @@
-package seedu.address.storage;
+package seedu.sudowudo.storage;
 
-import seedu.address.commons.util.CollectionUtil;
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.tag.Tag;
+import seedu.sudowudo.commons.exceptions.IllegalValueException;
+import seedu.sudowudo.model.tag.Tag;
 
 import javax.xml.bind.annotation.XmlValue;
 

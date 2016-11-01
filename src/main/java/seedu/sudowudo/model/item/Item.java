@@ -1,4 +1,4 @@
-package seedu.address.model.item;
+package seedu.sudowudo.model.item;
 
 import java.time.LocalDateTime;
 import java.time.Period;
@@ -6,13 +6,13 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.Observable;
 
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.commons.util.CollectionUtil;
-import seedu.address.logic.parser.DateTimeParser;
-import seedu.address.model.tag.UniqueTagList;
+import seedu.sudowudo.commons.exceptions.IllegalValueException;
+import seedu.sudowudo.commons.util.CollectionUtil;
+import seedu.sudowudo.logic.parser.DateTimeParser;
+import seedu.sudowudo.model.tag.UniqueTagList;
 
 /**
- * Represents a Item in the address book. Guarantees: details are present and
+ * Represents a Item in the task book. Guarantees: details are present and
  * not null, field values are validated.
  * 
  */
@@ -51,7 +51,6 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
      * constructor for floating item
      */
     public Item(Description desc, UniqueTagList tags) {
-        // assert !CollectionUtil.isAnyNull(name, phone, email, address, tags);
         assert desc != null;
         this.description = desc;
         this.isDone = false;

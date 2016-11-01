@@ -1,4 +1,4 @@
-package seedu.address.ui;
+package seedu.sudowudo.ui;
 
 import java.util.logging.Logger;
 
@@ -10,11 +10,11 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.events.ui.IncorrectCommandAttemptedEvent;
-import seedu.address.commons.util.FxViewUtil;
-import seedu.address.logic.Logic;
-import seedu.address.logic.commands.CommandResult;
+import seedu.sudowudo.commons.core.LogsCenter;
+import seedu.sudowudo.commons.events.ui.IncorrectCommandAttemptedEvent;
+import seedu.sudowudo.commons.util.FxViewUtil;
+import seedu.sudowudo.logic.Logic;
+import seedu.sudowudo.logic.commands.CommandResult;
 
 public class CommandBox extends UiPart {
     private final Logger logger = LogsCenter.getLogger(CommandBox.class);

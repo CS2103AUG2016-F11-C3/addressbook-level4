@@ -1,13 +1,13 @@
-package seedu.address.storage;
+package seedu.sudowudo.storage;
 
-import seedu.address.commons.exceptions.DataConversionException;
-import seedu.address.model.ReadOnlyTaskBook;
+import seedu.sudowudo.commons.exceptions.DataConversionException;
+import seedu.sudowudo.model.ReadOnlyTaskBook;
 
 import java.io.IOException;
 import java.util.Optional;
 
 /**
- * Represents a storage for {@link seedu.address.model.TaskBook}.
+ * Represents a storage for {@link seedu.sudowudo.model.TaskBook}.
  */
 public interface TaskBookStorage {
 

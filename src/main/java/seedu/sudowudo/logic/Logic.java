@@ -1,8 +1,8 @@
-package seedu.address.logic;
+package seedu.sudowudo.logic;
 
 import javafx.collections.ObservableList;
-import seedu.address.logic.commands.CommandResult;
-import seedu.address.model.item.ReadOnlyItem;
+import seedu.sudowudo.logic.commands.CommandResult;
+import seedu.sudowudo.model.item.ReadOnlyItem;
 
 /**
  * API of the Logic component

@@ -1,14 +1,14 @@
-package seedu.address.logic.commands;
+package seedu.sudowudo.logic.commands;
 
-import seedu.address.commons.core.Messages;
-import seedu.address.commons.core.UnmodifiableObservableList;
-import seedu.address.model.item.Item;
-import seedu.address.model.item.ReadOnlyItem;
-import seedu.address.model.item.UniqueItemList;
-import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
+import seedu.sudowudo.commons.core.Messages;
+import seedu.sudowudo.commons.core.UnmodifiableObservableList;
+import seedu.sudowudo.model.item.Item;
+import seedu.sudowudo.model.item.ReadOnlyItem;
+import seedu.sudowudo.model.item.UniqueItemList;
+import seedu.sudowudo.model.item.UniqueItemList.ItemNotFoundException;
 
 /**
- * Deletes an item identified using it's last displayed index from the address book.
+ * Deletes an item identified using it's last displayed index from the task book.
  */
 public class DeleteCommand extends Command {
 

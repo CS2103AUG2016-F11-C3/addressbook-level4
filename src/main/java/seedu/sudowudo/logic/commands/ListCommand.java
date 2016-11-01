@@ -1,7 +1,7 @@
-package seedu.address.logic.commands;
+package seedu.sudowudo.logic.commands;
 
 /**
- * Lists all persons in the address book to the user.
+ * Lists all items in the task book to the user.
  */
 public class ListCommand extends Command {
 

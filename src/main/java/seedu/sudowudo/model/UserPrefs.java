@@ -1,6 +1,6 @@
-package seedu.address.model;
+package seedu.sudowudo.model;
 
-import seedu.address.commons.core.GuiSettings;
+import seedu.sudowudo.commons.core.GuiSettings;
 
 import java.util.Objects;
 

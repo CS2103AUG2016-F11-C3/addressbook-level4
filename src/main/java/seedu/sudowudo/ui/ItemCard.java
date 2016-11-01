@@ -1,4 +1,4 @@
-package seedu.address.ui;
+package seedu.sudowudo.ui;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -9,8 +9,8 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
-import seedu.address.model.item.ReadOnlyItem;
-import seedu.address.model.tag.Tag;
+import seedu.sudowudo.model.item.ReadOnlyItem;
+import seedu.sudowudo.model.tag.Tag;
 
 public class ItemCard extends UiPart implements Observer {
 

@@ -1,4 +1,4 @@
-package seedu.address.ui;
+package seedu.sudowudo.ui;
 
 import com.google.common.eventbus.Subscribe;
 import javafx.application.Platform;
@@ -6,17 +6,17 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import seedu.address.MainApp;
-import seedu.address.commons.core.ComponentManager;
-import seedu.address.commons.core.Config;
-import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.events.storage.DataSavingExceptionEvent;
-import seedu.address.commons.events.ui.ItemPanelSelectionChangedEvent;
-import seedu.address.commons.events.ui.JumpToListRequestEvent;
-import seedu.address.commons.events.ui.ShowHelpRequestEvent;
-import seedu.address.commons.util.StringUtil;
-import seedu.address.logic.Logic;
-import seedu.address.model.UserPrefs;
+import seedu.sudowudo.MainApp;
+import seedu.sudowudo.commons.core.ComponentManager;
+import seedu.sudowudo.commons.core.Config;
+import seedu.sudowudo.commons.core.LogsCenter;
+import seedu.sudowudo.commons.events.storage.DataSavingExceptionEvent;
+import seedu.sudowudo.commons.events.ui.ItemPanelSelectionChangedEvent;
+import seedu.sudowudo.commons.events.ui.JumpToListRequestEvent;
+import seedu.sudowudo.commons.events.ui.ShowHelpRequestEvent;
+import seedu.sudowudo.commons.util.StringUtil;
+import seedu.sudowudo.logic.Logic;
+import seedu.sudowudo.model.UserPrefs;
 
 import java.util.logging.Logger;
 

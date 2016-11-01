@@ -1,7 +1,7 @@
-package seedu.address.logic.commands;
+package seedu.sudowudo.logic.commands;
 
-import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.events.ui.ExitAppRequestEvent;
+import seedu.sudowudo.commons.core.EventsCenter;
+import seedu.sudowudo.commons.events.ui.ExitAppRequestEvent;
 
 /**
  * Terminates the program.

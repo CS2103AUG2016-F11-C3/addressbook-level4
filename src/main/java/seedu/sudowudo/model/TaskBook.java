@@ -1,4 +1,4 @@
-package seedu.address.model;
+package seedu.sudowudo.model;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -7,9 +7,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javafx.collections.ObservableList;
-import seedu.address.model.item.Item;
-import seedu.address.model.item.ReadOnlyItem;
-import seedu.address.model.item.UniqueItemList;
+import seedu.sudowudo.model.item.Item;
+import seedu.sudowudo.model.item.ReadOnlyItem;
+import seedu.sudowudo.model.item.UniqueItemList;
 
 /**
  * Wraps all data at the task-book level

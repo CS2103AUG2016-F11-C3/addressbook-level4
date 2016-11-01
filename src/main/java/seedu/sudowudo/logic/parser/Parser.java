@@ -1,7 +1,7 @@
-package seedu.address.logic.parser;
+package seedu.sudowudo.logic.parser;
 
-import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+import static seedu.sudowudo.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.sudowudo.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
@@ -16,22 +16,22 @@ import java.util.regex.Pattern;
 
 import com.opencsv.CSVParser;
 
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.commons.util.StringUtil;
-import seedu.address.logic.commands.AddCommand;
-import seedu.address.logic.commands.ClearCommand;
-import seedu.address.logic.commands.Command;
-import seedu.address.logic.commands.DeleteCommand;
-import seedu.address.logic.commands.DoneCommand;
-import seedu.address.logic.commands.EditCommand;
-import seedu.address.logic.commands.ExitCommand;
-import seedu.address.logic.commands.FindCommand;
-import seedu.address.logic.commands.HelpCommand;
-import seedu.address.logic.commands.IncorrectCommand;
-import seedu.address.logic.commands.ListCommand;
-import seedu.address.logic.commands.SelectCommand;
-import seedu.address.logic.commands.UndoCommand;
-import seedu.address.model.item.Item;
+import seedu.sudowudo.commons.exceptions.IllegalValueException;
+import seedu.sudowudo.commons.util.StringUtil;
+import seedu.sudowudo.logic.commands.AddCommand;
+import seedu.sudowudo.logic.commands.ClearCommand;
+import seedu.sudowudo.logic.commands.Command;
+import seedu.sudowudo.logic.commands.DeleteCommand;
+import seedu.sudowudo.logic.commands.DoneCommand;
+import seedu.sudowudo.logic.commands.EditCommand;
+import seedu.sudowudo.logic.commands.ExitCommand;
+import seedu.sudowudo.logic.commands.FindCommand;
+import seedu.sudowudo.logic.commands.HelpCommand;
+import seedu.sudowudo.logic.commands.IncorrectCommand;
+import seedu.sudowudo.logic.commands.ListCommand;
+import seedu.sudowudo.logic.commands.SelectCommand;
+import seedu.sudowudo.logic.commands.UndoCommand;
+import seedu.sudowudo.model.item.Item;
 
 /**
  * Parses user input.

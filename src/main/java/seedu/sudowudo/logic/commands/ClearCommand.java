@@ -1,13 +1,13 @@
-package seedu.address.logic.commands;
+package seedu.sudowudo.logic.commands;
 
-import seedu.address.model.TaskBook;
-import seedu.address.model.item.Item;
-import seedu.address.model.item.ReadOnlyItem;
-import seedu.address.model.item.UniqueItemList;
-import seedu.address.model.item.UniqueItemList.DuplicateItemException;
+import seedu.sudowudo.model.TaskBook;
+import seedu.sudowudo.model.item.Item;
+import seedu.sudowudo.model.item.ReadOnlyItem;
+import seedu.sudowudo.model.item.UniqueItemList;
+import seedu.sudowudo.model.item.UniqueItemList.DuplicateItemException;
 
 /**
- * Clears the address book.
+ * Clears the task book.
  */
 public class ClearCommand extends Command {
 

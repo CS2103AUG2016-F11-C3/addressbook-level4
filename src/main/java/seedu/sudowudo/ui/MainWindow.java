@@ -1,4 +1,4 @@
-package seedu.address.ui;
+package seedu.sudowudo.ui;
 
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -8,12 +8,12 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import seedu.address.commons.core.Config;
-import seedu.address.commons.core.GuiSettings;
-import seedu.address.commons.events.ui.ExitAppRequestEvent;
-import seedu.address.logic.Logic;
-import seedu.address.model.UserPrefs;
-import seedu.address.model.item.ReadOnlyItem;
+import seedu.sudowudo.commons.core.Config;
+import seedu.sudowudo.commons.core.GuiSettings;
+import seedu.sudowudo.commons.events.ui.ExitAppRequestEvent;
+import seedu.sudowudo.logic.Logic;
+import seedu.sudowudo.model.UserPrefs;
+import seedu.sudowudo.model.item.ReadOnlyItem;
 
 /**
  * The Main Window. Provides the basic application layout containing

@@ -1,9 +1,9 @@
-package seedu.address.model.item;
+package seedu.sudowudo.model.item;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import seedu.address.commons.util.CollectionUtil;
-import seedu.address.commons.exceptions.DuplicateDataException;
+import seedu.sudowudo.commons.util.CollectionUtil;
+import seedu.sudowudo.commons.exceptions.DuplicateDataException;
 
 import java.util.*;
 

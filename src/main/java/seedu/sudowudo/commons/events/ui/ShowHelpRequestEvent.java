@@ -1,6 +1,6 @@
-package seedu.address.commons.events.ui;
+package seedu.sudowudo.commons.events.ui;
 
-import seedu.address.commons.events.BaseEvent;
+import seedu.sudowudo.commons.events.BaseEvent;
 
 /**
  * An event requesting to view the help page.

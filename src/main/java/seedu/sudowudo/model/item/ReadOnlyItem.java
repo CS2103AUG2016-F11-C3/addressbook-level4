@@ -1,9 +1,9 @@
-package seedu.address.model.item;
+package seedu.sudowudo.model.item;
 
 import java.time.LocalDateTime;
 import java.util.Observer;
 
-import seedu.address.model.tag.UniqueTagList;
+import seedu.sudowudo.model.tag.UniqueTagList;
 
 /**
  * A read-only immutable interface for a Task in the todo list. Implementations

@@ -1,8 +1,8 @@
-package seedu.address.model;
+package seedu.sudowudo.model;
 
 
-import seedu.address.model.item.ReadOnlyItem;
-import seedu.address.model.item.UniqueItemList;
+import seedu.sudowudo.model.item.ReadOnlyItem;
+import seedu.sudowudo.model.item.UniqueItemList;
 import java.util.List;
 
 /**

@@ -1,8 +1,8 @@
-package seedu.address.logic.commands;
+package seedu.sudowudo.logic.commands;
 
 import javafx.collections.transformation.FilteredList;
-import seedu.address.commons.core.Messages;
-import seedu.address.model.item.Item;
+import seedu.sudowudo.commons.core.Messages;
+import seedu.sudowudo.model.item.Item;
 
 /**
  * 

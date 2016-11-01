@@ -1,4 +1,4 @@
-package seedu.address.logic.parser;
+package seedu.sudowudo.logic.parser;
 
 import java.time.DayOfWeek;
 import java.time.Instant;

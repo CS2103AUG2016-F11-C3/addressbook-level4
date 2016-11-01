@@ -1,20 +1,20 @@
-package seedu.address.logic.commands;
+package seedu.sudowudo.logic.commands;
 
 import java.time.LocalDateTime;
 import java.util.Set;
 
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.parser.DateTimeParser;
-import seedu.address.model.item.Description;
-import seedu.address.model.item.Item;
-import seedu.address.model.item.UniqueItemList;
-import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
-import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.UniqueTagList;
-import seedu.address.model.tag.UniqueTagList.DuplicateTagException;
+import seedu.sudowudo.commons.exceptions.IllegalValueException;
+import seedu.sudowudo.logic.parser.DateTimeParser;
+import seedu.sudowudo.model.item.Description;
+import seedu.sudowudo.model.item.Item;
+import seedu.sudowudo.model.item.UniqueItemList;
+import seedu.sudowudo.model.item.UniqueItemList.ItemNotFoundException;
+import seedu.sudowudo.model.tag.Tag;
+import seedu.sudowudo.model.tag.UniqueTagList;
+import seedu.sudowudo.model.tag.UniqueTagList.DuplicateTagException;
 
 /**
- * Adds a person to the address book.
+ * Adds a person to the task book.
  */
 
 public class AddCommand extends Command {

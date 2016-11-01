@@ -1,4 +1,4 @@
-package seedu.address.ui;
+package seedu.sudowudo.ui;
 
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
@@ -6,7 +6,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import seedu.address.commons.util.FxViewUtil;
+import seedu.sudowudo.commons.util.FxViewUtil;
 
 /**
  * A ui for the status bar that is displayed at the header of the application.

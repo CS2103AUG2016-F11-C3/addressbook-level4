@@ -1,4 +1,4 @@
-package seedu.address.ui;
+package seedu.sudowudo.ui;
 
 import java.util.logging.Logger;
 
@@ -6,9 +6,9 @@ import javafx.event.Event;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
-import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.util.FxViewUtil;
-import seedu.address.model.item.ReadOnlyItem;
+import seedu.sudowudo.commons.core.LogsCenter;
+import seedu.sudowudo.commons.util.FxViewUtil;
+import seedu.sudowudo.model.item.ReadOnlyItem;
 
 /**
  * The Browser Panel of the App.

@@ -1,17 +1,17 @@
-package seedu.address.logic.commands;
+package seedu.sudowudo.logic.commands;
 
 import java.util.ArrayList;
 
 import javafx.collections.transformation.FilteredList;
-import seedu.address.commons.core.Messages;
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.parser.DateTimeParser;
-import seedu.address.model.item.Description;
-import seedu.address.model.item.Item;
-import seedu.address.model.tag.UniqueTagList;
+import seedu.sudowudo.commons.core.Messages;
+import seedu.sudowudo.commons.exceptions.IllegalValueException;
+import seedu.sudowudo.logic.parser.DateTimeParser;
+import seedu.sudowudo.model.item.Description;
+import seedu.sudowudo.model.item.Item;
+import seedu.sudowudo.model.tag.UniqueTagList;
 
 /**
- * Adds a person to the address book.
+ * Adds a person to the task book.
  * 
  * @@author A0092390E
  */

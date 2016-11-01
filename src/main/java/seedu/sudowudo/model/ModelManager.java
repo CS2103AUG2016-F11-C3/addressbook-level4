@@ -1,4 +1,4 @@
-package seedu.address.model;
+package seedu.sudowudo.model;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -10,19 +10,19 @@ import java.util.logging.Logger;
 
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
-import seedu.address.commons.core.ComponentManager;
-import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.core.UnmodifiableObservableList;
-import seedu.address.commons.events.model.TaskBookChangedEvent;
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.commons.util.StringUtil;
-import seedu.address.logic.commands.Command;
-import seedu.address.logic.parser.DateTimeParser;
-import seedu.address.logic.parser.Parser;
-import seedu.address.model.item.Item;
-import seedu.address.model.item.ReadOnlyItem;
-import seedu.address.model.item.UniqueItemList;
-import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
+import seedu.sudowudo.commons.core.ComponentManager;
+import seedu.sudowudo.commons.core.LogsCenter;
+import seedu.sudowudo.commons.core.UnmodifiableObservableList;
+import seedu.sudowudo.commons.events.model.TaskBookChangedEvent;
+import seedu.sudowudo.commons.exceptions.IllegalValueException;
+import seedu.sudowudo.commons.util.StringUtil;
+import seedu.sudowudo.logic.commands.Command;
+import seedu.sudowudo.logic.parser.DateTimeParser;
+import seedu.sudowudo.logic.parser.Parser;
+import seedu.sudowudo.model.item.Item;
+import seedu.sudowudo.model.item.ReadOnlyItem;
+import seedu.sudowudo.model.item.UniqueItemList;
+import seedu.sudowudo.model.item.UniqueItemList.ItemNotFoundException;
 
 /**
  * Represents the in-memory model of the address book data. All changes to any

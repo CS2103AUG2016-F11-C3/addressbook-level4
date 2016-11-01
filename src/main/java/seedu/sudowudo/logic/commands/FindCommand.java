@@ -1,10 +1,11 @@
-package seedu.address.logic.commands;
+package seedu.sudowudo.logic.commands;
 
 import java.util.Set;
 
 /**
- * Finds and lists all persons in address book whose name contains any of the argument keywords.
- * Keyword matching is case sensitive.
+ * Finds and lists all items in task book whose descriptions, tags or start/end dates
+ * contains any of the argument keywords.
+ * Keyword matching is not case sensitive.
  */
 public class FindCommand extends Command {
 

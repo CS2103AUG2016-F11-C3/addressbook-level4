@@ -1,6 +1,6 @@
-package seedu.address.model.item;
+package seedu.sudowudo.model.item;
 
-import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.sudowudo.commons.exceptions.IllegalValueException;
 
 /**
  * Represents an Item's Description in the Todo List.
