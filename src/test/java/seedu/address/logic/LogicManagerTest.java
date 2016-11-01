@@ -321,13 +321,13 @@ public class LogicManagerTest<E> {
     public void execute_listDone_showsAllDone() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
-        Item task1 = helper.aDeadLine();
-        task1.setIsDone(true);
-        Item event = helper.aLongEvent();
-        event.setIsDone(true);
-        Item task2 = helper.aFloatingTask();
-        List<Item> allItems = helper.generateItemList(event, task1, task2);
-        List<Item> expectedList = helper.generateItemList(event, task1);
+        Item done1 = helper.aDeadLine();
+        done1.setIsDone(true);
+        Item done2 = helper.aLongEvent();
+        done2.setIsDone(true);
+        Item undone = helper.aFloatingTask();
+        List<Item> allItems = helper.generateItemList(done2, done1, undone);
+        List<Item> expectedList = helper.generateItemList(done2, done1);
         TaskBook expectedTB = helper.generateTaskBook(allItems);
 
         // prepare task book state
@@ -340,13 +340,13 @@ public class LogicManagerTest<E> {
     public void execute_listUndone_showsAllUndone() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
-        Item task1 = helper.aDeadLine();
-        task1.setIsDone(true);
-        Item event = helper.aLongEvent();
-        event.setIsDone(true);
-        Item task2 = helper.aFloatingTask();
-        List<Item> allItems = helper.generateItemList(event, task1, task2);
-        List<Item> expectedList = helper.generateItemList(task2);
+        Item done1 = helper.aDeadLine();
+        done1.setIsDone(true);
+        Item done2 = helper.aLongEvent();
+        done2.setIsDone(true);
+        Item undone = helper.aFloatingTask();
+        List<Item> allItems = helper.generateItemList(done2, done1, undone);
+        List<Item> expectedList = helper.generateItemList(undone);
         TaskBook expectedTB = helper.generateTaskBook(allItems);
 
         // prepare task book state
@@ -359,14 +359,14 @@ public class LogicManagerTest<E> {
     public void execute_listOverdue_showsAllOverdue() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
-        Item task1 = helper.aDeadLine();
-        task1.setEndDate(LocalDateTime.of(2015, 9, 9, 9, 9));
+        Item target = helper.aDeadLine();
+        target.setEndDate(LocalDateTime.of(2015, 9, 9, 9, 9));
         Item event = helper.aLongEvent();
         event.setEndDate(LocalDateTime.of(2015,10,10,9,9));
-        Item task2 = helper.aFloatingTask();
-        task2.setEndDate(LocalDateTime.of(2020,10,10,10,10));
-        List<Item> allItems = helper.generateItemList(event, task1, task2);
-        List<Item> expectedList = helper.generateItemList(task1);
+        Item notDue = helper.aFloatingTask();
+        notDue.setEndDate(LocalDateTime.of(2020,10,10,10,10));
+        List<Item> allItems = helper.generateItemList(event, target, notDue);
+        List<Item> expectedList = helper.generateItemList(target);
         TaskBook expectedTB = helper.generateTaskBook(allItems);
 
         // prepare task book state
