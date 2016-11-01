@@ -7,16 +7,13 @@ import static org.junit.Assert.assertEquals;
 public class CommandBoxTest extends TaskBookGuiTest {
 
     @Test
-    public void commandBox_commandSucceeds_textCleared() {
+    public void commandBox_commandEntered_textCleared() {
         commandBox.runCommand(td.bags.getAddCommand());
         assertEquals(commandBox.getCommandInput(), "");
-    }
-
-    @Test
-    public void commandBox_commandFails_textStays(){
         commandBox.runCommand("invalid command");
-        assertEquals(commandBox.getCommandInput(), "invalid command");
-        //TODO: confirm the text box color turns to red
-    }
+        assertEquals("",commandBox.getCommandInput());
 
+    }
+    
+    //TODO: Write negative tests
 }
