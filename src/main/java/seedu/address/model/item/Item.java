@@ -173,8 +173,8 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 		case "task":
 			return this.getStartDate() == null;
 		case "overdue":
-			return this.getEndDate() != null && this.getIsDone() == false
-					&& this.getEndDate().isAfter(LocalDateTime.now());
+			return this.is("task") && this.getEndDate() != null 
+			        && this.getEndDate().isBefore(LocalDateTime.now());
 		case "item":
 		    return true;
 		default:
