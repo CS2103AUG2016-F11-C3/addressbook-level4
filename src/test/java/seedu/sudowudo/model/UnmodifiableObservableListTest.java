@@ -1,16 +1,16 @@
-package seedu.address.model;
+package seedu.sudowudo.model;
 
 import javafx.collections.FXCollections;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import seedu.address.commons.core.UnmodifiableObservableList;
+import seedu.sudowudo.commons.core.UnmodifiableObservableList;
 
 import java.util.*;
 
 import static org.junit.Assert.assertSame;
-import static seedu.address.testutil.TestUtil.assertThrows;
+import static seedu.sudowudo.testutil.TestUtil.assertThrows;
 
 public class UnmodifiableObservableListTest {
 

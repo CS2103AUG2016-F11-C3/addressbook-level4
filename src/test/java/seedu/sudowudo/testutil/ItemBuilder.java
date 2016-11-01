@@ -1,12 +1,12 @@
-package seedu.address.testutil;
+package seedu.sudowudo.testutil;
 
 import java.time.LocalDateTime;
 
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.logic.parser.DateTimeParser;
-import seedu.address.model.item.Description;
-import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.UniqueTagList;
+import seedu.sudowudo.commons.exceptions.IllegalValueException;
+import seedu.sudowudo.logic.parser.DateTimeParser;
+import seedu.sudowudo.model.item.Description;
+import seedu.sudowudo.model.tag.Tag;
+import seedu.sudowudo.model.tag.UniqueTagList;
 
 public class ItemBuilder {
 

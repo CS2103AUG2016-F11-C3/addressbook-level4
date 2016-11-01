@@ -1,13 +1,13 @@
-package seedu.address;
+package seedu.sudowudo;
 
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import seedu.address.commons.core.Config;
-import seedu.address.commons.core.GuiSettings;
-import seedu.address.model.ReadOnlyTaskBook;
-import seedu.address.model.UserPrefs;
-import seedu.address.storage.XmlSerializableTaskBook;
-import seedu.address.testutil.TestUtil;
+import seedu.sudowudo.commons.core.Config;
+import seedu.sudowudo.commons.core.GuiSettings;
+import seedu.sudowudo.model.ReadOnlyTaskBook;
+import seedu.sudowudo.model.UserPrefs;
+import seedu.sudowudo.storage.XmlSerializableTaskBook;
+import seedu.sudowudo.testutil.TestUtil;
 
 import java.util.function.Supplier;
 

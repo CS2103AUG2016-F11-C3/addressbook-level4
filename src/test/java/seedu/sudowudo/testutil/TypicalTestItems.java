@@ -1,13 +1,13 @@
-package seedu.address.testutil;
+package seedu.sudowudo.testutil;
 
 import java.util.Arrays;
 
 import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
 
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.TaskBook;
-import seedu.address.model.item.Item;
-import seedu.address.model.item.UniqueItemList;
+import seedu.sudowudo.commons.exceptions.IllegalValueException;
+import seedu.sudowudo.model.TaskBook;
+import seedu.sudowudo.model.item.Item;
+import seedu.sudowudo.model.item.UniqueItemList;
 
 /**
  * @@author A0144750J

@@ -1,13 +1,13 @@
-package seedu.address.commons.util;
+package seedu.sudowudo.commons.util;
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import seedu.address.model.TaskBook;
-import seedu.address.storage.XmlSerializableTaskBook;
-import seedu.address.testutil.TaskBookBuilder;
-import seedu.address.testutil.TestUtil;
+import seedu.sudowudo.model.TaskBook;
+import seedu.sudowudo.storage.XmlSerializableTaskBook;
+import seedu.sudowudo.testutil.TaskBookBuilder;
+import seedu.sudowudo.testutil.TestUtil;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;

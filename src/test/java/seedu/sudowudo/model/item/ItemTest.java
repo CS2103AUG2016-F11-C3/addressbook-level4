@@ -1,4 +1,4 @@
-package seedu.address.model.item;
+package seedu.sudowudo.model.item;
 
 import static org.junit.Assert.*;
 
@@ -6,9 +6,9 @@ import java.time.LocalDateTime;
 
 import org.junit.Test;
 
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.UniqueTagList;
+import seedu.sudowudo.commons.exceptions.IllegalValueException;
+import seedu.sudowudo.model.tag.Tag;
+import seedu.sudowudo.model.tag.UniqueTagList;
 
 public class ItemTest {
 

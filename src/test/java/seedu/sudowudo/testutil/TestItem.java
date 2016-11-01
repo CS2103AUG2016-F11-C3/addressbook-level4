@@ -1,4 +1,4 @@
-package seedu.address.testutil;
+package seedu.sudowudo.testutil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -6,11 +6,11 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.Observable;
 
-import seedu.address.logic.parser.DateTimeParser;
-import seedu.address.model.item.Description;
-import seedu.address.model.item.Item;
-import seedu.address.model.item.ReadOnlyItem;
-import seedu.address.model.tag.UniqueTagList;
+import seedu.sudowudo.logic.parser.DateTimeParser;
+import seedu.sudowudo.model.item.Description;
+import seedu.sudowudo.model.item.Item;
+import seedu.sudowudo.model.item.ReadOnlyItem;
+import seedu.sudowudo.model.tag.UniqueTagList;
 
 public class TestItem extends Observable implements ReadOnlyItem, Comparable<TestItem>{
 

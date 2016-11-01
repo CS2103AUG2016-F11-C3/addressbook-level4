@@ -1,4 +1,4 @@
-package seedu.address.logic.parser;
+package seedu.sudowudo.logic.parser;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;

@@ -1,4 +1,4 @@
-package seedu.address.testutil;
+package seedu.sudowudo.testutil;
 
 import com.google.common.io.Files;
 import guitests.guihandles.ItemCardHandle;
@@ -12,15 +12,15 @@ import javafx.scene.input.KeyCombination;
 import junit.framework.AssertionFailedError;
 import org.loadui.testfx.GuiTest;
 import org.testfx.api.FxToolkit;
-import seedu.address.TestApp;
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.commons.util.FileUtil;
-import seedu.address.commons.util.XmlUtil;
-import seedu.address.model.TaskBook;
-import seedu.address.model.item.*;
-import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.UniqueTagList;
-import seedu.address.storage.XmlSerializableTaskBook;
+import seedu.sudowudo.TestApp;
+import seedu.sudowudo.commons.exceptions.IllegalValueException;
+import seedu.sudowudo.commons.util.FileUtil;
+import seedu.sudowudo.commons.util.XmlUtil;
+import seedu.sudowudo.model.TaskBook;
+import seedu.sudowudo.model.item.*;
+import seedu.sudowudo.model.tag.Tag;
+import seedu.sudowudo.model.tag.UniqueTagList;
+import seedu.sudowudo.storage.XmlSerializableTaskBook;
 
 import java.io.File;
 import java.io.IOException;

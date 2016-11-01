@@ -1,12 +1,12 @@
-package seedu.address.commons.util;
+package seedu.sudowudo.commons.util;
 
 
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
-import seedu.address.commons.core.Config;
-import seedu.address.commons.exceptions.DataConversionException;
+import seedu.sudowudo.commons.core.Config;
+import seedu.sudowudo.commons.exceptions.DataConversionException;
 
 import java.io.File;
 import java.io.IOException;

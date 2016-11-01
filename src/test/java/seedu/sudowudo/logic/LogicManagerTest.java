@@ -1,4 +1,4 @@
-package seedu.address.logic;
+package seedu.sudowudo.logic;
 
 import com.google.common.eventbus.Subscribe;
 import org.junit.After;
@@ -7,24 +7,24 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
-import seedu.address.commons.core.EventsCenter;
-import seedu.address.commons.core.Messages;
-import seedu.address.logic.commands.*;
-import seedu.address.commons.events.ui.JumpToListRequestEvent;
-import seedu.address.commons.events.ui.ShowHelpRequestEvent;
-import seedu.address.commons.exceptions.DuplicateDataException;
-import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.commons.events.model.TaskBookChangedEvent;
-import seedu.address.model.Model;
-import seedu.address.model.ModelManager;
-import seedu.address.model.ReadOnlyTaskBook;
-import seedu.address.model.TaskBook;
-import seedu.address.model.item.Description;
-import seedu.address.model.item.Item;
-import seedu.address.model.item.ReadOnlyItem;
-import seedu.address.model.tag.Tag;
-import seedu.address.model.tag.UniqueTagList;
-import seedu.address.storage.StorageManager;
+import seedu.sudowudo.commons.core.EventsCenter;
+import seedu.sudowudo.commons.core.Messages;
+import seedu.sudowudo.logic.commands.*;
+import seedu.sudowudo.commons.events.ui.JumpToListRequestEvent;
+import seedu.sudowudo.commons.events.ui.ShowHelpRequestEvent;
+import seedu.sudowudo.commons.exceptions.DuplicateDataException;
+import seedu.sudowudo.commons.exceptions.IllegalValueException;
+import seedu.sudowudo.commons.events.model.TaskBookChangedEvent;
+import seedu.sudowudo.model.Model;
+import seedu.sudowudo.model.ModelManager;
+import seedu.sudowudo.model.ReadOnlyTaskBook;
+import seedu.sudowudo.model.TaskBook;
+import seedu.sudowudo.model.item.Description;
+import seedu.sudowudo.model.item.Item;
+import seedu.sudowudo.model.item.ReadOnlyItem;
+import seedu.sudowudo.model.tag.Tag;
+import seedu.sudowudo.model.tag.UniqueTagList;
+import seedu.sudowudo.storage.StorageManager;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static seedu.address.commons.core.Messages.*;
+import static seedu.sudowudo.commons.core.Messages.*;
 
 public class LogicManagerTest<E> {
 

@@ -2,9 +2,9 @@ package guitests;
 
 import guitests.guihandles.ItemCardHandle;
 import org.junit.Test;
-import seedu.address.logic.commands.UndoCommand;
-import seedu.address.testutil.TestItem;
-import seedu.address.testutil.TestUtil;
+import seedu.sudowudo.logic.commands.UndoCommand;
+import seedu.sudowudo.testutil.TestItem;
+import seedu.sudowudo.testutil.TestUtil;
 import static org.junit.Assert.assertTrue;
 
 /**
