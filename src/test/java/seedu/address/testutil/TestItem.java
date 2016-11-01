@@ -2,15 +2,17 @@ package seedu.address.testutil;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.Observable;
 
 import seedu.address.logic.parser.DateTimeParser;
 import seedu.address.model.item.Description;
+import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.tag.UniqueTagList;
 
-public class TestItem extends Observable implements ReadOnlyItem {
+public class TestItem extends Observable implements ReadOnlyItem, Comparable<TestItem>{
 
 
     private UniqueTagList tags;
@@ -190,4 +192,63 @@ public class TestItem extends Observable implements ReadOnlyItem {
 		}
 
 	}
+	
+    public static final Comparator<TestItem> chronologicalComparator = new Comparator<TestItem>(){
+        public int compare(TestItem x, TestItem y) {
+            return x.compareTo(y);
+        }
+    };
+
+    //@@author A0147609X-reused
+    @Override
+    /**
+     * sort by start date then end date then alphabetically
+     * for UI chronological sort
+     * @author darren
+     */
+    public int compareTo(TestItem other) {
+        LocalDateTime thisStart, thisEnd, otherStart, otherEnd;
+        
+        thisStart = assignDummyLDT(startDate);
+        thisEnd = assignDummyLDT(endDate);
+        otherStart = assignDummyLDT(other.getStartDate());
+        otherEnd = assignDummyLDT(other.getEndDate());
+        
+        if(thisStart.isBefore(otherStart)) {
+            // this item starts earlier
+            return -1;
+        } else if(thisStart.isAfter(otherStart)) {
+            // this item starts later
+            return 1;
+        } else {
+            // both have same start datetime
+            if(thisEnd.isBefore(otherEnd)) {
+                return -1;
+            } else if(thisEnd.isAfter(otherEnd)){
+                return 1;
+            }
+        }
+        
+        // same start and end date
+        // sort alphabetically by description
+        return description.compareTo(other.getDescription());
+    }
+    
+    /**
+     * assign the max LocalDateTime as a dummy to a java.time.LocalDateTime
+     * object if necessary
+     * @param checkee
+     * @return
+     * @author darren
+     */
+    private LocalDateTime assignDummyLDT(LocalDateTime checkee) {
+        if(checkee == null) {
+            return LocalDateTime.MAX;
+        }
+        
+        return checkee;
+    }
+    //@@author
+
+
 }
