@@ -145,17 +145,14 @@ public class LogicManagerTest<E> {
      * @return
      */
     private boolean isListSame(List<? extends ReadOnlyItem> expected, List<? extends ReadOnlyItem> actual){
+
         if (expected.size() != actual.size()){
-            System.out.println("Size is wrong");
             return false;
+
         }
         
         for (int i=0; i<expected.size(); i++){
             assertEquals(expected.get(i), actual.get(i));
-            if (!expected.get(i).equals(actual.get(i))){
-                System.out.println("Expected: " + expected.get(i));
-                System.out.println("Actual: " + actual.get(i));
-            }
         }
         return true;
     }
@@ -290,14 +287,15 @@ public class LogicManagerTest<E> {
     public void execute_listTasks_showsAllTasks() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
-        Item event1 = helper.aDeadLine();
-        Item event2 = helper.aLongEvent();
-        Item task = helper.aFloatingTask();
-        List<Item> allItems = helper.generateItemList(event1, event2, task);
-        List<Item> expectedList = helper.generateItemList(task);
+        Item task1 = helper.aDeadLine();
+        Item event = helper.aLongEvent();
+        Item task2 = helper.aFloatingTask();
+        List<Item> allItems = helper.generateItemList(event, task1, task2);
+        List<Item> expectedList = helper.generateItemList(task2, task1);
         TaskBook expectedTB = helper.generateTaskBook(allItems);
 
         // prepare task book state
+        helper.addToModel(model, allItems);
         assertCommandBehavior("list task", (String.format(ListCommand.MESSAGE_SUCCESS,"TASK")), expectedTB, expectedList);
     }
 
@@ -306,12 +304,16 @@ public class LogicManagerTest<E> {
     public void execute_listEvents_showsAllEvents() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
-        TaskBook expectedAB = helper.generateTaskBook(2);
-        List<? extends ReadOnlyItem> expectedList = expectedAB.getItemList();
+        Item task1 = helper.aDeadLine();
+        Item event = helper.aLongEvent();
+        Item task2 = helper.aFloatingTask();
+        List<Item> allItems = helper.generateItemList(event, task1, task2);
+        List<Item> expectedList = helper.generateItemList(event);
+        TaskBook expectedTB = helper.generateTaskBook(allItems);
 
         // prepare task book state
-        helper.addToModel(model, 2);
-        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"ITEM")), expectedAB, expectedList);
+        helper.addToModel(model, allItems);
+        assertCommandBehavior("list event", (String.format(ListCommand.MESSAGE_SUCCESS,"EVENT")), expectedTB, expectedList);
     }
 
     @Test
@@ -319,12 +321,18 @@ public class LogicManagerTest<E> {
     public void execute_listDone_showsAllDone() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
-        TaskBook expectedAB = helper.generateTaskBook(2);
-        List<? extends ReadOnlyItem> expectedList = expectedAB.getItemList();
+        Item task1 = helper.aDeadLine();
+        task1.setIsDone(true);
+        Item event = helper.aLongEvent();
+        event.setIsDone(true);
+        Item task2 = helper.aFloatingTask();
+        List<Item> allItems = helper.generateItemList(event, task1, task2);
+        List<Item> expectedList = helper.generateItemList(event, task1);
+        TaskBook expectedTB = helper.generateTaskBook(allItems);
 
         // prepare task book state
-        helper.addToModel(model, 2);
-        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"ITEM")), expectedAB, expectedList);
+        helper.addToModel(model, allItems);
+        assertCommandBehavior("list done", (String.format(ListCommand.MESSAGE_SUCCESS,"DONE")), expectedTB, expectedList);
     }
     
     @Test
@@ -332,12 +340,18 @@ public class LogicManagerTest<E> {
     public void execute_listUndone_showsAllUndone() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
-        TaskBook expectedAB = helper.generateTaskBook(2);
-        List<? extends ReadOnlyItem> expectedList = expectedAB.getItemList();
+        Item task1 = helper.aDeadLine();
+        task1.setIsDone(true);
+        Item event = helper.aLongEvent();
+        event.setIsDone(true);
+        Item task2 = helper.aFloatingTask();
+        List<Item> allItems = helper.generateItemList(event, task1, task2);
+        List<Item> expectedList = helper.generateItemList(task2);
+        TaskBook expectedTB = helper.generateTaskBook(allItems);
 
         // prepare task book state
-        helper.addToModel(model, 2);
-        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"ITEM")), expectedAB, expectedList);
+        helper.addToModel(model, allItems);
+        assertCommandBehavior("list undone", (String.format(ListCommand.MESSAGE_SUCCESS,"UNDONE")), expectedTB, expectedList);
     }
     
     @Test
@@ -345,25 +359,38 @@ public class LogicManagerTest<E> {
     public void execute_listOverdue_showsAllOverdue() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
-        TaskBook expectedAB = helper.generateTaskBook(2);
-        List<? extends ReadOnlyItem> expectedList = expectedAB.getItemList();
+        Item task1 = helper.aDeadLine();
+        task1.setEndDate(LocalDateTime.of(2015, 9, 9, 9, 9));
+        Item event = helper.aLongEvent();
+        event.setEndDate(LocalDateTime.of(2015,10,10,9,9));
+        Item task2 = helper.aFloatingTask();
+        task2.setEndDate(LocalDateTime.of(2020,10,10,10,10));
+        List<Item> allItems = helper.generateItemList(event, task1, task2);
+        List<Item> expectedList = helper.generateItemList(task1);
+        TaskBook expectedTB = helper.generateTaskBook(allItems);
 
         // prepare task book state
-        helper.addToModel(model, 2);
-        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"ITEM")), expectedAB, expectedList);
+        helper.addToModel(model, allItems);
+        assertCommandBehavior("list overdue", (String.format(ListCommand.MESSAGE_SUCCESS,"OVERDUE")), expectedTB, expectedList);
     }
 
     @Test
     //@@author A0131560U
-    public void execute_findAfterListRestricted_showsSpecificItems() throws Exception {
+    public void execute_findWithMetatag_success() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
-        TaskBook expectedAB = helper.generateTaskBook(2);
-        List<? extends ReadOnlyItem> expectedList = expectedAB.getItemList();
+        Item task1 = helper.aDeadLine();
+        task1.setIsDone(true);
+        Item event = helper.aLongEvent();
+        event.setIsDone(true);
+        Item task2 = helper.aFloatingTask();
+        List<Item> allItems = helper.generateItemList(event, task1, task2);
+        List<Item> expectedList = helper.generateItemList(task1);
+        TaskBook expectedTB = helper.generateTaskBook(allItems);
 
         // prepare task book state
-        helper.addToModel(model, 2);
-        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"ITEM")), expectedAB, expectedList);
+        helper.addToModel(model, allItems);
+        assertCommandBehavior("find #task \"dead\"", (String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1)), expectedTB, expectedList);
     }
     
     //@@author
@@ -679,7 +706,7 @@ public class LogicManagerTest<E> {
         TaskBook expectedTB = helper.generateTaskBook(expectedList);
         helper.addToModel(model, fourItems);
 
-        String editInputCommand = "edit 1 desc:" + newDescription;
+        String editInputCommand = "edit 4 desc:" + newDescription;
         String expectedMessage = String.format(EditCommand.MESSAGE_SUCCESS, newDescription);
         assertCommandBehavior(editInputCommand, expectedMessage, expectedTB, expectedList);
     }
