@@ -24,16 +24,20 @@ public class DeleteCommand extends Command {
     public static final String MESSAGE_UNDO_SUCCESS = "Undo delete task: %1$s";
 	public static final String MESSAGE_UNDO_FAILURE = "Undo failed! Task already existed!";
 
-    public final int targetIndex;
+    public Set<String> keywords;
     
     private Item itemToAddBack;
 
-    public DeleteCommand(int targetIndex) {
-        this.targetIndex = targetIndex;
+    public DeleteCommand(Set<String> keywords) {
+        this.keywords = keywords;
     }
 
 
     @Override
+    //@@author A0131560U
+    /**
+     * Attempts to execute a delete command based on the given keywords.
+     */
     public CommandResult execute() {
 
         UnmodifiableObservableList<ReadOnlyItem> lastShownList = model.getFilteredItemList();
@@ -56,6 +60,7 @@ public class DeleteCommand extends Command {
 		return new CommandResult(String.format(MESSAGE_DELETE_ITEM_SUCCESS, itemToDelete), itemToDelete);
     }
 
+    //@@author
     /**
      * Undo deletion by adding back the item to the list
      * @@author A0144750J
