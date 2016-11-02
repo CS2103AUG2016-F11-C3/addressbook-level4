@@ -29,13 +29,22 @@ public class LogicManager extends ComponentManager implements Logic {
     private final Parser parser;
 
     private int currentListIndex;
-    private final int PAGE_STEP = 5;
+    private int pageStep;
     
     public LogicManager(Model model, Storage storage) {
         this.model = model;
         this.parser = new Parser();
         currentListIndex = 0;
+        this.setPageStep(5);
         registerAsHandler();
+    }
+
+    public int getPageStep() {
+        return pageStep;
+    }
+
+    public void setPageStep(int pageStep) {
+        this.pageStep = pageStep;
     }
 
     /**
@@ -78,10 +87,10 @@ public class LogicManager extends ComponentManager implements Logic {
      */
     @Subscribe
     private void handleListPageUpEvent(ListPageUpEvent event) {
-        if (currentListIndex - PAGE_STEP < 0) {
+        if (currentListIndex - pageStep < 0) {
             currentListIndex = 0;
         } else {
-            currentListIndex = currentListIndex - PAGE_STEP;
+            currentListIndex = currentListIndex - pageStep;
         }
         EventsCenter.getInstance().post(new JumpToListRequestEvent(currentListIndex));
     }
@@ -94,10 +103,10 @@ public class LogicManager extends ComponentManager implements Logic {
      */
     @Subscribe
     private void handleListPageDownEvent(ListPageDownEvent event) {
-        if (currentListIndex + PAGE_STEP >= model.getFilteredItemList().size()) {
+        if (currentListIndex + pageStep >= model.getFilteredItemList().size()) {
             currentListIndex = model.getFilteredItemList().size() - 1;
         } else {
-            currentListIndex = currentListIndex + PAGE_STEP;
+            currentListIndex = currentListIndex + pageStep;
         }
         EventsCenter.getInstance().post(new JumpToListRequestEvent(currentListIndex));
     }
