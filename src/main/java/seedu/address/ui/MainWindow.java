@@ -1,10 +1,12 @@
 package seedu.address.ui;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -193,5 +195,22 @@ public class MainWindow extends UiPart {
 
     public void releaseResources() {
         browserPanel.freeResources();
+    }
+    
+    private void setPagingListeners() {
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent ke) {
+                switch (ke.getCode()) {
+                    case PAGE_UP:    
+                        break;
+                    case PAGE_DOWN:  
+                        break;
+                }
+            }
+        });
+    }
+    
+    private void raisePageUpEvent() {
+        
     }
 }
