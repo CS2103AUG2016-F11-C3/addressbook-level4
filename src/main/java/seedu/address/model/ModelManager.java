@@ -31,7 +31,8 @@ import seedu.address.model.item.UniqueItemList.ItemNotFoundException;
  */
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
-
+    private final int HISTORY_LENGTH = 100;
+    
     private final TaskBook taskBook;
     private final FilteredList<Item> filteredItems;
     private Predicate defaultPredicate;
@@ -332,6 +333,17 @@ public class ModelManager extends ComponentManager implements Model {
         private boolean matchesDescription(ReadOnlyItem item) {
             return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(),
                     keyword.replace(Parser.COMMAND_DESCRIPTION_PREFIX, ""));
+        }
+    }
+
+    @Override
+    public void addCommandToHistory(String command) {
+        assert commandHistory != null;
+        if (commandHistory.size() > HISTORY_LENGTH) {
+            commandHistory.remove(0);
+            commandHistory.add(command);
+        } else {
+            commandHistory.add(command);
         }
     }
 

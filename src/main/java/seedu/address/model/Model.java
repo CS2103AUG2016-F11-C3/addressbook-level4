@@ -53,7 +53,7 @@ public interface Model {
     
     // @@author A0144750J
     /** Add the command to history */
-    void addCommandToHistory();
+    void addCommandToHistory(String command);
 
     /** Returns the filtered item list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     // @@author
