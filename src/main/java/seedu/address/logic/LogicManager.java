@@ -66,6 +66,12 @@ public class LogicManager extends ComponentManager implements Logic {
         eventsCenter.registerHandler(this);
     }
     
+    //@@author A0144750J
+    /**
+     * Handle a ListPageUpEvent by jumping up page_length items (by default)
+     * page_length can be set setPageLength method
+     * @param event: ListPageUpEvent dispatched by EventsCenter
+     */
     @Subscribe
     private void handleListPageUpEvent(ListPageUpEvent event) {
         if (currentListIndex - PAGE_STEP < 0) {
@@ -76,6 +82,12 @@ public class LogicManager extends ComponentManager implements Logic {
         EventsCenter.getInstance().post(new JumpToListRequestEvent(currentListIndex));
     }
     
+    //@@author A0144750J
+    /**
+     * Handle a ListPageUpEvent by jumping down page_length items (by default)
+     * page_length can be set setPageLength method
+     * @param event: ListPageDownEvent dispatched by EventsCenter
+     */
     @Subscribe
     private void handleListPageDownEvent(ListPageDownEvent event) {
         if (currentListIndex + PAGE_STEP >= model.getFilteredItemList().size()) {
