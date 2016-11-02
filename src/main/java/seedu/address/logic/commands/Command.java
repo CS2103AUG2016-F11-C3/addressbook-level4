@@ -1,5 +1,7 @@
 package seedu.address.logic.commands;
 
+import java.util.ArrayList;
+
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.events.ui.IncorrectCommandAttemptedEvent;
@@ -11,7 +13,6 @@ import seedu.address.model.Model;
 public abstract class Command {
     protected Model model;
     protected boolean hasUndo = false;
-    
     /**
      * getter method for hasUndo
      * @@author A0144750J
@@ -66,5 +67,9 @@ public abstract class Command {
      */
     protected void indicateAttemptToExecuteIncorrectCommand() {
         EventsCenter.getInstance().post(new IncorrectCommandAttemptedEvent(this));
+    }
+    
+	public ArrayList<Hint> getHints() {
+		return new ArrayList<>();
     }
 }
