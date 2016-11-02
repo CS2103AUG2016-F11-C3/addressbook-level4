@@ -27,11 +27,11 @@ public class LogicManager extends ComponentManager implements Logic {
         this.parser = new Parser();
     }
 
+    //@@author A0144750J
     /**
      * Call on parser to parse a command 
      * Return command result after executing
      * Add command to undo stack if applicable
-     * @@author A0144750J
      */
     @Override
     public CommandResult execute(String commandText) {

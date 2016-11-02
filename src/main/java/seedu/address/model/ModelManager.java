@@ -1,6 +1,7 @@
 package seedu.address.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EmptyStackException;
 import java.util.Set;
@@ -35,6 +36,7 @@ public class ModelManager extends ComponentManager implements Model {
     private final FilteredList<Item> filteredItems;
     private Predicate defaultPredicate;
     private Stack<Command> commandStack;
+    private ArrayList<String> commandHistory;
 
     /**
      * Initializes a ModelManager with the given AddressBook AddressBook and its
@@ -50,6 +52,7 @@ public class ModelManager extends ComponentManager implements Model {
         taskBook = new TaskBook(src);
         filteredItems = new FilteredList<>(taskBook.getItems());
         commandStack = new Stack<>();
+        commandHistory = new ArrayList<String>();
         this.defaultPredicate = new QualifierPredicate(new TypeQualifier("item"));
     }
 
@@ -175,9 +178,9 @@ public class ModelManager extends ComponentManager implements Model {
         return new UnmodifiableObservableList<>(sortedList);
     }
     
+    //@@author A0144750J
     /**
      * Return a list of Item instead of ReadOnlyItem
-     * @@author A0144750J
      */
     @Override
 	public FilteredList<Item> getFilteredEditableItemList() {
