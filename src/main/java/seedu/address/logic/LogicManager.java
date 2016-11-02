@@ -62,6 +62,10 @@ public class LogicManager extends ComponentManager implements Logic {
         return model.getFilteredItemList();
     }
     
+    //@@author A0144750J
+    /**
+     * Register the LogicManager as a handler for events
+     */
     private void registerAsHandler() {
         eventsCenter.registerHandler(this);
     }
