@@ -58,6 +58,8 @@ allprojects {
         compile group: 'org.ocpsoft.prettytime', name: 'prettytime', version: '4.0.1.Final'
         // https://mvnrepository.com/artifact/org.ocpsoft.prettytime/prettytime-nlp
         compile group: 'org.ocpsoft.prettytime', name: 'prettytime-nlp', version: '4.0.0.Final'
+		// https://mvnrepository.com/artifact/org.webjars/google-diff-match-patch
+		compile group: 'org.bitbucket.cowwoc', name: 'diff-match-patch', version: '1.1'
 
 
         testCompile "junit:junit:$junitVersion"
