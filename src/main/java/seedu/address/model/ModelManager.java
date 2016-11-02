@@ -218,6 +218,22 @@ public class ModelManager extends ComponentManager implements Model {
         filteredItems.setPredicate(pred);
         // }
     }
+    
+    //@@author A0144750J
+    @Override
+    /**
+     * Add a command in String format to command history
+     * Maximum size is set by HISTORY_LENGTH
+     */
+    public void addCommandToHistory(String command) {
+        assert commandHistory != null;
+        if (commandHistory.size() > HISTORY_LENGTH) {
+            commandHistory.remove(0);
+            commandHistory.add(command);
+        } else {
+            commandHistory.add(command);
+        }
+    }
 
     // ========== Inner classes/interfaces used for filtering ==================================================
 
@@ -333,17 +349,6 @@ public class ModelManager extends ComponentManager implements Model {
         private boolean matchesDescription(ReadOnlyItem item) {
             return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(),
                     keyword.replace(Parser.COMMAND_DESCRIPTION_PREFIX, ""));
-        }
-    }
-
-    @Override
-    public void addCommandToHistory(String command) {
-        assert commandHistory != null;
-        if (commandHistory.size() > HISTORY_LENGTH) {
-            commandHistory.remove(0);
-            commandHistory.add(command);
-        } else {
-            commandHistory.add(command);
         }
     }
 
