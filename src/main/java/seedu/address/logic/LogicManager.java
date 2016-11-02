@@ -2,6 +2,7 @@ package seedu.address.logic;
 
 import javafx.collections.ObservableList;
 import seedu.address.commons.core.ComponentManager;
+import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
@@ -25,6 +26,7 @@ public class LogicManager extends ComponentManager implements Logic {
     public LogicManager(Model model, Storage storage) {
         this.model = model;
         this.parser = new Parser();
+        registerAsHandler();
     }
 
     /**
@@ -49,5 +51,9 @@ public class LogicManager extends ComponentManager implements Logic {
     @Override
     public ObservableList<ReadOnlyItem> getFilteredItemList() {
         return model.getFilteredItemList();
+    }
+    
+    private void registerAsHandler() {
+        eventsCenter.registerHandler(this);
     }
 }
