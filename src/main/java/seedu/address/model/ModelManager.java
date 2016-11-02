@@ -234,6 +234,7 @@ public class ModelManager extends ComponentManager implements Model {
             commandHistory.add(command);
         }
     }
+    //@@author
 
     // ========== Inner classes/interfaces used for filtering ==================================================
 

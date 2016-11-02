@@ -21,6 +21,8 @@ public class LogicManager extends ComponentManager implements Logic {
 
     private final Model model;
     private final Parser parser;
+    
+    private int currentPointer; //Pointer at the current command in history
 
     public LogicManager(Model model, Storage storage) {
         this.model = model;
@@ -39,13 +41,16 @@ public class LogicManager extends ComponentManager implements Logic {
         Command command = parser.parseCommand(commandText);
         command.setData(model);
         CommandResult result = command.execute();
+        // putting valid command into undo stack
         if (command.getUndo()) {
         	model.addCommandToStack(command);
         }
+        // putting command in String format in history
+        
         return result;
     }
-
     // @@author
+    
     @Override
     public ObservableList<ReadOnlyItem> getFilteredItemList() {
         return model.getFilteredItemList();
