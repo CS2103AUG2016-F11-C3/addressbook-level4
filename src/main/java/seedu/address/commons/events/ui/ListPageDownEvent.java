@@ -7,10 +7,7 @@ import seedu.address.commons.events.BaseEvent;
  */
 public class ListPageDownEvent extends BaseEvent {
 
-    public final int targetIndex;
-
     public ListPageDownEvent(int targetIndex) {
-        this.targetIndex = targetIndex;
     }
 
     @Override
