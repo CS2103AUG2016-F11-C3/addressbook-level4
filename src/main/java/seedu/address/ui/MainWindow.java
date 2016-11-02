@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import seedu.address.commons.core.Config;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
+import seedu.address.commons.events.ui.ListPageDownEvent;
+import seedu.address.commons.events.ui.ListPageUpEvent;
 import seedu.address.logic.Logic;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.item.ReadOnlyItem;
@@ -102,7 +104,7 @@ public class MainWindow extends UiPart {
         scene = new Scene(rootLayout);
 		scene.getStylesheets().add("view/bootstrapfx.css");
         primaryStage.setScene(scene);
-
+        setPagingListeners();
         setAccelerators();
     }
 
@@ -201,16 +203,15 @@ public class MainWindow extends UiPart {
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             public void handle(KeyEvent ke) {
                 switch (ke.getCode()) {
-                    case PAGE_UP:    
+                    case PAGE_UP: 
+                        raise(new ListPageUpEvent());
                         break;
                     case PAGE_DOWN:  
+                        raise(new ListPageDownEvent());
                         break;
                 }
             }
         });
     }
-    
-    private void raisePageUpEvent() {
-        
-    }
+
 }
