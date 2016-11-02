@@ -4,6 +4,8 @@ import javafx.collections.ObservableList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.LogsCenter;
+import seedu.address.commons.core.Messages;
+import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.ListPageDownEvent;
 import seedu.address.commons.events.ui.ListPageUpEvent;
@@ -87,12 +89,17 @@ public class LogicManager extends ComponentManager implements Logic {
      */
     @Subscribe
     private void handleListPageUpEvent(ListPageUpEvent event) {
+        
         if (currentListIndex - pageStep < 0) {
             currentListIndex = 0;
         } else {
             currentListIndex = currentListIndex - pageStep;
         }
-        EventsCenter.getInstance().post(new JumpToListRequestEvent(currentListIndex));
+        UnmodifiableObservableList<ReadOnlyItem> lastShownList = model.getFilteredItemList();
+        assert lastShownList != null;
+        if (lastShownList.size() != 0) {
+            EventsCenter.getInstance().post(new JumpToListRequestEvent(currentListIndex));
+        }
     }
     
     //@@author A0144750J
@@ -103,11 +110,15 @@ public class LogicManager extends ComponentManager implements Logic {
      */
     @Subscribe
     private void handleListPageDownEvent(ListPageDownEvent event) {
-        if (currentListIndex + pageStep >= model.getFilteredItemList().size()) {
-            currentListIndex = model.getFilteredItemList().size() - 1;
+        UnmodifiableObservableList<ReadOnlyItem> lastShownList = model.getFilteredItemList();
+        assert lastShownList != null;
+        if (currentListIndex + pageStep >= lastShownList.size()) {
+            currentListIndex = lastShownList.size() - 1;
         } else {
             currentListIndex = currentListIndex + pageStep;
         }
-        EventsCenter.getInstance().post(new JumpToListRequestEvent(currentListIndex));
+        if (lastShownList.size() != 0) {
+            EventsCenter.getInstance().post(new JumpToListRequestEvent(currentListIndex));
+        }
     }
 }
