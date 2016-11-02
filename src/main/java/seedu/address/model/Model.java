@@ -35,22 +35,25 @@ public interface Model {
     /** Edit the given Item's end datetime */
     void setItemEnd(Item item, LocalDateTime end);
     
-    /** Set the item isDone field to true */
     // @@author A0144750J
+    /** Set the item isDone field to true */
     void setDoneItem(Item item);
     
-    /** Set the item isDone field to true */
     // @@author A0144750J
+    /** Set the item isDone field to true */
     void setNotDoneItem(Item item);
     
-    /** Add the command to stack for undo */
     // @@author A0144750J
+    /** Add the command to stack for undo */
     void addCommandToStack(Command command);
     
-    /** Add the command to stack for undo */
     // @@author A0144750J
+    /** Add the command to stack for undo */
     Command returnCommandFromStack();
-
+    
+    // @@author A0144750J
+    /** Add the command to history */
+    void addCommandToHistory();
 
     /** Returns the filtered item list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     // @@author
