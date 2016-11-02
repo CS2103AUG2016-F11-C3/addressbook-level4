@@ -199,8 +199,15 @@ public class MainWindow extends UiPart {
         browserPanel.freeResources();
     }
     
+    // @@author A0144750J
+    /**
+     * Set listeners for keyboard event when Page Up / Page Down is pressed
+     * raise a new event to alert EventCenters
+     */
     private void setPagingListeners() {
+        assert scene != null;
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
             public void handle(KeyEvent ke) {
                 switch (ke.getCode()) {
                     case PAGE_UP: 
