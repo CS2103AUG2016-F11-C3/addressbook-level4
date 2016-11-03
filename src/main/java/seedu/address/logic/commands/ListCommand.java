@@ -9,21 +9,21 @@ public class ListCommand extends Command {
     public static final String MESSAGE_UNDO_FAILURE = "";
 
 
-	public static final String MESSAGE_SUCCESS = "Listed all items of type %1$s";
+	public static final String MESSAGE_SUCCESS = "Listed all %1$s";
     public static final String MESSAGE_INVALID_TYPE = "List argument is invalid";    
     
-    public static final Object MESSAGE_USAGE = COMMAND_WORD + " lists items that match the given parameter "
-            + "Parameter: \"OPTIONAL_TYPE_ARGUMENT (task, event, done, overdue, undone)\" "
+	public static final Object MESSAGE_USAGE = COMMAND_WORD + " lists items that match the given parameter"
+			+ "Parameter: \"OPTIONAL_TYPE_ARGUMENT (task, event, done, overdue, undone)\""
             + "Example: list task";
 
     //@@author A0131560U
     private enum Type{
-        TASK("task", "that are a task"),
-        EVENT("event", "that are an event"), 
-        DONE("done", "that are done"), 
-        ITEM("item", ""), 
-        OVERDUE("overdue", "that are overdue"), 
-        UNDONE("undone", "that are not done");
+        TASK("task", "tasks"),
+        EVENT("event", "events"), 
+        DONE("done", "completed tasks"), 
+        ITEM("item", "items"), 
+        OVERDUE("overdue", "overdue tasks"), 
+        UNDONE("undone", "undone tasks");
         
         private String typeName;
         private String typeMessage;
@@ -50,6 +50,11 @@ public class ListCommand extends Command {
         public Object getTypeMessage() {
             return this.typeMessage;
         }
+
+		@Override
+		public String toString() {
+			return this.typeMessage;
+		}
     }
 
     private Type itemType;

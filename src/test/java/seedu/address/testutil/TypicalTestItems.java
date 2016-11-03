@@ -1,5 +1,7 @@
 package seedu.address.testutil;
 
+import java.util.Arrays;
+
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.TaskBook;
 import seedu.address.model.item.Item;
@@ -50,7 +52,9 @@ public class TypicalTestItems {
 
     //@@author A0144750J
     public TestItem[] getTypicalItems() {
-        return new TestItem[]{always, bags, cs2103, dover, eating, frolick, grass};
+        TestItem[] answer = new TestItem[]{always, bags, cs2103, dover, eating, frolick, grass};
+        Arrays.sort(answer);
+        return answer;
     }
 
     //@@author A0144750J-reused

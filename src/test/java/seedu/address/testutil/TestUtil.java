@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
@@ -334,6 +335,7 @@ public class TestUtil {
     public static TestItem[] addItemsToList(final TestItem[] items, TestItem... itemsToAdd) {
         List<TestItem> listOfItems = asList(items);
         listOfItems.addAll(asList(itemsToAdd));
+        Collections.sort(listOfItems);
         return listOfItems.toArray(new TestItem[listOfItems.size()]);
     }
 

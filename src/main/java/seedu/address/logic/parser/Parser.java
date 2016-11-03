@@ -31,6 +31,7 @@ import seedu.address.logic.commands.IncorrectCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.SelectCommand;
 import seedu.address.logic.commands.UndoCommand;
+import seedu.address.model.item.Item;
 
 /**
  * Parses user input.
@@ -68,23 +69,6 @@ public class Parser {
     private static final Pattern COMMAND_TAG_SEARCH_FORMAT = Pattern.compile("#([^ ]+)");
     
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-	
-    //@@author A0131560U
-	private enum Type {
-	    TASK("task"), EVENT("event"), DONE("done"), ITEM("item"), OVERDUE("overdue"), UNDONE("undone");
-	    
-        private String typeName;
-
-        Type(String name) {
-            this.typeName = name;
-        }
-
-        public String getTypeName() {
-            return this.typeName;
-        }
-	}
-	//@@author
 
     public enum Field {
         NAME("name"),
@@ -171,7 +155,7 @@ public class Parser {
     private Command prepareList(String argument) {
         assert argument != null;
         if (argument.isEmpty()){
-            return new ListCommand(Type.ITEM.getTypeName());
+            return new ListCommand(Item.Type.ITEM.getTypeName());
         }
         else if (isValidType(argument)){
             return new ListCommand(argument.trim().toLowerCase());
@@ -187,10 +171,10 @@ public class Parser {
      * @return true if String is valid Type, false otherwise
      * @@author A0131560U
      */
-    private boolean isValidType(String argument) {
+    public static boolean isValidType(String argument) {
         assert argument != null;
         try{
-            Type.valueOf(argument.trim().toUpperCase());
+            Item.Type.valueOf(argument.trim().toUpperCase());
         } catch (IllegalArgumentException iae) {
             return false;
         }

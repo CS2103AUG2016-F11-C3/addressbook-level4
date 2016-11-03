@@ -44,7 +44,7 @@ public class UndoCommandTest extends TaskBookGuiTest {
 
         // undo should succeed
         commandBox.runCommand("undo");
-        assertResultMessage("Undo delete task: Always brush teeth");
+        assertResultMessage("Undo delete task: Dover Road");
         
         // delete a bad command
         commandBox.runCommand("delete " + currentList.length + 2);
