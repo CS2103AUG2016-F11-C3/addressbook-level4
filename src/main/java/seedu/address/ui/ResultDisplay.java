@@ -1,9 +1,10 @@
 package seedu.address.ui;
 
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -18,7 +19,7 @@ public class ResultDisplay extends UiPart {
     private static final String STATUS_BAR_STYLE_SHEET = "result-display";
 
 	@FXML
-	private Pane resultDisplayArea;
+	private StackPane resultDisplayArea;
 
 	@FXML
 	private TextFlow displayTextFlow;
@@ -45,12 +46,14 @@ public class ResultDisplay extends UiPart {
 		displayTextFlow.getStyleClass().add("alert");
 		displayTextFlow.getStyleClass().add("alert-success");
 
-		headerText.getStyleClass().add("strong");
+		resultDisplayArea.setAlignment(Pos.TOP_CENTER);
 
-        FxViewUtil.applyAnchorBoundaryParameters(resultDisplayArea, 0.0, 0.0, 0.0, 0.0);
-        FxViewUtil.applyAnchorBoundaryParameters(mainPane, 0.0, 0.0, 0.0, 0.0);
+		headerText.getStyleClass().add("strong");
+		// FxViewUtil.applyAnchorBoundaryParameters(resultDisplayArea, 0.0, 0.0,
+		// 0.0, 0.0);
+		FxViewUtil.applyAnchorBoundaryParameters(mainPane, 0.0, 0.0, 0.0, 0.0);
         placeHolder.getChildren().add(mainPane);
-		hideDisplay();
+		// hideDisplay();
 
     }
 
