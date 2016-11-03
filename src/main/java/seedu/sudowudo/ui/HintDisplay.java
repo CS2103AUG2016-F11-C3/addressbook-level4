@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -44,8 +45,10 @@ public class HintDisplay extends UiPart {
     public void configure() {
 		hintList = FXCollections.observableArrayList();
 		hintList.addAll(AddCommand.getHints());
-		hintListView.setItems(new FilteredList<>(hintList));
 		this.placeHolder.getChildren().add(mainPane);
+
+		hintListView.setItems(new FilteredList<>(hintList));
+		hintListView.setCellFactory(listView -> new HintListCell());
     }
 
     @Override
@@ -63,5 +66,23 @@ public class HintDisplay extends UiPart {
         return FXML;
     }
 
+
+	class HintListCell extends ListCell<Hint> {
+
+		public HintListCell() {
+		}
+
+		@Override
+		protected void updateItem(Hint hint, boolean empty) {
+			super.updateItem(hint, empty);
+
+			if (empty || hint == null) {
+				setGraphic(null);
+				setText(null);
+			} else {
+				setText(hint.getDescription() + " " + hint.getUsage());
+			}
+		}
+	}
 
 }
