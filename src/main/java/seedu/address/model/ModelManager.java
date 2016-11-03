@@ -15,6 +15,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.events.model.TaskBookChangedEvent;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.ListUtil;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.parser.DateTimeParser;
@@ -50,19 +51,19 @@ public class ModelManager extends ComponentManager implements Model {
         taskBook = new TaskBook(src);
         filteredItems = new FilteredList<>(taskBook.getItems());
         commandStack = new Stack<>();
-        this.defaultPredicate = new QualifierPredicate(new TypeQualifier("item"));
+        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
     }
 
     public ModelManager() {
         this(new TaskBook(), new UserPrefs());
-        this.defaultPredicate = new QualifierPredicate(new TypeQualifier("item"));
+        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
     }
 
     public ModelManager(ReadOnlyTaskBook initialData, UserPrefs userPrefs) {
         taskBook = new TaskBook(initialData);
         filteredItems = new FilteredList<>(taskBook.getItems());
         commandStack = new Stack<>();
-        this.defaultPredicate = new QualifierPredicate(new TypeQualifier("item"));
+        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
     }
 
     @Override
@@ -192,9 +193,9 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     //@@author A0131560U
-    public void updateFilteredListDefaultPredicate(String taskType) {
-        defaultPredicate = new QualifierPredicate(new TypeQualifier(taskType));
-        updateFilteredItemList(defaultPredicate);
+    public void updateDefaultPredicate(String taskType) {
+        defaultPredicate = ListUtil.getInstance().setDefaultPredicate(taskType);
+        filteredItems.setPredicate(defaultPredicate);
     }
 
     @Override
@@ -299,6 +300,7 @@ public class ModelManager extends ComponentManager implements Model {
         public String toString() {
             return "keywords=" + String.join(", ", searchKeyWords);
         }
+        ListUtil.getInstance().updateFilteredItemList(filteredItems, keywords, defaultPredicate);
     }
 
     // @@author A0092390E-idea
