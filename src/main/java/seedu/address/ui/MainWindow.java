@@ -105,6 +105,7 @@ public class MainWindow extends UiPart {
 		scene.getStylesheets().add("view/bootstrapfx.css");
         primaryStage.setScene(scene);
         setPagingListeners();
+        setCycleHistoryListeners();
         setAccelerators();
     }
 
@@ -220,5 +221,29 @@ public class MainWindow extends UiPart {
             }
         });
     }
+    //@@author
+    
+    // @@author A0144750J
+    /**
+     * Set listeners for keyboard event when UP / DOWN is pressed
+     * raise a new event to alert EventCenters
+     */
+    private void setCycleHistoryListeners() {
+        assert scene != null;
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                switch (ke.getCode()) {
+                    case UP: 
+                        raise(new PreviousCommandEvent());
+                        break;
+                    case DOWN:  
+                        raise(new NextCommandEvent());
+                        break;
+                }
+            }
+        });
+    }
+    //@@author
 
 }
