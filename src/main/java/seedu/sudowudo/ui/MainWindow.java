@@ -224,6 +224,7 @@ public class MainWindow extends UiPart {
                     case DOWN:  
                         raise(new NextCommandEvent());
                         break;
+                    default: return;                          
                 }
             }
         });

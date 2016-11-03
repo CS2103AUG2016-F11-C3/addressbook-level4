@@ -8,9 +8,6 @@ import seedu.sudowudo.commons.events.BaseEvent;
  */
 public class NextCommandEvent extends BaseEvent {
 
-    public NextCommandEvent() {
-    }
-
     @Override
     public String toString() {
         return this.getClass().getSimpleName();
