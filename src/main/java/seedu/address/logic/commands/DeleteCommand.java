@@ -2,8 +2,11 @@ package seedu.address.logic.commands;
 
 import java.util.Set;
 
+import javafx.collections.transformation.FilteredList;
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
+import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.ListUtil;
 import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.item.UniqueItemList;
@@ -17,23 +20,33 @@ public class DeleteCommand extends Command {
     public static final String COMMAND_WORD = "delete";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Deletes the task identified by "
-            + "the index number used in the last task listing.\n"
-            + "Parameters: INDEX (must be a positive integer)\n"
-            + "Example 1: " + COMMAND_WORD + " 1\n";
+            + ": Deletes the task identified by either "
+            + "the index number used in the last task listing or a set of keywords.\n"
+            + "Parameters: INDEX (must be a positive integer) OR KEYWORDS\n"
+            + "Example 1: " + COMMAND_WORD + " 1\n"
+            + "Example 2: " + COMMAND_WORD + " \"filing\" #homework\n";
+
 
     public static final String MESSAGE_DELETE_ITEM_SUCCESS = "Deleted Task: %1$s";
     public static final String MESSAGE_UNDO_SUCCESS = "Undo delete task: %1$s";
 	public static final String MESSAGE_UNDO_FAILURE = "Undo failed! Task already existed!";
+    
+	private static final String MESSAGE_ITEM_NOT_FOUND = "Item matching your search cannot be found!";
+    private static final String MESSAGE_UNIQUE_ITEM_NOT_FOUND = "More than one item matching your search was found! Please refine your search.";
 
-    public Set<String> keywords;
+    private Set<String> keywords;
+    private int index;
     
     private Item itemToAddBack;
 
     public DeleteCommand(Set<String> keywords) {
         this.keywords = keywords;
     }
-
+    
+    public DeleteCommand(int index) {
+        this.index = index;
+        this.keywords = null;
+    }
 
     @Override
     //@@author A0131560U
@@ -42,14 +55,25 @@ public class DeleteCommand extends Command {
      */
     public CommandResult execute() {
 
-        UnmodifiableObservableList<ReadOnlyItem> lastShownList = model.getFilteredItemList();
-
-        if (lastShownList.isEmpty()) {
-            indicateAttemptToExecuteIncorrectCommand();
-            return new CommandResult(Messages.MESSAGE_INVALID_ITEM_DISPLAYED_INDEX);
+        ReadOnlyItem itemToDelete = null;
+        
+        // delete by index
+        if (keywords == null){
+            try{
+                itemToDelete = findItemByIndex();
+            } catch (IllegalValueException ive){
+                return new CommandResult(ive.getMessage());
+            }
         }
-
-        ReadOnlyItem itemToDelete = lastShownList.get(0);
+        else {
+            try{
+                itemToDelete = findItemByKeywords();
+            } catch (IllegalValueException ive){
+                return new CommandResult(ive.getMessage());
+            }
+        }
+        
+        assert itemToDelete != null;
         itemToAddBack = new Item(itemToDelete);
 
         try {
@@ -62,7 +86,54 @@ public class DeleteCommand extends Command {
 		return new CommandResult(String.format(MESSAGE_DELETE_ITEM_SUCCESS, itemToDelete), itemToDelete);
     }
 
-    //@@author
+    //@@author A0131560U
+    /**
+     * Searches all items in the list using given set of keywords to find a single match.
+     * If the match is found, returns the match. If no single match is found, throws exception.
+     * @return
+     * @throws IllegalValueException
+     */
+    private ReadOnlyItem findItemByKeywords() throws IllegalValueException {
+        FilteredList<Item> lastShownList = new FilteredList<>(model.getFilteredEditableItemList());
+        ListUtil.getInstance().updateFilteredItemList(lastShownList, keywords);
+        
+        if (lastShownList.isEmpty()) {
+            indicateAttemptToExecuteIncorrectCommand();
+            throw new IllegalValueException(MESSAGE_ITEM_NOT_FOUND);
+        }
+        else if (lastShownList.size() == 1){
+             return lastShownList.get(0);
+        }
+        else if (lastShownList.size() > 1){
+            model.updateFilteredItemList(keywords);
+            indicateAttemptToExecuteIncorrectCommand();
+            throw new IllegalValueException(MESSAGE_UNIQUE_ITEM_NOT_FOUND);
+        }
+        else{
+            assert false: "The list cannot have negative size";
+            return null;
+        }
+    }
+
+    //@@author A0131560U
+    /**
+     * Returns item at given index on the last shown list 
+     * @return
+     * @throws IllegalValueException if the index is invalid
+     */
+    private ReadOnlyItem findItemByIndex() throws IllegalValueException {
+        UnmodifiableObservableList<ReadOnlyItem> lastShownList = model.getFilteredItemList();
+        
+        ReadOnlyItem itemToDelete;
+        if (lastShownList.size() < index) {
+            indicateAttemptToExecuteIncorrectCommand();
+            throw new IllegalValueException(Messages.MESSAGE_INVALID_ITEM_DISPLAYED_INDEX);
+        }
+        itemToDelete = lastShownList.get(index);
+        return itemToDelete;
+    }
+
+    //@@author A0144750J
     /**
      * Undo deletion by adding back the item to the list
      * @@author A0144750J
