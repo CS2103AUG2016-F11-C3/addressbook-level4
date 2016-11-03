@@ -154,13 +154,11 @@ public class Parser {
      */
     private Command prepareList(String argument) {
         assert argument != null;
-        if (argument.isEmpty()){
+        if (argument.isEmpty()) {
             return new ListCommand(Item.Type.ITEM.getTypeName());
-        }
-        else if (isValidType(argument)){
+        } else if (isValidType(argument)) {
             return new ListCommand(argument.trim().toLowerCase());
-        }
-        else{
+        } else {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         }
     }
@@ -272,7 +270,7 @@ public class Parser {
         return tagSet;
     }
 
-
+    // @@author A0131560U
     /**
      * Parses arguments in the context of the delete person command.
      *
@@ -280,11 +278,12 @@ public class Parser {
      *            full command args string
      * @return the prepared command
      */
-    //@@author
     private Command prepareDelete(String args) {
 
-        Optional<Integer> index = parseIndex(args);
-        if (!index.isPresent()) {
+        try {
+            final Set<String> keywordSet = extractKeywords(args);
+            return new DeleteCommand(keywordSet);
+        } catch (IllegalValueException e) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
 
@@ -428,6 +427,7 @@ public class Parser {
         }
     }
 
+    //@@author A0131560U
     /**
      * Given a specific pattern, extracts all phrases that match the pattern and adds them
      * to keywordSet. Returns args string without the keywords that were extracted.
@@ -445,7 +445,19 @@ public class Parser {
         return args;
     }
 
-    //@@author
+    // @@author A0147609X
+    /**
+     * splits multi-arguments into a nice ArrayList of strings
+     * 
+     * @param params
+     *            comma-separated parameters
+     * @param delimiter
+     *            delimiting character
+     * @return ArrayList<String> of parameters
+     * @author darren
+     */
+    public static ArrayList<String> parseMultipleParameters(String params, char delimiter) {
+        CSVParser parser = new CSVParser(delimiter);
 
 	 //@@author A0147609X
 	/**
