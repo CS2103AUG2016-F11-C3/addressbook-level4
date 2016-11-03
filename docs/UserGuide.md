@@ -263,3 +263,14 @@ Use the `undo` command to undo the most recent action.
 undo
 ```
 <!--- @@author --->
+
+<!-- @@author A0147609X -->
+### Synchronization with Google Calendar
+Use the `sync` command to synchronize Sudowudo with your Google Calendar!
+
+```bash
+sync CALENDAR_NAME
+```
+
+`CALENDAR_NAME` refers to the name of the calendar you wish to synchronize Sudowudo with.
+<!-- @@author -->
