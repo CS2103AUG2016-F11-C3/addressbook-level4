@@ -8,7 +8,7 @@
 <!-- @@author A0092390E -->
 <?import java.net.URL?>
 <AnchorPane styleClass="anchor-pane-translucent" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="seedu.address.ui.HintDisplay" prefWidth="450.0" maxHeight="100" VBox.vgrow="NEVER">
+            fx:controller="seedu.sudowudo.ui.HintDisplay" prefWidth="450.0" maxHeight="100" VBox.vgrow="NEVER">
     <stylesheets>
         <URL value="@DarkTheme.css" />
         <URL value="@Extensions.css" />

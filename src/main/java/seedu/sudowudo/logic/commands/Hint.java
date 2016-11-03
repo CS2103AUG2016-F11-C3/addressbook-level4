@@ -1,4 +1,4 @@
-package seedu.address.logic.commands;
+package seedu.sudowudo.logic.commands;
 
 import org.bitbucket.cowwoc.diffmatchpatch.DiffMatchPatch;
 /*{

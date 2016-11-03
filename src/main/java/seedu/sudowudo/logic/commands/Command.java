@@ -2,7 +2,6 @@ package seedu.sudowudo.logic.commands;
 
 import java.util.ArrayList;
 
-import seedu.address.logic.commands.Hint;
 import seedu.sudowudo.commons.core.EventsCenter;
 import seedu.sudowudo.commons.core.Messages;
 import seedu.sudowudo.commons.events.ui.IncorrectCommandAttemptedEvent;

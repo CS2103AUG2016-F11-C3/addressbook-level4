@@ -1,4 +1,4 @@
-package seedu.address.ui;
+package seedu.sudowudo.ui;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,8 +9,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import seedu.address.logic.commands.AddCommand;
-import seedu.address.logic.commands.Hint;
+import seedu.sudowudo.logic.commands.AddCommand;
+import seedu.sudowudo.logic.commands.Hint;
 
 /**
  * A popup window that shows command hints to the user as he types
