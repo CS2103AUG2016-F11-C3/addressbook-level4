@@ -38,6 +38,18 @@ public class EditCommand extends Command {
     public final int targetIndex;
     private ArrayList<String[]> editFields;
 
+	/**
+	 * Method to return hints for this command
+	 * 
+	 * @@author A0092390E
+	 */
+	public static ArrayList<Hint> getHints() {
+		ArrayList<Hint> hints = new ArrayList<>();
+		hints.add(new Hint("edit task", "edit",
+				"edit CONTEXT_ID desc|start|end|by|period:NEW_VALUE [desc|start|end...]..."));
+		return hints;
+	}
+
     //@@author A0092390E
     /**
      * Constructor using raw strings

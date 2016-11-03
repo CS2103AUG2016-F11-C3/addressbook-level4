@@ -148,6 +148,11 @@ public class AddCommand extends Command {
                 toUndoAdd);
     }
 
+	/**
+	 * Method to return hints for this command
+	 * 
+	 * @@author A0092390E
+	 */
 	public static ArrayList<Hint> getHints() {
 		ArrayList<Hint> hints = new ArrayList<>();
 		hints.add(new Hint("add task", "add", "add \"TASK_NAME\" [by DATETIME] [#tags]"));

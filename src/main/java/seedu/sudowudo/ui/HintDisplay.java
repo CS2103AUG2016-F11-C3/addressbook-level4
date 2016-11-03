@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import seedu.sudowudo.logic.commands.AddCommand;
+import seedu.sudowudo.logic.commands.EditCommand;
 import seedu.sudowudo.logic.commands.Hint;
 
 /**
@@ -48,6 +49,7 @@ public class HintDisplay extends UiPart {
     public void configure() {
 		ObservableList<Hint> hintsList = FXCollections.observableArrayList();
 		hintsList.addAll(AddCommand.getHints());
+		hintsList.addAll(EditCommand.getHints());
 		hintList = new FilteredList<>(hintsList);
 		this.placeHolder.getChildren().add(mainPane);
 
