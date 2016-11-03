@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static seedu.sudowudo.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.sudowudo.commons.core.Messages.MESSAGE_INVALID_ITEM_DISPLAYED_INDEX;
-import static seedu.sudowudo.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
+import static seedu.sudowudo.commons.core.Messages.MESSAGE_ITEMS_LISTED_OVERVIEW;
 import static seedu.sudowudo.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 
 import java.time.LocalDateTime;
