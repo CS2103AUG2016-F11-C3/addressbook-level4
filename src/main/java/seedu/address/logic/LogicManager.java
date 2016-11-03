@@ -141,7 +141,7 @@ public class LogicManager extends ComponentManager implements Logic {
     @Subscribe
     private void handlePreviousCommandEvent(PreviousCommandEvent event) {
         if (--currentHistoryPointer < 0) {
-            currentHistoryPointer = 0;
+            currentHistoryPointer = model.getHistorySize() - 1;
         }
         String userInput = model.returnCommandFromHistory(currentHistoryPointer);
         EventsCenter.getInstance().post(new CycleCommandHistoryEvent(userInput));
@@ -157,7 +157,7 @@ public class LogicManager extends ComponentManager implements Logic {
     @Subscribe
     private void handleNextCommandEvent(NextCommandEvent event) {
         if (++currentHistoryPointer >= model.getHistorySize()) {
-            currentHistoryPointer = model.getHistorySize() - 1;
+            currentHistoryPointer = 0;
         }
         String userInput = model.returnCommandFromHistory(currentHistoryPointer);
         EventsCenter.getInstance().post(new CycleCommandHistoryEvent(userInput));
