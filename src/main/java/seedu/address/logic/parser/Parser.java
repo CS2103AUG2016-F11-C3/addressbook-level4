@@ -289,8 +289,6 @@ public class Parser {
         } catch (IllegalValueException e) {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
-
-        return new DeleteCommand(index.get());
     }
 
     //@@author A0147609X
@@ -356,9 +354,18 @@ public class Parser {
      * @@author A0131560U
      */
     private Command prepareFind(String args) {
+        try{
+            final Set<String> keywordSet = extractKeywords(args);
+            return new FindCommand(keywordSet);
+        } catch (IllegalValueException ive){
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        }
+    }
+
+    private Set<String> extractKeywords(String args) throws IllegalValueException {
         final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+            throw new IllegalValueException("Input does not match expected format for keywords");
         }
 
         // search for all phrases within double quotes
@@ -371,12 +378,16 @@ public class Parser {
         if (!args.isEmpty()) {
             boolean isDateTimeValid = extractDateTimeFromKeywords(args, keywordSet);
             if (!isDateTimeValid){
-                return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+                throw new IllegalValueException("Input does not match expected format for DateTime");
             }
         }
         
-        return new FindCommand(keywordSet);
+        if (keywordSet.isEmpty()){
+            throw new IllegalValueException("No keywords found");
+        }
+        return keywordSet;
     }
+    
     //@@A0092390E
     /**
 	 * Parses arguments in the context of the Edit item command
@@ -459,8 +470,6 @@ public class Parser {
      * @return ArrayList<String> of parameters
      * @author darren
      */
-    public static ArrayList<String> parseMultipleParameters(String params, char delimiter) {
-        CSVParser parser = new CSVParser(delimiter);
 
 	 //@@author A0147609X
 	/**
