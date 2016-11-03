@@ -15,6 +15,8 @@ import seedu.sudowudo.commons.core.GuiSettings;
 import seedu.sudowudo.commons.events.ui.ExitAppRequestEvent;
 import seedu.sudowudo.commons.events.ui.ListPageDownEvent;
 import seedu.sudowudo.commons.events.ui.ListPageUpEvent;
+import seedu.sudowudo.commons.events.ui.NextCommandEvent;
+import seedu.sudowudo.commons.events.ui.PreviousCommandEvent;
 import seedu.sudowudo.logic.Logic;
 import seedu.sudowudo.model.UserPrefs;
 import seedu.sudowudo.model.item.ReadOnlyItem;
@@ -107,7 +109,7 @@ public class MainWindow extends UiPart {
         scene = new Scene(rootLayout);
 		scene.getStylesheets().add("view/bootstrapfx.css");
         primaryStage.setScene(scene);
-        setPagingListeners();
+        setKeyBoardListeners();
         setAccelerators();
     }
 
@@ -208,7 +210,7 @@ public class MainWindow extends UiPart {
      * Set listeners for keyboard event when Page Up / Page Down is pressed
      * raise a new event to alert EventCenters
      */
-    private void setPagingListeners() {
+    private void setKeyBoardListeners() {
         assert scene != null;
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
@@ -220,9 +222,17 @@ public class MainWindow extends UiPart {
                     case PAGE_DOWN:  
                         raise(new ListPageDownEvent());
                         break;
+                    case UP: 
+                        raise(new PreviousCommandEvent());
+                        break;
+                    case DOWN:  
+                        raise(new NextCommandEvent());
+                        break;
+                    default: return;                          
                 }
             }
         });
     }
+    //@@author
 
 }

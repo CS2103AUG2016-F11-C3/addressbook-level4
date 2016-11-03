@@ -17,9 +17,21 @@ public abstract class Command {
      * getter method for hasUndo
      * @@author A0144750J
      */
-    public boolean getUndo() {
-    	return hasUndo;
+	public boolean getUndo() {
+		return hasUndo;
+	}
+    protected String rawCommand;
+    
+    //@@author A0144750J
+    public String getRawCommand() {
+        return rawCommand;
     }
+
+    public void setRawCommand(String rawCommand) {
+        this.rawCommand = rawCommand;
+    }
+
+    //@@author
 
 	/**
 	 * Returns whether a command should result in clearing the command box.
@@ -36,7 +48,7 @@ public abstract class Command {
      * @return summary message for persons displayed
      */
     public static String getMessageForItemListShownSummary(int displaySize) {
-        return String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, displaySize);
+        return String.format(Messages.MESSAGE_ITEMS_LISTED_OVERVIEW, displaySize);
     }
 
     /**
@@ -45,18 +57,18 @@ public abstract class Command {
      */
     public abstract CommandResult execute();
     
+    //@@author A0144750J
     /**
      * Undo the result of previous execute and returns message.
      * @return feedback message of the operation result for display
-     * @@author A0144750J
      */
     public abstract CommandResult undo();
+    //@@author
 
     /**
      * Provides any needed dependencies to the command.
      * Commands making use of any of these should override this method to gain
      * access to the dependencies.
-     * @@author 
      */
     public void setData(Model model) {
         this.model = model;

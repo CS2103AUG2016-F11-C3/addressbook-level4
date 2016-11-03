@@ -4,9 +4,9 @@ import seedu.sudowudo.commons.events.BaseEvent;
 
 //@@author A0144750J
 /**
- * Indicates a request to jump down 5 places
+ * Indicates a request to cycle to the next command
  */
-public class ListPageDownEvent extends BaseEvent {
+public class NextCommandEvent extends BaseEvent {
 
     @Override
     public String toString() {
