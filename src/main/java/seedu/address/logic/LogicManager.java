@@ -10,7 +10,6 @@ import seedu.address.model.Model;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.storage.Storage;
 
-import java.util.Stack;
 import java.util.logging.Logger;
 
 /**
