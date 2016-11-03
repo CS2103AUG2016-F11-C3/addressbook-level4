@@ -122,44 +122,58 @@ public class Parser {
 
         final String commandWord = matcher.group("commandWord");
         final String arguments = matcher.group("arguments");
+        Command toReturn;
         switch (commandWord) {
 
         case AddCommand.COMMAND_WORD:
-            return prepareAdd(arguments);
+            toReturn = prepareAdd(arguments);
+            break;
 
         case SelectCommand.COMMAND_WORD:
-            return prepareSelect(arguments);
+            toReturn = prepareSelect(arguments);
+            break;
 
         case DeleteCommand.COMMAND_WORD:
-            return prepareDelete(arguments);
+            toReturn = prepareDelete(arguments);
+            break;
 
         case ClearCommand.COMMAND_WORD:
-            return new ClearCommand();
+            toReturn = new ClearCommand();
+            break;
 
-		case FindCommand.COMMAND_WORD:
-            return prepareFind(arguments);
+	case FindCommand.COMMAND_WORD:
+	    toReturn = prepareFind(arguments);
+	    break;
 
         case EditCommand.COMMAND_WORD:
-            return prepareEdit(arguments);
+            toReturn = prepareEdit(arguments);
+            break;
             
         case ListCommand.COMMAND_WORD:
-            return prepareList(arguments);
+            toReturn = prepareList(arguments);
+            break;
 
         case ExitCommand.COMMAND_WORD:
-            return new ExitCommand();
+            toReturn = new ExitCommand();
+            break;
 
         case HelpCommand.COMMAND_WORD:
-            return new HelpCommand();
+            toReturn = new HelpCommand();
+            break;
 
         case DoneCommand.COMMAND_WORD:
-            return prepareDone(arguments);
+            toReturn = prepareDone(arguments);
+            break;
             
         case UndoCommand.COMMAND_WORD:
-        	return new UndoCommand();
+            toReturn = new UndoCommand();
+            break;
 
         default:
-            return new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
+            toReturn = new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
         }
+        toReturn.setRawCommand(userInput);
+        return toReturn;
 	};
 
 	/**
