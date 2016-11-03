@@ -15,6 +15,8 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.events.ui.ExitAppRequestEvent;
 import seedu.address.commons.events.ui.ListPageDownEvent;
 import seedu.address.commons.events.ui.ListPageUpEvent;
+import seedu.address.commons.events.ui.NextCommandEvent;
+import seedu.address.commons.events.ui.PreviousCommandEvent;
 import seedu.address.logic.Logic;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.item.ReadOnlyItem;
