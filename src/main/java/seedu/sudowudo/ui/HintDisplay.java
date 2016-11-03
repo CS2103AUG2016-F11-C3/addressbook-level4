@@ -100,7 +100,7 @@ public class HintDisplay extends UiPart {
 				setGraphic(null);
 				setText(null);
 			} else {
-				setText(hint.getDescription() + ":" + hint.getUsage());
+				setText(hint.getDescription() + " : " + hint.getUsage());
 			}
 		}
 	}
