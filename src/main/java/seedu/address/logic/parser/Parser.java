@@ -377,25 +377,25 @@ public class Parser {
     //@@author A0131560U
     /**
      * Extracts description, tag and DateTime keywords from args and returns them as a set.
-     * @param args
+     * @param unfiltered
      * @return
      * @throws IllegalValueException if arguments are not in the correct format
      */
-    private Set<String> extractKeywords(String args) throws IllegalValueException {
-        final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
+    private Set<String> extractKeywords(String unfiltered) throws IllegalValueException {
+        final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(unfiltered.trim());
         if (!matcher.matches()) {
             throw new IllegalValueException("Arguments do not match keyword format");
         }
 
         // search for all phrases within double quotes
         final Set<String> keywordSet = new HashSet<>();
-        args = extractKeywordsFromPattern(args, COMMAND_DESCRIPTION_SEARCH_FORMAT, keywordSet);
+        unfiltered = extractKeywordsFromPattern(unfiltered, COMMAND_DESCRIPTION_SEARCH_FORMAT, keywordSet);
 
         // search for tags
-        args = extractKeywordsFromPattern(args, COMMAND_TAG_SEARCH_FORMAT, keywordSet);
+        unfiltered = extractKeywordsFromPattern(unfiltered, COMMAND_TAG_SEARCH_FORMAT, keywordSet);
 
-        if (!args.isEmpty()) {
-            boolean isDateTimeValid = extractDateTimeFromKeywords(args, keywordSet);
+        if (!unfiltered.isEmpty()) {
+            boolean isDateTimeValid = extractDateTimeFromKeywords(unfiltered, keywordSet);
             if (!isDateTimeValid){
                 throw new IllegalValueException("Input does not match expected format for DateTime");
             }
