@@ -1,6 +1,7 @@
 package seedu.sudowudo.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EmptyStackException;
 import java.util.Set;
@@ -32,11 +33,13 @@ import seedu.sudowudo.model.item.UniqueItemList.ItemNotFoundException;
  */
 public class ModelManager extends ComponentManager implements Model {
     private static final Logger logger = LogsCenter.getLogger(ModelManager.class);
-
+    private final int HISTORY_LENGTH = 100;
+    
     private final TaskBook taskBook;
     private final FilteredList<Item> filteredItems;
     private Predicate defaultPredicate;
     private Stack<Command> commandStack;
+    private ArrayList<String> commandHistory;
 
     /**
      * Initializes a ModelManager with the given AddressBook AddressBook and its
@@ -52,6 +55,7 @@ public class ModelManager extends ComponentManager implements Model {
         taskBook = new TaskBook(src);
         filteredItems = new FilteredList<>(taskBook.getItems());
         commandStack = new Stack<>();
+        commandHistory = new ArrayList<String>();
         this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
     }
 
@@ -64,6 +68,7 @@ public class ModelManager extends ComponentManager implements Model {
         taskBook = new TaskBook(initialData);
         filteredItems = new FilteredList<>(taskBook.getItems());
         commandStack = new Stack<>();
+        commandHistory = new ArrayList<String>();
         this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
     }
 
@@ -136,32 +141,32 @@ public class ModelManager extends ComponentManager implements Model {
     //@@author
     
     // @@author A0144750J
-	@Override
-	public void setNotDoneItem(Item item) {
-		item.setIsDone(false);
+    @Override
+    public void setNotDoneItem(Item item) {
+        item.setIsDone(false);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
-	}
+    }
     //@@author
 	
-	// @@author A0144750J
-	@Override
-	public void addCommandToStack(Command command) {
-		assert command.getUndo() == true;
-		assert this.commandStack != null;
-		this.commandStack.push(command);
-	}
+    // @@author A0144750J
+    @Override
+    public void addCommandToStack(Command command) {
+	assert command.getUndo() == true;
+	assert this.commandStack != null;
+	this.commandStack.push(command);
+    }
     //@@author
 
-	// @@author A0144750J
-	@Override
-	public Command returnCommandFromStack() throws EmptyStackException {
-		assert this.commandStack != null;
-		if (this.commandStack.isEmpty()) {
-			throw new EmptyStackException();
-		}
-		return commandStack.pop();
+    // @@author A0144750J
+    @Override
+    public Command returnCommandFromStack() throws EmptyStackException {
+        assert this.commandStack != null;
+        if (this.commandStack.isEmpty()) {
+            throw new EmptyStackException();
 	}
+        return commandStack.pop();
+    }
     //@@author
 
 
@@ -177,9 +182,9 @@ public class ModelManager extends ComponentManager implements Model {
         return new UnmodifiableObservableList<>(sortedList);
     }
     
+    //@@author A0144750J
     /**
      * Return a list of Item instead of ReadOnlyItem
-     * @@author A0144750J
      */
     @Override
 	public FilteredList<Item> getFilteredEditableItemList() {
@@ -201,6 +206,112 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     public void updateFilteredItemList(Set<String> keywords) {
-        ListUtil.getInstance().updateFilteredItemList(filteredItems, keywords, defaultPredicate);
+    	ListUtil.getInstance().updateFilteredItemList(filteredItems, keywords, defaultPredicate);
+    }
+
+	/*
+	 * @@author A0092390E
+	 * 
+	 */
+    private void updateFilteredItemList(Predicate pred) {
+        // Not used, to narrow searches the user has to type the entire search string in
+        // if(filteredItems.getPredicate() != null){
+        // filteredItems.setPredicate(pred.and(filteredItems.getPredicate()));
+        // } else{
+        filteredItems.setPredicate(pred);
+        // }
+    }
+    
+    //@@author A0144750J
+    @Override
+    /**
+     * Add a command in String format to command history
+     * Maximum size is set by HISTORY_LENGTH
+     */
+    public void addCommandToHistory(String command) {
+        assert commandHistory != null;
+        if (commandHistory.size() > HISTORY_LENGTH) {
+            commandHistory.remove(0);
+            commandHistory.add(command);
+        } else {
+            commandHistory.add(command);
+        }
+    }
+    //@@author
+    
+    //@@author A0144750J
+    @Override
+    /**
+     * Return a command as input by user from history
+     */
+    public String returnCommandFromHistory(int index) {
+        assert commandHistory != null;
+        assert (index >= 0) && (index < commandHistory.size());
+        return commandHistory.get(index);
+    }
+    //@@author
+
+    //@@author A0144750J
+    @Override
+    public int getHistorySize() {
+        return commandHistory.size();
+    }
+    //@@author
+    
+    // ========== Inner classes/interfaces used for filtering ==================================================
+
+    private class QualifierPredicate implements Predicate<ReadOnlyItem> {
+
+        private final Qualifier qualifier;
+
+        QualifierPredicate(Qualifier qualifier) {
+            this.qualifier = qualifier;
+        }
+
+        @Override
+        public String toString() {
+            return qualifier.toString();
+        }
+
+        @Override
+        public boolean test(ReadOnlyItem item) {
+            return qualifier.run(item);
+        }
+
+    }
+
+    interface Qualifier {
+        boolean run(ReadOnlyItem item);
+
+        @Override
+        String toString();
+    }
+
+    //@@author A0131560U
+    /**
+     * A Qualifier class that particularly checks for Item Type (e.g. Task, Event, Done).
+     * @author craa
+     *
+     */
+    private class TypeQualifier implements Qualifier {
+        private String type;
+
+        TypeQualifier(String type) {
+            this.type = type;
+        }
+
+        @Override
+        public boolean run(ReadOnlyItem item) {
+            if (!item.is(type)) {
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        public String toString() {
+            return "type= " + type;
+        }
+
     }
 }

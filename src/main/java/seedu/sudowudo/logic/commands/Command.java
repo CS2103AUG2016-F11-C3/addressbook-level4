@@ -11,14 +11,21 @@ import seedu.sudowudo.model.Model;
 public abstract class Command {
     protected Model model;
     protected boolean hasUndo = false;
+    protected String rawCommand;
     
-    /**
-     * getter method for hasUndo
-     * @@author A0144750J
-     */
+    //@@author A0144750J
+    public String getRawCommand() {
+        return rawCommand;
+    }
+
+    public void setRawCommand(String rawCommand) {
+        this.rawCommand = rawCommand;
+    }
+
     public boolean getUndo() {
     	return hasUndo;
     }
+    //@@author
 
 	/**
 	 * Returns whether a command should result in clearing the command box.
@@ -44,18 +51,18 @@ public abstract class Command {
      */
     public abstract CommandResult execute();
     
+    //@@author A0144750J
     /**
      * Undo the result of previous execute and returns message.
      * @return feedback message of the operation result for display
-     * @@author A0144750J
      */
     public abstract CommandResult undo();
+    //@@author
 
     /**
      * Provides any needed dependencies to the command.
      * Commands making use of any of these should override this method to gain
      * access to the dependencies.
-     * @@author 
      */
     public void setData(Model model) {
         this.model = model;
