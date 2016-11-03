@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<!-- @@author A0092390E -->
+<?import java.net.URL?>
+<AnchorPane styleClass="anchor-pane-translucent" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="seedu.address.ui.HintDisplay" prefWidth="450.0" maxHeight="100" VBox.vgrow="NEVER">
+    <stylesheets>
+        <URL value="@DarkTheme.css" />
+        <URL value="@Extensions.css" />
+    </stylesheets>
+    <children>
+	    <StackPane fx:id="hintDisplayArea">
+  	      <ListView fx:id="hintListView" VBox.vgrow="ALWAYS" />
+	    </StackPane>
+    </children>
+</AnchorPane>

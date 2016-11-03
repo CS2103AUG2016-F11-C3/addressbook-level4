@@ -47,7 +47,7 @@
 	            </AnchorPane>
 	         </items>
 	      </SplitPane>
-	      <AnchorPane fx:id="helpListPlaceholder">
+	      <AnchorPane fx:id="hintDisplayPlaceholder">
 	      </AnchorPane>
 		   <AnchorPane fx:id="resultDisplayPlaceholder" styleClass="anchor-pane-transparent">
 		       <padding>
