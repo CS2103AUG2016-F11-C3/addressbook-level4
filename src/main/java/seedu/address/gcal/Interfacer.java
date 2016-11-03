@@ -99,24 +99,24 @@ public class Interfacer {
         }
 
         List<Item> pulledItems = new ArrayList<>();
-        List<Event> items = new ArrayList<>();
+        List<Event> events = new ArrayList<>();
 
         try {
             // fetch events that haven't happened yet
-            items = getEvents(getCalendarID(fromCalendar), getCurrentDateTime())
+            events = getEvents(getCalendarID(fromCalendar), getCurrentDateTime())
                     .getItems();
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
 
-        if (items.isEmpty()) {
+        if (events.isEmpty()) {
             // nothing to pull
             // return an empty list
             return pulledItems;
         }
 
         // have upcoming events
-        for (Event event : items) {
+        for (Event event : events) {
             try {
                 pulledItems.add(changeEventToItem(event));
             } catch (IllegalValueException ive) {
