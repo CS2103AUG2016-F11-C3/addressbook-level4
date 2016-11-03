@@ -132,6 +132,36 @@ public class Interfacer {
 
         return pulledItems;
     }
+    
+    /**
+     * Pushes events from a local List<Item> to a remote calendar.
+     * 
+     * @param toCalendar
+     *      name of remote calendar
+     * @param itemsToPush
+     *      List<Item> that are to be pushed to remote
+     * @throws IllegalArgumentException
+     *      Thrown when remote calendar cannot be found
+     */
+    public void pushItems(String toCalendar, List<Item> itemsToPush) throws IllegalArgumentException {
+        assert toCalendar != null;
+        assert !toCalendar.isEmpty();
+        assert itemsToPush != null;
+        
+        if(!hasCalendar(toCalendar)) {
+            throw new IllegalArgumentException(GCAL_CALENDAR_NOT_FOUND);
+        }
+        
+        String toCalID = getCalendarID(toCalendar);
+        
+        for(Item item : itemsToPush) {
+            try {
+                this.calendar.events().insert(toCalID, changeItemToEvent(item)).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     private static Event changeItemToEvent(Item item) {
         Event event = new Event();
