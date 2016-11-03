@@ -11,7 +11,16 @@ import seedu.address.model.Model;
 public abstract class Command {
     protected Model model;
     protected boolean hasUndo = false;
+    protected String rawCommand;
     
+    public String getRawCommand() {
+        return rawCommand;
+    }
+
+    public void setRawCommand(String rawCommand) {
+        this.rawCommand = rawCommand;
+    }
+
     /**
      * getter method for hasUndo
      * @@author A0144750J
