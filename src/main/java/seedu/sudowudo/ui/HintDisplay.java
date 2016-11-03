@@ -45,6 +45,7 @@ public class HintDisplay extends UiPart {
 		hintList = FXCollections.observableArrayList();
 		hintList.addAll(AddCommand.getHints());
 		hintListView.setItems(new FilteredList<>(hintList));
+		this.placeHolder.getChildren().add(mainPane);
     }
 
     @Override
