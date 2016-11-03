@@ -4,7 +4,7 @@ import seedu.address.commons.events.BaseEvent;
 
 //@@author A0144750J
 /**
- * Indicates a request to jump up 5 places
+ * Indicates a request to display an archived command in the command box
  */
 public class CycleCommandHistoryEvent extends BaseEvent {
     
