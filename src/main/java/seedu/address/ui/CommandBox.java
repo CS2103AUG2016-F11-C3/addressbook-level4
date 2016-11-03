@@ -107,10 +107,16 @@ public class CommandBox extends UiPart {
         restoreCommandText();
     }
     
+    //@@author A0144750J
+    /**
+     * Changing the text field to show an archived input
+     * @param event: CycleCommandHistoryEvent dispatched by Logic, carrying the archived input to display
+     */
     @Subscribe
     private void handleCycleCommandHistory(CycleCommandHistoryEvent event) {
         commandTextField.setText(event.userIput);
     }
+    //@@author
 
     /**
      * Restores the command box text to the previously entered command
