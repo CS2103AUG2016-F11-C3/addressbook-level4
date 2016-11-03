@@ -8,7 +8,6 @@ import java.util.Observable;
 
 import seedu.address.logic.parser.DateTimeParser;
 import seedu.address.model.item.Description;
-import seedu.address.model.item.Item;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.tag.UniqueTagList;
 
@@ -194,7 +193,8 @@ public class TestItem extends Observable implements ReadOnlyItem, Comparable<Tes
 	}
 	
     public static final Comparator<TestItem> chronologicalComparator = new Comparator<TestItem>(){
-        public int compare(TestItem x, TestItem y) {
+        @Override
+		public int compare(TestItem x, TestItem y) {
             return x.compareTo(y);
         }
     };
@@ -207,7 +207,10 @@ public class TestItem extends Observable implements ReadOnlyItem, Comparable<Tes
      * @author darren
      */
     public int compareTo(TestItem other) {
-        LocalDateTime thisStart, thisEnd, otherStart, otherEnd;
+		LocalDateTime thisStart;
+		LocalDateTime thisEnd;
+		LocalDateTime otherStart;
+		LocalDateTime otherEnd;
         
         thisStart = assignDummyLDT(startDate);
         thisEnd = assignDummyLDT(endDate);

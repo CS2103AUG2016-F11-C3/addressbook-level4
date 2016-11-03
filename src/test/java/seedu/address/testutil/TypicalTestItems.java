@@ -2,8 +2,6 @@ package seedu.address.testutil;
 
 import java.util.Arrays;
 
-import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
-
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.model.TaskBook;
 import seedu.address.model.item.Item;
