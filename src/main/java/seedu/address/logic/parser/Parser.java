@@ -30,6 +30,7 @@ import seedu.address.logic.commands.HelpCommand;
 import seedu.address.logic.commands.IncorrectCommand;
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.SelectCommand;
+import seedu.address.logic.commands.SyncCommand;
 import seedu.address.logic.commands.UndoCommand;
 
 /**
@@ -156,6 +157,9 @@ public class Parser {
             
         case UndoCommand.COMMAND_WORD:
         	return new UndoCommand();
+
+        case SyncCommand.COMMAND_WORD:
+            return prepareSync(arguments);
 
         default:
             return new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
@@ -412,6 +416,23 @@ public class Parser {
             return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, e.getMessage()));
         }
     }
+    
+    //@@author A0147609X
+    /**
+     * Parse arguments for Sync command.
+     * @param args
+     * @return
+     * @author darren
+     */
+    private Command prepareSync(String args) {
+        final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(args.trim());
+        if(!matcher.matches()) {
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SyncCommand.MESSAGE_USAGE));
+        }
+        
+        return new SyncCommand(args.trim());
+    }
+    //@@author
 
 	/*
 	 * Extracts a valid DateTime from the provided arguments and adds them to
