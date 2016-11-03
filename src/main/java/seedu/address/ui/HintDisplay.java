@@ -1,12 +1,16 @@
 package seedu.address.ui;
 
-import javax.swing.text.html.ListView;
-
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.Hint;
 
 /**
  * A popup window that shows command hints to the user as he types
@@ -20,23 +24,27 @@ public class HintDisplay extends UiPart {
 	private StackPane hintDisplayArea;
 
 	@FXML
-	private ListView hintListView;
+	private ListView<Hint> hintListView;
 
 
-	private static final String FXML = "ResultDisplay.fxml";
+	private static final String FXML = "HintDisplay.fxml";
 
     private AnchorPane placeHolder;
 
     private AnchorPane mainPane;
 
+	private ObservableList<Hint> hintList;
+
     public static HintDisplay load(Stage primaryStage, AnchorPane placeHolder) {
-        HintDisplay statusBar = UiPartLoader.loadUiPart(primaryStage, placeHolder, new HintDisplay());
-        statusBar.configure();
-        return statusBar;
+		HintDisplay hintDisplay = UiPartLoader.loadUiPart(primaryStage, placeHolder, new HintDisplay());
+		hintDisplay.configure();
+		return hintDisplay;
     }
 
     public void configure() {
-
+		hintList = FXCollections.observableArrayList();
+		hintList.addAll(AddCommand.getHints());
+		hintListView.setItems(new FilteredList<>(hintList));
     }
 
     @Override
@@ -53,5 +61,6 @@ public class HintDisplay extends UiPart {
     public String getFxmlPath() {
         return FXML;
     }
+
 
 }

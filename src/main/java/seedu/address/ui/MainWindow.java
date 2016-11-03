@@ -37,6 +37,7 @@ public class MainWindow extends UiPart {
     private ItemListPanel itemListPanel;
     private ResultDisplay resultDisplay;
     private StatusBarFooter statusBarFooter;
+	private HintDisplay hintDisplay;
     private CommandBox commandBox;
     private Config config;
     private UserPrefs userPrefs;
@@ -120,6 +121,7 @@ public class MainWindow extends UiPart {
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getTaskBookFilePath());
         commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
+		hintDisplay = HintDisplay.load(primaryStage, hintDisplayPlaceholder);
     }
 
     private AnchorPane getCommandBoxPlaceholder() {
