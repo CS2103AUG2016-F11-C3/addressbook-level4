@@ -1,5 +1,7 @@
 package seedu.sudowudo.ui;
 
+import java.util.function.Predicate;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -34,20 +36,22 @@ public class HintDisplay extends UiPart {
 
     private AnchorPane mainPane;
 
-	private ObservableList<Hint> hintList;
+	private FilteredList<Hint> hintList;
 
     public static HintDisplay load(Stage primaryStage, AnchorPane placeHolder) {
 		HintDisplay hintDisplay = UiPartLoader.loadUiPart(primaryStage, placeHolder, new HintDisplay());
 		hintDisplay.configure();
+		hintDisplay.hideHints();
 		return hintDisplay;
     }
 
     public void configure() {
-		hintList = FXCollections.observableArrayList();
-		hintList.addAll(AddCommand.getHints());
+		ObservableList<Hint> hintsList = FXCollections.observableArrayList();
+		hintsList.addAll(AddCommand.getHints());
+		hintList = new FilteredList<>(hintsList);
 		this.placeHolder.getChildren().add(mainPane);
 
-		hintListView.setItems(new FilteredList<>(hintList));
+		hintListView.setItems(hintList);
 		hintListView.setCellFactory(listView -> new HintListCell());
     }
 
@@ -66,8 +70,22 @@ public class HintDisplay extends UiPart {
         return FXML;
     }
 
+	public void showAllHints() {
+		hintListView.setVisible(true);
+		hintList.setPredicate(null);
+	}
 
-	class HintListCell extends ListCell<Hint> {
+	public void updateHints(String search) {
+		hintListView.setVisible(true);
+		hintList.setPredicate(new KeywordPredicate(search));
+	}
+
+	public void hideHints() {
+		hintListView.setVisible(false);
+	}
+
+
+	private class HintListCell extends ListCell<Hint> {
 
 		public HintListCell() {
 		}
@@ -82,6 +100,19 @@ public class HintDisplay extends UiPart {
 			} else {
 				setText(hint.getDescription() + " " + hint.getUsage());
 			}
+		}
+	}
+
+	private class KeywordPredicate implements Predicate<Hint> {
+		private final String keyword;
+
+		KeywordPredicate(String kw) {
+			this.keyword = kw;
+		}
+
+		@Override
+		public boolean test(Hint hint) {
+			return hint.equals(keyword);
 		}
 	}
 
