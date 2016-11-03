@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/CS2103AUG2016-F11-C3/main.svg?branch=master)](https://travis-ci.org/CS2103AUG2016-F11-C3/main) [![Coverage Status](https://coveralls.io/repos/github/CS2103AUG2016-F11-C3/main/badge.svg?branch=master)](https://coveralls.io/github/CS2103AUG2016-F11-C3/main) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/c17da85aa331442d847cb869771ecafb)](https://www.codacy.com/app/heycraa/main?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=CS2103AUG2016-F11-C3/main&amp;utm_campaign=Badge_Grade)
 # Sudowudo
 
 ### User Interface

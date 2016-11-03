@@ -2,9 +2,9 @@ package guitests;
 
 import guitests.guihandles.ItemCardHandle;
 import org.junit.Test;
-import seedu.address.logic.commands.UndoCommand;
-import seedu.address.testutil.TestItem;
-import seedu.address.testutil.TestUtil;
+import seedu.sudowudo.logic.commands.UndoCommand;
+import seedu.sudowudo.testutil.TestItem;
+import seedu.sudowudo.testutil.TestUtil;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -44,7 +44,7 @@ public class UndoCommandTest extends TaskBookGuiTest {
 
         // undo should succeed
         commandBox.runCommand("undo");
-        assertResultMessage("Undo delete task: Always brush teeth");
+        assertResultMessage("Undo delete task: Dover Road");
         
         // delete a bad command
         commandBox.runCommand("delete " + currentList.length + 2);
