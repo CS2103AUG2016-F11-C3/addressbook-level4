@@ -4,7 +4,6 @@ import javafx.collections.ObservableList;
 import seedu.address.commons.core.ComponentManager;
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.LogsCenter;
-import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.events.ui.CycleCommandHistoryEvent;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
@@ -19,7 +18,6 @@ import seedu.address.model.Model;
 import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.storage.Storage;
 
-import java.util.Stack;
 import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;

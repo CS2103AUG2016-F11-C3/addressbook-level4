@@ -8,10 +8,6 @@ import seedu.address.commons.events.BaseEvent;
  */
 public class ListPageUpEvent extends BaseEvent {
 
-    public ListPageUpEvent() {
-
-    }
-
     @Override
     public String toString() {
         return this.getClass().getSimpleName();

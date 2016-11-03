@@ -8,9 +8,6 @@ import seedu.address.commons.events.BaseEvent;
  */
 public class PreviousCommandEvent extends BaseEvent {
 
-    public PreviousCommandEvent() {
-    }
-
     @Override
     public String toString() {
         return this.getClass().getSimpleName();
