@@ -74,23 +74,22 @@ public class ResultDisplay extends UiPart {
 
     public void postMessage(String message) {
 		showDisplay();
-		displayTextFlow.getStyleClass().set(1, "alert-success");
 		headerText.setText("");
 		messageText.setText(message);
     }
 
 	public void postMessage(String header, String message) {
 		showDisplay();
-		displayTextFlow.getStyleClass().set(1, "alert-success");
 		headerText.setText(message);
 		messageText.setText(message);
 	}
 
-	public void postError(String message) {
-		showDisplay();
+	public void setSuccess() {
+		displayTextFlow.getStyleClass().set(1, "alert-success");
+	}
+
+	public void setError() {
 		displayTextFlow.getStyleClass().set(1, "alert-error");
-		headerText.setText("");
-		messageText.setText(message);
 	}
 
 	public void showDisplay() {
