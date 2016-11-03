@@ -61,14 +61,14 @@ public class LogicManager extends ComponentManager implements Logic {
     public CommandResult execute(String commandText) {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         Command command = parser.parseCommand(commandText);
+        // putting command in String format in history
+        model.addCommandToHistory(command.getRawCommand());
         command.setData(model);
         CommandResult result = command.execute();
         // putting valid command into undo stack
         if (command.getUndo()) {
         	model.addCommandToStack(command);
         }
-        // putting command in String format in history
-        
         return result;
     }
     // @@author
