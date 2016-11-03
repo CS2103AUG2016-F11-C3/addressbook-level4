@@ -6,6 +6,13 @@ import java.util.List;
 
 import com.google.api.services.calendar.model.*;
 
+import seedu.address.model.item.Item;
+
+/**
+ * This class provides wrapper methods to the Google Calendar API.
+ * @author darren
+ *
+ */
 public class Interfacer {
     // the remote calendar object
     private com.google.api.services.calendar.Calendar calendar;
@@ -52,9 +59,19 @@ public class Interfacer {
 	    return calendarNames;
         
     }
-
-    public static void main(String[] args) {
-        Interfacer interfacer = new Interfacer();
-        System.out.println(interfacer.getCalendarNames().toString());
+    
+    /**
+     * Checks if a given calendar name exists.
+     * @param calendarName
+     * @return
+     */
+    public boolean hasCalendar(String calendarName) {
+        List<String> calendarNames = getCalendarNames();
+        for(String cal : calendarNames) {
+            if(cal.equalsIgnoreCase(calendarName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
