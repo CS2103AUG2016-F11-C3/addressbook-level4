@@ -253,6 +253,10 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     public String toString() {
         return description.toString();
     }
+    
+    public String toStringLong() {
+        return description.toString() + " " + assignDummyLDT(startDate) + " " + assignDummyLDT(endDate);
+    }
 
 
     @Override
