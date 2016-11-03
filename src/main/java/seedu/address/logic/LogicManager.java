@@ -1,14 +1,14 @@
-package seedu.address.logic;
+package seedu.sudowudo.logic;
 
 import javafx.collections.ObservableList;
-import seedu.address.commons.core.ComponentManager;
-import seedu.address.commons.core.LogsCenter;
-import seedu.address.logic.commands.Command;
-import seedu.address.logic.commands.CommandResult;
-import seedu.address.logic.parser.Parser;
-import seedu.address.model.Model;
-import seedu.address.model.item.ReadOnlyItem;
-import seedu.address.storage.Storage;
+import seedu.sudowudo.commons.core.ComponentManager;
+import seedu.sudowudo.commons.core.LogsCenter;
+import seedu.sudowudo.logic.commands.Command;
+import seedu.sudowudo.logic.commands.CommandResult;
+import seedu.sudowudo.logic.parser.Parser;
+import seedu.sudowudo.model.Model;
+import seedu.sudowudo.model.item.ReadOnlyItem;
+import seedu.sudowudo.storage.Storage;
 
 import java.util.logging.Logger;
 

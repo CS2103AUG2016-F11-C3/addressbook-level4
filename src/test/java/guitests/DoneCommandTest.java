@@ -2,10 +2,10 @@ package guitests;
 
 import org.junit.Test;
 
-import seedu.address.commons.core.Messages;
-import seedu.address.logic.commands.DoneCommand;
-import seedu.address.testutil.TestItem;
-import seedu.address.testutil.TestUtil;
+import seedu.sudowudo.commons.core.Messages;
+import seedu.sudowudo.logic.commands.DoneCommand;
+import seedu.sudowudo.testutil.TestItem;
+import seedu.sudowudo.testutil.TestUtil;
 import static org.junit.Assert.assertTrue;
 
 /**

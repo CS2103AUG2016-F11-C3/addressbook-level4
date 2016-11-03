@@ -12,10 +12,10 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import seedu.address.TestApp;
-import seedu.address.model.item.Item;
-import seedu.address.model.item.ReadOnlyItem;
-import seedu.address.testutil.TestUtil;
+import seedu.sudowudo.TestApp;
+import seedu.sudowudo.model.item.Item;
+import seedu.sudowudo.model.item.ReadOnlyItem;
+import seedu.sudowudo.testutil.TestUtil;
 
 /**
  * Provides a handle for the panel containing the item list.
