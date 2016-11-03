@@ -38,7 +38,7 @@ public class LogicManager extends ComponentManager implements Logic {
     
     public LogicManager(Model model, Storage storage) {
         this.model = model;
-        this.parser = new Parser();
+        this.parser = Parser.getInstance();
         currentListIndex = 0;
         currentHistoryPointer = 0;
         this.setPageStep(5);
