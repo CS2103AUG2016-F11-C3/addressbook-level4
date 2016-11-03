@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_ITEM_DISPLAYED_INDEX;
-import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
+import static seedu.address.commons.core.Messages.MESSAGE_ITEMS_LISTED_OVERVIEW;
 import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
 
 import java.time.LocalDateTime;
@@ -411,7 +411,7 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, allItems);
-        assertCommandBehavior("find #task \"dead\"", (String.format(MESSAGE_PERSONS_LISTED_OVERVIEW, 1)), expectedTB, expectedList);
+        assertCommandBehavior("find #task \"dead\"", (String.format(MESSAGE_ITEMS_LISTED_OVERVIEW, 1)), expectedTB, expectedList);
     }
     
     //@@author
