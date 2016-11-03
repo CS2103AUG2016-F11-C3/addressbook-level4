@@ -86,7 +86,12 @@ public class Parser {
         }
     }
 
-    public Parser() {
+    private static Parser instance = new Parser();
+    private Parser() {
+    }
+    
+    public static Parser getInstance(){
+        return instance;
     }
 
     /**
