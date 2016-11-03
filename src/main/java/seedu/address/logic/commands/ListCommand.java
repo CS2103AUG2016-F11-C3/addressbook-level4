@@ -23,7 +23,7 @@ public class ListCommand extends Command {
         DONE("done", "completed tasks"), 
         ITEM("item", "items"), 
         OVERDUE("overdue", "overdue tasks"), 
-        UNDONE("undone", "undone tasks");
+		UNDONE("undone", "incomplete tasks");
         
         private String typeName;
         private String typeMessage;

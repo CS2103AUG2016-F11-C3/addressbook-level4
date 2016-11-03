@@ -1,20 +1,46 @@
 package seedu.address.logic;
 
-import com.google.common.eventbus.Subscribe;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
+import static seedu.address.commons.core.Messages.MESSAGE_INVALID_ITEM_DISPLAYED_INDEX;
+import static seedu.address.commons.core.Messages.MESSAGE_PERSONS_LISTED_OVERVIEW;
+import static seedu.address.commons.core.Messages.MESSAGE_UNKNOWN_COMMAND;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.TemporaryFolder;
+
+import com.google.common.eventbus.Subscribe;
+
 import seedu.address.commons.core.EventsCenter;
 import seedu.address.commons.core.Messages;
-import seedu.address.logic.commands.*;
+import seedu.address.commons.events.model.TaskBookChangedEvent;
 import seedu.address.commons.events.ui.JumpToListRequestEvent;
 import seedu.address.commons.events.ui.ShowHelpRequestEvent;
 import seedu.address.commons.exceptions.DuplicateDataException;
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.commons.events.model.TaskBookChangedEvent;
+import seedu.address.logic.commands.AddCommand;
+import seedu.address.logic.commands.ClearCommand;
+import seedu.address.logic.commands.Command;
+import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.DeleteCommand;
+import seedu.address.logic.commands.DoneCommand;
+import seedu.address.logic.commands.EditCommand;
+import seedu.address.logic.commands.ExitCommand;
+import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.commands.HelpCommand;
+import seedu.address.logic.commands.ListCommand;
+import seedu.address.logic.commands.SelectCommand;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.ReadOnlyTaskBook;
@@ -25,16 +51,6 @@ import seedu.address.model.item.ReadOnlyItem;
 import seedu.address.model.tag.Tag;
 import seedu.address.model.tag.UniqueTagList;
 import seedu.address.storage.StorageManager;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static seedu.address.commons.core.Messages.*;
 
 public class LogicManagerTest<E> {
 
@@ -279,7 +295,7 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, 2);
-        assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS,"ITEM")), expectedAB, expectedList);
+		assertCommandBehavior("list", (String.format(ListCommand.MESSAGE_SUCCESS, "items")), expectedAB, expectedList);
     }
     
     @Test
@@ -296,7 +312,8 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, allItems);
-        assertCommandBehavior("list task", (String.format(ListCommand.MESSAGE_SUCCESS,"TASK")), expectedTB, expectedList);
+		assertCommandBehavior("list task", (String.format(ListCommand.MESSAGE_SUCCESS, "tasks")), expectedTB,
+				expectedList);
     }
 
     @Test
@@ -313,7 +330,8 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, allItems);
-        assertCommandBehavior("list event", (String.format(ListCommand.MESSAGE_SUCCESS,"EVENT")), expectedTB, expectedList);
+		assertCommandBehavior("list event", (String.format(ListCommand.MESSAGE_SUCCESS, "events")), expectedTB,
+				expectedList);
     }
 
     @Test
@@ -332,7 +350,8 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, allItems);
-        assertCommandBehavior("list done", (String.format(ListCommand.MESSAGE_SUCCESS,"DONE")), expectedTB, expectedList);
+		assertCommandBehavior("list done", (String.format(ListCommand.MESSAGE_SUCCESS, "completed tasks")), expectedTB,
+				expectedList);
     }
     
     @Test
@@ -351,7 +370,8 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, allItems);
-        assertCommandBehavior("list undone", (String.format(ListCommand.MESSAGE_SUCCESS,"UNDONE")), expectedTB, expectedList);
+		assertCommandBehavior("list undone", (String.format(ListCommand.MESSAGE_SUCCESS, "incomplete tasks")),
+				expectedTB, expectedList);
     }
     
     @Test
@@ -371,7 +391,8 @@ public class LogicManagerTest<E> {
 
         // prepare task book state
         helper.addToModel(model, allItems);
-        assertCommandBehavior("list overdue", (String.format(ListCommand.MESSAGE_SUCCESS,"OVERDUE")), expectedTB, expectedList);
+		assertCommandBehavior("list overdue", (String.format(ListCommand.MESSAGE_SUCCESS, "overdue tasks")), expectedTB,
+				expectedList);
     }
 
     @Test
