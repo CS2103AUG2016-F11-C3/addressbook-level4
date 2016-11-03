@@ -118,6 +118,10 @@
 .anchor-pane-transparent {
     -fx-background-color: rgba(0,0,0,0);
 }
+.anchor-pane-translucent {
+    -fx-background-color: rgba(0, 100, 100, 0.5);
+    -fx-background-radius: 10;
+}
 
 .status-bar {
     -fx-background-color: derive(#1d1d1d, 20%);
