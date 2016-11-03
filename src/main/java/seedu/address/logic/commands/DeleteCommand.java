@@ -28,11 +28,10 @@ public class DeleteCommand extends Command {
 
 
     public static final String MESSAGE_DELETE_ITEM_SUCCESS = "Deleted Task: %1$s";
+    public static final String MESSAGE_ITEM_NOT_FOUND = "Item matching your search cannot be found!";
     public static final String MESSAGE_UNDO_SUCCESS = "Undo delete task: %1$s";
 	public static final String MESSAGE_UNDO_FAILURE = "Undo failed! Task already existed!";
-    
-	private static final String MESSAGE_ITEM_NOT_FOUND = "Item matching your search cannot be found!";
-    private static final String MESSAGE_UNIQUE_ITEM_NOT_FOUND = "More than one item matching your search was found! Please refine your search.";
+    public static final String MESSAGE_UNIQUE_ITEM_NOT_FOUND = "More than one item matching your search was found! Please refine your search.";
 
     private Set<String> keywords;
     private int index;
@@ -129,7 +128,7 @@ public class DeleteCommand extends Command {
             indicateAttemptToExecuteIncorrectCommand();
             throw new IllegalValueException(Messages.MESSAGE_INVALID_ITEM_DISPLAYED_INDEX);
         }
-        itemToDelete = lastShownList.get(index);
+        itemToDelete = lastShownList.get(index-1);
         return itemToDelete;
     }
 
