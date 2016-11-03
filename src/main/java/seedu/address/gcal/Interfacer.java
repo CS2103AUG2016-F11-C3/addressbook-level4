@@ -2,17 +2,14 @@ package seedu.address.gcal;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.*;
 
 import seedu.address.commons.exceptions.IllegalValueException;
 import seedu.address.logic.parser.DateTimeParser;
-import seedu.address.model.Model;
 import seedu.address.model.item.Description;
 import seedu.address.model.item.Item;
 import seedu.address.model.tag.Tag;
@@ -34,6 +31,7 @@ public class Interfacer {
     // default ID for primary calendar of user
     public static final String GCAL_PRIMARY = "primary";
 
+    public static final String GCAL_TAG = "GCal";
     public static final String GCAL_CALENDAR_NOT_FOUND = "No such calendar exists.";
 
     public Interfacer() {
@@ -134,6 +132,7 @@ public class Interfacer {
         LocalDateTime start = changeDateTimeToLocalDateTime(event.getStart());
         LocalDateTime end = changeDateTimeToLocalDateTime(event.getEnd());
         UniqueTagList tags = new UniqueTagList();
+        tags.add(new Tag(GCAL_TAG));
         return new Item(name, start, end, tags);
     }
 
