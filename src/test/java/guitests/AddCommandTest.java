@@ -2,10 +2,10 @@ package guitests;
 
 import guitests.guihandles.ItemCardHandle;
 import org.junit.Test;
-import seedu.address.logic.commands.AddCommand;
-import seedu.address.commons.core.Messages;
-import seedu.address.testutil.TestItem;
-import seedu.address.testutil.TestUtil;
+import seedu.sudowudo.logic.commands.AddCommand;
+import seedu.sudowudo.commons.core.Messages;
+import seedu.sudowudo.testutil.TestItem;
+import seedu.sudowudo.testutil.TestUtil;
 
 import static org.junit.Assert.assertTrue;
 
