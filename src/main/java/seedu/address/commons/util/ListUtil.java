@@ -72,11 +72,14 @@ public class ListUtil {
     }
 
     //@@author A0131560U
+<<<<<<< HEAD
     /**
      * A Qualifier class that particularly checks for Item Type (e.g. Task, Event, Done).
      * @author craa
      *
      */
+=======
+>>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
     private class TypeQualifier implements Qualifier {
         private String type;
 
@@ -100,11 +103,14 @@ public class ListUtil {
     }
 
     //@@author A0131560U
+<<<<<<< HEAD
     /**
      * A Qualifier class that particularly checks a set of keywords.
      * @author craa
      *
      */
+=======
+>>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
     private class KeywordQualifier implements Qualifier {
         private Set<String> searchKeyWords;
 
@@ -115,7 +121,11 @@ public class ListUtil {
         @Override
         public boolean run(ReadOnlyItem item) {
             for (String keyword : searchKeyWords) {
+<<<<<<< HEAD
                 if (!new Keyword(keyword).matches(item)) {
+=======
+                if (!new Keyword(keyword).search(item)) {
+>>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
                     return false;
                 }
             }
@@ -126,6 +136,7 @@ public class ListUtil {
         public String toString() {
             return "keywords=" + String.join(", ", searchKeyWords);
         }
+<<<<<<< HEAD
 
     }
 
@@ -134,6 +145,14 @@ public class ListUtil {
      * An anonymous class that holds a keyword. This keyword is used to search against items.
      * @author craa
      *
+=======
+    }
+
+    // @@author A0092390E-idea
+    //@@author A0131560U
+    /**
+     * Given an item, returns true if the item matches this keyword, and false otherwise.
+>>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
      */
     private class Keyword {
         private String keyword;
@@ -142,6 +161,7 @@ public class ListUtil {
             keyword = _keyword;
         }
 
+<<<<<<< HEAD
         //@@author A0131560U
         /**
          * Returns true if the item matches the keyword in this instance of Keyword.
@@ -149,6 +169,9 @@ public class ListUtil {
          * @return
          */
         public boolean matches(ReadOnlyItem item) {
+=======
+        public boolean search(ReadOnlyItem item) {
+>>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
             if (keyword.matches(Parser.COMMAND_DESCRIPTION_REGEX)) {
                 return matchesDescription(item);
             } else if (keyword.matches(Parser.COMMAND_TAG_REGEX)) {
@@ -158,11 +181,14 @@ public class ListUtil {
             }
         }
 
+<<<<<<< HEAD
         /**
          * Checks if the item's start or end date matches the keyword.
          * @param item
          * @return
          */
+=======
+>>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
         private boolean matchesDates(ReadOnlyItem item) {
             DateTimeParser parseDate = new DateTimeParser(keyword);
             return ((item.getStartDate() != null
@@ -171,6 +197,7 @@ public class ListUtil {
                             && DateTimeParser.isSameDay(item.getEndDate(), parseDate.extractStartDate()))));
         }
 
+<<<<<<< HEAD
         /**
          * Checks if the item's tags (or types, if the tag string actually
          * aliases to a type meta-tag) match the keyword.
@@ -191,10 +218,18 @@ public class ListUtil {
          * @param item
          * @return
          */
+=======
+        private boolean matchesTags(ReadOnlyItem item) {
+            return StringUtil.containsIgnoreCase(item.getTags().listTags(),
+                    keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, ""));
+        }
+
+>>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
         private boolean matchesDescription(ReadOnlyItem item) {
             return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(),
                     keyword.replace(Parser.COMMAND_DESCRIPTION_PREFIX, ""));
         }
+<<<<<<< HEAD
         
         private boolean isKeywordType(){
             return Parser.isValidType(keyword);
@@ -202,3 +237,8 @@ public class ListUtil {
     }
 
 }
+=======
+    }
+
+}
+>>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
