@@ -35,7 +35,7 @@ public abstract class Command {
      * @return summary message for persons displayed
      */
     public static String getMessageForItemListShownSummary(int displaySize) {
-        return String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW, displaySize);
+        return String.format(Messages.MESSAGE_ITEMS_LISTED_OVERVIEW, displaySize);
     }
 
     /**

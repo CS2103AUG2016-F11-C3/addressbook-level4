@@ -66,6 +66,6 @@ public interface Model {
     void updateFilteredItemList(Set<String> keywords);
 
     /** Updates the default filter of the item list to filter by a specific task type limiter */
-    void updateFilteredListDefaultPredicate(String taskType);
+    void updateDefaultPredicate(String taskType);
 
 }
