@@ -66,7 +66,7 @@ public class LogicManager extends ComponentManager implements Logic {
         logger.info("----------------[USER COMMAND][" + commandText + "]");
         Command command = parser.parseCommand(commandText);
         model.addCommandToHistory(command.getRawCommand()); // putting command in String format in history
-        currentHistoryPointer = model.getHistorySize() - 1;
+        currentHistoryPointer = model.getHistorySize();
         command.setData(model);
         CommandResult result = command.execute();
         // putting valid command into undo stack
