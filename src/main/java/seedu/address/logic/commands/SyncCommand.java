@@ -50,7 +50,7 @@ public class SyncCommand extends Command {
         // push
 
         return new CommandResult(
-                String.format(MESSAGE_SUCCESS, this.targetCalendar));
+                String.format(MESSAGE_SUCCESS, interfacer.getActualCalendarName(this.targetCalendar)));
     }
 
     @Override

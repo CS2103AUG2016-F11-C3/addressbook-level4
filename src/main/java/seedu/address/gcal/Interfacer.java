@@ -191,6 +191,33 @@ public class Interfacer {
 
         return null;
     }
+    
+    /**
+     * Get the actual Google Calendar calendar name from
+     * a possibly partial-matching-calendar name.
+     * @param calendarName
+     * @return
+     * @author darren
+     */
+    public String getActualCalendarName(String calendarName) {
+        assert calendarName != null;
+        assert !calendarName.isEmpty();
+
+        CalendarList calendarList = getCalendarList();
+
+        if (calendarList == null) {
+            return null;
+        }
+
+        for (CalendarListEntry calendar : calendarList.getItems()) {
+            if (calendar.getSummary().equalsIgnoreCase(calendarName)) {
+                return calendar.getSummary();
+            }
+        }
+
+        return null;
+        
+    }
 
     private CalendarList getCalendarList() {
         try {
