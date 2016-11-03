@@ -2,6 +2,8 @@ package seedu.address.gcal;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,9 +85,14 @@ public class Interfacer {
     }
 
     /**
-     * Pulls events from the remote calendar on GCal and inserts them into the
-     * current local model.
+     * Pulls events from the remote calendar on GCal and puts them into a
+     * List<Item>
      * 
+     * Events pulled must occur after the current system time.
+     * 
+     * @param fromCalendar
+     *      name of the remote calendar (case-insensitive)
+     * @return List<Item> from the remote calendar
      * @author darren
      */
     public List<Item> pullItems(String fromCalendar)
@@ -126,17 +133,44 @@ public class Interfacer {
         return pulledItems;
     }
 
+    private static Event changeItemToEvent(Item item) {
+        Event event = new Event();
+        event.setSummary(item.getDescription().toString());
+        
+        if(item.getStartDate() != null) {
+            event.setStart(changeLocalDateTimeToEventDateTime(item.getStartDate()));
+        }
+
+        if(item.getEndDate() != null) {
+            event.setEnd(changeLocalDateTimeToEventDateTime(item.getEndDate()));
+        }
+        
+        return event;
+    }
     private static Item changeEventToItem(Event event)
             throws IllegalValueException {
         Description name = new Description(event.getSummary());
-        LocalDateTime start = changeDateTimeToLocalDateTime(event.getStart());
-        LocalDateTime end = changeDateTimeToLocalDateTime(event.getEnd());
+        LocalDateTime start = changeEventDateTimeToLocalDateTime(event.getStart());
+        LocalDateTime end = changeEventDateTimeToLocalDateTime(event.getEnd());
         UniqueTagList tags = new UniqueTagList();
         tags.add(new Tag(GCAL_TAG));
         return new Item(name, start, end, tags);
     }
 
-    private static LocalDateTime changeDateTimeToLocalDateTime(
+    private static EventDateTime changeLocalDateTimeToEventDateTime(LocalDateTime ldt) {
+        if(ldt == null) {
+            return null;
+        }
+        
+        DateTime dt = new DateTime(ldt.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
+        EventDateTime edt = new EventDateTime();
+        edt.setDateTime(dt);
+        edt.setTimeZone(ZoneId.systemDefault().toString());
+        
+        return edt;
+    }
+
+    private static LocalDateTime changeEventDateTimeToLocalDateTime(
             EventDateTime edt) {
         if (edt == null) {
             return null;
