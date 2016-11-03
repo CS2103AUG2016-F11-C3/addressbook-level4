@@ -1,16 +1,20 @@
 package seedu.sudowudo.ui;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import seedu.sudowudo.commons.core.Config;
 import seedu.sudowudo.commons.core.GuiSettings;
 import seedu.sudowudo.commons.events.ui.ExitAppRequestEvent;
+import seedu.sudowudo.commons.events.ui.ListPageDownEvent;
+import seedu.sudowudo.commons.events.ui.ListPageUpEvent;
 import seedu.sudowudo.logic.Logic;
 import seedu.sudowudo.model.UserPrefs;
 import seedu.sudowudo.model.item.ReadOnlyItem;
@@ -100,7 +104,7 @@ public class MainWindow extends UiPart {
         scene = new Scene(rootLayout);
 		scene.getStylesheets().add("view/bootstrapfx.css");
         primaryStage.setScene(scene);
-
+        setPagingListeners();
         setAccelerators();
     }
 
@@ -194,4 +198,27 @@ public class MainWindow extends UiPart {
     public void releaseResources() {
         browserPanel.freeResources();
     }
+    
+    // @@author A0144750J
+    /**
+     * Set listeners for keyboard event when Page Up / Page Down is pressed
+     * raise a new event to alert EventCenters
+     */
+    private void setPagingListeners() {
+        assert scene != null;
+        scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+                switch (ke.getCode()) {
+                    case PAGE_UP: 
+                        raise(new ListPageUpEvent());
+                        break;
+                    case PAGE_DOWN:  
+                        raise(new ListPageDownEvent());
+                        break;
+                }
+            }
+        });
+    }
+
 }
