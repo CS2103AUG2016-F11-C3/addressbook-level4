@@ -54,9 +54,19 @@ public interface Model {
     // @@author A0144750J
     /** Add the command to history */
     void addCommandToHistory(String command);
-
-    /** Returns the filtered item list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     // @@author
+    
+    // @@author A0144750J
+    /** Return command from history */
+    String returnCommandFromHistory(int index);
+    // @@author
+    
+    // @@author A0144750J
+    /** Return the current size of command history */
+    int getHistorySize();
+    //@@author
+    
+    /** Returns the filtered item list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
     UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList();
 
     /** Returns the filtered person list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
