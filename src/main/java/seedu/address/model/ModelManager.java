@@ -15,6 +15,7 @@ import seedu.address.commons.core.LogsCenter;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.commons.events.model.TaskBookChangedEvent;
 import seedu.address.commons.exceptions.IllegalValueException;
+import seedu.address.commons.util.ListUtil;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.parser.DateTimeParser;
@@ -50,19 +51,19 @@ public class ModelManager extends ComponentManager implements Model {
         taskBook = new TaskBook(src);
         filteredItems = new FilteredList<>(taskBook.getItems());
         commandStack = new Stack<>();
-        this.defaultPredicate = new QualifierPredicate(new TypeQualifier("item"));
+        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
     }
 
     public ModelManager() {
         this(new TaskBook(), new UserPrefs());
-        this.defaultPredicate = new QualifierPredicate(new TypeQualifier("item"));
+        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
     }
 
     public ModelManager(ReadOnlyTaskBook initialData, UserPrefs userPrefs) {
         taskBook = new TaskBook(initialData);
         filteredItems = new FilteredList<>(taskBook.getItems());
         commandStack = new Stack<>();
-        this.defaultPredicate = new QualifierPredicate(new TypeQualifier("item"));
+        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
     }
 
     @Override
@@ -192,144 +193,15 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     //@@author A0131560U
-    public void updateFilteredListDefaultPredicate(String taskType) {
-        defaultPredicate = new QualifierPredicate(new TypeQualifier(taskType));
-        updateFilteredItemList(defaultPredicate);
+    public void updateDefaultPredicate(String taskType) {
+        defaultPredicate = ListUtil.getInstance().setDefaultPredicate(taskType);
+        filteredItems.setPredicate(defaultPredicate);
     }
 
     @Override
     public void updateFilteredItemList(Set<String> keywords) {
-        updateFilteredItemList(new QualifierPredicate(new KeywordQualifier(keywords)).and(defaultPredicate));
+        ListUtil.getInstance().updateFilteredItemList(filteredItems, keywords, defaultPredicate);
     }
 
-	/*
-	 * @@author A0092390E
-	 * 
-	 */
-    private void updateFilteredItemList(Predicate pred) {
-        // Not used, to narrow searches the user has to type the entire search string in
-        // if(filteredItems.getPredicate() != null){
-        // filteredItems.setPredicate(pred.and(filteredItems.getPredicate()));
-        // } else{
-        filteredItems.setPredicate(pred);
-        // }
-    }
-
-    // ========== Inner classes/interfaces used for filtering ==================================================
-
-    private class QualifierPredicate implements Predicate<ReadOnlyItem> {
-
-        private final Qualifier qualifier;
-
-        QualifierPredicate(Qualifier qualifier) {
-            this.qualifier = qualifier;
-        }
-
-        @Override
-        public String toString() {
-            return qualifier.toString();
-        }
-
-        @Override
-        public boolean test(ReadOnlyItem item) {
-            return qualifier.run(item);
-        }
-
-    }
-
-    interface Qualifier {
-        boolean run(ReadOnlyItem item);
-
-        @Override
-        String toString();
-    }
-
-    //@@author A0131560U
-    private class TypeQualifier implements Qualifier {
-        private String type;
-
-        TypeQualifier(String type) {
-            this.type = type;
-        }
-
-        @Override
-        public boolean run(ReadOnlyItem item) {
-            if (!item.is(type)) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public String toString() {
-            return "type= " + type;
-        }
-
-    }
-
-    //@@author A0131560U
-    private class KeywordQualifier implements Qualifier {
-        private Set<String> searchKeyWords;
-
-        KeywordQualifier(Set<String> nameKeyWords) {
-            this.searchKeyWords = nameKeyWords;
-        }
-
-        @Override
-        public boolean run(ReadOnlyItem item) {
-            for (String keyword : searchKeyWords) {
-                if (!new Keyword(keyword).search(item)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        @Override
-        public String toString() {
-            return "keywords=" + String.join(", ", searchKeyWords);
-        }
-    }
-
-    // @@author A0092390E-idea
-    //@@author A0131560U
-    /**
-     * Given an item, returns true if the item matches this keyword, and false otherwise.
-     */
-    private class Keyword {
-        private String keyword;
-
-        Keyword(String _keyword) {
-            keyword = _keyword;
-        }
-
-        public boolean search(ReadOnlyItem item) {
-            if (keyword.matches(Parser.COMMAND_DESCRIPTION_REGEX)) {
-                return matchesDescription(item);
-            } else if (keyword.matches(Parser.COMMAND_TAG_REGEX)) {
-                return matchesTags(item);
-            } else {
-                return matchesDates(item);
-            }
-        }
-
-        private boolean matchesDates(ReadOnlyItem item) {
-            DateTimeParser parseDate = new DateTimeParser(keyword);
-            return ((item.getStartDate() != null
-                    && DateTimeParser.isSameDay(item.getStartDate(), parseDate.extractStartDate())
-                    || (item.getEndDate() != null
-                            && DateTimeParser.isSameDay(item.getEndDate(), parseDate.extractStartDate()))));
-        }
-
-        private boolean matchesTags(ReadOnlyItem item) {
-            return StringUtil.containsIgnoreCase(item.getTags().listTags(),
-                    keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, ""));
-        }
-
-        private boolean matchesDescription(ReadOnlyItem item) {
-            return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(),
-                    keyword.replace(Parser.COMMAND_DESCRIPTION_PREFIX, ""));
-        }
-    }
 
 }
