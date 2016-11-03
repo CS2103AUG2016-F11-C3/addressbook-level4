@@ -113,7 +113,8 @@ public class Interfacer {
 
         if (items.isEmpty()) {
             // nothing to pull
-            return null;
+            // return an empty list
+            return pulledItems;
         }
 
         // have upcoming events
