@@ -2,8 +2,6 @@ package seedu.sudowudo.testutil;
 
 import java.util.Arrays;
 
-import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
-
 import seedu.sudowudo.commons.exceptions.IllegalValueException;
 import seedu.sudowudo.model.TaskBook;
 import seedu.sudowudo.model.item.Item;
