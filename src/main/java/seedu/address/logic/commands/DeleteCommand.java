@@ -1,5 +1,7 @@
 package seedu.address.logic.commands;
 
+import java.util.Set;
+
 import seedu.address.commons.core.Messages;
 import seedu.address.commons.core.UnmodifiableObservableList;
 import seedu.address.model.item.Item;
@@ -42,12 +44,12 @@ public class DeleteCommand extends Command {
 
         UnmodifiableObservableList<ReadOnlyItem> lastShownList = model.getFilteredItemList();
 
-        if (lastShownList.size() < targetIndex) {
+        if (lastShownList.isEmpty()) {
             indicateAttemptToExecuteIncorrectCommand();
             return new CommandResult(Messages.MESSAGE_INVALID_ITEM_DISPLAYED_INDEX);
         }
 
-        ReadOnlyItem itemToDelete = lastShownList.get(targetIndex - 1);
+        ReadOnlyItem itemToDelete = lastShownList.get(0);
         itemToAddBack = new Item(itemToDelete);
 
         try {
