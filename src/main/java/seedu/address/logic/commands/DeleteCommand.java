@@ -31,13 +31,7 @@ public class DeleteCommand extends Command {
     public static final String MESSAGE_ITEM_NOT_FOUND = "Item matching your search cannot be found!";
     public static final String MESSAGE_UNDO_SUCCESS = "Undo delete task: %1$s";
 	public static final String MESSAGE_UNDO_FAILURE = "Undo failed! Task already existed!";
-<<<<<<< HEAD
     public static final String MESSAGE_UNIQUE_ITEM_NOT_FOUND = "More than one item matching your search was found! Please refine your search.";
-=======
-    
-	private static final String MESSAGE_ITEM_NOT_FOUND = "Item matching your search cannot be found!";
-    private static final String MESSAGE_UNIQUE_ITEM_NOT_FOUND = "More than one item matching your search was found! Please refine your search.";
->>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
 
     private Set<String> keywords;
     private int index;
@@ -134,11 +128,7 @@ public class DeleteCommand extends Command {
             indicateAttemptToExecuteIncorrectCommand();
             throw new IllegalValueException(Messages.MESSAGE_INVALID_ITEM_DISPLAYED_INDEX);
         }
-<<<<<<< HEAD
         itemToDelete = lastShownList.get(index-1);
-=======
-        itemToDelete = lastShownList.get(index);
->>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
         return itemToDelete;
     }
 

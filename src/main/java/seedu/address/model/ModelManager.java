@@ -202,10 +202,4 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredItemList(Set<String> keywords) {
         ListUtil.getInstance().updateFilteredItemList(filteredItems, keywords, defaultPredicate);
     }
-<<<<<<< HEAD
 }
-=======
-
-
-}
->>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef

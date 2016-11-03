@@ -52,17 +52,9 @@ public class Parser {
     // one or more keywords separated by whitespace
     private static final Pattern KEYWORDS_ARGS_FORMAT = Pattern.compile("(?<keywords>\\S+(?:\\s+\\S+)*)");
 
-    private static final Pattern ITEM_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"(.*)"); // item
-                                                                                                  // has
-                                                                                                  // description
-                                                                                                  // and
-                                                                                                  // a
-                                                                                                  // string
-                                                                                                  // representing
-                                                                                                  // time
-                                                                                                  // to
-                                                                                                  // be
-                                                                                                  // processed
+    // item has description and a string representing time to be processed
+    private static final Pattern ITEM_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"(.*)");
+    
     private static final Pattern TASK_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"");
 
     private static final Pattern ITEM_EDIT_ARGS_FORMAT = Pattern.compile("(?<targetIndex>\\d+)\\s+(?<arguments>.*)");
@@ -79,25 +71,6 @@ public class Parser {
 
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-<<<<<<< HEAD
-=======
-    // @@author A0131560U
-    private enum Type {
-        TASK("task"), EVENT("event"), DONE("done"), ITEM("item"), OVERDUE("overdue"), UNDONE("undone");
-
-        private String typeName;
-
-        Type(String name) {
-            this.typeName = name;
-        }
-
-        public String getTypeName() {
-            return this.typeName;
-        }
-    }
-    // @@author
-
->>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
     public enum Field {
         NAME("name"), START_DATE("start_date"), END_DATE("end_date"), START_TIME("start_time"), END_TIME(
                 "end_time"), DATE("date"), TIME("time");
@@ -181,11 +154,7 @@ public class Parser {
     private Command prepareList(String argument) {
         assert argument != null;
         if (argument.isEmpty()) {
-<<<<<<< HEAD
             return new ListCommand(Item.Type.ITEM.getTypeName());
-=======
-            return new ListCommand(Type.ITEM.getTypeName());
->>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
         } else if (isValidType(argument)) {
             return new ListCommand(argument.trim().toLowerCase());
         } else {
@@ -202,13 +171,8 @@ public class Parser {
      */
     public static boolean isValidType(String argument) {
         assert argument != null;
-<<<<<<< HEAD
         try{
             Item.Type.valueOf(argument.trim().toUpperCase());
-=======
-        try {
-            Type.valueOf(argument.trim().toUpperCase());
->>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
         } catch (IllegalArgumentException iae) {
             return false;
         }
@@ -397,7 +361,6 @@ public class Parser {
      * @@author A0131560U
      */
     private Command prepareFind(String args) {
-<<<<<<< HEAD
         try{
             final Set<String> keywordSet = extractKeywords(args);
             return new FindCommand(keywordSet);
@@ -406,18 +369,6 @@ public class Parser {
         }
     }
 
-    private Set<String> extractKeywords(String args) throws IllegalValueException {
-        final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
-        if (!matcher.matches()) {
-            throw new IllegalValueException("Input does not match expected format for keywords");
-=======
-        try {
-            final Set<String> keywordSet = extractKeywords(args);
-            return new FindCommand(keywordSet);
-        } catch (IllegalValueException e) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
-        }
-    }
     //@@author A0131560U
     /**
      * Extracts description, tag and DateTime keywords from args and returns them as a set.
@@ -429,7 +380,6 @@ public class Parser {
         final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
             throw new IllegalValueException("Arguments do not match keyword format");
->>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
         }
 
         // search for all phrases within double quotes
@@ -441,7 +391,6 @@ public class Parser {
 
         if (!args.isEmpty()) {
             boolean isDateTimeValid = extractDateTimeFromKeywords(args, keywordSet);
-<<<<<<< HEAD
             if (!isDateTimeValid){
                 throw new IllegalValueException("Input does not match expected format for DateTime");
             }
@@ -454,16 +403,6 @@ public class Parser {
     }
     
     //@@A0092390E
-=======
-            if (!isDateTimeValid) {
-                throw new IllegalValueException("Arguments do not match keyword format");
-            }
-        }
-        return keywordSet;
-    }
-
-    // @@A0092390E
->>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
     /**
      * Parses arguments in the context of the Edit item command
      * 
@@ -545,7 +484,6 @@ public class Parser {
      * @return ArrayList<String> of parameters
      * @author darren
      */
-<<<<<<< HEAD
 
 	 //@@author A0147609X
 	/**
@@ -598,48 +536,4 @@ public class Parser {
 		}
 		return true;
 	}
-	//@@author
-=======
-    public static ArrayList<String> parseMultipleParameters(String params, char delimiter) {
-        CSVParser parser = new CSVParser(delimiter);
-
-        try {
-            String[] tokens = parser.parseLine(params);
-
-            // strip leading and trailing whitespaces
-            for (int i = 0; i < tokens.length; i++) {
-                tokens[i] = tokens[i].trim();
-            }
-
-            return new ArrayList<>(Arrays.asList(tokens));
-        } catch (IOException ioe) {
-            System.out.println(ioe.getMessage());
-        }
-
-        return null;
-    }
-    // @@author
-
-    // @@author A0147609X-unused
-    /**
-     * checks field names are valid
-     * 
-     * @param fieldNames
-     *            an ArrayList<String> of field names
-     * @return true if all fields are valid, false otherwise
-     * @author darren
-     */
-    private static boolean fieldsAreValid(ArrayList<String> fieldNames) {
-        assert fieldNames != null;
-        for (String fieldName : fieldNames) {
-            try {
-                Field ret = Field.valueOf(fieldName.toUpperCase());
-            } catch (IllegalArgumentException iae) {
-                return false;
-            }
-        }
-        return true;
-    }
-    // @@author
->>>>>>> ef394fe890d3e864c4ee58312c3dd7d4a9156bef
 }
