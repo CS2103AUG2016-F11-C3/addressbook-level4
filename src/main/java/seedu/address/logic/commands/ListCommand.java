@@ -67,7 +67,7 @@ public class ListCommand extends Command {
     @Override
     //@@author A0131560U
     public CommandResult execute() {
-        model.updateFilteredListDefaultPredicate(itemType.getTypeName());
+       model.updateDefaultPredicate(itemType.getTypeName());
     	hasUndo = false;
 		return new CommandResult(String.format(MESSAGE_SUCCESS, itemType));
     }
