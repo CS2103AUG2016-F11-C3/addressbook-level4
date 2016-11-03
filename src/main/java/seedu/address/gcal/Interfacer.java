@@ -26,10 +26,13 @@ import seedu.address.model.tag.UniqueTagList;
 public class Interfacer {
     // the remote calendar object
     private com.google.api.services.calendar.Calendar calendar;
+    
+    private String targetCalendar;
 
     private static final int MAX_RESULTS = 500;
 
-    public Interfacer() {
+    public Interfacer(String targetCalendar) {
+        this.targetCalendar = targetCalendar;
         try {
             this.calendar = Initializer.getCalendarService();
         } catch (IOException e) {
@@ -103,7 +106,7 @@ public class Interfacer {
         List<Event> items = null;
         try {
             // fetch events that haven't happened yet
-            items = getEvents("primary", getCurrentDateTime()).getItems();
+            items = getEvents(this.targetCalendar, getCurrentDateTime()).getItems();
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -142,13 +145,11 @@ public class Interfacer {
         
         DateTimeParser parser;
         if(edt.getDateTime() != null) {
-            System.out.println(edt.getDateTime().toStringRfc3339());
             parser = new DateTimeParser(edt.getDateTime().toStringRfc3339());
             return parser.extractStartDate();
         }
         
         if(edt.getDate() != null) {
-            System.out.println(edt.getDate().toStringRfc3339());
             parser = new DateTimeParser(edt.getDate().toStringRfc3339());
             return parser.extractStartDate();
         }
@@ -166,8 +167,4 @@ public class Interfacer {
         return new DateTime(System.currentTimeMillis());
     }
 
-    public static void main(String[] args) {
-        Interfacer interfacer = new Interfacer();
-        System.out.println(interfacer.pullItems());
-    }
 }
