@@ -29,16 +29,12 @@ public class ListUtil {
         return new QualifierPredicate(new TypeQualifier(taskType));
     }
     
-     // @@author A0092390E
+    // @@author A0092390E
     private void updateFilteredItemList(FilteredList<Item> filteredItems, Predicate pred) {
-        // Not used, to narrow searches the user has to type the entire search string in
-        // if(filteredItems.getPredicate() != null){
-        // filteredItems.setPredicate(pred.and(filteredItems.getPredicate()));
-        // } else{
         filteredItems.setPredicate(pred);
-        // }
     }
-
+    
+    //@@author
     public void updateFilteredItemList(FilteredList<Item> filteredItems, Set<String> keywords) {
         updateFilteredItemList(filteredItems, new QualifierPredicate(new KeywordQualifier(keywords)));        
     }
@@ -86,10 +82,8 @@ public class ListUtil {
 
         @Override
         public boolean run(ReadOnlyItem item) {
-            if (!item.is(type)) {
-                return false;
-            }
-            return true;
+            return item.is(type);
+
         }
 
         @Override
