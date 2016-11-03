@@ -23,6 +23,7 @@ public class CommandBox extends UiPart {
     private AnchorPane placeHolderPane;
     private AnchorPane commandPane;
     private ResultDisplay resultDisplay;
+	private HintDisplay hintDisplay;
     String previousCommandTest;
 
     private Logic logic;
@@ -32,15 +33,16 @@ public class CommandBox extends UiPart {
     private CommandResult mostRecentResult;
 
     public static CommandBox load(Stage primaryStage, AnchorPane commandBoxPlaceholder,
-            ResultDisplay resultDisplay, Logic logic) {
+			ResultDisplay resultDisplay, HintDisplay hintDisplay, Logic logic) {
         CommandBox commandBox = UiPartLoader.loadUiPart(primaryStage, commandBoxPlaceholder, new CommandBox());
-        commandBox.configure(resultDisplay, logic);
+		commandBox.configure(resultDisplay, hintDisplay, logic);
         commandBox.addToPlaceholder();
         return commandBox;
     }
 
-    public void configure(ResultDisplay resultDisplay, Logic logic) {
+	public void configure(ResultDisplay resultDisplay, HintDisplay hintDisplay, Logic logic) {
         this.resultDisplay = resultDisplay;
+		this.hintDisplay = hintDisplay;
         this.logic = logic;
         registerAsAnEventHandler(this);
     }
@@ -71,10 +73,15 @@ public class CommandBox extends UiPart {
 	// @@author A0092390E
 	@FXML
 	private void handleCommandInputChanged() {
+		previousCommandTest = commandTextField.getText();
 		if (!commandTextField.getText().equals("")) {
 			resultDisplay.hideDisplay();
+			int spaceIndex = previousCommandTest.indexOf(' ');
+			spaceIndex = (spaceIndex == -1) ? previousCommandTest.length() : spaceIndex;
+			this.hintDisplay.updateHints(commandTextField.getText(0, spaceIndex));
+		} else {
+			this.hintDisplay.hideHints();
 		}
-		previousCommandTest = commandTextField.getText();
 		// resultDisplay.postMessage(previousCommandTest);
 	}
 

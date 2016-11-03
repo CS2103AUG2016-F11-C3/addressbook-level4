@@ -120,8 +120,8 @@ public class MainWindow extends UiPart {
         itemListPanel = ItemListPanel.load(primaryStage, getItemListPlaceholder(), logic.getFilteredItemList());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getTaskBookFilePath());
-        commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
 		hintDisplay = HintDisplay.load(primaryStage, hintDisplayPlaceholder);
+		commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, hintDisplay, logic);
     }
 
     private AnchorPane getCommandBoxPlaceholder() {
