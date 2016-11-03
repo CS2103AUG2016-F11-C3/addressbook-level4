@@ -181,7 +181,7 @@ public class Parser {
 
     //@@author
     /**
-     * Parses arguments in the context of the add person command.
+     * Parses arguments in the context of the add item command.
      *
      * @param args
      *            full command args string
@@ -246,7 +246,7 @@ public class Parser {
     }
 
     /**
-     * Extracts the new person's tags from the add command's tag arguments
+     * Extracts the new item's tags from the add command's tag arguments
      * string. Merges duplicate tag strings.
      * 
      * @@author A0131560U
@@ -272,14 +272,17 @@ public class Parser {
 
     // @@author A0131560U
     /**
-     * Parses arguments in the context of the delete person command.
+     * Parses arguments in the context of the delete item command.
      *
      * @param args
      *            full command args string
      * @return the prepared command
      */
     private Command prepareDelete(String args) {
-
+        Optional<Integer> index = parseIndex(args);
+        if (index.isPresent()) {
+            return new DeleteCommand(index.get());
+        }
         try {
             final Set<String> keywordSet = extractKeywords(args);
             return new DeleteCommand(keywordSet);
@@ -310,7 +313,7 @@ public class Parser {
     //@@author
 
     /**
-     * Parses arguments in the context of the select person command.
+     * Parses arguments in the context of the select item command.
      *
      * @param args
      *            full command args string
