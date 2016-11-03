@@ -772,7 +772,7 @@ public class LogicManagerTest<E> {
      */
     class TestDataHelper {
 
-        Item aLongEvent() throws Exception {
+        private Item aLongEvent() throws Exception {
             Description description = new Description("A long event");
             LocalDateTime startDate = LocalDateTime.of(2016, 10, 10, 10, 10);
             LocalDateTime endDate = LocalDateTime.of(2016, 12, 12, 12, 12);
@@ -780,7 +780,7 @@ public class LogicManagerTest<E> {
         }
 
         //@@author A0131560U
-        Item workingItemWithTags(String... tagged) throws Exception {
+        private Item workingItemWithTags(String... tagged) throws Exception {
             Description description = new Description("Working item");
             LocalDateTime startDate = LocalDateTime.of(2016, 10, 10, 10, 10);
             LocalDateTime endDate = LocalDateTime.of(2016, 12, 12, 12, 12);
@@ -792,7 +792,7 @@ public class LogicManagerTest<E> {
         }
         
         //@@author A0131560U
-        Item workingItemWithDates(String desc, LocalDateTime... times) throws Exception {
+        private Item workingItemWithDates(String desc, LocalDateTime... times) throws Exception {
             Description description = new Description(desc);
             LocalDateTime startDate = null, endDate = null;
             if (times.length > 0){
@@ -806,12 +806,12 @@ public class LogicManagerTest<E> {
         }
 
         //@@author
-        Item aFloatingTask() throws Exception {
+        private Item aFloatingTask() throws Exception {
             Description description = new Description("A floating task");
             return new Item(description, null, null, new UniqueTagList());
         }
 
-        Item aDeadLine() throws Exception {
+        private Item aDeadLine() throws Exception {
             Description description = new Description("A deadline");
             LocalDateTime endDate = LocalDateTime.of(2016, 12, 12, 12, 12);
             return new Item(description, null, endDate, new UniqueTagList());
@@ -825,13 +825,13 @@ public class LogicManagerTest<E> {
          * @param seed
          *            used to generate the item data field values
          */
-        Item generateItem(int seed) throws Exception {
+        private Item generateItem(int seed) throws Exception {
             return new Item(new Description("Item " + seed),
                     new UniqueTagList(new Tag("tag" + Math.abs(seed)), new Tag("tag" + Math.abs(seed + 1))));
         }
 
         /** Generates the correct add command based on the item given */
-        String generateAddCommand(Item item) {
+        private String generateAddCommand(Item item) {
             StringBuffer cmd = new StringBuffer();
             cmd.append("add ");
             cmd.append("\"" + item.getDescription().toString() + "\" ");
@@ -845,7 +845,7 @@ public class LogicManagerTest<E> {
         /**
          * Generates a TaskBook with auto-generated items.
          */
-        TaskBook generateTaskBook(int numGenerated) throws Exception {
+        private TaskBook generateTaskBook(int numGenerated) throws Exception {
             TaskBook taskBook = new TaskBook();
             addToTaskBook(taskBook, numGenerated);
             return taskBook;
@@ -854,7 +854,7 @@ public class LogicManagerTest<E> {
         /**
          * Generates an TaskBook based on the list of Items given.
          */
-        TaskBook generateTaskBook(List<Item> items) throws Exception {
+        private TaskBook generateTaskBook(List<Item> items) throws Exception {
             TaskBook taskBook = new TaskBook();
             addToTaskBook(taskBook, items);
             return taskBook;
@@ -866,14 +866,14 @@ public class LogicManagerTest<E> {
          * @param taskBook
          *            The TaskBook to which the Items will be added
          */
-        void addToTaskBook(TaskBook taskBook, int numGenerated) throws Exception {
+        private void addToTaskBook(TaskBook taskBook, int numGenerated) throws Exception {
             addToTaskBook(taskBook, generateItemList(numGenerated));
         }
 
         /**
          * Adds the given list of Items to the given TaskBook
          */
-        void addToTaskBook(TaskBook taskBook, List<Item> itemsToAdd) throws Exception {
+        private void addToTaskBook(TaskBook taskBook, List<Item> itemsToAdd) throws Exception {
             for (Item p : itemsToAdd) {
                 taskBook.addItem(p);
             }
@@ -885,7 +885,7 @@ public class LogicManagerTest<E> {
          * @param model
          *            The model to which the Items will be added
          */
-        void addToModel(Model model, int numGenerated) throws Exception {
+        private void addToModel(Model model, int numGenerated) throws Exception {
             addToModel(model, generateItemList(numGenerated));
         }
 
