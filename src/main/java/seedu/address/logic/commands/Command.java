@@ -69,7 +69,7 @@ public abstract class Command {
         EventsCenter.getInstance().post(new IncorrectCommandAttemptedEvent(this));
     }
     
-	public ArrayList<Hint> getHints() {
+	public static ArrayList<Hint> getHints() {
 		return new ArrayList<>();
     }
 }

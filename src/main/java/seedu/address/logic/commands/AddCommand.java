@@ -148,8 +148,7 @@ public class AddCommand extends Command {
                 toUndoAdd);
     }
 
-	@Override
-	public ArrayList<Hint> getHints() {
+	public static ArrayList<Hint> getHints() {
 		ArrayList<Hint> hints = new ArrayList<>();
 		hints.add(new Hint("add task", "add", "add \"TASK_NAME\" [by DATETIME] [#tags]"));
 		hints.add(new Hint("add event", "add", "add \"EVENT_NAME\" DATETIME [to DATETIME] [#tags]"));
