@@ -58,7 +58,11 @@ allprojects {
         compile group: 'org.ocpsoft.prettytime', name: 'prettytime', version: '4.0.1.Final'
         // https://mvnrepository.com/artifact/org.ocpsoft.prettytime/prettytime-nlp
         compile group: 'org.ocpsoft.prettytime', name: 'prettytime-nlp', version: '4.0.0.Final'
-
+        
+        // google calendar API
+        compile 'com.google.api-client:google-api-client:1.22.0'
+        compile 'com.google.oauth-client:google-oauth-client-jetty:1.22.0'
+        compile 'com.google.apis:google-api-services-calendar:v3-rev220-1.22.0'
 
         testCompile "junit:junit:$junitVersion"
         testCompile "org.testfx:testfx-core:$testFxVersion"
