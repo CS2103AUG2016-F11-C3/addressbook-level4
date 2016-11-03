@@ -68,8 +68,12 @@ public class CommandBox extends UiPart {
     }
 
 	// Hook to use for command suggest
+	// @@author A0092390E
 	@FXML
 	private void handleCommandInputChanged() {
+		if (!commandTextField.getText().equals("")) {
+			resultDisplay.hideDisplay();
+		}
 		previousCommandTest = commandTextField.getText();
 		// resultDisplay.postMessage(previousCommandTest);
 	}
@@ -84,8 +88,8 @@ public class CommandBox extends UiPart {
          * in the event handling code {@link #handleIncorrectCommandAttempted}
          */
         mostRecentResult = logic.execute(previousCommandTest);
+		resultDisplay.postMessage(mostRecentResult.feedbackToUser);
 		setStyleToIndicateCorrectCommand(mostRecentResult.getClear());
-        resultDisplay.postMessage(mostRecentResult.feedbackToUser);
         logger.info("Result: " + mostRecentResult.feedbackToUser);
     }
 
@@ -93,12 +97,13 @@ public class CommandBox extends UiPart {
      * Sets the command box style to indicate a correct command.
      */
 	private void setStyleToIndicateCorrectCommand(boolean clear) {
-        commandTextField.getStyleClass().remove("error");
+		resultDisplay.setSuccess();
 		if (clear) {
 			commandTextField.setText("");
 		}
     }
 
+	// @@author
     @Subscribe
     private void handleIncorrectCommandAttempted(IncorrectCommandAttemptedEvent event){
         logger.info(LogsCenter.getEventHandlingLogMessage(event,"Invalid command: " + previousCommandTest));
@@ -117,7 +122,7 @@ public class CommandBox extends UiPart {
      * Sets the command box style to indicate an error
      */
     private void setStyleToIndicateIncorrectCommand() {
-        commandTextField.getStyleClass().add("error");
+		resultDisplay.setError();
     }
 
 }
