@@ -66,6 +66,7 @@ public class ModelManager extends ComponentManager implements Model {
         taskBook = new TaskBook(initialData);
         filteredItems = new FilteredList<>(taskBook.getItems());
         commandStack = new Stack<>();
+        commandHistory = new ArrayList<String>();
         this.defaultPredicate = new QualifierPredicate(new TypeQualifier("item"));
     }
 
@@ -138,32 +139,32 @@ public class ModelManager extends ComponentManager implements Model {
     //@@author
     
     // @@author A0144750J
-	@Override
-	public void setNotDoneItem(Item item) {
-		item.setIsDone(false);
+    @Override
+    public void setNotDoneItem(Item item) {
+        item.setIsDone(false);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
-	}
+    }
     //@@author
 	
-	// @@author A0144750J
-	@Override
-	public void addCommandToStack(Command command) {
-		assert command.getUndo() == true;
-		assert this.commandStack != null;
-		this.commandStack.push(command);
-	}
+    // @@author A0144750J
+    @Override
+    public void addCommandToStack(Command command) {
+	assert command.getUndo() == true;
+	assert this.commandStack != null;
+	this.commandStack.push(command);
+    }
     //@@author
 
-	// @@author A0144750J
-	@Override
-	public Command returnCommandFromStack() throws EmptyStackException {
-		assert this.commandStack != null;
-		if (this.commandStack.isEmpty()) {
-			throw new EmptyStackException();
-		}
-		return commandStack.pop();
+    // @@author A0144750J
+    @Override
+    public Command returnCommandFromStack() throws EmptyStackException {
+        assert this.commandStack != null;
+        if (this.commandStack.isEmpty()) {
+            throw new EmptyStackException();
 	}
+        return commandStack.pop();
+    }
     //@@author
 
 
@@ -235,7 +236,26 @@ public class ModelManager extends ComponentManager implements Model {
         }
     }
     //@@author
+    
+    //@@author A0144750J
+    @Override
+    /**
+     * Return a command as input by user from history
+     */
+    public String returnCommandFromHistory(int index) {
+        assert commandHistory != null;
+        assert (index >= 0) && (index < commandHistory.size());
+        return commandHistory.get(index);
+    }
+    //@@author
 
+    //@@author A0144750J
+    @Override
+    public int getHistorySize() {
+        return commandHistory.size();
+    }
+    //@@author
+    
     // ========== Inner classes/interfaces used for filtering ==================================================
 
     private class QualifierPredicate implements Predicate<ReadOnlyItem> {
