@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.*;
@@ -26,13 +27,16 @@ import seedu.address.model.tag.UniqueTagList;
 public class Interfacer {
     // the remote calendar object
     private com.google.api.services.calendar.Calendar calendar;
-    
-    private String targetCalendar;
 
-    private static final int MAX_RESULTS = 500;
+    // max number of events to pull
+    public static final int MAX_RESULTS = 500;
 
-    public Interfacer(String targetCalendar) {
-        this.targetCalendar = targetCalendar;
+    // default ID for primary calendar of user
+    public static final String GCAL_PRIMARY = "primary";
+
+    public static final String GCAL_CALENDAR_NOT_FOUND = "No such calendar exists.";
+
+    public Interfacer() {
         try {
             this.calendar = Initializer.getCalendarService();
         } catch (IOException e) {
@@ -55,25 +59,13 @@ public class Interfacer {
         List<String> calendarNames = new ArrayList<>();
 
         // Iterate through entries in calendar list
-        String pageToken = null;
-        do {
-            try {
-                CalendarList calendarList = this.calendar.calendarList().list()
-                        .setPageToken(pageToken).execute();
-                List<CalendarListEntry> items = calendarList.getItems();
+        List<CalendarListEntry> items = getCalendarList().getItems();
 
-                for (CalendarListEntry calendarListEntry : items) {
-                    // System.out.println(calendarListEntry.getSummary());
-                    calendarNames.add(calendarListEntry.getSummary());
-                }
-                pageToken = calendarList.getNextPageToken();
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-        } while (pageToken != null);
+        for (CalendarListEntry calendarListEntry : items) {
+            calendarNames.add(calendarListEntry.getSummary());
+        }
 
         return calendarNames;
-
     }
 
     /**
@@ -98,20 +90,28 @@ public class Interfacer {
      * 
      * @author darren
      */
-    public List<Item> pullItems() {
+    public List<Item> pullItems(String fromCalendar)
+            throws IllegalArgumentException {
         assert this.calendar != null;
+        assert fromCalendar != null;
+        assert !fromCalendar.isEmpty();
+
+        if (!hasCalendar(fromCalendar)) {
+            throw new IllegalArgumentException(GCAL_CALENDAR_NOT_FOUND);
+        }
 
         List<Item> pulledItems = new ArrayList<>();
+        List<Event> items = new ArrayList<>();
 
-        List<Event> items = null;
         try {
             // fetch events that haven't happened yet
-            items = getEvents(this.targetCalendar, getCurrentDateTime()).getItems();
+            items = getEvents(getCalendarID(fromCalendar), getCurrentDateTime())
+                    .getItems();
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
 
-        if (items.size() == 0 || items == null) {
+        if (items.isEmpty()) {
             // nothing to pull
             return null;
         }
@@ -130,37 +130,76 @@ public class Interfacer {
     private static Item changeEventToItem(Event event)
             throws IllegalValueException {
         Description name = new Description(event.getSummary());
-        LocalDateTime start = changeDateTimeToLocalDateTime(
-                event.getStart());
-        LocalDateTime end = changeDateTimeToLocalDateTime(
-                event.getEnd());
+        LocalDateTime start = changeDateTimeToLocalDateTime(event.getStart());
+        LocalDateTime end = changeDateTimeToLocalDateTime(event.getEnd());
         UniqueTagList tags = new UniqueTagList();
         return new Item(name, start, end, tags);
     }
 
-    private static LocalDateTime changeDateTimeToLocalDateTime(EventDateTime edt) {
-        if(edt == null) {
+    private static LocalDateTime changeDateTimeToLocalDateTime(
+            EventDateTime edt) {
+        if (edt == null) {
             return null;
         }
-        
+
         DateTimeParser parser;
-        if(edt.getDateTime() != null) {
+        if (edt.getDateTime() != null) {
             parser = new DateTimeParser(edt.getDateTime().toStringRfc3339());
             return parser.extractStartDate();
         }
-        
-        if(edt.getDate() != null) {
+
+        if (edt.getDate() != null) {
             parser = new DateTimeParser(edt.getDate().toStringRfc3339());
             return parser.extractStartDate();
         }
-        
+
         return null;
     }
 
     private Events getEvents(String calId, DateTime epoch) throws IOException {
+        assert calId != null;
+        assert !calId.isEmpty();
+        assert epoch != null;
+
         return this.calendar.events().list(calId).setMaxResults(MAX_RESULTS)
                 .setTimeMin(epoch).setOrderBy("startTime").setSingleEvents(true)
                 .execute();
+    }
+
+    /**
+     * Get a Google Calendar identifier from the calendar's name.
+     * 
+     * @param calendarName
+     * @return
+     * @author darren
+     */
+    public String getCalendarID(String calendarName) {
+        assert calendarName != null;
+        assert !calendarName.isEmpty();
+
+        CalendarList calendarList = getCalendarList();
+
+        if (calendarList == null) {
+            return null;
+        }
+
+        for (CalendarListEntry calendar : calendarList.getItems()) {
+            if (calendar.getSummary().equalsIgnoreCase(calendarName)) {
+                return calendar.getId();
+            }
+        }
+
+        return null;
+    }
+
+    private CalendarList getCalendarList() {
+        try {
+            return this.calendar.calendarList().list().execute();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+        return null;
     }
 
     public DateTime getCurrentDateTime() {
