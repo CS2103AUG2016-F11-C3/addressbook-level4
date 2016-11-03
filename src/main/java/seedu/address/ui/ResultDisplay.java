@@ -38,8 +38,8 @@ public class ResultDisplay extends UiPart {
 		resultDisplayArea.getChildren().clear();
 
 		displayTextFlow = new TextFlow();
-		displayTextFlow.getStyleClass().add("alert");
-		displayTextFlow.getStyleClass().add("alert-success");
+		displayTextFlow.getStyleClass().set(0, "alert");
+		displayTextFlow.getStyleClass().set(1, "alert-success");
 
 		headerText = new Text("Welcome! ");
 		messageText = new Text("The results of your commands will be shown here!");
@@ -76,13 +76,22 @@ public class ResultDisplay extends UiPart {
 
     public void postMessage(String message) {
 		showDisplay();
+		displayTextFlow.getStyleClass().set(1, "alert-success");
 		headerText.setText("");
 		messageText.setText(message);
     }
 
 	public void postMessage(String header, String message) {
 		showDisplay();
+		displayTextFlow.getStyleClass().set(1, "alert-success");
 		headerText.setText(message);
+		messageText.setText(message);
+	}
+
+	public void postError(String message) {
+		showDisplay();
+		displayTextFlow.getStyleClass().set(1, "alert-error");
+		headerText.setText("");
 		messageText.setText(message);
 	}
 
