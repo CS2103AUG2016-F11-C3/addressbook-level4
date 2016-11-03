@@ -1,13 +1,13 @@
-package seedu.address.commons.util;
+package seedu.sudowudo.commons.util;
 
 import java.util.Set;
 import java.util.function.Predicate;
 
 import javafx.collections.transformation.FilteredList;
-import seedu.address.logic.parser.DateTimeParser;
-import seedu.address.logic.parser.Parser;
-import seedu.address.model.item.Item;
-import seedu.address.model.item.ReadOnlyItem;
+import seedu.sudowudo.logic.parser.DateTimeParser;
+import seedu.sudowudo.logic.parser.Parser;
+import seedu.sudowudo.model.item.Item;
+import seedu.sudowudo.model.item.ReadOnlyItem;
 
 public class ListUtil {
 
