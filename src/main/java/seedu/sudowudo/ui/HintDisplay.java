@@ -73,17 +73,17 @@ public class HintDisplay extends UiPart {
     }
 
 	public void showAllHints() {
-		hintListView.setVisible(true);
+		mainPane.setVisible(true);
 		hintList.setPredicate(null);
 	}
 
 	public void updateHints(String search) {
-		hintListView.setVisible(true);
+		mainPane.setVisible(true);
 		hintList.setPredicate(new KeywordPredicate(search));
 	}
 
 	public void hideHints() {
-		hintListView.setVisible(false);
+		mainPane.setVisible(false);
 	}
 
 

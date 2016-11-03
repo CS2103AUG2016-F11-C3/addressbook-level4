@@ -14,8 +14,8 @@
         <URL value="@Extensions.css" />
     </stylesheets>
     <children>
-	    <StackPane fx:id="hintDisplayArea">
-  	      <ListView fx:id="hintListView" VBox.vgrow="ALWAYS" />
+	    <StackPane fx:id="hintDisplayArea" alignment="TOP_CENTER" prefWidth="450.0" >
+  	      <ListView fx:id="hintListView" HBox.hgrow="ALWAYS" prefWidth="450.0" />
 	    </StackPane>
     </children>
 </AnchorPane>
