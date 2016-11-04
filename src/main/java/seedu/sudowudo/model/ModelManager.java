@@ -178,8 +178,7 @@ public class ModelManager extends ComponentManager implements Model {
      * Returns a list sorted chronologically
      */
     public UnmodifiableObservableList<ReadOnlyItem> getFilteredItemList() {
-        SortedList<Item> sortedList = new SortedList<>(filteredItems, Item.chronologicalComparator);
-        return new UnmodifiableObservableList<>(sortedList);
+        return new UnmodifiableObservableList<>(this.getFilteredEditableItemList());
     }
     
     //@@author A0144750J
@@ -188,7 +187,8 @@ public class ModelManager extends ComponentManager implements Model {
      */
     @Override
 	public FilteredList<Item> getFilteredEditableItemList() {
-		return filteredItems;
+        SortedList<Item> sortedList = new SortedList<>(filteredItems, Item.chronologicalComparator);
+        return new FilteredList<Item>(sortedList);
 	}
 
     // @@author

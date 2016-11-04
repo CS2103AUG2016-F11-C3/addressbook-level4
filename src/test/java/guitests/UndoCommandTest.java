@@ -73,7 +73,7 @@ public class UndoCommandTest extends TaskBookGuiTest {
         
         // undo should succeed
         commandBox.runCommand("undo");
-        assertResultMessage("Undo set done task: Always brush teeth");
+        assertResultMessage("Undo set done task: Dover Road");
     }
  
     private void assertNotFound(TestItem itemToFind, TestItem... currentList) {

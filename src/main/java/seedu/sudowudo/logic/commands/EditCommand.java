@@ -27,8 +27,8 @@ public class EditCommand extends Command {
     public static final String MESSAGE_SUCCESS = "Successfully edited: %1$s";
     public static final String MESSAGE_DUPLICATE_ITEM = "This task already exists in the to-do list";
     public static final String MESSAGE_INVALID_FIELD = "The available fields are: desc/description, start, end, by and period";
-    public static final String MESSAGE_UNDO_SUCCESS = "Undo add task: %1$s";
-    public static final String MESSAGE_UNDO_FAILURE = "Failed to undo task: %1$s";
+    public static final String MESSAGE_UNDO_SUCCESS = "Undo edit task: %1$s";
+    public static final String MESSAGE_UNDO_FAILURE = "Failed to undo edit task: %1$s";
 
     public static final String[] ALLOWED_FIELDS = { "desc", "description",
             "start", "end", "by", "period" };
