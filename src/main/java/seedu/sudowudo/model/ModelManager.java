@@ -188,7 +188,8 @@ public class ModelManager extends ComponentManager implements Model {
      */
     @Override
 	public FilteredList<Item> getFilteredEditableItemList() {
-		return filteredItems;
+        SortedList<Item> sortedList = new SortedList<>(filteredItems, Item.chronologicalComparator);
+        return new FilteredList<Item>(sortedList);
 	}
 
     // @@author
