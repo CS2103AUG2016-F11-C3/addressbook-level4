@@ -48,6 +48,8 @@ public class ResultDisplay extends UiPart {
 
 		resultDisplayArea.setAlignment(Pos.TOP_CENTER);
 
+		messageText.setId("resultMessageText");
+
 		headerText.getStyleClass().add("strong");
 		// FxViewUtil.applyAnchorBoundaryParameters(resultDisplayArea, 0.0, 0.0,
 		// 0.0, 0.0);
