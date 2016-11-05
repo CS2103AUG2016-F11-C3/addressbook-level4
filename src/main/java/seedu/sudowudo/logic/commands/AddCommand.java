@@ -115,15 +115,9 @@ public class AddCommand extends Command {
             // if user input something for time but it's not correct format
             hasUndo = true;
             toUndoAdd = toAdd;
-            if (this.hasTimeString && (this.toAdd.getStartDate() == null
-                    && this.toAdd.getEndDate() == null)) {
-                return new CommandResult(String.format(
-                        MESSAGE_SUCCESS_TIME_NULL, toAdd.getType()), toAdd);
-            } else {
-                return new CommandResult(
-                        String.format(MESSAGE_SUCCESS, toAdd.getType(), toAdd),
-                        toAdd);
-            }
+            return new CommandResult(
+                    String.format(MESSAGE_SUCCESS, toAdd.getType(), toAdd),
+                    toAdd);
         } catch (UniqueItemList.DuplicateItemException e) {
             hasUndo = false;
             return new CommandResult(MESSAGE_DUPLICATE_ITEM);
