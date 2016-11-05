@@ -16,7 +16,8 @@ import org.ocpsoft.prettytime.nlp.parse.DateGroup;
 
 //@@author A0147609X
 /**
- * For parsing dates and times in Sudowudo command input
+ * For parsing dates and times in Sudowudo command input.
+ * Singleton pattern!
  * 
  * @author darren
  */
@@ -63,15 +64,30 @@ public class DateTimeParser {
     public static final DateTimeFormatter SHORT_DAYOFWEEK = DateTimeFormatter
             .ofPattern("EEE");
 
-    public DateTimeParser(String input) {
+    public static DateTimeParser dtparser = new DateTimeParser();
+    
+    public static DateTimeParser getInstance() {
+        return dtparser;
+    }
+    
+    public DateTimeParser() {
+    }
+    
+    /**
+     * Uses the DateTimeParser service to parse a string containing possible
+     * datetime tokens (in natural language).
+     * 
+     * @param input
+     */
+    public void parse(String input) {
         assert input != null;
-        assert input.isEmpty() != true;
 
         this.datetime = input;
 
         // perform parsing
         this.dategroups = DateTimeParser.parser.parseSyntax(input);
         this.dates = DateTimeParser.parser.parse(input);
+        
     }
 
     public LocalDateTime extractStartDate() {
