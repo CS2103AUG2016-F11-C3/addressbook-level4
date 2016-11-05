@@ -43,7 +43,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-
+    
     /**
      * constructor for floating item
      */
@@ -146,11 +146,6 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     public LocalDateTime getEndDate() {
         return endDate;
     }
-
-    @Override
-    public boolean is(Type query){
-        return is(query.toString());
-    }
     
     /**
      * Flexible property querying, to support listing and filtering
@@ -158,19 +153,20 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
      * @return boolean, whether the item is or isn't
      * @@author A0092390E
      */
-    public boolean is(String query) {
-        switch (query.toLowerCase()) {
-        case "done":
+    @Override
+    public boolean is(Type query) {
+        switch (query) {
+        case DONE:
             return this.getIsDone();
-        case "undone":
+        case UNDONE:
             return !this.getIsDone();
-        case "event":
+        case EVENT:
             return this.getStartDate() != null;
-        case "task":
+        case TASK:
             return this.getStartDate() == null;
-        case "overdue":
-            return this.is("task") && this.getEndDate() != null && this.getEndDate().isBefore(LocalDateTime.now());
-        case "item":
+        case OVERDUE:
+            return this.is(Type.TASK) && this.getEndDate() != null && this.getEndDate().isBefore(LocalDateTime.now());
+        case ITEM:
             return true;
         default:
             return false;
@@ -204,7 +200,6 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         notifyObservers();
     }
 
-    @Override
     public void setIsDone(boolean isDone) {
         this.isDone = isDone;
         setChanged();
@@ -283,10 +278,10 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         LocalDateTime otherEnd = assignDummyLDT(other.getEndDate());
 
         // Assign same start/end date to a deadline for easier checking
-        if (this.is(Type.TASK.toString())) {
+        if (this.is(Type.TASK)) {
             thisStart = thisEnd;
         }
-        if (other.is(Type.TASK.toString())) {
+        if (other.is(Type.TASK)) {
             otherStart = otherEnd;
         }
 
