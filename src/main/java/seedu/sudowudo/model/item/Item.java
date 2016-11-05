@@ -72,7 +72,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     public Item(Description desc, LocalDateTime start, LocalDateTime end, UniqueTagList tags) throws IllegalValueException {
         assert !CollectionUtil.isAnyNull(desc);
         this.description = desc;
-        if (!isIntervalValid(start, end)){
+        if (!isValidInterval(start, end)){
             throw new IllegalValueException(MESSAGE_DATE_CONSTRAINTS);
         }
         this.startDate = start;
@@ -221,23 +221,35 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 		notifyObservers();
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(LocalDateTime startDate) throws IllegalValueException {
+        if (!isValidInterval(startDate, this.endDate)){
+            throw new IllegalValueException(MESSAGE_DATE_CONSTRAINTS);
+        }
         this.startDate = startDate;
 		setChanged();
 		notifyObservers();
     }
 
-    public void setEndDate(LocalDateTime endDate) throws IllegalValueException {
-        if (!isIntervalValid(this.startDate, endDate)){
+    public void setEndDate(LocalDateTime endDate) throws IllegalValueException {        
+        if (!isValidInterval(this.startDate, endDate)){
             throw new IllegalValueException(MESSAGE_DATE_CONSTRAINTS);
         }
-        
         this.endDate = endDate;
 		setChanged();
 		notifyObservers();
     }
     
-    private boolean isIntervalValid(LocalDateTime start, LocalDateTime end) {
+    public void setPeriod(LocalDateTime startDate, LocalDateTime endDate) throws IllegalValueException {
+        if (!isValidInterval(startDate, endDate)){
+            throw new IllegalValueException(MESSAGE_DATE_CONSTRAINTS);
+        }
+        this.startDate = startDate;
+        this.endDate = endDate;
+        setChanged();
+        notifyObservers();
+    }
+
+    private boolean isValidInterval(LocalDateTime start, LocalDateTime end) {
         return start.isBefore(end);
     }
 
@@ -426,4 +438,5 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
             return x.compareTo(y);
         }
     };
+
 }
