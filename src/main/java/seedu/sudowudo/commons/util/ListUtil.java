@@ -13,32 +13,34 @@ public class ListUtil {
 
     private static ListUtil instance = new ListUtil();
 
-    //@@author A0131560U
-    private ListUtil(){};
-    
-    public static ListUtil getInstance(){
+    // @@author A0131560U
+    private ListUtil() {
+    };
+
+    public static ListUtil getInstance() {
         return instance;
     }
 
-    public void updateFilteredItemList(FilteredList<Item> filteredItems, Set<String> keywords, Predicate defaultPredicate){
-        updateFilteredItemList(filteredItems, new QualifierPredicate(new KeywordQualifier(keywords)).and(defaultPredicate));
+    public void updateFilteredItemList(FilteredList<Item> filteredItems, Set<String> keywords,
+            Predicate defaultPredicate) {
+        updateFilteredItemList(filteredItems,
+                new QualifierPredicate(new KeywordQualifier(keywords)).and(defaultPredicate));
 
     }
-    
-    public Predicate setDefaultPredicate(String taskType){
+
+    public Predicate setDefaultPredicate(String taskType) {
         return new QualifierPredicate(new TypeQualifier(taskType));
     }
-    
+
     // @@author A0092390E
     private void updateFilteredItemList(FilteredList<Item> filteredItems, Predicate pred) {
         filteredItems.setPredicate(pred);
     }
-    
-    //@@author
-    public void updateFilteredItemList(FilteredList<Item> filteredItems, Set<String> keywords) {
-        updateFilteredItemList(filteredItems, new QualifierPredicate(new KeywordQualifier(keywords)));        
-    }
 
+    // @@author
+    public void updateFilteredItemList(FilteredList<Item> filteredItems, Set<String> keywords) {
+        updateFilteredItemList(filteredItems, new QualifierPredicate(new KeywordQualifier(keywords)));
+    }
 
     private class QualifierPredicate implements Predicate<ReadOnlyItem> {
 
@@ -67,9 +69,11 @@ public class ListUtil {
         String toString();
     }
 
-    //@@author A0131560U
+    // @@author A0131560U
     /**
-     * A Qualifier class that particularly checks for Item Type (e.g. Task, Event, Done).
+     * A Qualifier class that particularly checks for Item Type (e.g. Task,
+     * Event, Done).
+     * 
      * @author craa
      *
      */
@@ -93,9 +97,10 @@ public class ListUtil {
 
     }
 
-    //@@author A0131560U
+    // @@author A0131560U
     /**
      * A Qualifier class that particularly checks a set of keywords.
+     * 
      * @author craa
      *
      */
@@ -125,7 +130,9 @@ public class ListUtil {
 
     // @@author A0092390E-idea
     /**
-     * An anonymous class that holds a keyword. This keyword is used to search against items.
+     * An anonymous class that holds a keyword. This keyword is used to search
+     * against items.
+     * 
      * @author craa
      *
      */
@@ -136,9 +143,11 @@ public class ListUtil {
             keyword = _keyword;
         }
 
-        //@@author A0131560U
+        // @@author A0131560U
         /**
-         * Returns true if the item matches the keyword in this instance of Keyword.
+         * Returns true if the item matches the keyword in this instance of
+         * Keyword.
+         * 
          * @param item
          * @return
          */
@@ -154,34 +163,39 @@ public class ListUtil {
 
         /**
          * Checks if the item's start or end date matches the keyword.
+         * 
          * @param item
          * @return
          */
         private boolean matchesDates(ReadOnlyItem item) {
-            DateTimeParser parseDate = new DateTimeParser(keyword);
+            DateTimeParser parser = DateTimeParser.getInstance();
+            parser.parse(keyword);
+
             return ((item.getStartDate() != null
-                    && DateTimeParser.isSameDay(item.getStartDate(), parseDate.extractStartDate())
+                    && DateTimeParser.isSameDay(item.getStartDate(), parser.extractStartDate())
                     || (item.getEndDate() != null
-                            && DateTimeParser.isSameDay(item.getEndDate(), parseDate.extractStartDate()))));
+                            && DateTimeParser.isSameDay(item.getEndDate(), parser.extractStartDate()))));
         }
 
         /**
          * Checks if the item's tags (or types, if the tag string actually
          * aliases to a type meta-tag) match the keyword.
+         * 
          * @param item
          * @return
          */
         private boolean matchesTags(ReadOnlyItem item) {
             keyword = keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, "");
-            if (isKeywordType()){
+            if (isKeywordType()) {
                 return item.is(keyword);
             }
 
-            return StringUtil.containsIgnoreCase(item.getTags().listTags(),keyword);
+            return StringUtil.containsIgnoreCase(item.getTags().listTags(), keyword);
         }
 
         /**
          * Checks if the item's description matches the keyword
+         * 
          * @param item
          * @return
          */
@@ -189,8 +203,8 @@ public class ListUtil {
             return StringUtil.containsIgnoreCase(item.getDescription().getFullDescription(),
                     keyword.replace(Parser.COMMAND_DESCRIPTION_PREFIX, ""));
         }
-        
-        private boolean isKeywordType(){
+
+        private boolean isKeywordType() {
             return Parser.isValidType(keyword);
         }
     }
