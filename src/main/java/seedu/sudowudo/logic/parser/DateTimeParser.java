@@ -21,6 +21,9 @@ import org.ocpsoft.prettytime.nlp.parse.DateGroup;
  * @author darren
  */
 public class DateTimeParser {
+    private static final int FIRST_DATETIME_TOKEN = 0;
+    private static final int SECOND_DATETIME_TOKEN = 1;
+
     // the part of the command that contains the temporal part of the command
     private String datetime;
 
@@ -78,7 +81,7 @@ public class DateTimeParser {
             return null;
         }
 
-        return changeDateToLocalDateTime(this.dates.get(0));
+        return changeDateToLocalDateTime(this.dates.get(FIRST_DATETIME_TOKEN));
     }
 
     public LocalDateTime extractEndDate() {
@@ -88,16 +91,16 @@ public class DateTimeParser {
             return null;
         }
 
-        return changeDateToLocalDateTime(this.dates.get(1));
+        return changeDateToLocalDateTime(this.dates.get(SECOND_DATETIME_TOKEN));
     }
 
     public boolean isRecurring() {
-        return this.dategroups.get(0).isRecurring();
+        return this.dategroups.get(FIRST_DATETIME_TOKEN).isRecurring();
     }
 
     public LocalDateTime getRecurEnd() {
         return changeDateToLocalDateTime(
-                this.dategroups.get(0).getRecursUntil());
+                this.dategroups.get(FIRST_DATETIME_TOKEN).getRecursUntil());
     }
 
     /**
