@@ -18,7 +18,6 @@ import seedu.sudowudo.model.tag.UniqueTagList;
 public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
-
     public static final String MESSAGE_USAGE = COMMAND_WORD + "... edit ..." + ": Edits an existing item.\n"
             + "Syntax: edit CONTEXT_ID FIELD:NEW_DETAIL\n" + "Example: " + COMMAND_WORD
             + " 2 start:tomorrow 6pm";
@@ -29,14 +28,13 @@ public class EditCommand extends Command {
     public static final String MESSAGE_UNDO_SUCCESS = "Undo edit task: %1$s";
     public static final String MESSAGE_UNDO_FAILURE = "Failed to undo edit task: %1$s";
 
-    public static final String[] ALLOWED_FIELDS = { "desc", "description", "start", "end", "by", "period" };
+    public final int targetIndex;
+
+    private static final DateTimeParser dtParser = DateTimeParser.getInstance();
 
     private Item itemToModify;
     private Item previousTemplate;
-    public final int targetIndex;
     private ArrayList<String[]> editFields;
-
-    private final DateTimeParser dtparser = DateTimeParser.getInstance();
 
     // @@author A0092390E
     /**
@@ -93,16 +91,16 @@ public class EditCommand extends Command {
                 model.setItemDesc(itemToModify, newFieldDetail);
                 break;
             case "start":
-                model.setItemStart(itemToModify, this.dtparser.parse(newFieldDetail).extractStartDate());
+                model.setItemStart(itemToModify, dtParser.parse(newFieldDetail).extractStartDate());
                 break;
             case "end":
             case "by":
-                model.setItemEnd(itemToModify, this.dtparser.parse(newFieldDetail).extractStartDate());
+                model.setItemEnd(itemToModify, dtParser.parse(newFieldDetail).extractStartDate());
                 break;
             case "period":
-                this.dtparser.parse(newFieldDetail);
-                model.setItemStart(itemToModify, this.dtparser.extractStartDate());
-                model.setItemEnd(itemToModify, this.dtparser.extractEndDate());
+                dtParser.parse(newFieldDetail);
+                model.setItemStart(itemToModify, dtParser.extractStartDate());
+                model.setItemEnd(itemToModify, dtParser.extractEndDate());
                 break;
             default:
                 // field names not valid
