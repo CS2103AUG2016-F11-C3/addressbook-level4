@@ -28,7 +28,8 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
             this.typeName = name;
         }
 
-        public String getTypeName() {
+        @Override
+        public String toString() {
             return this.typeName;
         }
     }
@@ -146,13 +147,17 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         return endDate;
     }
 
+    @Override
+    public boolean is(Type query){
+        return is(query.toString());
+    }
+    
     /**
      * Flexible property querying, to support listing and filtering
      * 
      * @return boolean, whether the item is or isn't
      * @@author A0092390E
      */
-    @Override
     public boolean is(String query) {
         switch (query.toLowerCase()) {
         case "done":
@@ -200,8 +205,8 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     }
 
     @Override
-    public void setIsDone(boolean doneness) {
-        this.isDone = doneness;
+    public void setIsDone(boolean isDone) {
+        this.isDone = isDone;
         setChanged();
         notifyObservers();
     }
@@ -266,8 +271,9 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     // @@author A0147609X
     @Override
     /**
-     * sort by start date then end date then alphabetically
-     * for UI chronological sort
+     * sort by start date then end date then alphabetically for UI chronological
+     * sort
+     * 
      * @author darren
      */
     public int compareTo(Item other) {
@@ -275,28 +281,28 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         LocalDateTime thisEnd = assignDummyLDT(this.endDate);
         LocalDateTime otherStart = assignDummyLDT(other.getStartDate());
         LocalDateTime otherEnd = assignDummyLDT(other.getEndDate());
-        
+
         // Assign same start/end date to a deadline for easier checking
-        if (this.is(Type.TASK.toString())){
+        if (this.is(Type.TASK.toString())) {
             thisStart = thisEnd;
         }
-        if (other.is(Type.TASK.toString())){
+        if (other.is(Type.TASK.toString())) {
             otherStart = otherEnd;
         }
 
-        if(thisEnd.isBefore(otherEnd)) {
-        // this item ends earlier
+        if (thisEnd.isBefore(otherEnd)) {
+            // this item ends earlier
             return -1;
-        } else if(thisEnd.isAfter(otherEnd)){
+        } else if (thisEnd.isAfter(otherEnd)) {
             return 1;
-        } else if(thisStart.isBefore(otherStart)) {
+        } else if (thisStart.isBefore(otherStart)) {
             // this item starts earlier
             return -1;
-        } else if(thisStart.isAfter(otherStart)) {
+        } else if (thisStart.isAfter(otherStart)) {
             // this item starts later
             return 1;
         }
-        
+
         // same start and end date
         // sort alphabetically by description
         return description.compareTo(other.getDescription());

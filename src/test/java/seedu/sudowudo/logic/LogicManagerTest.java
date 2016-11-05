@@ -762,7 +762,7 @@ public class LogicManagerTest<E> {
         List<Item> targetList = helper.generateItemList(target);
         helper.addToModel(model, initialList);
         TaskBook expectedTB = helper.generateTaskBook(targetList);
-        assertCommandBehavior("edit 1 period: 2015 10 10 10 10:10 to 2015 11 11 11 11:11",
+        assertCommandBehavior("edit 1 period: October 10 2015 to October 11 2015",
                     String.format(EditCommand.MESSAGE_SUCCESS, target), expectedTB, targetList);
 
     }
@@ -839,8 +839,8 @@ public class LogicManagerTest<E> {
         //@@author A0131560U
         private Item workingItemWithDates(String desc, LocalDateTime... times) throws Exception {
             Description description = new Description(desc);
-            LocalDateTime startDate = null,
-                          endDate = null;
+            LocalDateTime startDate = null;
+            LocalDateTime endDate = null;
             if (times.length > 0){
                  startDate = times[0];
             }

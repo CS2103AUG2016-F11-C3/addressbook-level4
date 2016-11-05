@@ -24,10 +24,10 @@ public class ItemBuilder {
     public ItemBuilder withDates(String startdate) throws IllegalValueException{
     	DateTimeParser parser = new DateTimeParser(startdate);
 		LocalDateTime startTimeObj = parser.extractStartDate();
-		LocalDateTime endTimeObj = parser.extractStartDate();
+		LocalDateTime endTimeObj = parser.extractEndDate();
 
 		// if the item is an event
-		if (startTimeObj != null && !startTimeObj.equals(endTimeObj)){
+		if (item.is(Item.Type.EVENT)){
 		    this.item.setStartDate(startTimeObj);
 		}
 		this.item.setEndDate(endTimeObj);
