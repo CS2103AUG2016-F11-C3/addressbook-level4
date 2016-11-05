@@ -35,7 +35,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     //@@author
 
 
-    private static final String MESSAGE_DATE_CONSTRAINTS = "Start date must come before end date.";
+    public static final String MESSAGE_DATE_CONSTRAINTS = "Start date must come before end date.";
 
     
     private UniqueTagList tags;
@@ -250,7 +250,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     }
 
     private boolean isValidInterval(LocalDateTime start, LocalDateTime end) {
-        return start.isBefore(end);
+        return start == null || end == null || start.isBefore(end);
     }
 
     public void setRecurring(boolean isRecurring) {
