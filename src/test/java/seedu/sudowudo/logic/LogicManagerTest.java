@@ -194,6 +194,18 @@ public class LogicManagerTest<E> {
 
         assertCommandBehavior("clear", ClearCommand.MESSAGE_SUCCESS, new TaskBook(), Collections.emptyList());
     }
+    
+    //@@author A0131560U
+    @Test
+    public void execute_addInvalidPeriod_errorMessageShown() throws Exception {
+        assertCommandBehavior("add \"invalid\" from today till yesterday", Item.MESSAGE_DATE_CONSTRAINTS);
+    }
+    
+    //@@author A0131560U
+    @Test
+    public void execute_addInvalidDescription_errorMessageShown() throws Exception {
+        assertCommandBehavior("add \"!\"", Description.MESSAGE_NAME_CONSTRAINTS);
+    }
 
     //@@author A0144750J
     @Test
@@ -205,6 +217,7 @@ public class LogicManagerTest<E> {
         assertCommandBehavior("add wrong args format", expectedMessage);
         assertCommandBehavior("add wrong args \"format\"", expectedMessage);
     }
+    
 
     //@@author A0144750J
     @Test
@@ -233,7 +246,6 @@ public class LogicManagerTest<E> {
 
         assertCommandBehavior(helper.generateAddCommand(toBeAdded),
                 String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded), expectedTB, expectedTB.getItemList());
-
     }
 
     @Test
@@ -722,6 +734,33 @@ public class LogicManagerTest<E> {
     }
     //@@author
 
+    //@@author A0131560U
+    @Test
+    public void execute_editInvalidDescription_errorMessageShown() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Item initial = helper.workingItemWithDates("valid", LocalDateTime.of(2016, 10, 10, 10, 10, 10),
+                LocalDateTime.of(2016, 11, 11, 11, 11, 11));
+        List<Item> expectedList = helper.generateItemList(initial);
+        helper.addToModel(model, expectedList);
+        TaskBook expectedTB = helper.generateTaskBook(expectedList);
+        String newDescription = "invalid!!";
+        assertCommandBehavior("edit 1 desc:" + newDescription, Description.MESSAGE_NAME_CONSTRAINTS, expectedTB, expectedList);
+    }
+    
+    //@@author A0131560U
+    @Test
+    public void execute_editInvalidDates_errorMessageShown() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Item initial = helper.workingItemWithDates("valid", LocalDateTime.of(2016, 10, 10, 10, 10, 10),
+                                                            LocalDateTime.of(2016, 11, 11, 11, 11, 11));
+        List<Item> expectedList = helper.generateItemList(initial);
+        helper.addToModel(model, expectedList);
+        TaskBook expectedTB = helper.generateTaskBook(expectedList);
+        assertCommandBehavior("edit 1 period: today till yesterday", Item.MESSAGE_DATE_CONSTRAINTS, expectedTB, expectedList);
+        assertCommandBehavior("edit 1 start: january 1st 2017", Item.MESSAGE_DATE_CONSTRAINTS, expectedTB, expectedList);
+        assertCommandBehavior("edit 1 end: january 1st 2015", Item.MESSAGE_DATE_CONSTRAINTS, expectedTB, expectedList);
+    }
+
     //@@author A0147609X
     /**
      * @throws Exception
@@ -774,7 +813,7 @@ public class LogicManagerTest<E> {
 
         private Item aLongEvent() throws Exception {
             Description description = new Description("A long event");
-            LocalDateTime startDate = LocalDateTime.of(2016, 10, 10, 10, 10);
+            LocalDateTime startDate = LocalDateTime.of(2014, 10, 10, 10, 10);
             LocalDateTime endDate = LocalDateTime.of(2016, 12, 12, 12, 12);
             return new Item(description, startDate, endDate, new UniqueTagList());
         }
