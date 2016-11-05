@@ -31,10 +31,10 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         public String toString() {
             return this.typeName;
         }
-        
+
         public static Type fromString(String input) {
-            for (Type type : values() ){
-                if (type.typeName.equals(input)){
+            for (Type type : values()) {
+                if (type.typeName.equals(input)) {
                     return type;
                 }
             }
@@ -52,7 +52,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    
+
     /**
      * constructor for floating item
      */
@@ -155,7 +155,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     public LocalDateTime getEndDate() {
         return endDate;
     }
-    
+
     /**
      * Flexible property querying, to support listing and filtering
      * 
