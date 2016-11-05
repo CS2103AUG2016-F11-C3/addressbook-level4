@@ -38,6 +38,8 @@ public class AddCommand extends Command {
     private final Item toAdd;
     private Item toUndoAdd;
     private boolean hasTimeString = false;
+    
+    private final DateTimeParser dtparser = DateTimeParser.getInstance();
 
     /**
      * Constructor using raw strings
@@ -86,15 +88,11 @@ public class AddCommand extends Command {
     }
 
     private LocalDateTime setEndDateTime(String timeStr) {
-        DateTimeParser parser = new DateTimeParser(timeStr);
-        LocalDateTime endTimeObj = parser.extractEndDate();
-        return endTimeObj;
+        return this.dtparser.parse(timeStr).extractEndDate();
     }
 
     private LocalDateTime setStartDateTime(String timeStr) {
-        DateTimeParser parser = new DateTimeParser(timeStr);
-        LocalDateTime startTimeObj = parser.extractStartDate();
-        return startTimeObj;
+        return this.dtparser.parse(timeStr).extractStartDate();
     }
 
     private Description setDescription(String descriptionStr)
