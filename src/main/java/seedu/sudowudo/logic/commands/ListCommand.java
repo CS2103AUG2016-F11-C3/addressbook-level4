@@ -31,7 +31,7 @@ public class ListCommand extends Command {
     public CommandResult execute() {
        model.updateDefaultPredicate(itemType);
     	hasUndo = false;
-		return new CommandResult(String.format(MESSAGE_SUCCESS, itemType));
+		return new CommandResult(String.format(MESSAGE_SUCCESS, itemType.getMessage()));
     }
 
     @Override

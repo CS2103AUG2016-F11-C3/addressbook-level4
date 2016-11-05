@@ -174,7 +174,7 @@ public class ListUtil {
         private boolean matchesTags(ReadOnlyItem item) {
             keyword = keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, "");
             if (isKeywordType()){
-                return item.is(Item.Type.valueOf(keyword));
+                return item.is(Item.Type.fromString(keyword));
             }
 
             return StringUtil.containsIgnoreCase(item.getTags().listTags(),keyword);

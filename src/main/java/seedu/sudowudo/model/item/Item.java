@@ -19,17 +19,24 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 
     // @@author A0131560U
     public static enum Type {
-        TASK("task"), EVENT("event"), DONE("done"), ITEM("item"), OVERDUE("overdue"), UNDONE("undone");
+        TASK("task", "tasks"), EVENT("event", "events"), DONE("done", "completed tasks"),
+        ITEM("item", "items"), OVERDUE("overdue", "overdue tasks"), UNDONE("undone", "incomplete tasks");
 
         private String typeName;
+        private String message;
 
-        Type(String name) {
+        Type(String name, String message) {
             this.typeName = name;
+            this.message = message;
         }
 
         @Override
         public String toString() {
             return this.typeName;
+        }
+        
+        public String getMessage(){
+            return this.message;
         }
 
         public static Type fromString(String input) {
