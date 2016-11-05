@@ -298,6 +298,9 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         if (this.is(Type.TASK.toString())){
             thisStart = thisEnd;
         }
+        if (other.is(Type.TASK.toString())){
+            otherStart = otherEnd;
+        }
 
         if(thisEnd.isBefore(otherEnd)) {
         // this item ends earlier
