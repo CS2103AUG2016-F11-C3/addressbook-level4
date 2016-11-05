@@ -43,11 +43,6 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    // for recurring events only
-    private boolean isRecurring;
-    private Period recurInterval;
-    private LocalDateTime recurEndDate;
-
     /**
      * constructor for floating item
      */
@@ -149,19 +144,6 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     @Override
     public LocalDateTime getEndDate() {
         return endDate;
-    }
-
-    public boolean isRecurring() {
-        return isRecurring;
-    }
-
-    public Period getRecurInterval() {
-        return recurInterval;
-
-    }
-
-    public LocalDateTime getRecurEndDate() {
-        return recurEndDate;
     }
 
     /**
