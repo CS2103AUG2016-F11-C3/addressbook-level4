@@ -22,8 +22,8 @@ public class ItemBuilder {
     }
 
     // @@author A0144750J
-    public ItemBuilder withDates(String startDate) throws IllegalValueException {
-        this.dtparser.parse(startDate);
+    public ItemBuilder withDates(String datetime) throws IllegalValueException {
+        this.dtparser.parse(datetime);
         this.item.setStartDate(this.dtparser.extractStartDate());
         this.item.setEndDate(this.dtparser.extractEndDate());
         return this;
