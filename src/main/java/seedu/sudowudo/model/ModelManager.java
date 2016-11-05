@@ -52,12 +52,12 @@ public class ModelManager extends ComponentManager implements Model {
         filteredItems = new FilteredList<>(taskBook.getItems());
         commandStack = new Stack<>();
         commandHistory = new ArrayList<String>();
-        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
+        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate(Item.Type.ITEM);
     }
 
     public ModelManager() {
         this(new TaskBook(), new UserPrefs());
-        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
+        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate(Item.Type.ITEM);
     }
 
     public ModelManager(ReadOnlyTaskBook initialData, UserPrefs userPrefs) {
@@ -65,7 +65,7 @@ public class ModelManager extends ComponentManager implements Model {
         filteredItems = new FilteredList<>(taskBook.getItems());
         commandStack = new Stack<>();
         commandHistory = new ArrayList<String>();
-        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
+        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate(Item.Type.ITEM);
     }
 
     @Override
@@ -200,7 +200,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     //@@author A0131560U
-    public void updateDefaultPredicate(String taskType) {
+    public void updateDefaultPredicate(Item.Type taskType) {
         defaultPredicate = ListUtil.getInstance().setDefaultPredicate(taskType);
         filteredItems.setPredicate(defaultPredicate);
     }

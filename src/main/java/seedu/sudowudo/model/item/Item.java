@@ -1,7 +1,6 @@
 package seedu.sudowudo.model.item;
 
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.Comparator;
 import java.util.Objects;
 import java.util.Observable;
@@ -19,7 +18,7 @@ import seedu.sudowudo.model.tag.UniqueTagList;
 public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 
     // @@author A0131560U
-    public enum Type {
+    public static enum Type {
         TASK("task"), EVENT("event"), DONE("done"), ITEM("item"), OVERDUE("overdue"), UNDONE("undone");
 
         private String typeName;
@@ -32,6 +31,16 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         public String toString() {
             return this.typeName;
         }
+        
+        public static Type fromString(String input) {
+            for (Type type : values() ){
+                if (type.typeName.equals(input)){
+                    return type;
+                }
+            }
+            return null;
+        }
+
     }
     // @@author
 

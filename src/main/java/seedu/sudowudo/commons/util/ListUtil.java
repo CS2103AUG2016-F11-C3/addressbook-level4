@@ -25,7 +25,7 @@ public class ListUtil {
 
     }
     
-    public Predicate setDefaultPredicate(String taskType){
+    public Predicate setDefaultPredicate(Item.Type taskType){
         return new QualifierPredicate(new TypeQualifier(taskType));
     }
     
@@ -76,8 +76,8 @@ public class ListUtil {
     private class TypeQualifier implements Qualifier {
         private Item.Type type;
 
-        TypeQualifier(String type) {
-            this.type = Item.Type.valueOf(type);
+        TypeQualifier(Item.Type type) {
+            this.type = type;
         }
 
         @Override
