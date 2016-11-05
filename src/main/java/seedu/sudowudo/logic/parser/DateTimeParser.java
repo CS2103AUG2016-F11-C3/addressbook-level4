@@ -78,7 +78,7 @@ public class DateTimeParser {
      * 
      * @param input
      */
-    public void parse(String input) {
+    public DateTimeParser parse(String input) {
         assert input != null;
 
         this.datetime = input;
@@ -87,6 +87,7 @@ public class DateTimeParser {
         this.dategroups = DateTimeParser.parser.parseSyntax(input);
         this.dates = DateTimeParser.parser.parse(input);
         
+        return this;
     }
 
     public LocalDateTime extractStartDate() {
