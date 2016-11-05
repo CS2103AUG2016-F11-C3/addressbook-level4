@@ -25,7 +25,6 @@ import com.google.common.eventbus.Subscribe;
 import seedu.sudowudo.commons.core.EventsCenter;
 import seedu.sudowudo.commons.core.Messages;
 import seedu.sudowudo.commons.events.model.TaskBookChangedEvent;
-import seedu.sudowudo.commons.events.ui.JumpToListRequestEvent;
 import seedu.sudowudo.commons.events.ui.ShowHelpRequestEvent;
 import seedu.sudowudo.commons.exceptions.DuplicateDataException;
 import seedu.sudowudo.commons.exceptions.IllegalValueException;
@@ -69,7 +68,6 @@ public class LogicManagerTest<E> {
     // These are for checking the correctness of the events raised
     private ReadOnlyTaskBook latestSavedTaskBook;
     private boolean helpShown;
-    private int targetedJumpIndex;
 
     @Subscribe
     private void handleLocalModelChangedEvent(TaskBookChangedEvent tbce) {
@@ -81,13 +79,8 @@ public class LogicManagerTest<E> {
         helpShown = true;
     }
 
-    @Subscribe
-    private void handleJumpToListRequestEvent(JumpToListRequestEvent je) {
-        targetedJumpIndex = je.targetIndex;
-    }
-
     @Before
-    public void setup() {
+    public void setUp() {
         model = new ModelManager();
         String tempTaskBookFile = saveFolder.getRoot().getPath() + "TempTaskBook.xml";
         String tempPreferencesFile = saveFolder.getRoot().getPath() + "TempPreferences.json";
@@ -98,11 +91,10 @@ public class LogicManagerTest<E> {
         latestSavedTaskBook = new TaskBook(model.getTaskBook());
         
         helpShown = false;
-        targetedJumpIndex = -1; // non yet
     }
 
     @After
-    public void teardown() {
+    public void tearDown() {
         EventsCenter.clearSubscribers();
     }
 
@@ -236,8 +228,6 @@ public class LogicManagerTest<E> {
     @Test
     // @@author A0131560U
     public void setTags_duplicateTags_duplicateDeleted() throws Exception {
-        UniqueTagList tags;
-
         thrown.expect(DuplicateDataException.class);
         TestDataHelper helper = new TestDataHelper();
         Item toBeAdded = helper.workingItemWithTags("important", "incredible", "important", "priority1");
@@ -282,7 +272,6 @@ public class LogicManagerTest<E> {
     // @@author A0131560U
     public void setTags_tagNotMarkedWithHashtag_successfulWithoutTags() {
         try {
-            UniqueTagList tags;
             TestDataHelper helper = new TestDataHelper();
             Item toBeAdded = helper.workingItemWithTags();
             TaskBook expectedTB = new TaskBook();
@@ -792,7 +781,7 @@ public class LogicManagerTest<E> {
         model.resetData(new TaskBook());
         model.addItem(itemList.get(0));
 
-        String expectedMessage = String.format(Messages.MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE);
         assertCommandBehavior("edit 1", expectedMessage, model.getTaskBook(), itemList);
     }
     //@@author
@@ -850,7 +839,8 @@ public class LogicManagerTest<E> {
         //@@author A0131560U
         private Item workingItemWithDates(String desc, LocalDateTime... times) throws Exception {
             Description description = new Description(desc);
-            LocalDateTime startDate = null, endDate = null;
+            LocalDateTime startDate = null,
+                          endDate = null;
             if (times.length > 0){
                  startDate = times[0];
             }
@@ -948,7 +938,7 @@ public class LogicManagerTest<E> {
         /**
          * Adds the given list of Items to the given model
          */
-        void addToModel(Model model, List<Item> itemsToAdd) throws Exception {
+        private void addToModel(Model model, List<Item> itemsToAdd) throws Exception {
             for (Item p : itemsToAdd) {
                 model.addItem(p);
             }
@@ -957,7 +947,7 @@ public class LogicManagerTest<E> {
         /**
          * Generates a list of Items based on the flags.
          */
-        List<Item> generateItemList(int numGenerated) throws Exception {
+        private List<Item> generateItemList(int numGenerated) throws Exception {
             List<Item> items = new ArrayList<>();
             for (int i = 1; i <= numGenerated; i++) {
                 items.add(generateItem(i));
@@ -965,7 +955,7 @@ public class LogicManagerTest<E> {
             return items;
         }
 
-        List<Item> generateItemList(Item... items) {
+        private List<Item> generateItemList(Item... items) {
             List<Item> itemList = Arrays.asList(items);
             Collections.sort(itemList);
             return itemList;
@@ -975,7 +965,7 @@ public class LogicManagerTest<E> {
          * Generates a Item object with given description. Other fields will
          * have some dummy values.
          */
-        Item generateItemWithName(String desc) throws Exception {
+        private Item generateItemWithName(String desc) throws Exception {
             return new Item(new Description(desc), new UniqueTagList(new Tag("tag")));
         }
     }
