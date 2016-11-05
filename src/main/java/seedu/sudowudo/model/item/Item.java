@@ -167,8 +167,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 	 */
     @Override
 	public boolean is(String query){
-    	query = query.toLowerCase();
-		switch (query) {
+		switch (query.toLowerCase()) {
 		case "done":
 			return this.getIsDone();
 		case "undone":
@@ -222,10 +221,7 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 		notifyObservers();
     }
 
-    public void setStartDate(LocalDateTime startDate) throws IllegalValueException {
-        if (!isIntervalValid(this.startDate, endDate)){
-            throw new IllegalValueException(MESSAGE_DATE_CONSTRAINTS);
-        }
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
 		setChanged();
 		notifyObservers();
@@ -296,12 +292,10 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
      * @author darren
      */
     public int compareTo(Item other) {
-        LocalDateTime thisStart, thisEnd, otherStart, otherEnd;
-        
-        thisStart = assignDummyLDT(startDate);
-        thisEnd = assignDummyLDT(endDate);
-        otherStart = assignDummyLDT(other.getStartDate());
-        otherEnd = assignDummyLDT(other.getEndDate());
+        LocalDateTime thisStart = assignDummyLDT(startDate);
+        LocalDateTime thisEnd = assignDummyLDT(endDate);
+        LocalDateTime otherStart = assignDummyLDT(other.getStartDate());
+        LocalDateTime otherEnd = assignDummyLDT(other.getEndDate());
         
         if(thisStart.isBefore(otherStart)) {
             // this item starts earlier
