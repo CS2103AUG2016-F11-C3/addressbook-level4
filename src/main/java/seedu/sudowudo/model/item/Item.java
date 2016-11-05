@@ -34,6 +34,9 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
     }
     //@@author
 
+
+    private static final String MESSAGE_DATE_CONSTRAINTS = "Start date must come before end date.";
+
     
     private UniqueTagList tags;
     private Description description;
@@ -66,16 +69,19 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
      * @param end
      * @author darren
      */
-    public Item(Description desc, LocalDateTime start, LocalDateTime end, UniqueTagList tags) {
+    public Item(Description desc, LocalDateTime start, LocalDateTime end, UniqueTagList tags) throws IllegalValueException {
         assert !CollectionUtil.isAnyNull(desc);
         this.description = desc;
+        if (!isIntervalValid(start, end)){
+            throw new IllegalValueException(MESSAGE_DATE_CONSTRAINTS);
+        }
         this.startDate = start;
         this.endDate = end;
         this.tags = new UniqueTagList(tags);
     }
     //@@author
-    
-	/**
+
+    /**
 	 * constructor for an item with a definite end time only (non-recurring)
 	 * 
 	 * @param desc
@@ -216,16 +222,27 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
 		notifyObservers();
     }
 
-    public void setStartDate(LocalDateTime startDate) {
+    public void setStartDate(LocalDateTime startDate) throws IllegalValueException {
+        if (!isIntervalValid(this.startDate, endDate)){
+            throw new IllegalValueException(MESSAGE_DATE_CONSTRAINTS);
+        }
         this.startDate = startDate;
 		setChanged();
 		notifyObservers();
     }
 
-    public void setEndDate(LocalDateTime endDate) {
+    public void setEndDate(LocalDateTime endDate) throws IllegalValueException {
+        if (!isIntervalValid(this.startDate, endDate)){
+            throw new IllegalValueException(MESSAGE_DATE_CONSTRAINTS);
+        }
+        
         this.endDate = endDate;
 		setChanged();
 		notifyObservers();
+    }
+    
+    private boolean isIntervalValid(LocalDateTime start, LocalDateTime end) {
+        return start.isBefore(end);
     }
 
     public void setRecurring(boolean isRecurring) {
