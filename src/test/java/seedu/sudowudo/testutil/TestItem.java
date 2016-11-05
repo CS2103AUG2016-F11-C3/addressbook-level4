@@ -117,7 +117,7 @@ public class TestItem extends Observable implements ReadOnlyItem, Comparable<Tes
         return sb.toString();
     }
 
-	// @@author A0092390E
+	// @@author A0092390E-repeated
     @Override
     public boolean is(String query) {
         query = query.toLowerCase();
