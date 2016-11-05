@@ -760,6 +760,23 @@ public class LogicManagerTest<E> {
         assertCommandBehavior("edit 1 start: january 1st 2017", Item.MESSAGE_DATE_CONSTRAINTS, expectedTB, expectedList);
         assertCommandBehavior("edit 1 end: january 1st 2015", Item.MESSAGE_DATE_CONSTRAINTS, expectedTB, expectedList);
     }
+    
+    //@@author A0131560U
+    @Test
+    public void execute_editPeriod_success() throws Exception {
+        TestDataHelper helper = new TestDataHelper();
+        Item initial = helper.workingItemWithDates("valid", LocalDateTime.of(2016, 10, 10, 10, 10, 10),
+                                                            LocalDateTime.of(2016, 11, 11, 11, 11, 11));
+        Item target = helper.workingItemWithDates("valid", LocalDateTime.of(2015, 10, 10, 10, 10, 10),
+                                                            LocalDateTime.of(2015, 11, 11, 11, 11, 11));
+        List<Item> initialList = helper.generateItemList(initial);
+        List<Item> targetList = helper.generateItemList(target);
+        helper.addToModel(model, initialList);
+        TaskBook expectedTB = helper.generateTaskBook(targetList);
+        assertCommandBehavior("edit 1 period: 2015 10 10 10 10:10 to 2015 11 11 11 11:11",
+                    String.format(EditCommand.MESSAGE_SUCCESS, target), expectedTB, targetList);
+
+    }
 
     //@@author A0147609X
     /**
