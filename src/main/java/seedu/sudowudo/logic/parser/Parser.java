@@ -173,7 +173,7 @@ public class Parser {
     private Command prepareList(String argument) {
         assert argument != null;
         if (argument.isEmpty()) {
-            return new ListCommand(Item.Type.ITEM.getTypeName());
+            return new ListCommand(Item.Type.ITEM.toString());
         } else if (isValidType(argument)) {
             return new ListCommand(argument.trim().toLowerCase());
         } else {

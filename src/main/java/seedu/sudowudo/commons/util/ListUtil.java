@@ -74,10 +74,10 @@ public class ListUtil {
      *
      */
     private class TypeQualifier implements Qualifier {
-        private String type;
+        private Item.Type type;
 
         TypeQualifier(String type) {
-            this.type = type;
+            this.type = Item.Type.valueOf(type);
         }
 
         @Override
@@ -174,7 +174,7 @@ public class ListUtil {
         private boolean matchesTags(ReadOnlyItem item) {
             keyword = keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, "");
             if (isKeywordType()){
-                return item.is(keyword);
+                return item.is(Item.Type.valueOf(keyword));
             }
 
             return StringUtil.containsIgnoreCase(item.getTags().listTags(),keyword);

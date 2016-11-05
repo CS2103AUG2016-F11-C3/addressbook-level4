@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import seedu.sudowudo.commons.exceptions.IllegalValueException;
 import seedu.sudowudo.logic.parser.DateTimeParser;
 import seedu.sudowudo.model.item.Description;
+import seedu.sudowudo.model.item.Item;
 import seedu.sudowudo.model.tag.Tag;
 import seedu.sudowudo.model.tag.UniqueTagList;
 

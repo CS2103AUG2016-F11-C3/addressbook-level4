@@ -9,6 +9,7 @@ import java.util.Observable;
 import seedu.sudowudo.logic.parser.DateTimeParser;
 import seedu.sudowudo.model.item.Description;
 import seedu.sudowudo.model.item.ReadOnlyItem;
+import seedu.sudowudo.model.item.Item.Type;
 import seedu.sudowudo.model.tag.UniqueTagList;
 
 public class TestItem extends Observable implements ReadOnlyItem, Comparable<TestItem>{
@@ -91,9 +92,8 @@ public class TestItem extends Observable implements ReadOnlyItem, Comparable<Tes
         return description.toString();
     }
 
-    @Override
-    public void setIsDone(boolean doneness) {
-        this.isDone = doneness;
+    public void setIsDone(boolean isDone) {
+        this.isDone = isDone;
     }
     
     //@@author A0144750J
@@ -119,26 +119,23 @@ public class TestItem extends Observable implements ReadOnlyItem, Comparable<Tes
 
 	// @@author A0092390E-repeated
     @Override
-    public boolean is(String query) {
-        query = query.toLowerCase();
+    public boolean is(Type query) {
         switch (query) {
-        case "done":
+        case DONE:
             return this.getIsDone();
-        case "undone":
+        case UNDONE:
             return !this.getIsDone();
-        case "event":
+        case EVENT:
             return this.getStartDate() != null;
-        case "task":
+        case TASK:
             return this.getStartDate() == null;
-        case "overdue":
-            return this.getEndDate() != null && this.getIsDone() == false
-                    && this.getEndDate().isAfter(LocalDateTime.now());
-        case "item":
+        case OVERDUE:
+            return this.is(Type.TASK) && this.getEndDate() != null && this.getEndDate().isBefore(LocalDateTime.now());
+        case ITEM:
             return true;
         default:
             return false;
         }
-
     }
 
 
