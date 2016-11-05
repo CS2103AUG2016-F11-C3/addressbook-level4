@@ -20,10 +20,12 @@ import org.junit.Test;
  */
 public class DateTimeParserTest {
 
+    private DateTimeParser parser = DateTimeParser.getInstance();
+    
     @Test
     public void extractExplicitStartDateTimeTest() {
         String input = "16 september 2016 5pm to 17 september 2016 6pm";
-        DateTimeParser parser = new DateTimeParser(input);
+        parser.parse(input);
 
         LocalDateTime start = LocalDateTime.of(LocalDate.of(2016, 9, 16), LocalTime.of(17, 0));
 
@@ -33,7 +35,7 @@ public class DateTimeParserTest {
     @Test
     public void extractImplicitStartDateTimeTest() {
         String input = "2213 fifth january";
-        DateTimeParser parser = new DateTimeParser(input);
+        parser.parse(input);
         
         LocalDateTime start = LocalDateTime.of(LocalDate.of(2016, 1, 5), LocalTime.of(22, 13));
         
@@ -43,7 +45,7 @@ public class DateTimeParserTest {
     @Test
     public void extractExplicitEndDateTimeTest() {
         String input = "16 september 2016 5pm to 17 september 2016 6:30pm";
-        DateTimeParser parser = new DateTimeParser(input);
+        parser.parse(input);
 
         LocalDateTime end = LocalDateTime.of(LocalDate.of(2016, 9, 17), LocalTime.of(18, 30));
 
@@ -53,7 +55,7 @@ public class DateTimeParserTest {
     @Test
     public void extractImplicitEndDateTimeTest() {
         String input = "1800 fifth january till the sixth october at 9:30pm";
-        DateTimeParser parser = new DateTimeParser(input);
+        parser.parse(input);
         
         LocalDateTime end = LocalDateTime.of(LocalDate.of(2016, 10, 6), LocalTime.of(21, 30));
         
@@ -63,7 +65,7 @@ public class DateTimeParserTest {
     @Test
     public void extractMissingEndDateTimeTest() {
         String input = "by 12 november 1996 at 5pm";
-        DateTimeParser parser = new DateTimeParser(input);
+        parser.parse(input);
 
         LocalDateTime deadline = LocalDateTime.of(LocalDate.of(1996, 11, 12), LocalTime.of(17, 0));
 
@@ -111,7 +113,7 @@ public class DateTimeParserTest {
     @Test
     public void extractRecurringEventDetails() {
         String input = "every monday at 9am until 25 december 2016";
-        DateTimeParser parser = new DateTimeParser(input);
+        parser.parse(input);
 
         LocalDateTime recurEndDateTime = LocalDateTime.of(LocalDate.of(2016, 12, 25), LocalTime.of(9, 0));
         assertEquals(true, parser.isRecurring());
@@ -121,7 +123,7 @@ public class DateTimeParserTest {
     @Test
     public void extractNonRecurringEventDetails() {
         String input = "on fifth of november at 5pm";
-        DateTimeParser parser = new DateTimeParser(input);
+        parser.parse(input);
 
         assertEquals(false, parser.isRecurring());
     }
