@@ -2,7 +2,6 @@ package seedu.sudowudo.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.EmptyStackException;
 import java.util.Set;
 import java.util.Stack;
@@ -18,10 +17,7 @@ import seedu.sudowudo.commons.core.UnmodifiableObservableList;
 import seedu.sudowudo.commons.events.model.TaskBookChangedEvent;
 import seedu.sudowudo.commons.exceptions.IllegalValueException;
 import seedu.sudowudo.commons.util.ListUtil;
-import seedu.sudowudo.commons.util.StringUtil;
 import seedu.sudowudo.logic.commands.Command;
-import seedu.sudowudo.logic.parser.DateTimeParser;
-import seedu.sudowudo.logic.parser.Parser;
 import seedu.sudowudo.model.item.Item;
 import seedu.sudowudo.model.item.ReadOnlyItem;
 import seedu.sudowudo.model.item.UniqueItemList;
@@ -213,19 +209,6 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredItemList(Set<String> keywords) {
     	ListUtil.getInstance().updateFilteredItemList(filteredItems, keywords, defaultPredicate);
     }
-
-	/*
-	 * @@author A0092390E
-	 * 
-	 */
-    private void updateFilteredItemList(Predicate pred) {
-        // Not used, to narrow searches the user has to type the entire search string in
-        // if(filteredItems.getPredicate() != null){
-        // filteredItems.setPredicate(pred.and(filteredItems.getPredicate()));
-        // } else{
-        filteredItems.setPredicate(pred);
-        // }
-    }
     
     //@@author A0144750J
     @Override
@@ -262,61 +245,5 @@ public class ModelManager extends ComponentManager implements Model {
         return commandHistory.size();
     }
     //@@author
-    
-    // ========== Inner classes/interfaces used for filtering ==================================================
-
-    private class QualifierPredicate implements Predicate<ReadOnlyItem> {
-
-        private final Qualifier qualifier;
-
-        QualifierPredicate(Qualifier qualifier) {
-            this.qualifier = qualifier;
-        }
-
-        @Override
-        public String toString() {
-            return qualifier.toString();
-        }
-
-        @Override
-        public boolean test(ReadOnlyItem item) {
-            return qualifier.run(item);
-        }
-
-    }
-
-    interface Qualifier {
-        boolean run(ReadOnlyItem item);
-
-        @Override
-        String toString();
-    }
-
-    //@@author A0131560U
-    /**
-     * A Qualifier class that particularly checks for Item Type (e.g. Task, Event, Done).
-     * @author craa
-     *
-     */
-    private class TypeQualifier implements Qualifier {
-        private String type;
-
-        TypeQualifier(String type) {
-            this.type = type;
-        }
-
-        @Override
-        public boolean run(ReadOnlyItem item) {
-            if (!item.is(type)) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public String toString() {
-            return "type= " + type;
-        }
-
-    }
 }
+    
