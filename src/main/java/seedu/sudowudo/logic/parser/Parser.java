@@ -38,12 +38,12 @@ import seedu.sudowudo.model.item.Item;
  */
 public class Parser {
 
-    private static final String EMPTY_STRING = "";
     public static final String COMMAND_TAG_REGEX = "#(.*)";
     public static final String COMMAND_DESCRIPTION_REGEX = "\"(.*)\"";
     public static final String COMMAND_TAG_PREFIX = "#";
     public static final String COMMAND_DESCRIPTION_PREFIX = "\"";
 
+    private static final String EMPTY_STRING = "";
     /**
      * Used for initial separation of command word and args.
      */
@@ -55,42 +55,19 @@ public class Parser {
 
     // item has description and a string representing time to be processed
     private static final Pattern ITEM_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"(.*)");
-
     private static final Pattern TASK_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"");
-
     private static final Pattern ITEM_EDIT_ARGS_FORMAT = Pattern
             .compile("(?<targetIndex>\\d+)\\s+(?<arguments>.*)");
-
     private static final String TASK_NO_DATE_DATA = "nothing";
     private static final Pattern ITEM_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
-
     private static final int COMMAND_DESCRIPTION_FIELD_NUMBER = 2;
     private static final int COMMAND_TYPE_FIELD_NUMBER = 1;
     private static final int COMMAND_TIME_FIELD_NUMBER = 3;
-
     private static final Pattern COMMAND_DESCRIPTION_SEARCH_FORMAT = Pattern.compile("\"([^\"]*)\"");
     private static final Pattern COMMAND_TAG_SEARCH_FORMAT = Pattern.compile("#([^ ]+)");
-
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("yyyy-MM-dd HH:mm");
-
-    private final DateTimeParser dtparser = DateTimeParser.getInstance();
-
-    public enum Field {
-        NAME("name"), START_DATE("start_date"), END_DATE("end_date"), START_TIME("start_time"), END_TIME(
-                "end_time"), DATE("date"), TIME("time");
-
-        private String field_name;
-
-        Field(String name) {
-            this.field_name = name;
-        }
-
-        public String getFieldName() {
-            return this.field_name;
-        }
-    }
-
+    private static final DateTimeParser dtParser = DateTimeParser.getInstance();
     private static Parser instance = new Parser();
 
     private Parser() {
@@ -470,12 +447,12 @@ public class Parser {
         assert !args.isEmpty();
         assert keywordSet != null;
 
-        this.dtparser.parse(args);
+        this.dtParser.parse(args);
 
-        if (dtparser.extractStartDate() != null) {
-            keywordSet.add(dtparser.extractStartDate().format(DATE_TIME_FORMATTER));
-            if (dtparser.extractEndDate() != null) {
-                keywordSet.add(dtparser.extractEndDate().format(DATE_TIME_FORMATTER));
+        if (dtParser.extractStartDate() != null) {
+            keywordSet.add(dtParser.extractStartDate().format(DATE_TIME_FORMATTER));
+            if (dtParser.extractEndDate() != null) {
+                keywordSet.add(dtParser.extractEndDate().format(DATE_TIME_FORMATTER));
             }
             return true;
         } else {
@@ -546,24 +523,4 @@ public class Parser {
     }
     // @@author
 
-    // @@author A0147609X-unused
-    /**
-     * checks field names are valid
-     * 
-     * @param fieldNames
-     *            an ArrayList<String> of field names
-     * @return true if all fields are valid, false otherwise
-     * @author darren
-     */
-    private static boolean fieldsAreValid(ArrayList<String> fieldNames) {
-        assert fieldNames != null;
-        for (String fieldName : fieldNames) {
-            try {
-                Field ret = Field.valueOf(fieldName.toUpperCase());
-            } catch (IllegalArgumentException iae) {
-                return false;
-            }
-        }
-        return true;
-    }
 }
