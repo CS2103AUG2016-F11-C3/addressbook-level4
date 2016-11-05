@@ -87,31 +87,35 @@ public class EditCommand extends Command {
         previousTemplate = itemToModify.deepCopy();
 
         for (String[] editField : editFields) {
-            switch (editField[0]) {
-                case "desc":
-                case "description":
-                    model.setItemDesc(itemToModify, editField[1]);
-                    break;
-                case "start":
-                    model.setItemStart(itemToModify,
-                            new DateTimeParser(editField[1])
-                                    .extractStartDate());
-                    break;
-                case "end":
-                case "by":
-                    model.setItemEnd(itemToModify,
-                            new DateTimeParser(editField[1]).extractStartDate());
-                    break;
-                case "period":
-                    DateTimeParser parser = new DateTimeParser(editField[1]);
-                    model.setItemStart(itemToModify, parser.extractStartDate());
-                    model.setItemEnd(itemToModify, parser.extractEndDate());
-                    break;
-                default:
-                    // field names not valid
-                    return new CommandResult(MESSAGE_INVALID_FIELD);
+            try {
+                switch (editField[0]) {
+                    case "desc":
+                    case "description":
+                        model.setItemDesc(itemToModify, editField[1]);
+                        break;
+                    case "start":
+                        model.setItemStart(itemToModify,
+                                new DateTimeParser(editField[1])
+                                        .extractStartDate());
+                        break;
+                    case "end":
+                    case "by":
+                        model.setItemEnd(itemToModify,
+                                new DateTimeParser(editField[1]).extractStartDate());
+                        break;
+                    case "period":
+                        DateTimeParser parser = new DateTimeParser(editField[1]);
+                        model.setPeriod(itemToModify, parser.extractStartDate(), parser.extractEndDate());
+                        break;
+                    default:
+                        // field names not valid
+                        return new CommandResult(MESSAGE_INVALID_FIELD);
+                }
+            } catch (IllegalValueException ive) {
+                return new CommandResult(ive.getMessage());
             }
         }
+        
         hasUndo = true;
         return new CommandResult(String.format(MESSAGE_SUCCESS, itemToModify),
                 itemToModify);
@@ -126,12 +130,15 @@ public class EditCommand extends Command {
     public CommandResult undo() {
         // deep copy the item to a template for undo
 
-        model.setItemDesc(itemToModify,
-                previousTemplate.getDescription().getFullDescription());
-        model.setItemStart(itemToModify, previousTemplate.getStartDate());
-        model.setItemEnd(itemToModify, previousTemplate.getEndDate());
-        itemToModify.setIsDone(previousTemplate.getIsDone());
-        itemToModify.setTags(previousTemplate.getTags());
+        try{
+            model.setItemDesc(itemToModify, previousTemplate.getDescription().getFullDescription());
+            model.setItemStart(itemToModify, previousTemplate.getStartDate());
+            model.setItemEnd(itemToModify, previousTemplate.getEndDate());
+            itemToModify.setIsDone(previousTemplate.getIsDone());
+            itemToModify.setTags(previousTemplate.getTags());
+        } catch (IllegalValueException ive){
+            assert false: "Original item values not valid";
+        }
         return new CommandResult(
                 String.format(MESSAGE_UNDO_SUCCESS, itemToModify),
                 itemToModify);
