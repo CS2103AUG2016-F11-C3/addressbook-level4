@@ -30,7 +30,6 @@ public class AddCommand extends Command {
             + "\"Be awesome\" from 1300 to 2359 on 07/10/2016 #cool #nice";
 
     public static final String MESSAGE_SUCCESS = "New %1$s added: %2$s";
-    public static final String MESSAGE_SUCCESS_TIME_NULL = "START or END time not found but new %1$s added!";
     public static final String MESSAGE_DUPLICATE_ITEM = "This task already exists in the to-do list";
     public static final String MESSAGE_UNDO_SUCCESS = "Undo add task: %1$s";
     private static final String DEFAULT_ITEM_NAME = "BLOCK";
