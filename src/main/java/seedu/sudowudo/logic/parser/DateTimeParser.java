@@ -64,14 +64,13 @@ public class DateTimeParser {
     public static final DateTimeFormatter SHORT_DAYOFWEEK = DateTimeFormatter
             .ofPattern("EEE");
 
-    public static DateTimeParser dtparser = new DateTimeParser();
+    public static DateTimeParser INSTANCE = new DateTimeParser();
     
     public static DateTimeParser getInstance() {
-        return dtparser;
+        return INSTANCE;
     }
     
-    public DateTimeParser() {
-    }
+    private DateTimeParser() {}
     
     /**
      * Uses the DateTimeParser service to parse a string containing possible
