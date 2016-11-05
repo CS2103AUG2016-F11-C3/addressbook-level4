@@ -25,7 +25,11 @@ public class ItemBuilder {
     	DateTimeParser parser = new DateTimeParser(startdate);
 		LocalDateTime startTimeObj = parser.extractStartDate();
 		LocalDateTime endTimeObj = parser.extractStartDate();
-		this.item.setStartDate(startTimeObj);
+
+		// if the item is an event
+		if (startTimeObj != null && !startTimeObj.equals(endTimeObj)){
+		    this.item.setStartDate(startTimeObj);
+		}
 		this.item.setEndDate(endTimeObj);
 		return this;
     }
