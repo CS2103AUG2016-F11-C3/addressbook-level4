@@ -103,19 +103,16 @@ public class ModelManager extends ComponentManager implements Model {
 
     //@@author A0147609X
     @Override
-	public void setItemDesc(Item item, String desc) {
-        try {
-            item.setDescription(desc);
-            updateFilteredListToShowAll();
-            indicateTaskBookChanged();
-        } catch (IllegalValueException ive) {
-        }
+	public void setItemDesc(Item item, String desc) throws IllegalValueException {
+        item.setDescription(desc);
+        updateFilteredListToShowAll();
+        indicateTaskBookChanged();
     }
     //@@author
     
     //@@author A0147609X
     @Override
-	public void setItemStart(Item item, LocalDateTime startDate) {
+	public void setItemStart(Item item, LocalDateTime startDate) throws IllegalValueException {
         item.setStartDate(startDate);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
@@ -124,12 +121,20 @@ public class ModelManager extends ComponentManager implements Model {
 
     //@@author A0147609X
     @Override
-	public void setItemEnd(Item item, LocalDateTime endDate) {
+	public void setItemEnd(Item item, LocalDateTime endDate) throws IllegalValueException {
         item.setEndDate(endDate);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
     }
     //@@author
+    
+    //@@author A0131560U
+    @Override
+    public void setPeriod(Item item, LocalDateTime startDate, LocalDateTime endDate) throws IllegalValueException {
+        item.setPeriod(startDate, endDate);
+        updateFilteredListToShowAll();
+        indicateTaskBookChanged();
+    }
     
     // @@author A0144750J
     @Override
