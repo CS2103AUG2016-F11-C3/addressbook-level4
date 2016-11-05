@@ -253,24 +253,6 @@ public class Item extends Observable implements ReadOnlyItem, Comparable<Item> {
         return start == null || end == null || start.isBefore(end);
     }
 
-    public void setRecurring(boolean isRecurring) {
-        this.isRecurring = isRecurring;
-		setChanged();
-		notifyObservers();
-    }
-
-    public void setRecurInterval(Period recurInterval) {
-        this.recurInterval = recurInterval;
-		setChanged();
-		notifyObservers();
-    }
-
-    public void setRecurEndDate(LocalDateTime recurEndDate) {
-        this.recurEndDate = recurEndDate;
-		setChanged();
-		notifyObservers();
-	}
-
 	public void setDescription(String desc) throws IllegalValueException {
 		this.description.setFullDescription(desc);
 		setChanged();
