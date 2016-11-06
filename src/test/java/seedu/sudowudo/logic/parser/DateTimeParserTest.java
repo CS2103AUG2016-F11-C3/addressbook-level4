@@ -27,7 +27,7 @@ public class DateTimeParserTest {
     private static final String EMPTY_STRING = "";
     
     // commonly used temporal markers
-    private static final LocalDateTime LDT_TODAY = LocalDateTime.now();
+    private static final LocalDateTime LDT_TODAY = LocalDateTime.of(LocalDate.now(), LocalTime.of(12, 0));
     private static final LocalDateTime LDT_TOMORROW = LDT_TODAY.plusDays(1);
     private static final LocalDateTime LDT_YESTERDAY = LDT_TODAY.minusDays(1);
     private static final LocalDateTime LDT_THIS_MONDAY = LDT_TODAY.with(DayOfWeek.MONDAY);
@@ -112,7 +112,16 @@ public class DateTimeParserTest {
         assertEquals(null, parser.extractEndDate());
     }
     
-    public static Date makeDate(int year, int month, int day, int hour, int minute) {
+    /*
+     * Tests for datetime prettifier methods
+     */
+    @Test
+    public void extractPrettyDateTime_today_todayReference() {
+        String expected = "Today, 12:00PM";
+        assertEquals(expected, DateTimeParser.extractPrettyDateTime(LDT_TODAY));
+    }
+    
+    private static Date makeDate(int year, int month, int day, int hour, int minute) {
         Calendar cal = Calendar.getInstance();
         cal.clear();
         cal.set(year, month-1, day, hour, minute); //month-1 because Calendar treats JANUARY as 0
@@ -154,7 +163,7 @@ public class DateTimeParserTest {
         String input = "every monday at 9am until 25 december 2016";
         parser.parse(input);
 
-        LocalDateTime recurEndDateTime = LocalDateTime.of(LocalDate.of(2016, 12, 25), LocalTime.of(9, 0));
+        LocalDateTime recurEndDateTime = LocalDateTime.of(2016, 12, 25, 9, 0);
         assertEquals(true, parser.isRecurring());
         assertEquals(recurEndDateTime, parser.getRecurEnd());
     }
@@ -261,6 +270,21 @@ public class DateTimeParserTest {
     @Test
     public void isToday_tomorrow_false() {
         assertEquals(false, DateTimeParser.isToday(LDT_TOMORROW));
+    }
+
+    @Test
+    public void isYesterday_yesterday_true() {
+        assertEquals(true, DateTimeParser.isYesterday(LDT_YESTERDAY));
+    }
+    
+    @Test
+    public void isYesterday_today_false() {
+        assertEquals(false, DateTimeParser.isYesterday(LDT_TODAY));
+    }
+
+    @Test
+    public void isYesterday_tomorrow_false() {
+        assertEquals(false, DateTimeParser.isYesterday(LDT_TOMORROW));
     }
     
     @Test
