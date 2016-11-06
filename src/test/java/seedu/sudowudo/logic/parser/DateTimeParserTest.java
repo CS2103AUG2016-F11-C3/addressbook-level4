@@ -30,6 +30,7 @@ public class DateTimeParserTest {
     private static final LocalDateTime LDT_THIS_MONDAY = LDT_TODAY.with(DayOfWeek.MONDAY);
     private static final LocalDateTime LDT_THIS_SUNDAY = LDT_TODAY.with(DayOfWeek.SUNDAY);
     private static final LocalDateTime LDT_LAST_SUNDAY = LDT_TODAY.with(TemporalAdjusters.previous(DayOfWeek.SUNDAY));
+    private static final LocalDateTime LDT_NEXT_MONDAY = LDT_THIS_MONDAY.plusDays(7);
     private static final LocalDateTime LDT_TODAY_LAST_WEEK = LDT_TODAY.minusDays(7);
     private static final LocalDateTime LDT_TODAY_NEXT_WEEK = LDT_TODAY.plusDays(7);
     
@@ -322,7 +323,7 @@ public class DateTimeParserTest {
     
     @Test
     public void isNextWeek_nextMonday_true() {
-        assertEquals(true, DateTimeParser.isNextWeek(LDT_THIS_MONDAY.plusDays(7)));
+        assertEquals(true, DateTimeParser.isNextWeek(LDT_NEXT_MONDAY));
     }
     
     @Test
