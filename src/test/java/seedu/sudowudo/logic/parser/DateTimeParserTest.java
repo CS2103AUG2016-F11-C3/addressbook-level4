@@ -13,6 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import org.junit.Test;
+import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
+import org.ocpsoft.prettytime.nlp.parse.DateGroup;
 
 //@@author A0147609X
 /**
@@ -39,13 +41,6 @@ public class DateTimeParserTest {
         String input = "16 september 2016 5pm to 17 september 2016 6pm";
         parser.parse(input);
         assertEquals(input, parser.getDateTime());
-    }
-    
-    @Test
-    public void getDateGroup_validIndex_dateGroupReturned() {
-        String input = "16 september 2016 5pm to 17 september 2016 6pm";
-        parser.parse(input);
-        
     }
     
     @Test
