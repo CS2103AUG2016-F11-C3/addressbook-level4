@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.List;
 
@@ -187,8 +188,24 @@ public class DateTimeParser {
      *         time
      * @author darren
      */
-    private static boolean isWithinTwoWeeks(LocalDateTime ldt) {
+    public static boolean isWithinTwoWeeks(LocalDateTime ldt) {
         return computeDaysTo(ldt) < 14 && computeDaysTo(ldt) > -14;
+    }
+
+    /**
+     * Check if the given java.time.LocalDateTime object is within the same year
+     * as the local system time.
+     * 
+     * @param ldt
+     * @return true if the LocalDateTime is within the same year as local system
+     *         time
+     * @author darren
+     */
+    public static boolean isWithinThisYear(LocalDateTime ldt) {
+        LocalDate currentDate = ldt.toLocalDate();
+        LocalDate firstDayOfNextYear = LocalDate.now().with(TemporalAdjusters.firstDayOfNextYear());
+        LocalDate lastDayOfLastYear = LocalDate.now().with(TemporalAdjusters.firstDayOfYear()).minusDays(1);
+        return currentDate.isBefore(firstDayOfNextYear) && currentDate.isAfter(lastDayOfLastYear);
     }
 
     /**
@@ -271,11 +288,11 @@ public class DateTimeParser {
 
         // explicit date; no relative prefix
         String prettyDate;
-        if (computeDaysTo(ldt) < 365) {
-            // same year in start and end datetimes
+        if (isWithinThisYear(ldt)) {
+            // LDT is in current year
             prettyDate = ldt.toLocalDate().format(ABRIDGED_DATE_FORMAT);
         } else {
-            // different years in start and end datetimes
+            // LDT is in another year
             prettyDate = ldt.toLocalDate().format(EXPLICIT_DATE_FORMAT);
         }
         return extractShortDayOfWeek(ldt) + SINGLE_WHITESPACE + prettyDate + PRETTY_COMMA_DELIMITER
