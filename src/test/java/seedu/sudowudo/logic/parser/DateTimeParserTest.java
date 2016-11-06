@@ -21,7 +21,7 @@ import org.junit.Test;
 public class DateTimeParserTest {
 
     private DateTimeParser parser = DateTimeParser.getInstance();
-    
+
     @Test
     public void extractStartDate_explicitDate_correctStartDate() {
         String input = "16 september 2016 5pm to 17 september 2016 6pm";
@@ -204,4 +204,54 @@ public class DateTimeParserTest {
         assertEquals(false, DateTimeParser.isSameDay(ldt1, ldt2));
     }
     
+    @Test
+    public void isToday_todaysDate_true() {
+        assertEquals(true, DateTimeParser.isToday(LocalDateTime.now()));
+    }
+
+    @Test
+    public void isToday_tomorrowsDate_false() {
+        assertEquals(false, DateTimeParser.isToday(LocalDateTime.now().plusDays(1)));
+    }
+    
+    @Test
+    public void isTomorrow_tomorrowsDate_true() {
+        assertEquals(true, DateTimeParser.isTomorrow(LocalDateTime.now().plusDays(1)));
+    }
+
+    @Test
+    public void isTomorrow_todaysDate_false() {
+        assertEquals(false, DateTimeParser.isTomorrow(LocalDateTime.now()));
+    }
+    
+    @Test
+    public void isWithinTwoWeeks_withinTwoWeeks_true() {
+        LocalDateTime ldt = LocalDateTime.now();
+        for(int i = 0; i < 14; i++) {
+            assertEquals(true, DateTimeParser.isWithinTwoWeeks(ldt.plusDays(i)));
+            assertEquals(true, DateTimeParser.isWithinTwoWeeks(ldt.minusDays(i)));
+        }
+    }
+    
+    @Test
+    public void isWithinTwoWeeks_outsideTwoWeeks_false() {
+        LocalDateTime ldtPlus = LocalDateTime.now().plusDays(14);
+        LocalDateTime ldtMinus = LocalDateTime.now().minusDays(14);
+        for(int i = 0; i < 14; i++) {
+            assertEquals(false, DateTimeParser.isWithinTwoWeeks(ldtPlus.plusDays(i)));
+            assertEquals(false, DateTimeParser.isWithinTwoWeeks(ldtMinus.minusDays(i)));
+        }
+    }
+    
+    @Test
+    public void isWithinThisYear_withinYear_true() {
+        LocalDateTime ldt = LocalDateTime.now();
+        assertEquals(true, DateTimeParser.isWithinThisYear(ldt));
+    }
+
+    @Test
+    public void isWithinThisYear_outsideYear_false() {
+        LocalDateTime ldt = LocalDateTime.now().plusYears(1);
+        assertEquals(false, DateTimeParser.isWithinThisYear(ldt));
+    }
 }
