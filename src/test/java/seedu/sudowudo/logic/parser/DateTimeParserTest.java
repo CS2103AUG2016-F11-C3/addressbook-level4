@@ -65,6 +65,13 @@ public class DateTimeParserTest {
     }
     
     @Test
+    public void extractStartDate_noDateToken_null() {
+        String input = "these are not the dates you are looking for";
+        parser.parse(input);
+        assertEquals(null, parser.extractStartDate());
+    }
+    
+    @Test
     public void extractEndDate_explicitDate_correctEndDate() {
         String input = "16 september 2016 5pm to 17 september 2016 6:30pm";
         parser.parse(input);
@@ -92,6 +99,13 @@ public class DateTimeParserTest {
         LocalDateTime deadline = LocalDateTime.of(LocalDate.of(1996, 11, 12), LocalTime.of(17, 0));
 
         assertEquals(deadline, parser.extractStartDate());
+        assertEquals(null, parser.extractEndDate());
+    }
+
+    @Test
+    public void extractEndDate_noDateToken_null() {
+        String input = "these are not the dates you are looking for";
+        parser.parse(input);
         assertEquals(null, parser.extractEndDate());
     }
     
