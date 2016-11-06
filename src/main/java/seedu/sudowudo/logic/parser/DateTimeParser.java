@@ -209,6 +209,49 @@ public class DateTimeParser {
     }
 
     /**
+     * Check if the given java.time.LocalDateTime object is within the previous week
+     * from the local system time.
+     * 
+     * A week starts on Monday.
+     * 
+     * @param ldt
+     * @return true if the LocalDateTime is within the previous week from local system time.
+     * @author darren
+     */
+    public static boolean isLastWeek(LocalDateTime ldt) {
+        LocalDateTime startOfCurrentWeek = LocalDateTime.now().with(DayOfWeek.MONDAY);
+        return ldt.isBefore(startOfCurrentWeek) && computeDaysTo(ldt) >= -7 && computeDaysTo(ldt) < 0;
+    }
+    
+    /**
+     * Check if the given java.time.LocalDateTime object is within this week of the local system time.
+     * 
+     * A week starts on Monday.
+     * 
+     * @param ldt
+     * @return true if the LocalDateTime is within this week in local system time.
+     * @author darren
+     */
+    public static boolean isThisWeek(LocalDateTime ldt) {
+        LocalDateTime startOfCurrentWeek = LocalDateTime.now().with(DayOfWeek.MONDAY).minusDays(1);
+        return ldt.isAfter(startOfCurrentWeek) && computeDaysTo(ldt) >= 0 && computeDaysTo(ldt) < 7;
+    }
+    
+    /**
+     * Check if the given java.time.LocalDateTime object is within next week of the local system time.
+     * 
+     * A week starts on Monday.
+     * 
+     * @param ldt
+     * @return true if the LocalDateTime is within the next week from local system time.
+     * @author darren
+     */
+    public static boolean isNextWeek(LocalDateTime ldt) {
+        LocalDateTime endOfCurrentWeek = LocalDateTime.now().with(DayOfWeek.SUNDAY);
+        return ldt.isAfter(endOfCurrentWeek) && computeDaysTo(ldt) >= 7 && computeDaysTo(ldt) < 14;
+    }
+    
+    /**
      * Helper method for casting java.util.Date to java.time.LocalDateTime
      * 
      * @param date
@@ -313,27 +356,26 @@ public class DateTimeParser {
 
     /**
      * Extracts the day-of-week component of a java.time.LocalDateTime object
-     * and returns it in long or short format (Monday or Mon)
+     * and returns it in long format (e.g. Monday)
      * 
      * @param ldt
-     * @param isLongFormat
-     *            result is long format?
-     * @return day-of-week
+     * @return day-of-week in long format
      * @author darren
      */
-    private static String extractDayOfWeek(LocalDateTime ldt, boolean isLongFormat) {
-        if (isLongFormat) {
-            return ldt.toLocalDate().format(LONG_DAYOFWEEK);
-        }
-        return ldt.toLocalDate().format(SHORT_DAYOFWEEK);
-    }
-
     public static String extractLongDayOfWeek(LocalDateTime ldt) {
-        return extractDayOfWeek(ldt, true);
+        return ldt.toLocalDate().format(LONG_DAYOFWEEK);
     }
 
+    /**
+     * Extracts the day-of-week component of a java.time.LocalDateTime object
+     * and returns it in short format (e.g. Mon)
+     * 
+     * @param ldt
+     * @return day-of-week in short format
+     * @author darren
+     */
     public static String extractShortDayOfWeek(LocalDateTime ldt) {
-        return extractDayOfWeek(ldt, false);
+        return ldt.toLocalDate().format(SHORT_DAYOFWEEK);
     }
 
     /**
@@ -345,13 +387,11 @@ public class DateTimeParser {
      * @author darren
      */
     private static String makeRelativePrefix(LocalDateTime ldt) {
-        LocalDateTime startOfCurrentWeek = LocalDateTime.now().with(DayOfWeek.MONDAY);
-        LocalDateTime startOfNextWeek = startOfCurrentWeek.with(DayOfWeek.MONDAY);
-        if (computeDaysTo(ldt) > -14 && ldt.isBefore(startOfCurrentWeek)) {
+        if (isLastWeek(ldt)) {
             return LAST_WEEK_REF;
-        } else if (computeDaysTo(ldt) < 7 && ldt.isBefore(startOfNextWeek)) {
+        } else if (isThisWeek(ldt)) {
             return THIS_WEEK_REF;
-        } else if (computeDaysTo(ldt) < 14) {
+        } else if (isNextWeek(ldt)) {
             return NEXT_WEEK_REF;
         }
         return EMPTY_STRING;
