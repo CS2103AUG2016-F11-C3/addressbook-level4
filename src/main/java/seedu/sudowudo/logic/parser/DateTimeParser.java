@@ -25,6 +25,7 @@ public class DateTimeParser {
     // handy strings for making pretty dates
     public static final String EMPTY_STRING = "";
     public static final String SINGLE_WHITESPACE = " ";
+    public static final String YESTERDAY_DATE_REF = "Yesterday";
     public static final String TODAY_DATE_REF = "Today";
     public static final String TOMORROW_DATE_REF = "Tomorrow";
     public static final String LAST_WEEK_REF = "Last" + SINGLE_WHITESPACE;
@@ -154,7 +155,6 @@ public class DateTimeParser {
     public static boolean isSameDay(LocalDateTime ldt1, LocalDateTime ldt2) {
         return ldt1.toLocalDate().equals(ldt2.toLocalDate());
     }
-
     /**
      * Check if the given java.time.LocalDateTime object is the same date as the
      * current date on local system time
@@ -165,6 +165,18 @@ public class DateTimeParser {
      */
     public static boolean isToday(LocalDateTime ldt) {
         return isSameDay(ldt, LocalDateTime.now());
+    }
+
+    /**
+     * Check if the given java.time.LocalDateTime object is the same date as the
+     * yesterday relative to the local system time
+     * 
+     * @param ldt
+     * @return true if the LocalDateTime is for yesterday, false otherwise
+     * @author darren
+     */
+    public static boolean isYesterday(LocalDateTime ldt) {
+        return isSameDay(ldt, LocalDateTime.now().minusDays(1));
     }
 
     /**
@@ -313,7 +325,11 @@ public class DateTimeParser {
      * @return pretty date for this week
      */
     public static String extractPrettyDateTime(LocalDateTime ldt) {
-        // special case for today/tomorrow relative to local system time
+        // special case for yesterday/today/tomorrow relative to local system time
+        if (isYesterday(ldt)) {
+            return YESTERDAY_DATE_REF + PRETTY_COMMA_DELIMITER + extractTwelveHourTime(ldt);
+        }
+
         if (isToday(ldt)) {
             return TODAY_DATE_REF + PRETTY_COMMA_DELIMITER + extractTwelveHourTime(ldt);
         }
