@@ -8,7 +8,9 @@ import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
@@ -28,7 +30,7 @@ public class HintDisplay extends UiPart {
 	private StackPane hintDisplayArea;
 
 	@FXML
-	private ListView<Hint> hintListView;
+	private TableView<Hint> hintTableView;
 
 
 	private static final String FXML = "HintDisplay.fxml";
@@ -53,8 +55,16 @@ public class HintDisplay extends UiPart {
 		hintList = new FilteredList<>(hintsList);
 		this.placeHolder.getChildren().add(mainPane);
 
-		hintListView.setItems(hintList);
-		hintListView.setCellFactory(listView -> new HintListCell());
+
+		hintTableView.setEditable(false);
+		hintTableView.setItems(hintList);
+
+		TableColumn<Hint, String> labelColumn = new TableColumn<>();
+		labelColumn.setCellValueFactory(new PropertyValueFactory("description"));
+		TableColumn<Hint, String> usageColumn = new TableColumn<>();
+		usageColumn.setCellValueFactory(new PropertyValueFactory("usage"));
+
+		hintTableView.getColumns().setAll(labelColumn, usageColumn);
     }
 
     @Override
