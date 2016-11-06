@@ -115,10 +115,35 @@ public class DateTimeParserTest {
     /*
      * Tests for datetime prettifier methods
      */
+
     @Test
     public void extractPrettyDateTime_today_todayReference() {
-        String expected = "Today, 12:00PM";
+        String expected = DateTimeParser.TODAY_DATE_REF + DateTimeParser.PRETTY_COMMA_DELIMITER + "12:00PM";
         assertEquals(expected, DateTimeParser.extractPrettyDateTime(LDT_TODAY));
+    }
+
+    @Test
+    public void extractPrettyDateTime_tomorrow_tomorrowReference() {
+        String expected = DateTimeParser.TOMORROW_DATE_REF + DateTimeParser.PRETTY_COMMA_DELIMITER + "12:00PM";
+        assertEquals(expected, DateTimeParser.extractPrettyDateTime(LDT_TOMORROW));
+    }
+
+    @Test
+    public void extractPrettyDateTime_yesterday_yesterdayReference() {
+        String expected = DateTimeParser.YESTERDAY_DATE_REF + DateTimeParser.PRETTY_COMMA_DELIMITER + "12:00PM";
+        assertEquals(expected, DateTimeParser.extractPrettyDateTime(LDT_YESTERDAY));
+    }
+
+    //@Test
+    public void extractPrettyDateTime_nextWeek_nextDayOfWeekReference() {
+        String expected = DateTimeParser.NEXT_WEEK_REF + "Monday" + DateTimeParser.PRETTY_COMMA_DELIMITER + "12:00PM";
+        assertEquals(expected, DateTimeParser.extractPrettyDateTime(LDT_NEXT_MONDAY));
+    }
+
+    //@Test
+    public void extractPrettyDateTime_lastWeek_lastDayOfWeekReference() {
+        String expected = DateTimeParser.LAST_WEEK_REF + "Sunday" + DateTimeParser.PRETTY_COMMA_DELIMITER + "12:00PM";
+        assertEquals(expected, DateTimeParser.extractPrettyDateTime(LDT_LAST_SUNDAY));
     }
     
     private static Date makeDate(int year, int month, int day, int hour, int minute) {
