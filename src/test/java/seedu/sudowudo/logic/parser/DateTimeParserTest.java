@@ -24,9 +24,12 @@ import org.ocpsoft.prettytime.nlp.parse.DateGroup;
  */
 public class DateTimeParserTest {
 
+    private static final String EMPTY_STRING = "";
+    
     // commonly used temporal markers
     private static final LocalDateTime LDT_TODAY = LocalDateTime.now();
     private static final LocalDateTime LDT_TOMORROW = LDT_TODAY.plusDays(1);
+    private static final LocalDateTime LDT_YESTERDAY = LDT_TODAY.minusDays(1);
     private static final LocalDateTime LDT_THIS_MONDAY = LDT_TODAY.with(DayOfWeek.MONDAY);
     private static final LocalDateTime LDT_THIS_SUNDAY = LDT_TODAY.with(DayOfWeek.SUNDAY);
     private static final LocalDateTime LDT_LAST_SUNDAY = LDT_TODAY.with(TemporalAdjusters.previous(DayOfWeek.SUNDAY));
@@ -92,6 +95,13 @@ public class DateTimeParserTest {
     }
 
     @Test
+    public void extractEndDate_noDateToken_null() {
+        String input = "these are not the dates you are looking for";
+        parser.parse(input);
+        assertEquals(null, parser.extractEndDate());
+    }
+
+    @Test
     public void extractDates_missingEndDate_nullEndDate() {
         String input = "by 12 november 1996 at 5pm";
         parser.parse(input);
@@ -99,13 +109,6 @@ public class DateTimeParserTest {
         LocalDateTime deadline = LocalDateTime.of(LocalDate.of(1996, 11, 12), LocalTime.of(17, 0));
 
         assertEquals(deadline, parser.extractStartDate());
-        assertEquals(null, parser.extractEndDate());
-    }
-
-    @Test
-    public void extractEndDate_noDateToken_null() {
-        String input = "these are not the dates you are looking for";
-        parser.parse(input);
         assertEquals(null, parser.extractEndDate());
     }
     
@@ -214,16 +217,23 @@ public class DateTimeParserTest {
     
     @Test
     public void extractTwelveHourTime_midnight_successfulExtract() {
-        LocalDateTime evening = LocalDateTime.of(2016, 11, 11, 0, 0);
+        LocalDateTime midnight = LocalDateTime.of(2016, 11, 11, 0, 0);
         String expected = "12:00AM";
-        assertEquals(expected, DateTimeParser.extractTwelveHourTime(evening));
+        assertEquals(expected, DateTimeParser.extractTwelveHourTime(midnight));
     }
 
     @Test
     public void extractTwelveHourTime_midday_successfulExtract() {
-        LocalDateTime evening = LocalDateTime.of(2016, 11, 11, 12, 0);
+        LocalDateTime midday = LocalDateTime.of(2016, 11, 11, 12, 0);
         String expected = "12:00PM";
-        assertEquals(expected, DateTimeParser.extractTwelveHourTime(evening));
+        assertEquals(expected, DateTimeParser.extractTwelveHourTime(midday));
+    }
+    
+    @Test
+    public void extractTwelveHourTime_meridianSwitch_correctMeridian() {
+        LocalDateTime ldt = LocalDateTime.of(2016, 11, 11, 11, 59);
+        String expected = "11:59AM";
+        assertEquals(expected, DateTimeParser.extractTwelveHourTime(ldt));
     }
     
     @Test
@@ -239,22 +249,32 @@ public class DateTimeParserTest {
     }
     
     @Test
-    public void isToday_todaysDate_true() {
+    public void isToday_today_true() {
         assertEquals(true, DateTimeParser.isToday(LDT_TODAY));
     }
 
     @Test
-    public void isToday_tomorrowsDate_false() {
+    public void isToday_yesterday_false() {
+        assertEquals(false, DateTimeParser.isToday(LDT_YESTERDAY));
+    }
+
+    @Test
+    public void isToday_tomorrow_false() {
         assertEquals(false, DateTimeParser.isToday(LDT_TOMORROW));
     }
     
     @Test
-    public void isTomorrow_tomorrowsDate_true() {
+    public void isTomorrow_tomorrow_true() {
         assertEquals(true, DateTimeParser.isTomorrow(LDT_TOMORROW));
     }
 
     @Test
-    public void isTomorrow_todaysDate_false() {
+    public void isTomorrow_yesterday_false() {
+        assertEquals(false, DateTimeParser.isTomorrow(LDT_YESTERDAY));
+    }
+
+    @Test
+    public void isTomorrow_today_false() {
         assertEquals(false, DateTimeParser.isTomorrow(LDT_TODAY));
     }
     
@@ -280,12 +300,26 @@ public class DateTimeParserTest {
     public void isWithinThisYear_withinYear_true() {
         assertEquals(true, DateTimeParser.isWithinThisYear(LDT_TODAY));
     }
+    
+    @Test
+    public void isWithinThisYear_firstDayOfYear_true() {
+        assertEquals(true, DateTimeParser.isWithinThisYear(LDT_TODAY.with(TemporalAdjusters.firstDayOfYear())));
+    }
+    
+    @Test
+    public void isWithinThisYear_lastDayOfYear_true() {
+        assertEquals(true, DateTimeParser.isWithinThisYear(LDT_TODAY.with(TemporalAdjusters.lastDayOfYear())));
+    }
 
     @Test
     public void isWithinThisYear_outsideYear_false() {
         assertEquals(false, DateTimeParser.isWithinThisYear(LDT_TODAY.plusYears(1)));
     }
     
+    /*
+     * Note: a week starts on Monday and ends on Sunday.
+     */
+
     @Test
     public void isLastWeek_insideLastWeek_true() {
         // 7 days ago is obviously inside last week
