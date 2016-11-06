@@ -23,7 +23,7 @@ public class DateTimeParserTest {
     private DateTimeParser parser = DateTimeParser.getInstance();
     
     @Test
-    public void extractExplicitStartDateTimeTest() {
+    public void extractStartDate_explicitDate_correctStartDate() {
         String input = "16 september 2016 5pm to 17 september 2016 6pm";
         parser.parse(input);
 
@@ -33,7 +33,7 @@ public class DateTimeParserTest {
     }
     
     @Test
-    public void extractImplicitStartDateTimeTest() {
+    public void extractStartDate_implicitDate_correctStartDate() {
         String input = "2213 fifth january";
         parser.parse(input);
         
@@ -43,7 +43,7 @@ public class DateTimeParserTest {
     }
     
     @Test
-    public void extractExplicitEndDateTimeTest() {
+    public void extractEndDate_explicitDate_correctEndDate() {
         String input = "16 september 2016 5pm to 17 september 2016 6:30pm";
         parser.parse(input);
 
@@ -53,7 +53,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void extractImplicitEndDateTimeTest() {
+    public void extractEndDate_implicitDate_correctEndDate() {
         String input = "1800 fifth january till the sixth october at 9:30pm";
         parser.parse(input);
         
@@ -63,7 +63,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void extractMissingEndDateTimeTest() {
+    public void extractDates_missingEndDate_nullEndDate() {
         String input = "by 12 november 1996 at 5pm";
         parser.parse(input);
 
@@ -81,7 +81,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void changeDateToLocalDateTimeTest() {
+    public void changeDateToLocalDateTime_successfulCast() {
         int year = 2016;
         int month = 11;
         int day = 12;
@@ -96,7 +96,7 @@ public class DateTimeParserTest {
     }
 
     @Test
-    public void changeLocalDateTimeToDateTest() {
+    public void changeLocalDateTimeToDate_successfulCast() {
         int year = 2016;
         int month = 11;
         int day = 12;
@@ -143,7 +143,7 @@ public class DateTimeParserTest {
     }
     
     @Test
-    public void extractLongDayOfWeekTest() {
+    public void extractLongDayOfWeek_everyDayOfWeek_successfulExtract() {
         ArrayList<LocalDateTime> weekLDTs = generateWeeklyLDTs();
         String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
         
@@ -153,7 +153,7 @@ public class DateTimeParserTest {
     }
     
     @Test
-    public void extractShortDayOfWeekTest() {
+    public void extractShortDayOfWeek_everyDayOfWeek_successfulExtract() {
         ArrayList<LocalDateTime> weekLDTs = generateWeeklyLDTs();
         String[] daysOfWeek = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
         
@@ -163,42 +163,42 @@ public class DateTimeParserTest {
     }
     
     @Test
-    public void extractTwelveHourTimeTest_Morning() {
+    public void extractTwelveHourTime_morning_successfulExtract() {
         LocalDateTime morning = LocalDateTime.of(2016, 11, 11, 11, 11);
         String expected = "11:11AM";
         assertEquals(expected, DateTimeParser.extractTwelveHourTime(morning));
     }
 
     @Test
-    public void extractTwelveHourTimeTest_Evening() {
+    public void extractTwelveHourTime_evening_successfulExtract() {
         LocalDateTime evening = LocalDateTime.of(2016, 11, 11, 18, 31);
         String expected = "6:31PM";
         assertEquals(expected, DateTimeParser.extractTwelveHourTime(evening));
     }
     
     @Test
-    public void extractTwelveHourTimeTest_Midnight() {
+    public void extractTwelveHourTime_midnight_successfulExtract() {
         LocalDateTime evening = LocalDateTime.of(2016, 11, 11, 0, 0);
         String expected = "12:00AM";
         assertEquals(expected, DateTimeParser.extractTwelveHourTime(evening));
     }
 
     @Test
-    public void extractTwelveHourTimeTest_Midday() {
+    public void extractTwelveHourTime_midday_successfulExtract() {
         LocalDateTime evening = LocalDateTime.of(2016, 11, 11, 12, 0);
         String expected = "12:00PM";
         assertEquals(expected, DateTimeParser.extractTwelveHourTime(evening));
     }
     
     @Test
-    public void isSameDayTest_Positive() {
+    public void isSameDay_sameDay_true() {
         LocalDateTime ldt1 = LocalDateTime.of(2016, 11, 11, 11, 11);
         LocalDateTime ldt2 = LocalDateTime.of(2016, 11, 11, 19, 46);
         assertEquals(true, DateTimeParser.isSameDay(ldt1, ldt2));
     }
 
     @Test
-    public void isSameDayTest_Negative() {
+    public void isSameDay_differentDay_false() {
         LocalDateTime ldt1 = LocalDateTime.of(2016, 11, 11, 11, 11);
         LocalDateTime ldt2 = LocalDateTime.of(2016, 11, 15, 19, 46);
         assertEquals(false, DateTimeParser.isSameDay(ldt1, ldt2));
