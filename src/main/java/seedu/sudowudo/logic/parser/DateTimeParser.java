@@ -410,10 +410,6 @@ public class DateTimeParser {
         return ChronoUnit.DAYS.between(LocalDate.now(), ldt.toLocalDate());
     }
 
-    public DateGroup getDateGroup(int index) {
-        return this.dategroups.get(index);
-    }
-
     public String getDateTime() {
         return this.datetime;
     }
