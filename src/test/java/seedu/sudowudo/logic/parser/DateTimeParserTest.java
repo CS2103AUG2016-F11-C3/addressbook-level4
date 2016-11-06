@@ -3,9 +3,11 @@ package seedu.sudowudo.logic.parser;
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,8 +22,32 @@ import org.junit.Test;
  */
 public class DateTimeParserTest {
 
-    private DateTimeParser parser = DateTimeParser.getInstance();
+    // commonly used temporal markers
+    private static final LocalDateTime LDT_TODAY = LocalDateTime.now();
+    private static final LocalDateTime LDT_TOMORROW = LDT_TODAY.plusDays(1);
+    private static final LocalDateTime LDT_THIS_MONDAY = LDT_TODAY.with(DayOfWeek.MONDAY);
+    private static final LocalDateTime LDT_THIS_SUNDAY = LDT_TODAY.with(DayOfWeek.SUNDAY);
+    private static final LocalDateTime LDT_LAST_SUNDAY = LDT_TODAY.with(TemporalAdjusters.previous(DayOfWeek.SUNDAY));
+    private static final LocalDateTime LDT_TODAY_LAST_WEEK = LDT_TODAY.minusDays(7);
+    private static final LocalDateTime LDT_TODAY_NEXT_WEEK = LDT_TODAY.plusDays(7);
+    
 
+    private DateTimeParser parser = DateTimeParser.getInstance();
+    
+    @Test
+    public void getDateTime_validString_stringReturned() {
+        String input = "16 september 2016 5pm to 17 september 2016 6pm";
+        parser.parse(input);
+        assertEquals(input, parser.getDateTime());
+    }
+    
+    @Test
+    public void getDateGroup_validIndex_dateGroupReturned() {
+        String input = "16 september 2016 5pm to 17 september 2016 6pm";
+        parser.parse(input);
+        
+    }
+    
     @Test
     public void extractStartDate_explicitDate_correctStartDate() {
         String input = "16 september 2016 5pm to 17 september 2016 6pm";
@@ -199,44 +225,41 @@ public class DateTimeParserTest {
 
     @Test
     public void isSameDay_differentDay_false() {
-        LocalDateTime ldt1 = LocalDateTime.of(2016, 11, 11, 11, 11);
-        LocalDateTime ldt2 = LocalDateTime.of(2016, 11, 15, 19, 46);
-        assertEquals(false, DateTimeParser.isSameDay(ldt1, ldt2));
+        assertEquals(false, DateTimeParser.isSameDay(LDT_TODAY, LDT_TOMORROW));
     }
     
     @Test
     public void isToday_todaysDate_true() {
-        assertEquals(true, DateTimeParser.isToday(LocalDateTime.now()));
+        assertEquals(true, DateTimeParser.isToday(LDT_TODAY));
     }
 
     @Test
     public void isToday_tomorrowsDate_false() {
-        assertEquals(false, DateTimeParser.isToday(LocalDateTime.now().plusDays(1)));
+        assertEquals(false, DateTimeParser.isToday(LDT_TOMORROW));
     }
     
     @Test
     public void isTomorrow_tomorrowsDate_true() {
-        assertEquals(true, DateTimeParser.isTomorrow(LocalDateTime.now().plusDays(1)));
+        assertEquals(true, DateTimeParser.isTomorrow(LDT_TOMORROW));
     }
 
     @Test
     public void isTomorrow_todaysDate_false() {
-        assertEquals(false, DateTimeParser.isTomorrow(LocalDateTime.now()));
+        assertEquals(false, DateTimeParser.isTomorrow(LDT_TODAY));
     }
     
     @Test
     public void isWithinTwoWeeks_withinTwoWeeks_true() {
-        LocalDateTime ldt = LocalDateTime.now();
         for(int i = 0; i < 14; i++) {
-            assertEquals(true, DateTimeParser.isWithinTwoWeeks(ldt.plusDays(i)));
-            assertEquals(true, DateTimeParser.isWithinTwoWeeks(ldt.minusDays(i)));
+            assertEquals(true, DateTimeParser.isWithinTwoWeeks(LDT_TODAY.plusDays(i)));
+            assertEquals(true, DateTimeParser.isWithinTwoWeeks(LDT_TODAY.minusDays(i)));
         }
     }
     
     @Test
     public void isWithinTwoWeeks_outsideTwoWeeks_false() {
-        LocalDateTime ldtPlus = LocalDateTime.now().plusDays(14);
-        LocalDateTime ldtMinus = LocalDateTime.now().minusDays(14);
+        LocalDateTime ldtPlus = LDT_TODAY.plusDays(14);
+        LocalDateTime ldtMinus = LDT_TODAY.minusDays(14);
         for(int i = 0; i < 14; i++) {
             assertEquals(false, DateTimeParser.isWithinTwoWeeks(ldtPlus.plusDays(i)));
             assertEquals(false, DateTimeParser.isWithinTwoWeeks(ldtMinus.minusDays(i)));
@@ -245,13 +268,75 @@ public class DateTimeParserTest {
     
     @Test
     public void isWithinThisYear_withinYear_true() {
-        LocalDateTime ldt = LocalDateTime.now();
-        assertEquals(true, DateTimeParser.isWithinThisYear(ldt));
+        assertEquals(true, DateTimeParser.isWithinThisYear(LDT_TODAY));
     }
 
     @Test
     public void isWithinThisYear_outsideYear_false() {
-        LocalDateTime ldt = LocalDateTime.now().plusYears(1);
-        assertEquals(false, DateTimeParser.isWithinThisYear(ldt));
+        assertEquals(false, DateTimeParser.isWithinThisYear(LDT_TODAY.plusYears(1)));
+    }
+    
+    @Test
+    public void isLastWeek_insideLastWeek_true() {
+        // 7 days ago is obviously inside last week
+        assertEquals(true, DateTimeParser.isLastWeek(LDT_TODAY_LAST_WEEK));
+    }
+
+    @Test
+    public void isLastWeek_lastSunday_true() {
+        // final day of last week
+        assertEquals(true, DateTimeParser.isLastWeek(LDT_LAST_SUNDAY));
+    }
+
+    @Test
+    public void isLastWeek_outsideLastWeek_false() {
+        // today is obviously not last week
+        assertEquals(false, DateTimeParser.isLastWeek(LDT_TODAY));
+    }
+
+    @Test
+    public void isLastWeek_thisMonday_false() {
+        // first day of this week
+        assertEquals(false, DateTimeParser.isLastWeek(LDT_THIS_MONDAY));
+    }
+    
+    @Test
+    public void isThisWeek_today_true() {
+        assertEquals(true, DateTimeParser.isThisWeek(LDT_TODAY));
+    }
+
+    @Test
+    public void isThisWeek_thisMonday_true() {
+        assertEquals(true, DateTimeParser.isThisWeek(LDT_THIS_MONDAY));
+    }
+    
+    @Test
+    public void isThisWeek_lastWeek_false() {
+        assertEquals(false, DateTimeParser.isThisWeek(LDT_TODAY_LAST_WEEK));
+    }
+
+    @Test
+    public void isThisWeek_lastSunday_false() {
+        assertEquals(false, DateTimeParser.isThisWeek(LDT_LAST_SUNDAY));
+    }
+    
+    @Test
+    public void isNextWeek_nextWeek_true() {
+        assertEquals(true, DateTimeParser.isNextWeek(LDT_TODAY_NEXT_WEEK));
+    }
+    
+    @Test
+    public void isNextWeek_nextMonday_true() {
+        assertEquals(true, DateTimeParser.isNextWeek(LDT_THIS_MONDAY.plusDays(7)));
+    }
+    
+    @Test
+    public void isNextWeek_today_false() {
+        assertEquals(false, DateTimeParser.isNextWeek(LDT_TODAY));
+    }
+    
+    @Test
+    public void isNextWeek_thisSunday_false() {
+        assertEquals(false, DateTimeParser.isNextWeek(LDT_THIS_SUNDAY));
     }
 }
