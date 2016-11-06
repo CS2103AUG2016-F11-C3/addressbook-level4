@@ -67,7 +67,7 @@ public class Parser {
     private static final Pattern COMMAND_TAG_SEARCH_FORMAT = Pattern.compile("#([^ ]+)");
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
             .ofPattern("yyyy-MM-dd HH:mm");
-    private static final DateTimeParser dtParser = DateTimeParser.getInstance();
+    private DateTimeParser dtParser = DateTimeParser.getInstance();
     private static Parser instance = new Parser();
 
     private Parser() {
@@ -447,7 +447,7 @@ public class Parser {
         assert !args.isEmpty();
         assert keywordSet != null;
 
-        this.dtParser.parse(args);
+        dtParser.parse(args);
 
         if (dtParser.extractStartDate() != null) {
             keywordSet.add(dtParser.extractStartDate().format(DATE_TIME_FORMATTER));

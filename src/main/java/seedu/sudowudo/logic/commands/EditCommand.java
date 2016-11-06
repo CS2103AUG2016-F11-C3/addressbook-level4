@@ -30,7 +30,7 @@ public class EditCommand extends Command {
 
     public final int targetIndex;
 
-    private static final DateTimeParser dtParser = DateTimeParser.getInstance();
+    private DateTimeParser dtParser = DateTimeParser.getInstance();
 
     private Item itemToModify;
     private Item previousTemplate;

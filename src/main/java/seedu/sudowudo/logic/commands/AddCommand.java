@@ -32,7 +32,7 @@ public class AddCommand extends Command {
 
     private static final String DEFAULT_ITEM_NAME = "BLOCK";
     private static final String EMPTY_STRING = "";
-    private static final DateTimeParser dtParser = DateTimeParser.getInstance();
+    private DateTimeParser dtParser = DateTimeParser.getInstance();
 
     private final Item toAdd;
     private Item toUndoAdd;
