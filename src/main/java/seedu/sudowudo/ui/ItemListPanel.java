@@ -2,6 +2,8 @@ package seedu.sudowudo.ui;
 
 import java.util.logging.Logger;
 
+import com.google.common.eventbus.Subscribe;
+
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,7 +14,9 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import seedu.sudowudo.commons.core.EventsCenter;
 import seedu.sudowudo.commons.core.LogsCenter;
+import seedu.sudowudo.commons.events.ui.ItemChangeEvent;
 import seedu.sudowudo.commons.events.ui.ItemPanelSelectionChangedEvent;
 import seedu.sudowudo.model.item.ReadOnlyItem;
 
@@ -47,11 +51,20 @@ public class ItemListPanel extends UiPart {
         this.placeHolderPane = pane;
     }
 
+	@Subscribe
+	public void itemChangeEvent(ItemChangeEvent e) {
+		ReadOnlyItem toScrollTo = e.getItem();
+		if (toScrollTo != null) {
+			itemListView.scrollTo(toScrollTo);
+		}
+	}
+
     public static ItemListPanel load(Stage primaryStage, AnchorPane itemListPlaceholder,
                                        ObservableList<ReadOnlyItem> itemList) {
         ItemListPanel itemListPanel =
                 UiPartLoader.loadUiPart(primaryStage, itemListPlaceholder, new ItemListPanel());
         itemListPanel.configure(itemList);
+		EventsCenter.getInstance().registerHandler(itemListPanel);
         return itemListPanel;
     }
 
