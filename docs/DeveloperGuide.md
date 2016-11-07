@@ -86,7 +86,9 @@ interface and exposes its functionality using the `LogicManager.java` class.<br>
 The _Sequence Diagram_ below shows how the components interact for the scenario where the user issues the
 command `delete 3`.
 
+<!--- @@author A0144750J --->
 <img src="images/SDforDeleteItem.png" width="800">
+<!----@@author------->
 
 >Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address Book data are changed,
  instead of asking the `Storage` to save the updates to the hard disk.
@@ -103,7 +105,9 @@ The sections below give more details of each component.
 
 ### UI component
 
+<!--- @@author A0092390E --->
 <img src="images/UiClassDiagram.png" width="800"><br>
+<!---- @@author-------------->
 
 **API** : [`Ui.java`](../src/main/java/seedu/address/ui/Ui.java)
 
@@ -134,11 +138,15 @@ The `UI` component,
 
 Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")`
  API call.<br>
+
+<!---- @@author A0147609X-------------->
 <img src="images/DeleteItemSdForLogic.png" width="800"><br>
 
 ### Model component
 
+<!-- @@author A0131560U -->
 <img src="images/ModelClassDiagram.png" width="800"><br>
+<!-- @@author -->
 
 **API** : [`Model.java`](../src/main/java/seedu/address/model/Model.java)
 
@@ -151,7 +159,9 @@ The `Model`,
 
 ### Storage component
 
+<!-- A0144750J-->
 <img src="images/StorageClassDiagram.png" width="800"><br>
+<!-- @@author -->
 
 **API** : [`Storage.java`](../src/main/java/seedu/address/storage/Storage.java)
 
