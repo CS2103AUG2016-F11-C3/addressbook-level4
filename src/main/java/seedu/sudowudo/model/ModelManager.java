@@ -71,6 +71,10 @@ public class ModelManager extends ComponentManager implements Model {
         commandHistory = new ArrayList<String>();
         this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
     }
+    
+    public Predicate getDefaultPredicate() {
+    	return this.defaultPredicate;
+    }
 
     @Override
     public void resetData(ReadOnlyTaskBook newData) {
