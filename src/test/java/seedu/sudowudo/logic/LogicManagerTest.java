@@ -40,7 +40,6 @@ import seedu.sudowudo.logic.commands.ExitCommand;
 import seedu.sudowudo.logic.commands.FindCommand;
 import seedu.sudowudo.logic.commands.HelpCommand;
 import seedu.sudowudo.logic.commands.ListCommand;
-import seedu.sudowudo.logic.commands.SelectCommand;
 import seedu.sudowudo.model.Model;
 import seedu.sudowudo.model.ModelManager;
 import seedu.sudowudo.model.ReadOnlyTaskBook;
@@ -457,17 +456,6 @@ public class LogicManagerTest<E> {
         }
 
         assertCommandBehavior(commandWord + " 3", expectedMessage, model.getTaskBook(), itemList);
-    }
-
-    @Test
-    public void execute_selectInvalidArgsFormat_errorMessageShown() throws Exception {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE);
-        assertIncorrectIndexFormatBehaviorForCommand("select", expectedMessage);
-    }
-
-    @Test
-    public void execute_selectIndexNotFound_errorMessageShown() throws Exception {
-        assertIndexNotFoundBehaviorForCommand("select");
     }
 
     @Test
