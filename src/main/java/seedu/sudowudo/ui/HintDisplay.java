@@ -68,7 +68,7 @@ public class HintDisplay extends UiPart {
 		// Make table adapt in size
 		hintTableView.setFixedCellSize(25);
 		hintTableView.prefHeightProperty().bind(
-				hintTableView.fixedCellSizeProperty().multiply(Bindings.size(hintTableView.getItems())));
+				hintTableView.fixedCellSizeProperty().multiply(Bindings.size(hintTableView.getItems()).add(0.5)));
 		hintTableView.minHeightProperty().bind(hintTableView.prefHeightProperty());
 		hintTableView.maxHeightProperty().bind(hintTableView.prefHeightProperty());
 	}
