@@ -25,7 +25,7 @@ public class ListUtil {
 
     }
     
-    public Predicate setDefaultPredicate(String taskType){
+    public Predicate setDefaultPredicate(Item.Type taskType){
         return new QualifierPredicate(new TypeQualifier(taskType));
     }
     
@@ -74,9 +74,9 @@ public class ListUtil {
      *
      */
     private class TypeQualifier implements Qualifier {
-        private String type;
+        private Item.Type type;
 
-        TypeQualifier(String type) {
+        TypeQualifier(Item.Type type) {
             this.type = type;
         }
 
@@ -174,7 +174,7 @@ public class ListUtil {
         private boolean matchesTags(ReadOnlyItem item) {
             keyword = keyword.replaceFirst(Parser.COMMAND_TAG_PREFIX, "");
             if (isKeywordType()){
-                return item.is(keyword);
+                return item.is(Item.Type.fromString(keyword));
             }
 
             return StringUtil.containsIgnoreCase(item.getTags().listTags(),keyword);
