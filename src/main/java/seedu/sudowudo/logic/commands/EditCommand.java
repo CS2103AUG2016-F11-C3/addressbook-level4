@@ -18,11 +18,9 @@ import seedu.sudowudo.model.tag.UniqueTagList;
 public class EditCommand extends Command {
 
     public static final String COMMAND_WORD = "edit";
-
-    public static final String MESSAGE_USAGE = COMMAND_WORD + "... edit ..."
-            + ": Edits an existing item.\n"
-            + "Syntax: edit CONTEXT_ID FIELD:NEW_DETAIL\n" + "Example: "
-            + COMMAND_WORD + " 2 start:tomorrow 6pm";
+    public static final String MESSAGE_USAGE = COMMAND_WORD + "... edit ..." + ": Edits an existing item.\n"
+            + "Syntax: edit CONTEXT_ID FIELD:NEW_DETAIL\n" + "Example: " + COMMAND_WORD
+            + " 2 start:tomorrow 6pm";
 
     public static final String MESSAGE_SUCCESS = "Successfully edited: %1$s";
     public static final String MESSAGE_DUPLICATE_ITEM = "This task already exists in the to-do list";
@@ -30,15 +28,15 @@ public class EditCommand extends Command {
     public static final String MESSAGE_UNDO_SUCCESS = "Undo edit task: %1$s";
     public static final String MESSAGE_UNDO_FAILURE = "Failed to undo edit task: %1$s";
 
-    public static final String[] ALLOWED_FIELDS = { "desc", "description",
-            "start", "end", "by", "period" };
+    public final int targetIndex;
+
+    private DateTimeParser dtParser = DateTimeParser.getInstance();
 
     private Item itemToModify;
     private Item previousTemplate;
-    public final int targetIndex;
     private ArrayList<String[]> editFields;
 
-    //@@author A0092390E
+    // @@author A0092390E
     /**
      * Constructor using raw strings
      * 
@@ -49,8 +47,7 @@ public class EditCommand extends Command {
      *            which is a field:value pair
      * @throws IllegalValueException
      */
-    public EditCommand(Integer index, ArrayList<String> arguments)
-            throws IllegalValueException {
+    public EditCommand(Integer index, ArrayList<String> arguments) throws IllegalValueException {
         this.targetIndex = index;
         assert arguments.size() != 0;
 
@@ -59,12 +56,11 @@ public class EditCommand extends Command {
             editFields.add(argument.split(":", 2));
         }
 
-        previousTemplate = new Item(new Description("dummy"), null, null,
-                new UniqueTagList());
+        previousTemplate = new Item(new Description("dummy"), null, null, new UniqueTagList());
     }
-    //@@author
+    // @@author
 
-    //@@author A0147609X
+    // @@author A0147609X
     /**
      * Executes the edit command.
      * 
@@ -77,8 +73,7 @@ public class EditCommand extends Command {
         if (lastShownList.size() < targetIndex) {
             indicateAttemptToExecuteIncorrectCommand();
             hasUndo = false;
-            return new CommandResult(
-                    Messages.MESSAGE_INVALID_ITEM_DISPLAYED_INDEX);
+            return new CommandResult(Messages.MESSAGE_INVALID_ITEM_DISPLAYED_INDEX);
         }
 
         itemToModify = lastShownList.get(this.targetIndex - 1);
@@ -86,38 +81,42 @@ public class EditCommand extends Command {
         // deep copy the item to a template for undo
         previousTemplate = itemToModify.deepCopy();
 
-        for (String[] editField : editFields) {
-            switch (editField[0]) {
+        for (String[] editStruct : editFields) {
+            String fieldToEdit = editStruct[0];
+            String newFieldDetail = editStruct[1];
+
+            try {
+                switch (fieldToEdit) {
                 case "desc":
                 case "description":
-                    model.setItemDesc(itemToModify, editField[1]);
+                    model.setItemDesc(itemToModify, newFieldDetail);
                     break;
                 case "start":
-                    model.setItemStart(itemToModify,
-                            new DateTimeParser(editField[1])
-                                    .extractStartDate());
+                    model.setItemStart(itemToModify, dtParser.parse(newFieldDetail).extractStartDate());
                     break;
                 case "end":
                 case "by":
-                    model.setItemEnd(itemToModify,
-                            new DateTimeParser(editField[1]).extractStartDate());
+                    model.setItemEnd(itemToModify, dtParser.parse(newFieldDetail).extractStartDate());
                     break;
                 case "period":
-                    DateTimeParser parser = new DateTimeParser(editField[1]);
-                    model.setItemStart(itemToModify, parser.extractStartDate());
-                    model.setItemEnd(itemToModify, parser.extractEndDate());
+                    dtParser.parse(newFieldDetail);
+                    model.setItemStart(itemToModify, dtParser.extractStartDate());
+                    model.setItemEnd(itemToModify, dtParser.extractEndDate());
                     break;
                 default:
                     // field names not valid
                     return new CommandResult(MESSAGE_INVALID_FIELD);
+                }
+            } catch (IllegalValueException ive) {
+                return new CommandResult(ive.getMessage());
             }
         }
+        
         hasUndo = true;
-        return new CommandResult(String.format(MESSAGE_SUCCESS, itemToModify),
-                itemToModify);
+        return new CommandResult(String.format(MESSAGE_SUCCESS, itemToModify), itemToModify);
 
     }
-    //@@author
+    // @@author
 
     /**
      * @@author A0144750J
@@ -126,12 +125,15 @@ public class EditCommand extends Command {
     public CommandResult undo() {
         // deep copy the item to a template for undo
 
-        model.setItemDesc(itemToModify,
-                previousTemplate.getDescription().getFullDescription());
-        model.setItemStart(itemToModify, previousTemplate.getStartDate());
-        model.setItemEnd(itemToModify, previousTemplate.getEndDate());
-        itemToModify.setIsDone(previousTemplate.getIsDone());
-        itemToModify.setTags(previousTemplate.getTags());
+        try{
+            model.setItemDesc(itemToModify, previousTemplate.getDescription().getFullDescription());
+            model.setItemStart(itemToModify, previousTemplate.getStartDate());
+            model.setItemEnd(itemToModify, previousTemplate.getEndDate());
+            itemToModify.setIsDone(previousTemplate.getIsDone());
+            itemToModify.setTags(previousTemplate.getTags());
+        } catch (IllegalValueException ive){
+            assert false: "Original item values not valid";
+        }
         return new CommandResult(
                 String.format(MESSAGE_UNDO_SUCCESS, itemToModify),
                 itemToModify);

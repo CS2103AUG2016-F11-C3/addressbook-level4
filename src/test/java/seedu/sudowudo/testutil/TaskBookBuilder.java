@@ -1,9 +1,7 @@
 package seedu.sudowudo.testutil;
 
-import seedu.sudowudo.commons.exceptions.IllegalValueException;
 import seedu.sudowudo.model.item.Item;
 import seedu.sudowudo.model.item.UniqueItemList;
-import seedu.sudowudo.model.tag.Tag;
 import seedu.sudowudo.model.TaskBook;
 
 /**
@@ -24,13 +22,6 @@ public class TaskBookBuilder {
         taskBook.addItem(item);
         return this;
     }
-    
-    /*
-    public TaskBookBuilder withTag(String tagName) throws IllegalValueException {
-        taskBook.addTag(new Tag(tagName));
-        return this;
-    }
-    */
     
     public TaskBook build(){
         return taskBook;
