@@ -33,22 +33,13 @@ public class EditCommand extends Command {
     public static final String[] ALLOWED_FIELDS = { "desc", "description",
             "start", "end", "by", "period" };
 
+    protected static ArrayList<Hint> hints = new ArrayList<>();
+
     private Item itemToModify;
     private Item previousTemplate;
-    public final int targetIndex;
     private ArrayList<String[]> editFields;
+    private final int targetIndex;
 
-	/**
-	 * Method to return hints for this command
-	 * 
-	 * @@author A0092390E
-	 */
-	public static ArrayList<Hint> getHints() {
-		ArrayList<Hint> hints = new ArrayList<>();
-		hints.add(new Hint("edit task", "edit",
-				"edit CONTEXT_ID desc|start|end|by|period:NEW_VALUE [desc|start|end...]..."));
-		return hints;
-	}
 
     //@@author A0092390E
     /**
@@ -149,4 +140,15 @@ public class EditCommand extends Command {
                 itemToModify);
     }
 
+	/**
+	 * Method to return hints for this command
+	 * 
+	 * @@author A0092390E
+	 */
+	public static ArrayList<Hint> getHints() {
+		ArrayList<Hint> hints = new ArrayList<>();
+		hints.add(new Hint("edit task", "edit",
+				"edit CONTEXT_ID desc|start|end|by|period:NEW_VALUE [desc|start|end...]..."));
+		return hints;
+	}
 }
