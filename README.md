@@ -13,15 +13,16 @@
 * It is a **Java** application, developed with **Eclipse IDE** in an **object-oriented** fashion and implements an **event-driven architecture**
 * It is the designed to be the final product for the beginner's **Software Engineering course** at the National University of Singapore (NUS). As such, it is built upon an existing product provided by the teaching team.
 * Main features:
-    * CRUD (create, read, update, delete) functions for tasks.
-    * 3 different types of tasks (event, deadline, floating)
-    * Natural language for user input
-    * Internal visualizer for sorting tasks by urgency and importance
+    * CRUD (create, read, update, delete) functions for items
+    * Undo and command trace in terminal
+    * 3 different types of items (event, task, floating task)
+    * Natural language processing for date time input
+    * Context help panel for in-app user guide
 
   
 ### Site Map
 * [User Guide](docs/UserGuide.md) 
-* [Developer Guide](docs/NewDeveloperGuide.md) 
+* [Developer Guide](docs/DeveloperGuide.md) 
 * [About Us](docs/AboutUs.md)
 * [Contact Us](docs/ContactUs.md)
 
