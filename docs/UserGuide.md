@@ -246,13 +246,16 @@ list overdue // lists all events/tasks with end date before the current time
 <!--- @@author --->
 
 <!--- @@author A0092390E --->
-### Paging
+### Scrolling
 The main interface of Sudowudo pages your upcoming tasks/events.
 
-```java
-next         // shows next page of tasks/events
-back         // shows previous page of tasks/events
-```
+You can scroll through the list of items on the main interface using keyboard shortcuts.
+
+|         | Scroll Up | Scroll Down |
+|---------|-----------|-------------|
+| Windows | `Page Up` | `Page Down  |
+| Mac     | `Command + Up` | `Command + Down` |
+
 <!--- @@author --->
 
 <!--- @@author A0144750J--->
