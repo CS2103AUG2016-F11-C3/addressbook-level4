@@ -41,10 +41,9 @@ public class XmlAdaptedItem {
      */
     public XmlAdaptedItem() {}
 
-
+    //@@author A0144750J
     /**
      * Converts a given Item into this class for JAXB use.
-     * @@author A0144750J
      * @param source future changes to this will not affect the created XmlAdaptedPerson
      */
     public XmlAdaptedItem(ReadOnlyItem source) {
@@ -82,9 +81,9 @@ public class XmlAdaptedItem {
         }
     }
 
+    //@@author A0144750J
     /**
      * Converts this jaxb-friendly adapted item object into the model's Item object.
-     * @@author A0144750J
      * @throws IllegalValueException if there were any data constraints violated in the adapted person
      */
     public Item toModelType() throws IllegalValueException {

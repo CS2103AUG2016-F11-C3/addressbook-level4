@@ -39,9 +39,9 @@ public class ClearCommand extends Command {
         return new CommandResult(MESSAGE_SUCCESS);
     }
 
+    //@@author A0144750J
     /**
      * Add back the deleted task book
-     * @@author A0144750J
      */
 	@Override
 	public CommandResult undo() {

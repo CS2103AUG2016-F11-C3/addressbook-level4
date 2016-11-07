@@ -4,9 +4,10 @@ import javafx.collections.transformation.FilteredList;
 import seedu.sudowudo.commons.core.Messages;
 import seedu.sudowudo.model.item.Item;
 
+//@@author A0144750J
 /**
  * 
- * @@author A0144750J
+ *
  */
 public class DoneCommand extends Command {
 	public static final String COMMAND_WORD = "done";
