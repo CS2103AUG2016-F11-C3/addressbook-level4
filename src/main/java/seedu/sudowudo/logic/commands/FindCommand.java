@@ -18,6 +18,7 @@ public class FindCommand extends Command {
             + "Example: " + COMMAND_WORD + " \"task\" \"CS2103\" #important tomorrow";
 
     private final Set<String> keywords;
+	protected static ArrayList<Hint> hints = new ArrayList<>();
 
     public FindCommand(Set<String> keywords) {
         this.keywords = keywords;
