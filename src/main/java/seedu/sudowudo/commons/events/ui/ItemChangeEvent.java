@@ -5,6 +5,8 @@ import seedu.sudowudo.model.item.ReadOnlyItem;
 
 /**
  * Indicates a request to jump to an item that has changed
+ * 
+ * @@author A0092390E
  */
 public class ItemChangeEvent extends BaseEvent {
 

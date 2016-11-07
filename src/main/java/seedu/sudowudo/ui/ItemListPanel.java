@@ -51,6 +51,11 @@ public class ItemListPanel extends UiPart {
         this.placeHolderPane = pane;
     }
 
+	/*
+	 * Subscribe to item change events and scroll to them
+	 * 
+	 * @@author A0092390E
+	 */
 	@Subscribe
 	public void itemChangeEvent(ItemChangeEvent e) {
 		ReadOnlyItem toScrollTo = e.getItem();
@@ -58,6 +63,7 @@ public class ItemListPanel extends UiPart {
 			itemListView.scrollTo(toScrollTo);
 		}
 	}
+	// @@author
 
     public static ItemListPanel load(Stage primaryStage, AnchorPane itemListPlaceholder,
                                        ObservableList<ReadOnlyItem> itemList) {
