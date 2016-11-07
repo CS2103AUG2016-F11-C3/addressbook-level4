@@ -235,9 +235,9 @@ public class MainWindow extends UiPart {
             @Override
             public void handle(KeyEvent ke) {
             	if (ke.getCode().equals(KeyCode.UP) && (ke.isMetaDown())) {
-            		raise(new PreviousCommandEvent());
+            		raise(new ListPageUpEvent());
                 } else if (ke.getCode().equals(KeyCode.DOWN) && (ke.isMetaDown())) {
-                	raise(new NextCommandEvent());
+                	raise(new ListPageDownEvent());
                 } else {
                 	return;
                 }
