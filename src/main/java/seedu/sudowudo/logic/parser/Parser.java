@@ -29,7 +29,6 @@ import seedu.sudowudo.logic.commands.FindCommand;
 import seedu.sudowudo.logic.commands.HelpCommand;
 import seedu.sudowudo.logic.commands.IncorrectCommand;
 import seedu.sudowudo.logic.commands.ListCommand;
-import seedu.sudowudo.logic.commands.SelectCommand;
 import seedu.sudowudo.logic.commands.UndoCommand;
 import seedu.sudowudo.model.item.Item;
 
@@ -98,9 +97,6 @@ public class Parser {
         switch (commandWord) {
         case AddCommand.COMMAND_WORD:
             toReturn = prepareAdd(arguments);
-            break;
-        case SelectCommand.COMMAND_WORD:
-            toReturn = prepareSelect(arguments);
             break;
         case DeleteCommand.COMMAND_WORD:
             toReturn = prepareDelete(arguments);
@@ -315,23 +311,6 @@ public class Parser {
         return new DoneCommand(index.get());
     }
     // @@author
-
-    /**
-     * Parses arguments in the context of the select item command.
-     *
-     * @param args
-     *            full command args string
-     * @return the prepared command
-     */
-    private Command prepareSelect(String args) {
-        Optional<Integer> index = parseIndex(args);
-        if (!index.isPresent()) {
-            return new IncorrectCommand(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE));
-        }
-
-        return new SelectCommand(index.get());
-    }
 
     /**
      * Returns the specified index in the {@code command} IF a positive unsigned
