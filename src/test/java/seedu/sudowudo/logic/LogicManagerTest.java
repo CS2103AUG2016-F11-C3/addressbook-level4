@@ -300,7 +300,7 @@ public class LogicManagerTest<E> {
     
     @Test
     //@@author A0131560U
-    public void execute_listTasks_showsAllTasks() throws Exception {
+    public void executeList_taskKeyword_showsAllTasks() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
         Item task1 = helper.aDeadLine();
@@ -318,7 +318,7 @@ public class LogicManagerTest<E> {
 
     @Test
     //@@author A0131560U
-    public void execute_listEvents_showsAllEvents() throws Exception {
+    public void executeList_eventKeyword_showsAllEvents() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
         Item task1 = helper.aDeadLine();
@@ -336,7 +336,7 @@ public class LogicManagerTest<E> {
 
     @Test
     //@@author A0131560U
-    public void execute_listDone_showsAllDone() throws Exception {
+    public void executeList_doneKeyword_showsAllDone() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
         Item done1 = helper.aDeadLine();
@@ -356,7 +356,7 @@ public class LogicManagerTest<E> {
     
     @Test
     //@@author A0131560U
-    public void execute_listUndone_showsAllUndone() throws Exception {
+    public void executeList_undoneKeyword_showsAllUndone() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
         Item done1 = helper.aDeadLine();
@@ -376,7 +376,7 @@ public class LogicManagerTest<E> {
     
     @Test
     //@@author A0131560U
-    public void execute_listOverdue_showsAllOverdue() throws Exception {
+    public void executeList_overdueKeyword_showsAllOverdue() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
         Item target = helper.aDeadLine();
@@ -397,7 +397,7 @@ public class LogicManagerTest<E> {
 
     @Test
     //@@author A0131560U
-    public void execute_findWithMetatag_success() throws Exception {
+    public void executeFind_metatagKeyword_success() throws Exception {
         // prepare expectations
         TestDataHelper helper = new TestDataHelper();
         Item task1 = helper.aDeadLine();
@@ -535,14 +535,14 @@ public class LogicManagerTest<E> {
     }
 
     @Test
-    public void execute_find_invalidArgsFormat() throws Exception {
+    public void executeFind_invalidArgsFormat_throwsException() throws Exception {
         String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE);
         assertCommandBehavior("find ", expectedMessage);
     }
 
     @Test
     //@@author A0131560U
-    public void execute_find_matchesPartialDescriptions() throws Exception {
+    public void executeFind_partialDescriptions_success() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         Item pTarget1 = helper.generateItemWithName("bla bla KEY bla");
         Item pTarget2 = helper.generateItemWithName("bla KEY bla bceofeia");
@@ -560,7 +560,7 @@ public class LogicManagerTest<E> {
 
     @Test
     // @@author A0131560U
-    public void execute_find_matchesTag() throws Exception {
+    public void executefind_tagSearchTerm_success() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         Item pTarget1 = helper.workingItemWithTags("KEY", "KOY", "KAY");
         Item pTarget2 = helper.workingItemWithTags("K1E", "koY", "KAYaKey");
@@ -575,28 +575,10 @@ public class LogicManagerTest<E> {
         assertCommandBehavior("find #KEY", Command.getMessageForItemListShownSummary(expectedList.size()), expectedAB,
                 expectedList);
     }
-
-    @Test
-    // @@author A0131560U
-    public void execute_find_searchTags() throws Exception {
-        TestDataHelper helper = new TestDataHelper();
-        Item pTarget1 = helper.workingItemWithTags("working", "KOY", "KAY");
-        Item pTarget2 = helper.workingItemWithTags("K1E", "workING12085", "KAYaKey");
-        Item p2 = helper.workingItemWithTags("kov1aAN", "kleptomANIaC", "1234");
-        Item p1 = helper.workingItemWithTags("K1E", "K", "KAY");
-
-        List<Item> fourItems = helper.generateItemList(p1, pTarget1, pTarget2, p2);
-        TaskBook expectedAB = helper.generateTaskBook(fourItems);
-        List<Item> expectedList = helper.generateItemList(pTarget1, pTarget2);
-        helper.addToModel(model, fourItems);
-
-        assertCommandBehavior("find #work", Command.getMessageForItemListShownSummary(expectedList.size()), expectedAB,
-                expectedList);
-    }
     
     @Test
     // @@author A0131560U
-    public void execute_find_searchDate() throws Exception {
+    public void executeFind_dateSearchTerm_success() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         Item pTarget1 = helper.workingItemWithDates("yup",LocalDateTime.of(2016, 10, 9, 10, 10),
                                                     LocalDateTime.of(2016, 12, 12, 20, 20));
@@ -616,7 +598,7 @@ public class LogicManagerTest<E> {
     
     @Test
     //@@author A0131560U
-    public void execute_find_isNotCaseSensitive() throws Exception {
+    public void executeFind_dataNotCaseSensitive_success() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         Item p1 = helper.generateItemWithName("bla bla KEY bla");
         Item p2 = helper.generateItemWithName("bla KEY bla bceofeia");
@@ -634,7 +616,7 @@ public class LogicManagerTest<E> {
 
     @Test
     //@@author A0131560U
-    public void execute_find_matchesIfAllKeywordsPresent() throws Exception {
+    public void executeFind_allKeywordsPresent_success() throws Exception {
         TestDataHelper helper = new TestDataHelper();
         Item pTarget = helper.generateItemWithName("bla rAnDoM bla key bceofeia");
         Item p1 = helper.generateItemWithName("bla bla random bla");
