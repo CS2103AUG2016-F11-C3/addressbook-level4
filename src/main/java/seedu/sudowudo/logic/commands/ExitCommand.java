@@ -41,7 +41,7 @@ public class ExitCommand extends Command {
 	 */
 	public static ArrayList<Hint> getHints() {
 		if (hints.size() == 0) {
-			hints.add(new Hint("exit sudowudo", "exit", "exit"));
+			hints.add(new Hint("exit", "exit", "exit"));
 		}
 		return hints;
     }

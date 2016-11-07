@@ -37,7 +37,7 @@ public class UndoCommand extends Command {
 	 */
 	public static ArrayList<Hint> getHints() {
 		if (hints.size() == 0) {
-			hints.add(new Hint("undo last action", "undo", "undo"));
+			hints.add(new Hint("undo action", "undo", "undo"));
 		}
 		return hints;
     }
