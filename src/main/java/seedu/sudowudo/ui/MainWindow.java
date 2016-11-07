@@ -1,10 +1,13 @@
 package seedu.sudowudo.ui;
 
+import java.awt.Toolkit;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -208,6 +211,7 @@ public class MainWindow extends UiPart {
      */
     private void setKeyBoardListeners() {
         assert scene != null;
+        
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent ke) {
@@ -225,6 +229,19 @@ public class MainWindow extends UiPart {
                         raise(new NextCommandEvent());
                         break;
                     default: return;                          
+                }
+            }
+        });
+        // Paging support for Mac
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+            	if (ke.getCode().equals(KeyCode.UP) && (ke.isMetaDown())) {
+            		raise(new PreviousCommandEvent());
+                } else if (ke.getCode().equals(KeyCode.DOWN) && (ke.isMetaDown())) {
+                	raise(new NextCommandEvent());
+                } else {
+                	return;
                 }
             }
         });
