@@ -20,14 +20,14 @@ public class MainMenuHandle extends GuiHandle {
         return this;
     }
 
-    public HelpWindowHandle openHelpWindowUsingMenu() {
+    public HintDisplayHandle openHelpWindowUsingMenu() {
         clickOn("Help", "F1");
-        return new HelpWindowHandle(guiRobot, primaryStage);
+        return new HintDisplayHandle(guiRobot, primaryStage);
     }
 
-    public HelpWindowHandle openHelpWindowUsingAccelerator() {
+    public HintDisplayHandle openHelpWindowUsingAccelerator() {
         useF1Accelerator();
-        return new HelpWindowHandle(guiRobot, primaryStage);
+        return new HintDisplayHandle(guiRobot, primaryStage);
     }
 
     private void useF1Accelerator() {
