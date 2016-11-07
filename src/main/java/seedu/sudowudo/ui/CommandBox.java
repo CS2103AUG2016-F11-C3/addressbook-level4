@@ -4,6 +4,8 @@ import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
@@ -46,6 +48,7 @@ public class CommandBox extends UiPart {
 		this.hintDisplay = hintDisplay;
         this.logic = logic;
         registerAsAnEventHandler(this);
+		commandTextField.setOnKeyReleased(new UpdateEventHandler(this));
     }
 
     private void addToPlaceholder() {
@@ -69,22 +72,6 @@ public class CommandBox extends UiPart {
     public void setPlaceholder(AnchorPane pane) {
         this.placeHolderPane = pane;
     }
-
-	// Hook to use for command suggest
-	// @@author A0092390E
-	@FXML
-	private void handleCommandInputChanged() {
-		previousCommandTest = commandTextField.getText();
-		if (!commandTextField.getText().equals("")) {
-			resultDisplay.hideDisplay();
-			int spaceIndex = previousCommandTest.indexOf(' ');
-			spaceIndex = (spaceIndex == -1) ? previousCommandTest.length() : spaceIndex;
-			this.hintDisplay.updateHints(commandTextField.getText(0, spaceIndex));
-		} else {
-			this.hintDisplay.updateHints("");
-		}
-		// resultDisplay.postMessage(previousCommandTest);
-	}
 
 
     @FXML
@@ -144,4 +131,26 @@ public class CommandBox extends UiPart {
 		resultDisplay.setError();
     }
 
+	// Hook to use for command suggest
+	// @@author A0092390E
+	private class UpdateEventHandler implements EventHandler {
+		private CommandBox commandBox;
+
+		UpdateEventHandler(CommandBox commandBox) {
+			this.commandBox = commandBox;
+		}
+		@Override
+		public void handle(Event event) {
+			previousCommandTest = commandTextField.getText();
+			if (!commandTextField.getText().equals("")) {
+				resultDisplay.hideDisplay();
+				int spaceIndex = previousCommandTest.indexOf(' ');
+				spaceIndex = (spaceIndex == -1) ? previousCommandTest.length() : spaceIndex;
+				this.commandBox.hintDisplay.updateHints(commandTextField.getText(0, spaceIndex));
+			} else {
+				this.commandBox.hintDisplay.updateHints("");
+			}
+			// resultDisplay.postMessage(previousCommandTest);
+		}
+}
 }
