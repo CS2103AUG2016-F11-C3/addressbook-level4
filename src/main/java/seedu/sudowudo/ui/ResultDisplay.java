@@ -1,8 +1,10 @@
 package seedu.sudowudo.ui;
 
+import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -14,11 +16,18 @@ import seedu.sudowudo.commons.util.FxViewUtil;
  * @@author A0092390E
  */
 public class ResultDisplay extends UiPart {
-    public static final String RESULT_DISPLAY_ID = "resultDisplay";
     private static final String STATUS_BAR_STYLE_SHEET = "result-display";
-	private Pane resultDisplayArea;
+
+	@FXML
+	private StackPane resultDisplayArea;
+
+	@FXML
 	private TextFlow displayTextFlow;
+
+	@FXML
 	private Text headerText;
+
+	@FXML
 	private Text messageText;
     private static final String FXML = "ResultDisplay.fxml";
 
@@ -33,27 +42,18 @@ public class ResultDisplay extends UiPart {
     }
 
     public void configure() {
-		resultDisplayArea = new Pane();
-        resultDisplayArea.setId(RESULT_DISPLAY_ID);
-		resultDisplayArea.getChildren().clear();
 
-		displayTextFlow = new TextFlow();
 		displayTextFlow.getStyleClass().add("alert");
 		displayTextFlow.getStyleClass().add("alert-success");
 
-		headerText = new Text("Welcome! ");
-		messageText = new Text("The results of your commands will be shown here!");
+		resultDisplayArea.setAlignment(Pos.TOP_CENTER);
+
 		messageText.setId("resultMessageText");
+
 		headerText.getStyleClass().add("strong");
-
-		displayTextFlow.getChildren().clear();
-		displayTextFlow.getChildren().add(headerText);
-		displayTextFlow.getChildren().add(messageText);
-
-		resultDisplayArea.getChildren().add(displayTextFlow);
-        FxViewUtil.applyAnchorBoundaryParameters(resultDisplayArea, 0.0, 0.0, 0.0, 0.0);
-        mainPane.getChildren().add(resultDisplayArea);
-        FxViewUtil.applyAnchorBoundaryParameters(mainPane, 0.0, 0.0, 0.0, 0.0);
+		// FxViewUtil.applyAnchorBoundaryParameters(resultDisplayArea, 0.0, 0.0,
+		// 0.0, 0.0);
+		FxViewUtil.applyAnchorBoundaryParameters(mainPane, 0.0, 0.0, 0.0, 0.0);
         placeHolder.getChildren().add(mainPane);
 		hideDisplay();
 
@@ -75,15 +75,29 @@ public class ResultDisplay extends UiPart {
     }
 
     public void postMessage(String message) {
-		showDisplay();
-		headerText.setText("");
-		messageText.setText(message);
+		if (message != null && message != "") {
+			showDisplay();
+			headerText.setText("");
+			messageText.setText(message);
+		}
     }
 
 	public void postMessage(String header, String message) {
 		showDisplay();
 		headerText.setText(message);
 		messageText.setText(message);
+	}
+
+	public void setSuccess() {
+		displayTextFlow.getStyleClass().set(1, "alert-success");
+	}
+
+	public boolean isSuccess() {
+		return displayTextFlow.getStyleClass().get(1) == "alert-danger";
+	}
+
+	public void setError() {
+		displayTextFlow.getStyleClass().set(1, "alert-danger");
 	}
 
 	public void showDisplay() {

@@ -1,5 +1,7 @@
 package seedu.sudowudo.logic.commands;
 
+import java.util.ArrayList;
+
 import seedu.sudowudo.commons.core.EventsCenter;
 import seedu.sudowudo.commons.core.Messages;
 import seedu.sudowudo.commons.events.ui.IncorrectCommandAttemptedEvent;
@@ -11,6 +13,10 @@ import seedu.sudowudo.model.Model;
 public abstract class Command {
     protected Model model;
     protected boolean hasUndo = false;
+    /**
+     * getter method for hasUndo
+     * @@author A0144750J
+     */
     protected String rawCommand;
     
     //@@author A0144750J
@@ -73,5 +79,9 @@ public abstract class Command {
      */
     protected void indicateAttemptToExecuteIncorrectCommand() {
         EventsCenter.getInstance().post(new IncorrectCommandAttemptedEvent(this));
+    }
+    
+	public static ArrayList<Hint> getHints() {
+		return new ArrayList<>();
     }
 }

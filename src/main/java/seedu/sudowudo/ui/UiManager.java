@@ -1,6 +1,9 @@
 package seedu.sudowudo.ui;
 
+import java.util.logging.Logger;
+
 import com.google.common.eventbus.Subscribe;
+
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -17,8 +20,6 @@ import seedu.sudowudo.commons.events.ui.ShowHelpRequestEvent;
 import seedu.sudowudo.commons.util.StringUtil;
 import seedu.sudowudo.logic.Logic;
 import seedu.sudowudo.model.UserPrefs;
-
-import java.util.logging.Logger;
 
 /**
  * The manager of the UI component.
@@ -120,7 +121,6 @@ public class UiManager extends ComponentManager implements Ui {
     @Subscribe
     private void handleItemPanelSelectionChangedEvent(ItemPanelSelectionChangedEvent event){
         logger.info(LogsCenter.getEventHandlingLogMessage(event));
-        mainWindow.loadItemPage(event.getNewSelection());
     }
 
 }

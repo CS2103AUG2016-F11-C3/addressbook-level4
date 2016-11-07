@@ -1,5 +1,7 @@
 package seedu.sudowudo.ui;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -19,8 +21,18 @@ import seedu.sudowudo.commons.events.ui.ListPageUpEvent;
 import seedu.sudowudo.commons.events.ui.NextCommandEvent;
 import seedu.sudowudo.commons.events.ui.PreviousCommandEvent;
 import seedu.sudowudo.logic.Logic;
+import seedu.sudowudo.logic.commands.AddCommand;
+import seedu.sudowudo.logic.commands.ClearCommand;
+import seedu.sudowudo.logic.commands.DeleteCommand;
+import seedu.sudowudo.logic.commands.DoneCommand;
+import seedu.sudowudo.logic.commands.EditCommand;
+import seedu.sudowudo.logic.commands.ExitCommand;
+import seedu.sudowudo.logic.commands.FindCommand;
+import seedu.sudowudo.logic.commands.HelpCommand;
+import seedu.sudowudo.logic.commands.Hint;
+import seedu.sudowudo.logic.commands.ListCommand;
+import seedu.sudowudo.logic.commands.UndoCommand;
 import seedu.sudowudo.model.UserPrefs;
-import seedu.sudowudo.model.item.ReadOnlyItem;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -36,10 +48,10 @@ public class MainWindow extends UiPart {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private BrowserPanel browserPanel;
     private ItemListPanel itemListPanel;
     private ResultDisplay resultDisplay;
     private StatusBarFooter statusBarFooter;
+	private HintDisplay hintDisplay;
     private CommandBox commandBox;
     private Config config;
     private UserPrefs userPrefs;
@@ -50,8 +62,6 @@ public class MainWindow extends UiPart {
 
     private String taskBookName;
 
-    @FXML
-    private AnchorPane browserPlaceholder;
 
     @FXML
     private AnchorPane commandBoxPlaceholder;
@@ -68,6 +78,8 @@ public class MainWindow extends UiPart {
     @FXML
     private AnchorPane statusbarPlaceholder;
 
+	@FXML
+	private AnchorPane hintDisplayPlaceholder;
 
     public MainWindow() {
         super();
@@ -116,13 +128,33 @@ public class MainWindow extends UiPart {
     }
 
     void fillInnerParts() {
-        browserPanel = BrowserPanel.load(browserPlaceholder);
         itemListPanel = ItemListPanel.load(primaryStage, getItemListPlaceholder(), logic.getFilteredItemList());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getTaskBookFilePath());
-        commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, logic);
+		hintDisplay = HintDisplay.load(primaryStage, hintDisplayPlaceholder);
+		commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, hintDisplay, logic);
+
+		configureHintDisplay();
     }
 
+	// @@author A0092390E
+	private void configureHintDisplay() {
+		ObservableList<Hint> hintsList = FXCollections.observableArrayList();
+		hintsList.addAll(AddCommand.getHints());
+		hintsList.addAll(ClearCommand.getHints());
+		hintsList.addAll(DeleteCommand.getHints());
+		hintsList.addAll(DoneCommand.getHints());
+		hintsList.addAll(EditCommand.getHints());
+		hintsList.addAll(ExitCommand.getHints());
+		hintsList.addAll(FindCommand.getHints());
+		hintsList.addAll(ListCommand.getHints());
+		hintsList.addAll(HelpCommand.getHints());
+		hintsList.addAll(UndoCommand.getHints());
+		hintDisplay.configure(hintsList);
+
+	}
+
+	// @@author
     private AnchorPane getCommandBoxPlaceholder() {
         return commandBoxPlaceholder;
     }
@@ -174,8 +206,7 @@ public class MainWindow extends UiPart {
 
     @FXML
     public void handleHelp() {
-        HelpWindow helpWindow = HelpWindow.load(primaryStage);
-        helpWindow.show();
+		hintDisplay.showAllHints();
     }
 
     public void show() {
@@ -194,12 +225,8 @@ public class MainWindow extends UiPart {
         return this.itemListPanel;
     }
 
-    public void loadItemPage(ReadOnlyItem item) {
-        browserPanel.loadItemPage(item);
-    }
-
     public void releaseResources() {
-        browserPanel.freeResources();
+		// Does nothing for now since we no longer use browserPanel
     }
     
     // @@author A0144750J
