@@ -64,7 +64,7 @@ public class DoneCommand extends Command {
 	 */
 	public static ArrayList<Hint> getHints() {
 		if (hints.size() == 0) {
-			hints.add(new Hint("mark task as done", "done", "done CONTEXT_ID"));
+			hints.add(new Hint("mark done", "done", "done CONTEXT_ID"));
 		}
 		return hints;
     }

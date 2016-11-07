@@ -148,7 +148,7 @@ public class EditCommand extends Command {
 	public static ArrayList<Hint> getHints() {
 		if (hints.size() == 0) {
 			hints.add(new Hint("edit task", "edit",
-					"edit CONTEXT_ID desc|start|end|by|period:NEW_VALUE [desc|start|end...]..."));
+					"edit CONTEXT_ID desc|start|end|by|period:NEW_VALUE [desc.."));
 
 		}
 		return hints;
