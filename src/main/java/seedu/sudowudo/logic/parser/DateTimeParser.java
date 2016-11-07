@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
 import java.util.List;
 
@@ -16,8 +17,7 @@ import org.ocpsoft.prettytime.nlp.parse.DateGroup;
 
 //@@author A0147609X
 /**
- * For parsing dates and times in Sudowudo command input.
- * Singleton pattern!
+ * For parsing dates and times in Sudowudo command input. Singleton pattern!
  * 
  * @author darren
  */
@@ -25,26 +25,21 @@ public class DateTimeParser {
     // handy strings for making pretty dates
     public static final String EMPTY_STRING = "";
     public static final String SINGLE_WHITESPACE = " ";
+    public static final String YESTERDAY_DATE_REF = "Yesterday";
     public static final String TODAY_DATE_REF = "Today";
     public static final String TOMORROW_DATE_REF = "Tomorrow";
     public static final String LAST_WEEK_REF = "Last" + SINGLE_WHITESPACE;
     public static final String NEXT_WEEK_REF = "Next" + SINGLE_WHITESPACE;
     public static final String THIS_WEEK_REF = "This" + SINGLE_WHITESPACE;
     public static final String PRETTY_COMMA_DELIMITER = "," + SINGLE_WHITESPACE;
-    public static final String PRETTY_TO_DELIMITER = SINGLE_WHITESPACE + "-"
-            + SINGLE_WHITESPACE;
+    public static final String PRETTY_TO_DELIMITER = SINGLE_WHITESPACE + "-" + SINGLE_WHITESPACE;
 
     // DateTime formatting patterns
-    public static final DateTimeFormatter ABRIDGED_DATE_FORMAT = DateTimeFormatter
-            .ofPattern("dd MMM");
-    public static final DateTimeFormatter EXPLICIT_DATE_FORMAT = DateTimeFormatter
-            .ofPattern("dd MMM yyyy");
-    public static final DateTimeFormatter TWELVE_HOUR_TIME = DateTimeFormatter
-            .ofPattern("h:mma");
-    public static final DateTimeFormatter LONG_DAYOFWEEK = DateTimeFormatter
-            .ofPattern("EEEE");
-    public static final DateTimeFormatter SHORT_DAYOFWEEK = DateTimeFormatter
-            .ofPattern("EEE");
+    public static final DateTimeFormatter ABRIDGED_DATE_FORMAT = DateTimeFormatter.ofPattern("d MMM");
+    public static final DateTimeFormatter EXPLICIT_DATE_FORMAT = DateTimeFormatter.ofPattern("d MMM yyyy");
+    public static final DateTimeFormatter TWELVE_HOUR_TIME = DateTimeFormatter.ofPattern("h:mma");
+    public static final DateTimeFormatter LONG_DAYOFWEEK = DateTimeFormatter.ofPattern("EEEE");
+    public static final DateTimeFormatter SHORT_DAYOFWEEK = DateTimeFormatter.ofPattern("EEE");
 
     public static DateTimeParser instance = new DateTimeParser();
 
@@ -65,13 +60,13 @@ public class DateTimeParser {
     private List<DateGroup> dategroups;
     private List<Date> dates;
 
-    private DateTimeParser() {}
-    
+    private DateTimeParser() {
+    }
+
     public static DateTimeParser getInstance() {
         return instance;
     }
-    
-    
+
     /**
      * Uses the DateTimeParser service to parse a string containing possible
      * datetime tokens (in natural language).
@@ -86,7 +81,7 @@ public class DateTimeParser {
         // perform parsing
         this.dategroups = DateTimeParser.parser.parseSyntax(input);
         this.dates = DateTimeParser.parser.parse(input);
-        
+
         return this;
     }
 
@@ -115,8 +110,7 @@ public class DateTimeParser {
     }
 
     public LocalDateTime getRecurEnd() {
-        return changeDateToLocalDateTime(
-                this.dategroups.get(FIRST_DATETIME_TOKEN).getRecursUntil());
+        return changeDateToLocalDateTime(this.dategroups.get(FIRST_DATETIME_TOKEN).getRecursUntil());
     }
 
     /**
@@ -128,8 +122,7 @@ public class DateTimeParser {
      * @return
      * @author darren
      */
-    public static String extractPrettyItemCardDateTime(LocalDateTime start,
-            LocalDateTime end) {
+    public static String extractPrettyItemCardDateTime(LocalDateTime start, LocalDateTime end) {
         if (start == null && end == null) {
             return EMPTY_STRING;
         }
@@ -144,13 +137,11 @@ public class DateTimeParser {
 
         // is an event with a definite start and end datetime
         if (isSameDay(start, end)) {
-            return extractPrettyDateTime(start) + PRETTY_TO_DELIMITER
-                    + extractTwelveHourTime(end);
+            return extractPrettyDateTime(start) + PRETTY_TO_DELIMITER + extractTwelveHourTime(end);
         }
 
         // not same day
-        return extractPrettyDateTime(start) + PRETTY_TO_DELIMITER
-                + extractPrettyDateTime(end);
+        return extractPrettyDateTime(start) + PRETTY_TO_DELIMITER + extractPrettyDateTime(end);
     }
 
     /**
@@ -179,6 +170,18 @@ public class DateTimeParser {
 
     /**
      * Check if the given java.time.LocalDateTime object is the same date as the
+     * yesterday relative to the local system time
+     * 
+     * @param ldt
+     * @return true if the LocalDateTime is for yesterday, false otherwise
+     * @author darren
+     */
+    public static boolean isYesterday(LocalDateTime ldt) {
+        return isSameDay(ldt, LocalDateTime.now().minusDays(1));
+    }
+
+    /**
+     * Check if the given java.time.LocalDateTime object is the same date as the
      * next day relative to the local system time
      * 
      * @param ldt
@@ -187,6 +190,88 @@ public class DateTimeParser {
      */
     public static boolean isTomorrow(LocalDateTime ldt) {
         return isSameDay(ldt, LocalDateTime.now().plusDays(1L));
+    }
+
+    /**
+     * Check if the given java.time.LocalDateTime object is within two weeks of
+     * the local system time
+     * 
+     * @param ldt
+     * @return true if the LocalDateTime is within two weeks of local system
+     *         time
+     * @author darren
+     */
+    public static boolean isWithinTwoWeeks(LocalDateTime ldt) {
+        return computeDaysTo(ldt) < 14 && computeDaysTo(ldt) > -14;
+    }
+
+    /**
+     * Check if the given java.time.LocalDateTime object is within the same year
+     * as the local system time.
+     * 
+     * @param ldt
+     * @return true if the LocalDateTime is within the same year as local system
+     *         time
+     * @author darren
+     */
+    public static boolean isWithinThisYear(LocalDateTime ldt) {
+        LocalDate currentDate = ldt.toLocalDate();
+        LocalDate firstDayOfNextYear = LocalDate.now().with(TemporalAdjusters.firstDayOfNextYear());
+        LocalDate lastDayOfLastYear = LocalDate.now().with(TemporalAdjusters.firstDayOfYear()).minusDays(1);
+        return currentDate.isBefore(firstDayOfNextYear) && currentDate.isAfter(lastDayOfLastYear);
+    }
+
+    /**
+     * Check if the given java.time.LocalDateTime object is within the previous
+     * week from the local system time.
+     * 
+     * A week starts on Monday.
+     * 
+     * @param ldt
+     * @return true if the LocalDateTime is within the previous week from local
+     *         system time.
+     * @author darren
+     */
+    public static boolean isLastWeek(LocalDateTime ldt) {
+        LocalDate firstDayOfThisWeek = LocalDate.now().with(DayOfWeek.MONDAY);
+        LocalDate lastDayOfLastLastWeek = firstDayOfThisWeek.minusDays(8);
+        return ldt.toLocalDate().isBefore(firstDayOfThisWeek)
+                && ldt.toLocalDate().isAfter(lastDayOfLastLastWeek);
+    }
+
+    /**
+     * Check if the given java.time.LocalDateTime object is within this week of
+     * the local system time.
+     * 
+     * A week starts on Monday.
+     * 
+     * @param ldt
+     * @return true if the LocalDateTime is within this week in local system
+     *         time.
+     * @author darren
+     */
+    public static boolean isThisWeek(LocalDateTime ldt) {
+        LocalDate lastDayOfLastWeek = LocalDate.now().with(DayOfWeek.MONDAY).minusDays(1);
+        LocalDate firstDayOfNextWeek = lastDayOfLastWeek.plusDays(8);
+        return ldt.toLocalDate().isAfter(lastDayOfLastWeek) && ldt.toLocalDate().isBefore(firstDayOfNextWeek);
+    }
+
+    /**
+     * Check if the given java.time.LocalDateTime object is within next week of
+     * the local system time.
+     * 
+     * A week starts on Monday.
+     * 
+     * @param ldt
+     * @return true if the LocalDateTime is within the next week from local
+     *         system time.
+     * @author darren
+     */
+    public static boolean isNextWeek(LocalDateTime ldt) {
+        LocalDate endOfCurrentWeek = LocalDate.now().with(DayOfWeek.SUNDAY);
+        LocalDate firstDayOfNextNextWeek = endOfCurrentWeek.plusDays(8);
+        return ldt.toLocalDate().isAfter(endOfCurrentWeek)
+                && ldt.toLocalDate().isBefore(firstDayOfNextNextWeek);
     }
 
     /**
@@ -251,35 +336,38 @@ public class DateTimeParser {
      * @return pretty date for this week
      */
     public static String extractPrettyDateTime(LocalDateTime ldt) {
-        // special case for today/tomorrow relative to local system time
+        // special case for yesterday/today/tomorrow relative to local system
+        // time
+        if (isYesterday(ldt)) {
+            return YESTERDAY_DATE_REF + PRETTY_COMMA_DELIMITER + extractTwelveHourTime(ldt);
+        }
+
         if (isToday(ldt)) {
-            return TODAY_DATE_REF + PRETTY_COMMA_DELIMITER
-                    + extractTwelveHourTime(ldt);
+            return TODAY_DATE_REF + PRETTY_COMMA_DELIMITER + extractTwelveHourTime(ldt);
         }
 
         if (isTomorrow(ldt)) {
-            return TOMORROW_DATE_REF + PRETTY_COMMA_DELIMITER
-                    + extractTwelveHourTime(ldt);
+            return TOMORROW_DATE_REF + PRETTY_COMMA_DELIMITER + extractTwelveHourTime(ldt);
         }
 
         // add relative prefix (this/next <day of week>) if applicable
-        if (computeDaysTo(ldt) < 14 && computeDaysTo(ldt) > -14) {
+        if (isWithinTwoWeeks(ldt)) {
             // is within the past/next two weeks
-            return makeRelativePrefix(ldt) + extractLongDayOfWeek(ldt)
-                    + PRETTY_COMMA_DELIMITER + extractTwelveHourTime(ldt);
+            return makeRelativePrefix(ldt) + extractLongDayOfWeek(ldt) + PRETTY_COMMA_DELIMITER
+                    + extractTwelveHourTime(ldt);
         }
 
         // explicit date; no relative prefix
         String prettyDate;
-        if (computeDaysTo(ldt) < 365) {
-            // same year in start and end datetimes
+        if (isWithinThisYear(ldt)) {
+            // LDT is in current year
             prettyDate = ldt.toLocalDate().format(ABRIDGED_DATE_FORMAT);
         } else {
-            // different years in start and end datetimes
+            // LDT is in another year
             prettyDate = ldt.toLocalDate().format(EXPLICIT_DATE_FORMAT);
         }
-        return extractShortDayOfWeek(ldt) + SINGLE_WHITESPACE + prettyDate
-                + PRETTY_COMMA_DELIMITER + extractTwelveHourTime(ldt);
+        return extractShortDayOfWeek(ldt) + SINGLE_WHITESPACE + prettyDate + PRETTY_COMMA_DELIMITER
+                + extractTwelveHourTime(ldt);
     }
 
     /**
@@ -296,28 +384,26 @@ public class DateTimeParser {
 
     /**
      * Extracts the day-of-week component of a java.time.LocalDateTime object
-     * and returns it in long or short format (Monday or Mon)
+     * and returns it in long format (e.g. Monday)
      * 
      * @param ldt
-     * @param isLongFormat
-     *            result is long format?
-     * @return day-of-week
+     * @return day-of-week in long format
      * @author darren
      */
-    private static String extractDayOfWeek(LocalDateTime ldt,
-            boolean isLongFormat) {
-        if (isLongFormat) {
-            return ldt.toLocalDate().format(LONG_DAYOFWEEK);
-        }
-        return ldt.toLocalDate().format(SHORT_DAYOFWEEK);
-    }
-
     public static String extractLongDayOfWeek(LocalDateTime ldt) {
-        return extractDayOfWeek(ldt, true);
+        return ldt.toLocalDate().format(LONG_DAYOFWEEK);
     }
 
+    /**
+     * Extracts the day-of-week component of a java.time.LocalDateTime object
+     * and returns it in short format (e.g. Mon)
+     * 
+     * @param ldt
+     * @return day-of-week in short format
+     * @author darren
+     */
     public static String extractShortDayOfWeek(LocalDateTime ldt) {
-        return extractDayOfWeek(ldt, false);
+        return ldt.toLocalDate().format(SHORT_DAYOFWEEK);
     }
 
     /**
@@ -329,15 +415,15 @@ public class DateTimeParser {
      * @author darren
      */
     private static String makeRelativePrefix(LocalDateTime ldt) {
-        LocalDateTime startOfCurrentWeek = LocalDateTime.now().with(DayOfWeek.MONDAY);
-        LocalDateTime startOfNextWeek = startOfCurrentWeek.with(DayOfWeek.MONDAY);
-        if (computeDaysTo(ldt) > -14 && ldt.isBefore(startOfCurrentWeek)) {
+        if (isLastWeek(ldt)) {
             return LAST_WEEK_REF;
-        } else if (computeDaysTo(ldt) < 7 && ldt.isBefore(startOfNextWeek)) {
+        } else if (isThisWeek(ldt)) {
             return THIS_WEEK_REF;
-        } else if (computeDaysTo(ldt) < 14) {
+        } else if (isNextWeek(ldt)) {
             return NEXT_WEEK_REF;
         }
+
+        // we should never reach this point
         return EMPTY_STRING;
     }
 
@@ -354,12 +440,8 @@ public class DateTimeParser {
         return ChronoUnit.DAYS.between(LocalDate.now(), ldt.toLocalDate());
     }
 
-    public DateGroup getDateGroup(int index) {
-        return this.dategroups.get(index);
-    }
-
     public String getDateTime() {
         return this.datetime;
     }
-    
+
 }
