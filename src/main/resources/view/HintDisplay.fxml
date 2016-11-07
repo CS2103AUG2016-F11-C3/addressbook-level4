@@ -3,11 +3,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <!-- @@author A0092390E -->
 <?import java.net.URL?>
-<AnchorPane styleClass="anchor-pane-translucent" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+<AnchorPane styleClass="anchor-pane-transparent" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="seedu.sudowudo.ui.HintDisplay" VBox.vgrow="NEVER">
     <stylesheets>
         <URL value="@DarkTheme.css" />
@@ -15,7 +16,11 @@
     </stylesheets>
     <children>
 	    <StackPane fx:id="hintDisplayArea" alignment="TOP_CENTER" >
-  	      <TableView fx:id="hintTableView" HBox.hgrow="ALWAYS" prefWidth="900" />
+  	      <TableView fx:id="hintTableView" HBox.hgrow="ALWAYS" prefWidth="900" 
+  	      		styleClass="anchor-pane-transparent">
+  	      	<TableColumn fx:id="labelColumn" styleClass="help-column" />
+  	      	<TableColumn fx:id="usageColumn" styleClass="help-column"/>
+  	      </TableView>
 	    </StackPane>
     </children>
 </AnchorPane>

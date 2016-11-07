@@ -2,6 +2,7 @@ package seedu.sudowudo.ui;
 
 import java.util.function.Predicate;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -12,6 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import seedu.sudowudo.logic.commands.AddCommand;
@@ -32,6 +34,11 @@ public class HintDisplay extends UiPart {
 	@FXML
 	private TableView<Hint> hintTableView;
 
+	@FXML
+	private TableColumn<Hint, String> labelColumn;
+
+	@FXML
+	private TableColumn<Hint, String> usageColumn;
 
 	private static final String FXML = "HintDisplay.fxml";
 
@@ -59,12 +66,16 @@ public class HintDisplay extends UiPart {
 		hintTableView.setEditable(false);
 		hintTableView.setItems(hintList);
 
-		TableColumn<Hint, String> labelColumn = new TableColumn<>();
 		labelColumn.setCellValueFactory(new PropertyValueFactory("description"));
-		TableColumn<Hint, String> usageColumn = new TableColumn<>();
 		usageColumn.setCellValueFactory(new PropertyValueFactory("usage"));
-
 		hintTableView.getColumns().setAll(labelColumn, usageColumn);
+
+		// Make table adapt in size
+		hintTableView.setFixedCellSize(25);
+		hintTableView.prefHeightProperty().bind(
+				hintTableView.fixedCellSizeProperty().multiply(Bindings.size(hintTableView.getItems())));
+		hintTableView.minHeightProperty().bind(hintTableView.prefHeightProperty());
+		hintTableView.maxHeightProperty().bind(hintTableView.prefHeightProperty());
     }
 
     @Override
@@ -88,6 +99,13 @@ public class HintDisplay extends UiPart {
 	}
 
 	public void updateHints(String search) {
+		// hide header
+		Pane header = (Pane) hintTableView.lookup(".column-header-background");
+		header.setVisible(true);
+		header.setMaxHeight(0);
+		header.setMinHeight(0);
+		header.setPrefHeight(0);
+		
 		mainPane.setVisible(true);
 		hintList.setPredicate(new KeywordPredicate(search));
 	}

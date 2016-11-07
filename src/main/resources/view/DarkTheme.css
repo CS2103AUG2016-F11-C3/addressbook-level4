@@ -44,12 +44,14 @@
     -fx-background-color: #1d1d1d;
     -fx-table-cell-border-color: transparent;
     -fx-table-header-border-color: transparent;
-    -fx-padding: 5;
 }
-
 .table-view .column-header-background {
+	visibility:hidden;
+	-fx-height: 0;
     -fx-background-color: transparent;
 }
+
+/*
 
 .table-view .column-header, .table-view .filler {
     -fx-size: 35;
@@ -74,7 +76,7 @@
 .table-view:focused .table-row-cell:filled:focused:selected {
     -fx-background-color: -fx-focus-color;
 }
-
+*/
 .split-pane:horizontal .split-pane-divider {
     -fx-border-color: transparent #1d1d1d transparent #1d1d1d;
     -fx-background-color: transparent, derive(#1d1d1d, 10%);
@@ -117,10 +119,17 @@
 }
 .anchor-pane-transparent {
     -fx-background-color: rgba(0,0,0,0);
+    -fx-background-radius: 10;
+
 }
 .anchor-pane-translucent {
     -fx-background-color: rgba(0, 100, 100, 0.5);
     -fx-background-radius: 10;
+}
+
+.anchor-pane-rounded {
+  -fx-border-radius: 0 0 10 10;
+  -fx-background-radius: 0 0 10 10;
 }
 
 .status-bar {
