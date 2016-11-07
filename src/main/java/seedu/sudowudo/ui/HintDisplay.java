@@ -76,7 +76,7 @@ public class HintDisplay extends UiPart {
 				hintTableView.fixedCellSizeProperty().multiply(Bindings.size(hintTableView.getItems())));
 		hintTableView.minHeightProperty().bind(hintTableView.prefHeightProperty());
 		hintTableView.maxHeightProperty().bind(hintTableView.prefHeightProperty());
-    }
+	}
 
     @Override
     public void setNode(Node node) {
