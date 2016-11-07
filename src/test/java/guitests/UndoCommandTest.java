@@ -7,6 +7,8 @@ import seedu.sudowudo.testutil.TestItem;
 import seedu.sudowudo.testutil.TestUtil;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
+
 /**
  * GUI test for undo commands for each: Add, Delete, Clear, Done and Edit command
  * @author Darren Le
@@ -39,12 +41,13 @@ public class UndoCommandTest extends TaskBookGuiTest {
     public void undo_delete() {
     	// delete the first item from the list
     	TestItem[] currentList = td.getTypicalItems();
+    	Arrays.sort(currentList);
     	int targetIndex = 1;
         commandBox.runCommand("delete " + targetIndex);
 
         // undo should succeed
         commandBox.runCommand("undo");
-        assertResultMessage("Undo delete task: Dover Road");
+        assertResultMessage("Undo delete task: " + currentList[targetIndex-1]);
         
         // delete a bad command
         commandBox.runCommand("delete " + currentList.length + 2);
@@ -53,6 +56,7 @@ public class UndoCommandTest extends TaskBookGuiTest {
         commandBox.runCommand("undo");
         assertResultMessage(UndoCommand.MESSAGE_FAILURE);
     }
+    
     
     @Test
     public void undo_clear() {
@@ -68,12 +72,13 @@ public class UndoCommandTest extends TaskBookGuiTest {
     @Test
     public void undo_done() {
     	TestItem[] currentList = td.getTypicalItems();
+    	Arrays.sort(currentList);
         int targetIndex = 1;
         commandBox.runCommand("done " + targetIndex);
         
         // undo should succeed
         commandBox.runCommand("undo");
-        assertResultMessage("Undo set done task: Dover Road");
+        assertResultMessage("Undo set done task: " + currentList[targetIndex-1]);
     }
  
     private void assertNotFound(TestItem itemToFind, TestItem... currentList) {

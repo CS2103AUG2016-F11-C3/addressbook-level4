@@ -16,9 +16,6 @@ public interface ReadOnlyItem {
 
 	boolean getIsDone();
 
-	// THIS IS TEMPORARY (@darren)
-	void setIsDone(boolean doneness);
-
 	/**
 	 * These return the start and end dates of the item (if they exist). If not,
 	 * then the default null is used. Override these in the implemented classes
@@ -35,7 +32,7 @@ public interface ReadOnlyItem {
     /**
      * Flexible property querying, to support listing and filtering
      * Returns boolean, whether the item does or doesn't match query*/
-    public boolean is(String query);
+    public boolean is(Item.Type query);
 
 	
 	/**
