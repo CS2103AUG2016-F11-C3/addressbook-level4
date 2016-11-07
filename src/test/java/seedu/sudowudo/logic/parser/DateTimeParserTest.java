@@ -136,6 +136,12 @@ public class DateTimeParserTest {
     }
 
     @Test
+    public void extractPrettyDateTime_lastWeek_lastWeekReference() {
+        String expected = DateTimeParser.LAST_WEEK_REF + LDT_TODAY_LAST_WEEK.format(DateTimeParser.LONG_DAYOFWEEK) + DateTimeParser.PRETTY_COMMA_DELIMITER + LDT_TODAY_LAST_WEEK.format(DateTimeParser.TWELVE_HOUR_TIME);
+        assertEquals(expected, DateTimeParser.extractPrettyDateTime(LDT_TODAY_LAST_WEEK));
+    }
+    
+    @Test
     public void extractPrettyDateTime_oneYearFromNow_explicitDateFormat() {
         LocalDateTime oneYearFromNow = LDT_TODAY.plusYears(1);
         DateTimeFormatter explicitFormat = DateTimeFormatter.ofPattern("EEE d MMM yyyy, hh:mma");
