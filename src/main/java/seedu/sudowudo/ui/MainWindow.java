@@ -19,7 +19,6 @@ import seedu.sudowudo.commons.events.ui.NextCommandEvent;
 import seedu.sudowudo.commons.events.ui.PreviousCommandEvent;
 import seedu.sudowudo.logic.Logic;
 import seedu.sudowudo.model.UserPrefs;
-import seedu.sudowudo.model.item.ReadOnlyItem;
 
 /**
  * The Main Window. Provides the basic application layout containing
@@ -35,7 +34,6 @@ public class MainWindow extends UiPart {
     private Logic logic;
 
     // Independent Ui parts residing in this Ui container
-    private BrowserPanel browserPanel;
     private ItemListPanel itemListPanel;
     private ResultDisplay resultDisplay;
     private StatusBarFooter statusBarFooter;
@@ -50,8 +48,6 @@ public class MainWindow extends UiPart {
 
     private String taskBookName;
 
-    @FXML
-    private AnchorPane browserPlaceholder;
 
     @FXML
     private AnchorPane commandBoxPlaceholder;
@@ -118,7 +114,6 @@ public class MainWindow extends UiPart {
     }
 
     void fillInnerParts() {
-        browserPanel = BrowserPanel.load(browserPlaceholder);
         itemListPanel = ItemListPanel.load(primaryStage, getItemListPlaceholder(), logic.getFilteredItemList());
         resultDisplay = ResultDisplay.load(primaryStage, getResultDisplayPlaceholder());
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getTaskBookFilePath());
@@ -197,12 +192,8 @@ public class MainWindow extends UiPart {
         return this.itemListPanel;
     }
 
-    public void loadItemPage(ReadOnlyItem item) {
-        browserPanel.loadItemPage(item);
-    }
-
     public void releaseResources() {
-        browserPanel.freeResources();
+		// Does nothing for now since we no longer use browserPanel
     }
     
     // @@author A0144750J
