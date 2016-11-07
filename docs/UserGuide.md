@@ -258,6 +258,12 @@ You can scroll through the list of items on the main interface using keyboard sh
 
 <!--- @@author --->
 
+<!--- @@author A0144750J -->
+### Command History
+The command box stores a history of past commands that you can traverse with the `Up` and `Down` arrow keys. The keyboard shortcut is the same for both Windows and Mac.
+
+<!--- @@author -->
+
 <!--- @@author A0144750J--->
 ### Undoing
 Use the `undo` command to undo the most recent action.
