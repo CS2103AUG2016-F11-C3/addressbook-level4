@@ -52,12 +52,14 @@ public class HintDisplay extends UiPart {
 		return hintDisplay;
     }
 
-	public void configure(ObservableList<Hint> hintList) {
+	public void configure(ObservableList<Hint> hintsList) {
 		this.placeHolder.getChildren().add(mainPane);
+
+		this.hintList = new FilteredList<>(hintsList);
 
 
 		hintTableView.setEditable(false);
-		hintTableView.setItems(hintList);
+		hintTableView.setItems(this.hintList);
 
 		labelColumn.setCellValueFactory(new PropertyValueFactory("description"));
 		usageColumn.setCellValueFactory(new PropertyValueFactory("usage"));
@@ -97,6 +99,7 @@ public class HintDisplay extends UiPart {
 			return;
 		} else if (search == "") {
 			this.hideHints();
+			return;
 		}
 
 		// hide header

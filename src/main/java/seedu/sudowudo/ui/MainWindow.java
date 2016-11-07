@@ -2,7 +2,6 @@ package seedu.sudowudo.ui;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -22,9 +21,15 @@ import seedu.sudowudo.commons.events.ui.NextCommandEvent;
 import seedu.sudowudo.commons.events.ui.PreviousCommandEvent;
 import seedu.sudowudo.logic.Logic;
 import seedu.sudowudo.logic.commands.AddCommand;
+import seedu.sudowudo.logic.commands.ClearCommand;
+import seedu.sudowudo.logic.commands.DeleteCommand;
+import seedu.sudowudo.logic.commands.DoneCommand;
 import seedu.sudowudo.logic.commands.EditCommand;
+import seedu.sudowudo.logic.commands.ExitCommand;
+import seedu.sudowudo.logic.commands.FindCommand;
 import seedu.sudowudo.logic.commands.HelpCommand;
 import seedu.sudowudo.logic.commands.Hint;
+import seedu.sudowudo.logic.commands.UndoCommand;
 import seedu.sudowudo.model.UserPrefs;
 
 /**
@@ -134,9 +139,15 @@ public class MainWindow extends UiPart {
 	private void configureHintDisplay() {
 		ObservableList<Hint> hintsList = FXCollections.observableArrayList();
 		hintsList.addAll(AddCommand.getHints());
+		hintsList.addAll(ClearCommand.getHints());
+		hintsList.addAll(DeleteCommand.getHints());
+		hintsList.addAll(DoneCommand.getHints());
 		hintsList.addAll(EditCommand.getHints());
+		hintsList.addAll(ExitCommand.getHints());
+		hintsList.addAll(FindCommand.getHints());
 		hintsList.addAll(HelpCommand.getHints());
-		hintDisplay.configure(new FilteredList<>(hintsList));
+		hintsList.addAll(UndoCommand.getHints());
+		hintDisplay.configure(hintsList);
 
 	}
 
