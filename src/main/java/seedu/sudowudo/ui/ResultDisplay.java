@@ -93,7 +93,7 @@ public class ResultDisplay extends UiPart {
 	}
 
 	public void setError() {
-		displayTextFlow.getStyleClass().set(1, "alert-error");
+		displayTextFlow.getStyleClass().set(1, "alert-danger");
 	}
 
 	public void showDisplay() {

@@ -82,9 +82,9 @@ public class CommandBox extends UiPart {
         /* We assume the command is correct. If it is incorrect, the command box will be changed accordingly
          * in the event handling code {@link #handleIncorrectCommandAttempted}
          */
+		setStyleToIndicateCorrectCommand(true);
         mostRecentResult = logic.execute(previousCommandTest);
 		resultDisplay.postMessage(mostRecentResult.feedbackToUser);
-		setStyleToIndicateCorrectCommand(mostRecentResult.getClear());
         logger.info("Result: " + mostRecentResult.feedbackToUser);
     }
 
