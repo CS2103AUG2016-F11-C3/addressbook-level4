@@ -49,6 +49,7 @@ public class HintDisplay extends UiPart {
     public static HintDisplay load(Stage primaryStage, AnchorPane placeHolder) {
 		HintDisplay hintDisplay = UiPartLoader.loadUiPart(primaryStage, placeHolder, new HintDisplay());
 		hintDisplay.hideHints();
+		hintDisplay.setPlaceholder(placeHolder);
 		return hintDisplay;
     }
 
@@ -56,7 +57,6 @@ public class HintDisplay extends UiPart {
 		this.placeHolder.getChildren().add(mainPane);
 
 		this.hintList = new FilteredList<>(hintsList);
-
 
 		hintTableView.setEditable(false);
 		hintTableView.setItems(this.hintList);
