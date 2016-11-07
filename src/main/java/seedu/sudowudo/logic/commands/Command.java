@@ -25,7 +25,7 @@ public abstract class Command {
     public boolean getUndo() {
     	return hasUndo;
     }
-    //@@author
+    //@@author 
 
 	/**
 	 * Returns whether a command should result in clearing the command box.

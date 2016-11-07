@@ -96,7 +96,7 @@ public class LogicManager extends ComponentManager implements Logic {
      */
     @Subscribe
     private void handleListPageUpEvent(ListPageUpEvent event) {
-        
+        pageStep = event.jumpStep;
         if (currentListIndex - pageStep < 0) {
             currentListIndex = 0;
         } else {
@@ -119,6 +119,7 @@ public class LogicManager extends ComponentManager implements Logic {
     private void handleListPageDownEvent(ListPageDownEvent event) {
         UnmodifiableObservableList<ReadOnlyItem> lastShownList = model.getFilteredItemList();
         assert lastShownList != null;
+        pageStep = event.jumpStep;
         if (currentListIndex + pageStep >= lastShownList.size()) {
             currentListIndex = lastShownList.size() - 1;
         } else {
