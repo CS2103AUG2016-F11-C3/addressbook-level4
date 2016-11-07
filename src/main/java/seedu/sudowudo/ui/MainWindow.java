@@ -29,6 +29,7 @@ import seedu.sudowudo.logic.commands.ExitCommand;
 import seedu.sudowudo.logic.commands.FindCommand;
 import seedu.sudowudo.logic.commands.HelpCommand;
 import seedu.sudowudo.logic.commands.Hint;
+import seedu.sudowudo.logic.commands.ListCommand;
 import seedu.sudowudo.logic.commands.UndoCommand;
 import seedu.sudowudo.model.UserPrefs;
 
@@ -145,6 +146,7 @@ public class MainWindow extends UiPart {
 		hintsList.addAll(EditCommand.getHints());
 		hintsList.addAll(ExitCommand.getHints());
 		hintsList.addAll(FindCommand.getHints());
+		hintsList.addAll(ListCommand.getHints());
 		hintsList.addAll(HelpCommand.getHints());
 		hintsList.addAll(UndoCommand.getHints());
 		hintDisplay.configure(hintsList);

@@ -146,9 +146,11 @@ public class EditCommand extends Command {
 	 * @@author A0092390E
 	 */
 	public static ArrayList<Hint> getHints() {
-		ArrayList<Hint> hints = new ArrayList<>();
-		hints.add(new Hint("edit task", "edit",
-				"edit CONTEXT_ID desc|start|end|by|period:NEW_VALUE [desc|start|end...]..."));
+		if (hints.size() == 0) {
+			hints.add(new Hint("edit task", "edit",
+					"edit CONTEXT_ID desc|start|end|by|period:NEW_VALUE [desc|start|end...]..."));
+
+		}
 		return hints;
 	}
 }

@@ -20,6 +20,7 @@ public class HelpCommand extends Command {
 
     public static final String SHOWING_HELP_MESSAGE = "Opened help window.";
 
+	protected static ArrayList<Hint> hints = new ArrayList<>();
     public HelpCommand() {}
 
     @Override
@@ -40,8 +41,9 @@ public class HelpCommand extends Command {
 	 * @@author A0092390E
 	 */
 	public static ArrayList<Hint> getHints() {
-		ArrayList<Hint> hints = new ArrayList<>();
-		hints.add(new Hint("list commands", "help", "help"));
+		if (hints.size() == 0) {
+			hints.add(new Hint("list commands", "help", "help"));
+		}
 		return hints;
 	}
 

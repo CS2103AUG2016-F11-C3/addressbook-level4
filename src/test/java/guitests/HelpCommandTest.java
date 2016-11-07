@@ -37,6 +37,7 @@ public class HelpCommandTest extends TaskBookGuiTest {
 		assertTrue(hintDisplay.containsHints(ExitCommand.getHints()));
 		assertTrue(hintDisplay.containsHints(FindCommand.getHints()));
 		assertTrue(hintDisplay.containsHints(HelpCommand.getHints()));
+		assertTrue(hintDisplay.containsHints(ListCommand.getHints()));
 		assertTrue(hintDisplay.containsHints(UndoCommand.getHints()));
 	}
 
