@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.collections.transformation.FilteredList;
 import seedu.sudowudo.commons.core.Messages;
 import seedu.sudowudo.commons.exceptions.IllegalValueException;
+import seedu.sudowudo.commons.util.ListUtil;
 import seedu.sudowudo.logic.parser.DateTimeParser;
 import seedu.sudowudo.model.item.Description;
 import seedu.sudowudo.model.item.Item;
@@ -113,8 +114,9 @@ public class EditCommand extends Command {
         }
         
         hasUndo = true;
-        return new CommandResult(String.format(MESSAGE_SUCCESS, itemToModify), itemToModify);
-
+        model.refreshInCurrentPredicate();
+        return new CommandResult(String.format(MESSAGE_SUCCESS, itemToModify),
+                itemToModify);
     }
     // @@author
 
@@ -124,7 +126,6 @@ public class EditCommand extends Command {
     @Override
     public CommandResult undo() {
         // deep copy the item to a template for undo
-
         try{
             model.setItemDesc(itemToModify, previousTemplate.getDescription().getFullDescription());
             model.setItemStart(itemToModify, previousTemplate.getStartDate());
@@ -134,9 +135,8 @@ public class EditCommand extends Command {
         } catch (IllegalValueException ive){
             assert false: "Original item values not valid";
         }
+        model.refreshInCurrentPredicate();
         return new CommandResult(
-                String.format(MESSAGE_UNDO_SUCCESS, itemToModify),
-                itemToModify);
+                String.format(MESSAGE_UNDO_SUCCESS, itemToModify), itemToModify);
     }
-
 }

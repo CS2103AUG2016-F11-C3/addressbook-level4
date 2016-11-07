@@ -75,7 +75,7 @@ public class ModelManager extends ComponentManager implements Model {
         commandHistory.add("");
     }
     //@@author
-
+    
     @Override
     public void resetData(ReadOnlyTaskBook newData) {
         taskBook.resetData(newData);
@@ -199,8 +199,8 @@ public class ModelManager extends ComponentManager implements Model {
         SortedList<Item> sortedList = new SortedList<>(filteredItems, Item.chronologicalComparator);
         return new FilteredList<Item>(sortedList);
 	}
-
     // @@author
+    
     @Override
     public void updateFilteredListToShowAll() {
         filteredItems.setPredicate(null);
@@ -219,6 +219,16 @@ public class ModelManager extends ComponentManager implements Model {
     }
     
     // ========== Command History Helper Methods ==================================================
+    
+    //@@author A0144750J
+    /**
+     * Update the list in the same predicate
+     */
+    @Override
+	public void refreshInCurrentPredicate() {
+        filteredItems.setPredicate(defaultPredicate);
+    }
+    //@@author
     
     //@@author A0144750J
     @Override
