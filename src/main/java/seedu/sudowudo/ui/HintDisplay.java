@@ -3,7 +3,6 @@ package seedu.sudowudo.ui;
 import java.util.function.Predicate;
 
 import javafx.beans.binding.Bindings;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
@@ -16,8 +15,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import seedu.sudowudo.logic.commands.AddCommand;
-import seedu.sudowudo.logic.commands.EditCommand;
 import seedu.sudowudo.logic.commands.Hint;
 
 /**
@@ -51,16 +48,11 @@ public class HintDisplay extends UiPart {
 
     public static HintDisplay load(Stage primaryStage, AnchorPane placeHolder) {
 		HintDisplay hintDisplay = UiPartLoader.loadUiPart(primaryStage, placeHolder, new HintDisplay());
-		hintDisplay.configure();
 		hintDisplay.hideHints();
 		return hintDisplay;
     }
 
-    public void configure() {
-		ObservableList<Hint> hintsList = FXCollections.observableArrayList();
-		hintsList.addAll(AddCommand.getHints());
-		hintsList.addAll(EditCommand.getHints());
-		hintList = new FilteredList<>(hintsList);
+	public void configure(ObservableList<Hint> hintList) {
 		this.placeHolder.getChildren().add(mainPane);
 
 

@@ -1,5 +1,8 @@
 package seedu.sudowudo.ui;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -18,6 +21,10 @@ import seedu.sudowudo.commons.events.ui.ListPageUpEvent;
 import seedu.sudowudo.commons.events.ui.NextCommandEvent;
 import seedu.sudowudo.commons.events.ui.PreviousCommandEvent;
 import seedu.sudowudo.logic.Logic;
+import seedu.sudowudo.logic.commands.AddCommand;
+import seedu.sudowudo.logic.commands.EditCommand;
+import seedu.sudowudo.logic.commands.HelpCommand;
+import seedu.sudowudo.logic.commands.Hint;
 import seedu.sudowudo.model.UserPrefs;
 
 /**
@@ -119,8 +126,21 @@ public class MainWindow extends UiPart {
         statusBarFooter = StatusBarFooter.load(primaryStage, getStatusbarPlaceholder(), config.getTaskBookFilePath());
 		hintDisplay = HintDisplay.load(primaryStage, hintDisplayPlaceholder);
 		commandBox = CommandBox.load(primaryStage, getCommandBoxPlaceholder(), resultDisplay, hintDisplay, logic);
+
+		configureHintDisplay();
     }
 
+	// @@author A0092390E
+	private void configureHintDisplay() {
+		ObservableList<Hint> hintsList = FXCollections.observableArrayList();
+		hintsList.addAll(AddCommand.getHints());
+		hintsList.addAll(EditCommand.getHints());
+		hintsList.addAll(HelpCommand.getHints());
+		hintDisplay.configure(new FilteredList<>(hintsList));
+
+	}
+
+	// @@author
     private AnchorPane getCommandBoxPlaceholder() {
         return commandBoxPlaceholder;
     }
