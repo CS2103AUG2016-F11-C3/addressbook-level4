@@ -1,24 +1,31 @@
 package guitests;
 
-import guitests.guihandles.*;
-import javafx.stage.Stage;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.concurrent.TimeoutException;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.TestName;
 import org.testfx.api.FxToolkit;
+
+import guitests.guihandles.CommandBoxHandle;
+import guitests.guihandles.HintDisplayHandle;
+import guitests.guihandles.ItemCardHandle;
+import guitests.guihandles.ItemListPanelHandle;
+import guitests.guihandles.MainGuiHandle;
+import guitests.guihandles.MainMenuHandle;
+import guitests.guihandles.ResultDisplayHandle;
+import javafx.stage.Stage;
 import seedu.sudowudo.TestApp;
 import seedu.sudowudo.commons.core.EventsCenter;
 import seedu.sudowudo.model.TaskBook;
 import seedu.sudowudo.model.item.ReadOnlyItem;
 import seedu.sudowudo.testutil.TestUtil;
 import seedu.sudowudo.testutil.TypicalTestItems;
-
-import java.util.concurrent.TimeoutException;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 /**
  * A GUI Test class for TaskBook.
@@ -41,6 +48,7 @@ public abstract class TaskBookGuiTest {
     protected MainMenuHandle mainMenu;
     protected ItemListPanelHandle itemListPanel;
     protected ResultDisplayHandle resultDisplay;
+	protected HintDisplayHandle hintDisplay;
     protected CommandBoxHandle commandBox;
     private Stage stage;
 
@@ -62,6 +70,7 @@ public abstract class TaskBookGuiTest {
             itemListPanel = mainGui.getItemListPanel();
             resultDisplay = mainGui.getResultDisplay();
             commandBox = mainGui.getCommandBox();
+			hintDisplay = mainGui.getHintDisplay();
             this.stage = stage;
         });
         EventsCenter.clearSubscribers();

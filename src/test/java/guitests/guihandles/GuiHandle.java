@@ -7,6 +7,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -47,8 +48,12 @@ public class GuiHandle {
     }
 
     protected Node getNode(String query) {
-        return guiRobot.lookup(query).tryQuery().get();
+		return guiRobot.lookup(query).tryQuery().get();
     }
+
+	protected Node getNodeFrom(String query, Node parentNode) {
+		return guiRobot.from(parentNode).lookup(query).tryQuery().get();
+	}
 
     protected String getTextFieldText(String filedName) {
         return ((TextField) getNode(filedName)).getText();
@@ -56,9 +61,13 @@ public class GuiHandle {
 
     protected void setTextField(String textFieldId, String newText) {
         guiRobot.clickOn(textFieldId);
-        ((TextField)guiRobot.lookup(textFieldId).tryQuery().get()).setText(newText);
+		TextField textField = ((TextField) guiRobot.lookup(textFieldId).tryQuery().get());
+		textField.setText(newText);
+		KeyEvent keyEvent = new KeyEvent(null, textField, KeyEvent.KEY_PRESSED, "", "", KeyCode.SPACE, false, false,
+				false, false);
         guiRobot.sleep(500); // so that the texts stays visible on the GUI for a short period
     }
+
 
     public void pressEnter() {
         guiRobot.type(KeyCode.ENTER).sleep(500);

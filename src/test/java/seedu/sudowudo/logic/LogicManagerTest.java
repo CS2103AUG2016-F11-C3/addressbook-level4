@@ -23,7 +23,6 @@ import org.junit.rules.TemporaryFolder;
 import com.google.common.eventbus.Subscribe;
 
 import seedu.sudowudo.commons.core.EventsCenter;
-import seedu.sudowudo.commons.core.Messages;
 import seedu.sudowudo.commons.events.model.TaskBookChangedEvent;
 import seedu.sudowudo.commons.events.ui.ShowHelpRequestEvent;
 import seedu.sudowudo.commons.exceptions.DuplicateDataException;
@@ -162,13 +161,6 @@ public class LogicManagerTest<E> {
             assertEquals(expected.get(i), actual.get(i));
         }
         return true;
-    }
-
-    @Test
-    //@@author
-    public void execute_help() throws Exception {
-        assertCommandBehavior("help", HelpCommand.SHOWING_HELP_MESSAGE);
-        assertTrue(helpShown);
     }
 
     @Test

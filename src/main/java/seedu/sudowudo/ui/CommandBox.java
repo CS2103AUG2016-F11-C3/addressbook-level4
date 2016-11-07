@@ -4,6 +4,8 @@ import java.util.logging.Logger;
 
 import com.google.common.eventbus.Subscribe;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.SplitPane;
@@ -26,6 +28,7 @@ public class CommandBox extends UiPart {
     private AnchorPane placeHolderPane;
     private AnchorPane commandPane;
     private ResultDisplay resultDisplay;
+	private HintDisplay hintDisplay;
     String previousCommandTest;
 
     private Logic logic;
@@ -35,17 +38,19 @@ public class CommandBox extends UiPart {
     private CommandResult mostRecentResult;
 
     public static CommandBox load(Stage primaryStage, AnchorPane commandBoxPlaceholder,
-            ResultDisplay resultDisplay, Logic logic) {
+			ResultDisplay resultDisplay, HintDisplay hintDisplay, Logic logic) {
         CommandBox commandBox = UiPartLoader.loadUiPart(primaryStage, commandBoxPlaceholder, new CommandBox());
-        commandBox.configure(resultDisplay, logic);
+		commandBox.configure(resultDisplay, hintDisplay, logic);
         commandBox.addToPlaceholder();
         return commandBox;
     }
 
-    public void configure(ResultDisplay resultDisplay, Logic logic) {
+	public void configure(ResultDisplay resultDisplay, HintDisplay hintDisplay, Logic logic) {
         this.resultDisplay = resultDisplay;
+		this.hintDisplay = hintDisplay;
         this.logic = logic;
         registerAsAnEventHandler(this);
+		commandTextField.setOnKeyReleased(new UpdateEventHandler(this));
     }
 
     private void addToPlaceholder() {
@@ -70,13 +75,6 @@ public class CommandBox extends UiPart {
         this.placeHolderPane = pane;
     }
 
-	// Hook to use for command suggest
-	@FXML
-	private void handleCommandInputChanged() {
-		previousCommandTest = commandTextField.getText();
-		// resultDisplay.postMessage(previousCommandTest);
-	}
-
 
     @FXML
 	private void handleCommandInputEntered() {
@@ -86,6 +84,7 @@ public class CommandBox extends UiPart {
         /* We assume the command is correct. If it is incorrect, the command box will be changed accordingly
          * in the event handling code {@link #handleIncorrectCommandAttempted}
          */
+		setStyleToIndicateCorrectCommand(true);
         mostRecentResult = logic.execute(previousCommandTest);
 		setStyleToIndicateCorrectCommand(mostRecentResult.getClear());
         resultDisplay.postMessage(mostRecentResult.feedbackToUser);
@@ -98,12 +97,13 @@ public class CommandBox extends UiPart {
      * Sets the command box style to indicate a correct command.
      */
 	private void setStyleToIndicateCorrectCommand(boolean clear) {
-        commandTextField.getStyleClass().remove("error");
+		resultDisplay.setSuccess();
 		if (clear) {
 			commandTextField.setText("");
 		}
     }
 
+	// @@author
     @Subscribe
     private void handleIncorrectCommandAttempted(IncorrectCommandAttemptedEvent event){
         logger.info(LogsCenter.getEventHandlingLogMessage(event,"Invalid command: " + previousCommandTest));
@@ -133,7 +133,29 @@ public class CommandBox extends UiPart {
      * Sets the command box style to indicate an error
      */
     private void setStyleToIndicateIncorrectCommand() {
-        commandTextField.getStyleClass().add("error");
+		resultDisplay.setError();
     }
 
+	// Hook to use for command suggest
+	// @@author A0092390E
+	private class UpdateEventHandler implements EventHandler {
+		private CommandBox commandBox;
+
+		UpdateEventHandler(CommandBox commandBox) {
+			this.commandBox = commandBox;
+		}
+		@Override
+		public void handle(Event event) {
+			previousCommandTest = commandTextField.getText();
+			if (!commandTextField.getText().equals("")) {
+				resultDisplay.hideDisplay();
+				int spaceIndex = previousCommandTest.indexOf(' ');
+				spaceIndex = (spaceIndex == -1) ? previousCommandTest.length() : spaceIndex;
+				this.commandBox.hintDisplay.updateHints(commandTextField.getText(0, spaceIndex));
+			} else {
+				this.commandBox.hintDisplay.updateHints("");
+			}
+			// resultDisplay.postMessage(previousCommandTest);
+		}
+}
 }

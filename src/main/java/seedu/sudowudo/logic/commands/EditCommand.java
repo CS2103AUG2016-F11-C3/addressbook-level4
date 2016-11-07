@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javafx.collections.transformation.FilteredList;
 import seedu.sudowudo.commons.core.Messages;
 import seedu.sudowudo.commons.exceptions.IllegalValueException;
-import seedu.sudowudo.commons.util.ListUtil;
 import seedu.sudowudo.logic.parser.DateTimeParser;
 import seedu.sudowudo.model.item.Description;
 import seedu.sudowudo.model.item.Item;
@@ -29,13 +28,16 @@ public class EditCommand extends Command {
     public static final String MESSAGE_UNDO_SUCCESS = "Undo edit task: %1$s";
     public static final String MESSAGE_UNDO_FAILURE = "Failed to undo edit task: %1$s";
 
-    public final int targetIndex;
 
     private DateTimeParser dtParser = DateTimeParser.getInstance();
+
+    protected static ArrayList<Hint> hints = new ArrayList<>();
 
     private Item itemToModify;
     private Item previousTemplate;
     private ArrayList<String[]> editFields;
+    private final int targetIndex;
+
 
     // @@author A0092390E
     /**
@@ -140,4 +142,18 @@ public class EditCommand extends Command {
         return new CommandResult(
                 String.format(MESSAGE_UNDO_SUCCESS, itemToModify), itemToModify);
     }
+
+	/**
+	 * Method to return hints for this command
+	 * 
+	 * @@author A0092390E
+	 */
+	public static ArrayList<Hint> getHints() {
+		if (hints.size() == 0) {
+			hints.add(new Hint("edit task", "edit",
+					"edit CONTEXT_ID desc|start|end|by|period:NEW_VALUE [desc.."));
+
+		}
+		return hints;
+	}
 }
