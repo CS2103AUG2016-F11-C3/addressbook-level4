@@ -13,6 +13,7 @@ public class HelpCommandTest extends TaskBookGuiTest {
 	@Test
 	public void openHelpPrompt() {
         commandBox.runCommand("help");
-		System.out.println(hintDisplay);
+		hintDisplay = commandBox.runHelpCommand();
+
 	}
 }
