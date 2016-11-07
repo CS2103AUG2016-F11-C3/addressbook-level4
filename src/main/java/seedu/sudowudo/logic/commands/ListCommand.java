@@ -1,5 +1,7 @@
 package seedu.sudowudo.logic.commands;
 
+import java.util.ArrayList;
+
 /**
  * Lists all items in the task book to the user.
  */
@@ -15,6 +17,8 @@ public class ListCommand extends Command {
 	public static final Object MESSAGE_USAGE = COMMAND_WORD + " lists items that match the given parameter"
 			+ "Parameter: \"OPTIONAL_TYPE_ARGUMENT (task, event, done, overdue, undone)\""
             + "Example: list task";
+
+    protected static ArrayList<Hint> hints = new ArrayList<>();
 
     //@@author A0131560U
     private enum Type{
@@ -76,5 +80,22 @@ public class ListCommand extends Command {
     //@@author
     public CommandResult undo() {
         return new CommandResult(MESSAGE_UNDO_FAILURE);
+    }
+
+	/**
+	 * Method to return hints for this command
+	 * 
+	 * @@author A0092390E
+	 */
+	public static ArrayList<Hint> getHints() {
+		if (hints.size() == 0) {
+			hints.add(new Hint("list all", "list", "list"));
+			hints.add(new Hint("list all tasks", "list", "list task"));
+			hints.add(new Hint("list all events", "list", "list event"));
+			hints.add(new Hint("list all done", "list", "list done"));
+			hints.add(new Hint("list all undone", "list", "list undone"));
+			hints.add(new Hint("list all overdue", "list", "list overdue"));
+		}
+		return hints;
     }
 }

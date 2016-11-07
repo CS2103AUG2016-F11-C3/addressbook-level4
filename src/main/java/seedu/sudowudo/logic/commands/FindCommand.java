@@ -1,5 +1,6 @@
 package seedu.sudowudo.logic.commands;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -11,6 +12,8 @@ public class FindCommand extends Command {
 
     public static final String COMMAND_WORD = "find";
     public static final String MESSAGE_UNDO_FAILURE = "";
+
+    protected static ArrayList<Hint> hints = new ArrayList<>();
 
 	/**
 	 * never clear the command box, in case the user wants to refine their query
@@ -45,4 +48,17 @@ public class FindCommand extends Command {
         return new CommandResult(MESSAGE_UNDO_FAILURE);
     }
 
+	/**
+	 * Method to return hints for this command
+	 * 
+	 * @@author A0092390E
+	 */
+	public static ArrayList<Hint> getHints() {
+		if (hints.size() == 0) {
+			hints.add(new Hint("find by name", "find", "find \"DESCRIPTOR\""));
+			hints.add(new Hint("find by date", "find", "find DATETIME"));
+			hints.add(new Hint("find by tag", "find", "find #TAG"));
+		}
+		return hints;
+    }
 }

@@ -1,5 +1,6 @@
 package seedu.sudowudo.logic.commands;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import javafx.collections.transformation.FilteredList;
@@ -33,9 +34,10 @@ public class DeleteCommand extends Command {
 	public static final String MESSAGE_UNDO_FAILURE = "Undo failed! Task already existed!";
     public static final String MESSAGE_UNIQUE_ITEM_NOT_FOUND = "More than one item matching your search was found! Please refine your search.";
 
+    protected static ArrayList<Hint> hints = new ArrayList<>();
+
     private Set<String> keywords;
     private int index;
-    
     private Item itemToAddBack;
 
     public DeleteCommand(Set<String> keywords) {
@@ -147,4 +149,16 @@ public class DeleteCommand extends Command {
 			return new CommandResult(MESSAGE_UNDO_FAILURE);
 		}
 	}
+
+	/**
+	 * Method to return hints for this command
+	 * 
+	 * @@author A0092390E
+	 */
+	public static ArrayList<Hint> getHints() {
+		if (hints.size() == 0) {
+			hints.add(new Hint("delete task", "delete", "delete CONTEXT_ID"));
+		}
+		return hints;
+    }
 }
