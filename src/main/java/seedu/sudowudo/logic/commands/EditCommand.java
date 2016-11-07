@@ -113,6 +113,7 @@ public class EditCommand extends Command {
             }
         }
         hasUndo = true;
+        model.updateDefaultPredicate("item");
         return new CommandResult(String.format(MESSAGE_SUCCESS, itemToModify),
                 itemToModify);
 
