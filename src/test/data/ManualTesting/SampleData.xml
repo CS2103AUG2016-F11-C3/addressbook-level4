@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<taskbook>
+    <items>
+        <description>Lecture</description>
+        <startDate>2016-10-29 05:00</startDate>
+        <endDate>2016-10-29 06:00</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>CS2103 Lecture</description>
+        <startDate>2016-10-28 12:00</startDate>
+        <endDate>2016-10-28 14:00</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>CS2106 Tutorial</description>
+        <startDate>2016-10-28 10:00</startDate>
+        <endDate>2016-10-28 11:00</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Do CS2106 Tutorial</description>
+        <startDate></startDate>
+        <endDate>2016-10-28 08:00</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>go to the museum</description>
+        <startDate></startDate>
+        <endDate>2016-10-30 04:26</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Finish term paper</description>
+        <startDate></startDate>
+        <endDate>2016-10-31 23:59</endDate>
+        <isDone>true</isDone>
+        <tagged>homework</tagged>
+    </items>
+    <items>
+        <description>Attend XYZ wedding</description>
+        <startDate>2016-10-29 17:00</startDate>
+        <endDate>2016-10-29 22:00</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Buy more glue</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+        <tagged>chores</tagged>
+        <tagged>projects</tagged>
+    </items>
+    <items>
+        <description>Christmas Celebration</description>
+        <startDate>2016-12-24 04:29</startDate>
+        <endDate>2016-12-25 04:29</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Ask Jim out</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Ask someone out</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>See psychiatrist</description>
+        <startDate>2016-11-01 09:00</startDate>
+        <endDate>2016-11-01 10:15</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Get HIV test</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Mail earphones to Amazon</description>
+        <startDate></startDate>
+        <endDate>2016-11-04 23:59</endDate>
+        <isDone>true</isDone>
+    </items>
+    <items>
+        <description>Save the world</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Fix the roof</description>
+        <startDate></startDate>
+        <endDate>2016-10-30 04:31</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Research on final essay topic</description>
+        <startDate>2016-11-04 04:32</startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Pickup mom from airport</description>
+        <startDate>2016-11-09 07:30</startDate>
+        <endDate>2016-11-09 08:30</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Orientation Camp</description>
+        <startDate>2016-11-08 09:00</startDate>
+        <endDate>2016-11-12 21:00</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Merge all pull requests</description>
+        <startDate></startDate>
+        <endDate>2016-11-06 23:59</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Finish reading World War Z</description>
+        <startDate></startDate>
+        <endDate>2016-10-31 23:59</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Breakfast</description>
+        <startDate>2016-10-28 08:00</startDate>
+        <endDate>2016-10-28 09:00</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Clean up mess</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Prepare cake</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Blow up moon</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Finish list of tasks</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+        <tagged>important</tagged>
+    </items>
+    <items>
+        <description>Do CS2103 things</description>
+        <startDate></startDate>
+        <endDate>2016-10-29 04:31</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>do CS2020 things</description>
+        <startDate></startDate>
+        <endDate>2016-04-28 04:32</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>CS2020 Lecture</description>
+        <startDate>2017-02-28 10:00</startDate>
+        <endDate>2017-02-28 12:00</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>CS2106 Lecture</description>
+        <startDate>2017-02-28 11:00</startDate>
+        <endDate>2017-02-28 13:00</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>CS2100 Lecture</description>
+        <startDate>2017-03-28 09:00</startDate>
+        <endDate>2017-03-28 13:00</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Hunt for monsters</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+        <tagged>fun</tagged>
+    </items>
+    <items>
+        <description>hit the library</description>
+        <startDate>2016-11-01 04:44</startDate>
+        <endDate>2016-11-03 04:44</endDate>
+        <isDone>false</isDone>
+        <tagged>fun</tagged>
+    </items>
+    <items>
+        <description>find out how to do push up</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>buy more snacks</description>
+        <startDate></startDate>
+        <endDate>2016-10-30 04:46</endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>learn to dance hiphop</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+        <tagged>fun</tagged>
+    </items>
+    <items>
+        <description>Mix the dough</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+        <tagged>fun</tagged>
+    </items>
+    <items>
+        <description>hit the gym</description>
+        <startDate></startDate>
+        <endDate>2016-10-03 04:44</endDate>
+        <isDone>true</isDone>
+        <tagged>fun</tagged>
+    </items>
+    <items>
+        <description>find out how to do pull up</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>buy more drinks</description>
+        <startDate></startDate>
+        <endDate>2016-10-10 04:46</endDate>
+        <isDone>true</isDone>
+    </items>
+    <items>
+        <description>learn some Chinese</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+        <tagged>fun</tagged>
+    </items>
+    <items>
+        <description>Extended lunch</description>
+        <startDate>2016-10-11 08:00</startDate>
+        <endDate>2016-10-12 09:00</endDate>
+        <isDone>false</isDone>
+        <tagged>family</tagged>
+        <tagged>fun</tagged>
+    </items>
+    <items>
+        <description>Get life together</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+        <tagged>fun</tagged>
+    </items>
+    <items>
+        <description>Prepare wine</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>false</isDone>
+    </items>
+    <items>
+        <description>Inflate some balloons</description>
+        <startDate></startDate>
+        <endDate></endDate>
+        <isDone>true</isDone>
+    </items>
+    <items>
+        <description>eat a turtle</description>
+        <startDate>2016-11-16 18:00</startDate>
+        <endDate>2016-11-16 20:00</endDate>
+        <isDone>false</isDone>
+    </items>
+</taskbook>
