@@ -38,63 +38,45 @@ import seedu.sudowudo.model.item.Item;
  */
 public class Parser {
 
-    private static final String EMPTY_STRING = "";
     public static final String COMMAND_TAG_REGEX = "#(.*)";
     public static final String COMMAND_DESCRIPTION_REGEX = "\"(.*)\"";
     public static final String COMMAND_TAG_PREFIX = "#";
     public static final String COMMAND_DESCRIPTION_PREFIX = "\"";
 
+    private static final String EMPTY_STRING = "";
     /**
      * Used for initial separation of command word and args.
      */
-    private static final Pattern BASIC_COMMAND_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
+    private static final Pattern BASIC_COMMAND_FORMAT = Pattern
+            .compile("(?<commandWord>\\S+)(?<arguments>.*)");
 
     // one or more keywords separated by whitespace
     private static final Pattern KEYWORDS_ARGS_FORMAT = Pattern.compile("(?<keywords>\\S+(?:\\s+\\S+)*)");
 
     // item has description and a string representing time to be processed
     private static final Pattern ITEM_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"(.*)");
-    
     private static final Pattern TASK_DATA_ARGS_FORMAT = Pattern.compile("(.*)\\\"(.*)\\\"");
-
-    private static final Pattern ITEM_EDIT_ARGS_FORMAT = Pattern.compile("(?<targetIndex>\\d+)\\s+(?<arguments>.*)");
-
+    private static final Pattern ITEM_EDIT_ARGS_FORMAT = Pattern
+            .compile("(?<targetIndex>\\d+)\\s+(?<arguments>.*)");
     private static final String TASK_NO_DATE_DATA = "nothing";
     private static final Pattern ITEM_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
-
     private static final int COMMAND_DESCRIPTION_FIELD_NUMBER = 2;
     private static final int COMMAND_TYPE_FIELD_NUMBER = 1;
     private static final int COMMAND_TIME_FIELD_NUMBER = 3;
-
     private static final Pattern COMMAND_DESCRIPTION_SEARCH_FORMAT = Pattern.compile("\"([^\"]*)\"");
     private static final Pattern COMMAND_TAG_SEARCH_FORMAT = Pattern.compile("#([^ ]+)");
-
-    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-    public enum Field {
-        NAME("name"), START_DATE("start_date"), END_DATE("end_date"), START_TIME("start_time"), END_TIME(
-                "end_time"), DATE("date"), TIME("time");
-
-        private String field_name;
-
-        Field(String name) {
-            this.field_name = name;
-        }
-
-        public String getFieldName() {
-            return this.field_name;
-        }
-    }
-
+    private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd HH:mm");
+    private DateTimeParser dtParser = DateTimeParser.getInstance();
     private static Parser instance = new Parser();
+
     private Parser() {
     }
-    
-    public static Parser getInstance(){
+
+    public static Parser getInstance() {
         return instance;
     }
 
-    
     /**
      * Parses user input into command for execution.
      *
@@ -105,63 +87,56 @@ public class Parser {
     public Command parseCommand(String userInput) {
         final Matcher matcher = BASIC_COMMAND_FORMAT.matcher(userInput.trim());
         if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, HelpCommand.MESSAGE_USAGE));
         }
 
         final String commandWord = matcher.group("commandWord");
         final String arguments = matcher.group("arguments");
         Command toReturn;
+        
         switch (commandWord) {
-
         case AddCommand.COMMAND_WORD:
             toReturn = prepareAdd(arguments);
             break;
-
         case SelectCommand.COMMAND_WORD:
             toReturn = prepareSelect(arguments);
             break;
-
         case DeleteCommand.COMMAND_WORD:
             toReturn = prepareDelete(arguments);
             break;
-
         case ClearCommand.COMMAND_WORD:
             toReturn = new ClearCommand();
             break;
-		case FindCommand.COMMAND_WORD:
-			toReturn = prepareFind(arguments);
-			break;
-
+        case FindCommand.COMMAND_WORD:
+            toReturn = prepareFind(arguments);
+            break;
         case EditCommand.COMMAND_WORD:
             toReturn = prepareEdit(arguments);
             break;
-
         case ListCommand.COMMAND_WORD:
             toReturn = prepareList(arguments);
             break;
-
         case ExitCommand.COMMAND_WORD:
             toReturn = new ExitCommand();
             break;
-
         case HelpCommand.COMMAND_WORD:
             toReturn = new HelpCommand();
             break;
-
         case DoneCommand.COMMAND_WORD:
             toReturn = prepareDone(arguments);
             break;
-            
         case UndoCommand.COMMAND_WORD:
             toReturn = new UndoCommand();
             break;
-
         default:
             toReturn = new IncorrectCommand(MESSAGE_UNKNOWN_COMMAND);
+            break;
         }
+
         toReturn.setRawCommand(userInput);
         return toReturn;
-	};
+    };
 
     /**
      * Parses arguments in the context of the list item command.
@@ -177,7 +152,8 @@ public class Parser {
         } else if (isValidType(argument)) {
             return new ListCommand(argument.trim().toLowerCase());
         } else {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, ListCommand.MESSAGE_USAGE));
         }
     }
 
@@ -190,7 +166,7 @@ public class Parser {
      */
     public static boolean isValidType(String argument) {
         assert argument != null;
-        try{
+        try {
             Item.Type.valueOf(argument.trim().toUpperCase());
         } catch (IllegalArgumentException iae) {
             return false;
@@ -214,7 +190,8 @@ public class Parser {
                                                                               // string
                                                                               // format
         if (!itemMatch.matches() && !taskMatch.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
         try {
             if (taskMatch.matches()) {
@@ -243,7 +220,8 @@ public class Parser {
         // found
         String postFix = itemMatch.group(COMMAND_TYPE_FIELD_NUMBER).trim();
         if (!postFix.equals(EMPTY_STRING)) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
         String description = itemMatch.group(COMMAND_DESCRIPTION_FIELD_NUMBER).trim();
         String timeStr = itemMatch.group(COMMAND_TIME_FIELD_NUMBER).trim();
@@ -263,7 +241,8 @@ public class Parser {
     private Command parseNewTask(final Matcher itemMatch, String args) throws IllegalValueException {
         String postFix = itemMatch.group(COMMAND_TYPE_FIELD_NUMBER).trim();
         if (!postFix.equals(EMPTY_STRING)) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
         String description = itemMatch.group(COMMAND_DESCRIPTION_FIELD_NUMBER).trim();
         String argsWithoutDescription = args.replace(description, "");
@@ -271,8 +250,8 @@ public class Parser {
     }
 
     /**
-     * Extracts the new item's tags from the add command's tag arguments
-     * string. Merges duplicate tag strings.
+     * Extracts the new item's tags from the add command's tag arguments string.
+     * Merges duplicate tag strings.
      * 
      * @@author A0131560U
      */
@@ -312,7 +291,8 @@ public class Parser {
             final Set<String> keywordSet = extractKeywords(args);
             return new DeleteCommand(keywordSet);
         } catch (IllegalValueException e) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
     }
 
@@ -328,7 +308,8 @@ public class Parser {
     private Command prepareDone(String args) {
         Optional<Integer> index = parseIndex(args);
         if (!index.isPresent()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DoneCommand.MESSAGE_USAGE));
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DoneCommand.MESSAGE_USAGE));
         }
 
         return new DoneCommand(index.get());
@@ -345,7 +326,8 @@ public class Parser {
     private Command prepareSelect(String args) {
         Optional<Integer> index = parseIndex(args);
         if (!index.isPresent()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE));
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE));
         }
 
         return new SelectCommand(index.get());
@@ -370,7 +352,7 @@ public class Parser {
 
     }
 
-    //@@author A0131560U
+    // @@author A0131560U
     /**
      * Parses arguments in the context of the find item command.
      *
@@ -380,20 +362,24 @@ public class Parser {
      * @@author A0131560U
      */
     private Command prepareFind(String args) {
-        try{
+        try {
             final Set<String> keywordSet = extractKeywords(args);
             return new FindCommand(keywordSet);
-        } catch (IllegalValueException ive){
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
+        } catch (IllegalValueException ive) {
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, FindCommand.MESSAGE_USAGE));
         }
     }
 
-    //@@author A0131560U
+    // @@author A0131560U
     /**
-     * Extracts description, tag and DateTime keywords from args and returns them as a set.
+     * Extracts description, tag and DateTime keywords from args and returns
+     * them as a set.
+     * 
      * @param unfiltered
      * @return
-     * @throws IllegalValueException if arguments are not in the correct format
+     * @throws IllegalValueException
+     *             if arguments are not in the correct format
      */
     private Set<String> extractKeywords(String unfiltered) throws IllegalValueException {
         final Matcher matcher = KEYWORDS_ARGS_FORMAT.matcher(unfiltered.trim());
@@ -410,18 +396,18 @@ public class Parser {
 
         if (!unfiltered.isEmpty()) {
             boolean isDateTimeValid = extractDateTimeFromKeywords(unfiltered, keywordSet);
-            if (!isDateTimeValid){
+            if (!isDateTimeValid) {
                 throw new IllegalValueException("Input does not match expected format for DateTime");
             }
         }
-        
-        if (keywordSet.isEmpty()){
+
+        if (keywordSet.isEmpty()) {
             throw new IllegalValueException("No keywords found");
         }
         return keywordSet;
     }
-    
-    //@@A0092390E
+
+    // @@A0092390E
     /**
      * Parses arguments in the context of the Edit item command
      * 
@@ -432,7 +418,8 @@ public class Parser {
     private Command prepareEdit(String args) {
         final Matcher matcher = ITEM_EDIT_ARGS_FORMAT.matcher(args.trim());
         if (!matcher.matches()) {
-            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
+            return new IncorrectCommand(
+                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE));
         }
         int index = Integer.parseInt(matcher.group("targetIndex"));
         ArrayList<String> arguments = parseMultipleParameters(matcher.group("arguments"), ',');
@@ -443,7 +430,7 @@ public class Parser {
         }
     }
 
-    //@@author A0131560U
+    // @@author A0131560U
     /**
      * Extracts a valid DateTime from the provided arguments and adds them to
      * the keywordSet, then returns true. If the arguments do not form a valid
@@ -459,12 +446,13 @@ public class Parser {
         assert args != null;
         assert !args.isEmpty();
         assert keywordSet != null;
-        DateTimeParser dateArgs = new DateTimeParser(args);
 
-        if (dateArgs.extractStartDate() != null) {
-            keywordSet.add(dateArgs.extractStartDate().format(DATE_TIME_FORMATTER));
-            if (dateArgs.extractEndDate() != null) {
-                keywordSet.add(dateArgs.extractEndDate().format(DATE_TIME_FORMATTER));
+        dtParser.parse(args);
+
+        if (dtParser.extractStartDate() != null) {
+            keywordSet.add(dtParser.extractStartDate().format(DATE_TIME_FORMATTER));
+            if (dtParser.extractEndDate() != null) {
+                keywordSet.add(dtParser.extractEndDate().format(DATE_TIME_FORMATTER));
             }
             return true;
         } else {
@@ -472,7 +460,7 @@ public class Parser {
         }
     }
 
-    //@@author A0131560U
+    // @@author A0131560U
     /**
      * Given a specific pattern, extracts all phrases that match the pattern and
      * adds them to keywordSet. Returns args string without the keywords that
@@ -504,55 +492,35 @@ public class Parser {
      * @author darren
      */
 
-	 //@@author A0147609X
-	/**
-	 * splits multi-arguments into a nice ArrayList of strings
-	 * 
-	 * @param params
-	 *            comma-separated parameters
-	 * @param delimiter
-	 *            delimiting character
-	 * @return ArrayList<String> of parameters
-	 * @author darren
-	 */
-	public static ArrayList<String> parseMultipleParameters(String params, char delimiter) {
-		CSVParser parser = new CSVParser(delimiter);
+    // @@author A0147609X
+    /**
+     * splits multi-arguments into a nice ArrayList of strings
+     * 
+     * @param params
+     *            comma-separated parameters
+     * @param delimiter
+     *            delimiting character
+     * @return ArrayList<String> of parameters
+     * @author darren
+     */
+    public static ArrayList<String> parseMultipleParameters(String params, char delimiter) {
+        CSVParser parser = new CSVParser(delimiter);
 
-		try {
-			String[] tokens = parser.parseLine(params);
+        try {
+            String[] tokens = parser.parseLine(params);
 
-			// strip leading and trailing whitespaces
-			for (int i = 0; i < tokens.length; i++) {
-				tokens[i] = tokens[i].trim();
-			}
+            // strip leading and trailing whitespaces
+            for (int i = 0; i < tokens.length; i++) {
+                tokens[i] = tokens[i].trim();
+            }
 
-			return new ArrayList<>(Arrays.asList(tokens));
-		} catch (IOException ioe) {
-			System.out.println(ioe.getMessage());
-		}
+            return new ArrayList<>(Arrays.asList(tokens));
+        } catch (IOException ioe) {
+            System.out.println(ioe.getMessage());
+        }
 
-		return null;
-	}
-	//@@author 
+        return null;
+    }
+    // @@author
 
-	 //@@author A0147609X-unused
-	/**
-	 * checks field names are valid
-	 * 
-	 * @param fieldNames
-	 *            an ArrayList<String> of field names
-	 * @return true if all fields are valid, false otherwise
-	 * @author darren
-	 */
-	private static boolean fieldsAreValid(ArrayList<String> fieldNames) {
-		assert fieldNames != null;
-		for (String fieldName : fieldNames) {
-			try {
-				Field ret = Field.valueOf(fieldName.toUpperCase());
-			} catch (IllegalArgumentException iae) {
-				return false;
-			}
-		}
-		return true;
-	}
 }

@@ -16,29 +16,15 @@ import org.ocpsoft.prettytime.nlp.parse.DateGroup;
 
 //@@author A0147609X
 /**
- * For parsing dates and times in Sudowudo command input
+ * For parsing dates and times in Sudowudo command input.
+ * Singleton pattern!
  * 
  * @author darren
  */
 public class DateTimeParser {
-    // the part of the command that contains the temporal part of the command
-    private String datetime;
-
-    // PrettyTimeParser object
-    // careful of name collision with our own Parser object
-    private static PrettyTimeParser parser = new PrettyTimeParser();
-
-    // PrettyTime formatter
-    private static PrettyTime prettytime = new PrettyTime();
-
-    // result from parser
-    private List<DateGroup> dategroups;
-    private List<Date> dates;
-
+    // handy strings for making pretty dates
     public static final String EMPTY_STRING = "";
     public static final String SINGLE_WHITESPACE = " ";
-
-    // handy strings for making pretty dates
     public static final String TODAY_DATE_REF = "Today";
     public static final String TOMORROW_DATE_REF = "Tomorrow";
     public static final String LAST_WEEK_REF = "Last" + SINGLE_WHITESPACE;
@@ -60,15 +46,48 @@ public class DateTimeParser {
     public static final DateTimeFormatter SHORT_DAYOFWEEK = DateTimeFormatter
             .ofPattern("EEE");
 
-    public DateTimeParser(String input) {
+    public static DateTimeParser instance = new DateTimeParser();
+
+    private static final int FIRST_DATETIME_TOKEN = 0;
+    private static final int SECOND_DATETIME_TOKEN = 1;
+
+    // PrettyTimeParser object
+    // careful of name collision with our own Parser object
+    private static PrettyTimeParser parser = new PrettyTimeParser();
+
+    // PrettyTime formatter
+    private static PrettyTime prettytime = new PrettyTime();
+
+    // the part of the command that contains the temporal part of the command
+    private String datetime;
+
+    // result from parser
+    private List<DateGroup> dategroups;
+    private List<Date> dates;
+
+    private DateTimeParser() {}
+    
+    public static DateTimeParser getInstance() {
+        return instance;
+    }
+    
+    
+    /**
+     * Uses the DateTimeParser service to parse a string containing possible
+     * datetime tokens (in natural language).
+     * 
+     * @param input
+     */
+    public DateTimeParser parse(String input) {
         assert input != null;
-        assert input.isEmpty() != true;
 
         this.datetime = input;
 
         // perform parsing
         this.dategroups = DateTimeParser.parser.parseSyntax(input);
         this.dates = DateTimeParser.parser.parse(input);
+        
+        return this;
     }
 
     public LocalDateTime extractStartDate() {
@@ -78,7 +97,7 @@ public class DateTimeParser {
             return null;
         }
 
-        return changeDateToLocalDateTime(this.dates.get(0));
+        return changeDateToLocalDateTime(this.dates.get(FIRST_DATETIME_TOKEN));
     }
 
     public LocalDateTime extractEndDate() {
@@ -88,16 +107,16 @@ public class DateTimeParser {
             return null;
         }
 
-        return changeDateToLocalDateTime(this.dates.get(1));
+        return changeDateToLocalDateTime(this.dates.get(SECOND_DATETIME_TOKEN));
     }
 
     public boolean isRecurring() {
-        return this.dategroups.get(0).isRecurring();
+        return this.dategroups.get(FIRST_DATETIME_TOKEN).isRecurring();
     }
 
     public LocalDateTime getRecurEnd() {
         return changeDateToLocalDateTime(
-                this.dategroups.get(0).getRecursUntil());
+                this.dategroups.get(FIRST_DATETIME_TOKEN).getRecursUntil());
     }
 
     /**
