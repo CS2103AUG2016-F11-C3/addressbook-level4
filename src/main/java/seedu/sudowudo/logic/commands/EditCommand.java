@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.collections.transformation.FilteredList;
 import seedu.sudowudo.commons.core.Messages;
 import seedu.sudowudo.commons.exceptions.IllegalValueException;
+import seedu.sudowudo.commons.util.ListUtil;
 import seedu.sudowudo.logic.parser.DateTimeParser;
 import seedu.sudowudo.model.item.Description;
 import seedu.sudowudo.model.item.Item;
@@ -113,7 +114,7 @@ public class EditCommand extends Command {
             }
         }
         hasUndo = true;
-        model.updateDefaultPredicate("item");
+        model.refreshInCurrentPredicate();
         return new CommandResult(String.format(MESSAGE_SUCCESS, itemToModify),
                 itemToModify);
 
@@ -126,13 +127,13 @@ public class EditCommand extends Command {
     @Override
     public CommandResult undo() {
         // deep copy the item to a template for undo
-
         model.setItemDesc(itemToModify,
                 previousTemplate.getDescription().getFullDescription());
         model.setItemStart(itemToModify, previousTemplate.getStartDate());
         model.setItemEnd(itemToModify, previousTemplate.getEndDate());
         itemToModify.setIsDone(previousTemplate.getIsDone());
         itemToModify.setTags(previousTemplate.getTags());
+        model.refreshInCurrentPredicate();
         return new CommandResult(
                 String.format(MESSAGE_UNDO_SUCCESS, itemToModify),
                 itemToModify);
