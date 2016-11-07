@@ -413,6 +413,8 @@ public class DateTimeParser {
         } else if (isNextWeek(ldt)) {
             return NEXT_WEEK_REF;
         }
+        
+        // we should never reach this point
         return EMPTY_STRING;
     }
 
