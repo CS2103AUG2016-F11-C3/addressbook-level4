@@ -16,10 +16,10 @@
     </stylesheets>
     <children>
 	    <StackPane fx:id="hintDisplayArea" alignment="TOP_CENTER" >
-  	      <TableView fx:id="hintTableView" HBox.hgrow="ALWAYS" prefWidth="900" 
+  	      <TableView fx:id="hintTableView" prefWidth="550" 
   	      		styleClass="anchor-pane-transparent">
-  	      	<TableColumn fx:id="labelColumn" styleClass="help-column" />
-  	      	<TableColumn fx:id="usageColumn" styleClass="help-column"/>
+  	      	<TableColumn fx:id="labelColumn" styleClass="help-column" prefWidth="75" />
+  	      	<TableColumn fx:id="usageColumn" styleClass="help-column" prefWidth="375" />
   	      </TableView>
 	    </StackPane>
     </children>
