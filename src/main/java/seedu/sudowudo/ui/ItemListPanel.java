@@ -25,12 +25,20 @@ public class ItemListPanel extends UiPart {
     private VBox panel;
     private AnchorPane placeHolderPane;
 
+    private final int FIXED_CELL_SIZE = 115; // using fxml standard
+    
     @FXML
     private ListView<ReadOnlyItem> itemListView;
 
     public ItemListPanel() {
         super();
     }
+    
+    //@@author A0144750J
+    public int getCardCount() {
+        return (int) Math.floor(itemListView.getHeight() / itemListView.getFixedCellSize());
+    }
+    //@@author
 
     @Override
     public void setNode(Node node) {
@@ -57,6 +65,7 @@ public class ItemListPanel extends UiPart {
 
     private void configure(ObservableList<ReadOnlyItem> itemList) {
         setConnections(itemList);
+        itemListView.setFixedCellSize(FIXED_CELL_SIZE);
         addToPlaceholder();
     }
 

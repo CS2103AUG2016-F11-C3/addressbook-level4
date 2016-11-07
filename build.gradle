@@ -55,7 +55,7 @@ allprojects {
         // https://mvnrepository.com/artifact/com.opencsv/opencsv
         compile group: 'com.opencsv', name: 'opencsv', version: '3.8'
         // https://mvnrepository.com/artifact/org.ocpsoft.prettytime/prettytime
-        compile group: 'org.ocpsoft.prettytime', name: 'prettytime', version: '4.0.1.Final'
+        compile group: 'org.ocpsoft.prettytime', name: 'prettytime', version: '4.0.0.Final'
         // https://mvnrepository.com/artifact/org.ocpsoft.prettytime/prettytime-nlp
         compile group: 'org.ocpsoft.prettytime', name: 'prettytime-nlp', version: '4.0.0.Final'
 

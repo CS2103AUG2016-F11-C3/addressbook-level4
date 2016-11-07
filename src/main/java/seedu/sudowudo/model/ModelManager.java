@@ -2,7 +2,6 @@ package seedu.sudowudo.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.EmptyStackException;
 import java.util.Set;
 import java.util.Stack;
@@ -18,10 +17,7 @@ import seedu.sudowudo.commons.core.UnmodifiableObservableList;
 import seedu.sudowudo.commons.events.model.TaskBookChangedEvent;
 import seedu.sudowudo.commons.exceptions.IllegalValueException;
 import seedu.sudowudo.commons.util.ListUtil;
-import seedu.sudowudo.commons.util.StringUtil;
 import seedu.sudowudo.logic.commands.Command;
-import seedu.sudowudo.logic.parser.DateTimeParser;
-import seedu.sudowudo.logic.parser.Parser;
 import seedu.sudowudo.model.item.Item;
 import seedu.sudowudo.model.item.ReadOnlyItem;
 import seedu.sudowudo.model.item.UniqueItemList;
@@ -49,28 +45,36 @@ public class ModelManager extends ComponentManager implements Model {
         super();
         assert src != null;
         assert userPrefs != null;
-
         logger.fine("Initializing with address book: " + src + " and user prefs " + userPrefs);
-
         taskBook = new TaskBook(src);
         filteredItems = new FilteredList<>(taskBook.getItems());
-        commandStack = new Stack<>();
-        commandHistory = new ArrayList<String>();
-        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
+        init();
+        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate(Item.Type.ITEM);
     }
 
     public ModelManager() {
         this(new TaskBook(), new UserPrefs());
-        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
+        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate(Item.Type.ITEM);
     }
 
     public ModelManager(ReadOnlyTaskBook initialData, UserPrefs userPrefs) {
         taskBook = new TaskBook(initialData);
         filteredItems = new FilteredList<>(taskBook.getItems());
-        commandStack = new Stack<>();
-        commandHistory = new ArrayList<String>();
-        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
+        init();
+        this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate(Item.Type.ITEM);
     }
+    
+    //@@author A0144750J
+    /**
+     * Prepare the command stack for undo
+     * And the history list for cycling
+     */
+    public void init() {
+    	commandStack = new Stack<>();
+        commandHistory = new ArrayList<String>();
+        commandHistory.add("");
+    }
+    //@@author
     
     @Override
     public void resetData(ReadOnlyTaskBook newData) {
@@ -103,19 +107,16 @@ public class ModelManager extends ComponentManager implements Model {
 
     //@@author A0147609X
     @Override
-	public void setItemDesc(Item item, String desc) {
-        try {
-            item.setDescription(desc);
-            updateFilteredListToShowAll();
-            indicateTaskBookChanged();
-        } catch (IllegalValueException ive) {
-        }
+	public void setItemDesc(Item item, String desc) throws IllegalValueException {
+        item.setDescription(desc);
+        updateFilteredListToShowAll();
+        indicateTaskBookChanged();
     }
     //@@author
     
     //@@author A0147609X
     @Override
-	public void setItemStart(Item item, LocalDateTime startDate) {
+	public void setItemStart(Item item, LocalDateTime startDate) throws IllegalValueException {
         item.setStartDate(startDate);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
@@ -124,12 +125,20 @@ public class ModelManager extends ComponentManager implements Model {
 
     //@@author A0147609X
     @Override
-	public void setItemEnd(Item item, LocalDateTime endDate) {
+	public void setItemEnd(Item item, LocalDateTime endDate) throws IllegalValueException {
         item.setEndDate(endDate);
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
     }
     //@@author
+    
+    //@@author A0131560U
+    @Override
+    public void setPeriod(Item item, LocalDateTime startDate, LocalDateTime endDate) throws IllegalValueException {
+        item.setPeriod(startDate, endDate);
+        updateFilteredListToShowAll();
+        indicateTaskBookChanged();
+    }
     
     // @@author A0144750J
     @Override
@@ -199,7 +208,7 @@ public class ModelManager extends ComponentManager implements Model {
 
     @Override
     //@@author A0131560U
-    public void updateDefaultPredicate(String taskType) {
+    public void updateDefaultPredicate(Item.Type taskType) {
         defaultPredicate = ListUtil.getInstance().setDefaultPredicate(taskType);
         filteredItems.setPredicate(defaultPredicate);
     }
@@ -208,19 +217,8 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredItemList(Set<String> keywords) {
     	ListUtil.getInstance().updateFilteredItemList(filteredItems, keywords, defaultPredicate);
     }
-
-	/*
-	 * @@author A0092390E
-	 * 
-	 */
-    private void updateFilteredItemList(Predicate pred) {
-        // Not used, to narrow searches the user has to type the entire search string in
-        // if(filteredItems.getPredicate() != null){
-        // filteredItems.setPredicate(pred.and(filteredItems.getPredicate()));
-        // } else{
-        filteredItems.setPredicate(pred);
-        // }
-    }
+    
+    // ========== Command History Helper Methods ==================================================
     
     //@@author A0144750J
     /**
@@ -241,7 +239,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void addCommandToHistory(String command) {
         assert commandHistory != null;
         if (commandHistory.size() > HISTORY_LENGTH) {
-            commandHistory.remove(0);
+            commandHistory.remove(1); // remove the second command, the first one is always an empty string
             commandHistory.add(command);
         } else {
             commandHistory.add(command);
@@ -267,61 +265,5 @@ public class ModelManager extends ComponentManager implements Model {
         return commandHistory.size();
     }
     //@@author
-    
-    // ========== Inner classes/interfaces used for filtering ==================================================
-
-    private class QualifierPredicate implements Predicate<ReadOnlyItem> {
-
-        private final Qualifier qualifier;
-
-        QualifierPredicate(Qualifier qualifier) {
-            this.qualifier = qualifier;
-        }
-
-        @Override
-        public String toString() {
-            return qualifier.toString();
-        }
-
-        @Override
-        public boolean test(ReadOnlyItem item) {
-            return qualifier.run(item);
-        }
-
-    }
-
-    interface Qualifier {
-        boolean run(ReadOnlyItem item);
-
-        @Override
-        String toString();
-    }
-
-    //@@author A0131560U
-    /**
-     * A Qualifier class that particularly checks for Item Type (e.g. Task, Event, Done).
-     * @author craa
-     *
-     */
-    private class TypeQualifier implements Qualifier {
-        private String type;
-
-        TypeQualifier(String type) {
-            this.type = type;
-        }
-
-        @Override
-        public boolean run(ReadOnlyItem item) {
-            if (!item.is(type)) {
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        public String toString() {
-            return "type= " + type;
-        }
-
-    }
 }
+    

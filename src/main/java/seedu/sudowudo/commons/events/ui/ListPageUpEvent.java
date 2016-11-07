@@ -8,6 +8,12 @@ import seedu.sudowudo.commons.events.BaseEvent;
  */
 public class ListPageUpEvent extends BaseEvent {
 
+    public int jumpStep;
+    
+    public ListPageUpEvent(int jumpStep) {
+        this.jumpStep = jumpStep;
+    }
+    
     @Override
     public String toString() {
         return this.getClass().getSimpleName();

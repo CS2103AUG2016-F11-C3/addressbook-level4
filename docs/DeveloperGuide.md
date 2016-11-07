@@ -5,12 +5,10 @@
 * [Implementation](#implementation)
 * [Testing](#testing)
 * [Dev Ops](#dev-ops)
-* [Appendix A: User Stories](#appendix-a--user-stories)
-* [Appendix B: Use Cases](#appendix-b--use-cases)
-* [Appendix C: Non Functional Requirements](#appendix-c--non-functional-requirements)
-* [Appendix D: Glossary](#appendix-d--glossary)
-* [Appendix E : Product Survey](#appendix-e-product-survey)
-
+* [Appendix A: User Stories](#appendix-a-user-stories)
+* [Appendix B: Use Cases](#appendix-b-use-cases)
+* [Appendic C: Non-Functional Requirements](#appendix-c-non-functional-product-requirements)
+* [Appendix D: Product Survey](#appendix-d-product-survey)
 
 ## Setting up
 
@@ -51,9 +49,8 @@
   
 **Problem: Eclipse reports some required libraries missing**
 * Reason: Required libraries may not have been downloaded during the project import. 
-* Solution: [Run tests using Gardle](UsingGradle.md) once (to refresh the libraries).
+* Solution: [Run tests using Gradle](UsingGradle.md) once (to refresh the libraries).
  
-
 ## Design
 
 ### Architecture
@@ -73,8 +70,8 @@ Two of those classes play important roles at the architecture level.
 * `LogsCenter` : Used by many classes to write log messages to the App's log file.
 
 The rest of the App consists four components.
-* [**`UI`**](#ui-component) : The UI of tha App.
-* [**`Logic`**](#logic-component) : The command executor.
+* [**`UI`**](#ui-component) : Forms the UI of the App.
+* [**`Logic`**](#logic-component) : Executes commands on data in the App.
 * [**`Model`**](#model-component) : Holds the data of the App in-memory.
 * [**`Storage`**](#storage-component) : Reads data from, and writes data to, the hard disk.
 
@@ -82,21 +79,23 @@ Each of the four components
 * Defines its _API_ in an `interface` with the same name as the Component.
 * Exposes its functionality using a `{Component Name}Manager` class.
 
-For example, the `Logic` component (see the class diagram given below) defines it's API in the `Logic.java`
+For example, the `Logic` component (see the class diagram given below) defines its API in the `Logic.java`
 interface and exposes its functionality using the `LogicManager.java` class.<br>
 <img src="images/LogicClassDiagram.png" width="800"><br>
 
 The _Sequence Diagram_ below shows how the components interact for the scenario where the user issues the
 command `delete 3`.
 
-<img src="images\SDforDeletePerson.png" width="800">
+<!--- @@author A0144750J --->
+<img src="images/SDforDeleteItem.png" width="800">
+<!----@@author------->
 
 >Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address Book data are changed,
  instead of asking the `Storage` to save the updates to the hard disk.
 
 The diagram below shows how the `EventsCenter` reacts to that event, which eventually results in the updates
 being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time. <br>
-<img src="images\SDforDeletePersonEventHandling.png" width="800">
+<img src="images/SDforDeleteItemEventHandling.png" width="800">
 
 > Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having
   to be coupled to either of them. This is an example of how this Event Driven approach helps us reduce direct 
@@ -106,11 +105,13 @@ The sections below give more details of each component.
 
 ### UI component
 
+<!--- @@author A0092390E --->
 <img src="images/UiClassDiagram.png" width="800"><br>
+<!---- @@author-------------->
 
 **API** : [`Ui.java`](../src/main/java/seedu/address/ui/Ui.java)
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`,
+The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `ItemListPanel`,
 `StatusBarFooter`, `BrowserPanel` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class
 and they can be loaded using the `UiPartLoader`.
 
@@ -137,30 +138,36 @@ The `UI` component,
 
 Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")`
  API call.<br>
-<img src="images/DeletePersonSdForLogic.png" width="800"><br>
+
+<!---- @@author A0147609X-------------->
+<img src="images/DeleteItemSdForLogic.png" width="800"><br>
 
 ### Model component
 
+<!-- @@author A0131560U -->
 <img src="images/ModelClassDiagram.png" width="800"><br>
+<!-- @@author -->
 
 **API** : [`Model.java`](../src/main/java/seedu/address/model/Model.java)
 
 The `Model`,
 * stores a `UserPref` object that represents the user's preferences.
-* stores the Address Book data.
-* exposes a `UnmodifiableObservableList<ReadOnlyPerson>` that can be 'observed' e.g. the UI can be bound to this list
-  so that the UI automatically updates when the data in the list change.
+* stores the Task Book data.
+* uses `ListUtil` in Commons to parse changes to what parts of the data the user wants to see
 * does not depend on any of the other three components.
+
 
 ### Storage component
 
+<!-- A0144750J-->
 <img src="images/StorageClassDiagram.png" width="800"><br>
+<!-- @@author -->
 
 **API** : [`Storage.java`](../src/main/java/seedu/address/storage/Storage.java)
 
 The `Storage` component,
 * can save `UserPref` objects in json format and read it back.
-* can save the Address Book data in xml format and read it back.
+* can save the Task Book data in xml format and read it back.
 
 ### Common classes
 
@@ -192,7 +199,6 @@ and logging destinations.
 Certain properties of the application can be controlled (e.g App name, logging level) through the configuration file 
 (default: `config.json`):
 
-
 ## Testing
 
 Tests can be found in the `./src/test/java` folder.
@@ -220,7 +226,7 @@ We have two types of tests:
    3. Hybrids of unit and integration tests. These test are checking multiple code units as well as 
       how the are connected together.<br>
       e.g. `seedu.address.logic.LogicManagerTest`
-  
+
 **Headless GUI Testing** :
 Thanks to the [TestFX](https://github.com/TestFX/TestFX) library we use,
  our GUI tests can be run in the _headless_ mode. 
@@ -265,69 +271,267 @@ is better than these alternatives.<br>
 a. Include those libraries in the repo (this bloats the repo size)<br>
 b. Require developers to download those libraries manually (this creates extra work for developers)<br>
 
-## Appendix A : User Stories
-
-Priorities: High (must have) - `* * *`, Medium (nice to have)  - `* *`,  Low (unlikely to have) - `*`
-
+<!--- @@author A0131560U --->
+## Appendix A: User Stories
+Priorities: 
+- `* * *` -- high priority, must have
+- `* *` -- medium priority, good to have
+- `*` -- low priority, unlikely to have
 
 Priority | As a ... | I want to ... | So that I can...
--------- | :-------- | :--------- | :-----------
+-------- | :------- | :------------ | :-----------
 `* * *` | new user | see usage instructions | refer to instructions when I forget how to use the App
-`* * *` | user | add a new person |
-`* * *` | user | delete a person | remove entries that I no longer need
-`* * *` | user | find a person by name | locate details of persons without having to go through the entire list
-`* *` | user | hide [private contact details](#private-contact-detail) by default | minimize chance of someone else seeing them by accident
-`*` | user with many persons in the address book | sort persons by name | locate a person easily
+`* * *` | user | add a new event | 
+`* * *` | user | mark an event as completed |
+`* * *` | user | change details of an event | update events according to my schedule
+`* * *` | user | see whether an event is completed | know what events are incomplete
+`* * *` | user | search for an event by keywords |
+`* * *` | user | delete an event | remove entries that I cannot complete
+`* * *` | user | list all uncompleted events | see what I have left to do
+`* *`	| user | schedule multiple time blocks for an event | tentatively plan events
+`* *` | user | tag events using particular keywords | group related events
+`* *` | user | know what events are urgent | plan my time accordingly
+`*`		| user | sort events by deadline | know which events are urgent
+`*` 	| user with many tasks | sort events by priority | know which upcoming events are important
+`*`   | user | use natural language to type my commands| not have to remember complex commands
+`*`   | user | receive feedback when I am typing in commands | know whether I am typing in the command correctly
+`*`   | user | have the app autocomplete my task name | more quickly type in commands
+`*`   | power user | use keyboard shortcuts to access frequently-used features | more quickly access useful features
+<!--- @@author --->
 
-{More to be added}
+<!--- @@author A0131560U --->
+## Appendix B: Use Cases
+(For all use cases below, the `System` is Wudodo and the `Actor` is the user, unless specified otherwise)
 
-## Appendix B : Use Cases
+### Use case: Add task
+#### MSS
+1. User inputs task details
+2. System stores task details in database
 
-(For all use cases below, the **System** is the `AddressBook` and the **Actor** is the `user`, unless specified otherwise)
+#### Extensions
+1a. User inputs details in incorrect format
+> System displays error message and help text
+> Use case resumes at step 1
 
-#### Use case: Delete person
+### Use case: Find  task
+#### MSS
+1. User inputs search string
+2. System shows matching tasks
+(Use case ends)
 
-**MSS**
+#### Extensions
+1a. User inputs invalid search string
+> System displays errors message
+> Use case resumes at step 1
 
-1. User requests to list persons
-2. AddressBook shows a list of persons
-3. User requests to delete a specific person in the list
-4. AddressBook deletes the person <br>
-Use case ends.
+2a. No matching tasks
+> Use case ends
+<!--- @@author --->
 
-**Extensions**
+<!--- @@author A0092390E --->
+### Use case: Mark task as completed
+#### MSS
+1. User requests to complete a specific task in the list by index
+4. System marks task as completed
+3. System indicates successful mark as complete
+(Use case ends)
 
-2a. The list is empty
+#### Extensions
+1a. The given task index is invalid
+> 1a1. System shows an error message
+> Use case resumes at step 1
 
+2a. Task is already completed
 > Use case ends
 
-3a. The given index is invalid
+### Use case: Delete task
+#### MSS
+1. User requests to delete a task in the list by specifying its index
+2. System deletes selected task from the list
+3. System shows delete success message
+(Use case ends)
 
-> 3a1. AddressBook shows an error message <br>
-  Use case resumes at step 2
+#### Extensions
+1a. The given task index is invalid
+>1a1. System shows an error message
+> Use case resumes at step 1
 
-{More to be added}
+1b. The given task is recurring
+> 1b1. System checks if user wants to delete this task or all succeeding tasks
+> 1b2. User selects desired choice
+> 1b3. System deletes selected tasks
+<!--- @@author --->
 
-## Appendix C : Non Functional Requirements
+<!--- @@author A0131560U --->
+### Use case: List all tasks
+#### MSS
+1. User requests to list all tasks
+2. System shows all tasks
+3. System shows visual feedback that listing is done
 
-1. Should work on any [mainstream OS](#mainstream-os) as long as it has Java `1.8.0_60` or higher installed.
-2. Should be able to hold up to 1000 persons.
+#### Extensions
+1a. The list is empty
+> Use case resumes at step 3
+
+2a. The given task is invalid
+> 2a1. System shows an error message
+> Use case resumes at step 2
+<!--- @@author --->
+
+<!--- @@author A0144750J --->
+### Use case: Clear list
+#### MSS
+1. User requests to clear list
+2. System clears list
+3. System displays visual feedback that clearing is done
+
+#### Extensions
+1a. The list is empty
+> Use case resumes at step 3
+<!--- @@author --->
+
+<!--- @@author A0131560U --->
+## Appendix C: Non-Functional Product Requirements
+1. Should work on any mainstream OS as long as it has `Java 1.8.0_60` or higher installed.
+2. Should be able to hold up to 1000 items.
 3. Should come with automated unit tests and open source code.
 4. Should favor DOS style commands over Unix-style commands.
+5. Should save and retrieve data from local text files
+6. Should not use relational databases
+7. Should be reliant on CLI instead of GUI
+<!--- @@author --->
 
-{More to be added}
+<!--- @@author A0131560U --->
+## Appendix D: Product Survey
 
-## Appendix D : Glossary
+### Desired features
+This list of features is taken from the [Handbook](http://www.comp.nus.edu.sg/~cs2103/AY1617S1/contents/handbook.html#handbook-project-product).
 
-##### Mainstream OS
+1. Command line-based UI
+2. Take in events with specified start and end time
+2. Block out multiple tentative start/end times for an event
+2. Take in events with deadlines but no specified start/end time
+3. Take in floating tasks  without user-specified start end times
+5. Mark items as done
+4. Track uncompleted to-do items past end time
+5. Quick-add events
+6. Access to-do list without internet connection
+7. Easily choose which to-do item to do next
+8. Keyword search
+8. Specify data storage location
 
-> Windows, Linux, Unix, OS-X
+### Todoist
 
-##### Private contact detail
+#### Meets Specifications
+- Setting deadlines allowed
+- Floating tasks allowed
+- Can easily mark items as done by clicking on them
+- Keeps track of uncompleted deadlines in chronological order
+- Natural language quick-add function gives flexibility when adding to-do items
+- Desktop app allows offline access
+- Organization of inbox, as well as list of items due today and in the new week allows easy choice of what to-do item to do next
+- Keyword search (implemented with nifty shortcut!)
 
-> A contact detail that is not meant to be shared with others
+#### Does not meet specifications
+- Events cannot block off specific start and end times
+- Not Command Line Interface
+- Specify data storage location (but has its own cloud storage)
 
-## Appendix E : Product Survey
+#### Interesting features
+- Use of tagging to split to-do items into different categories
+- Use of colours to mark different levels of priority, drawing visual attention to high-priority items
+- Shortcut allows postponing to tomorrow, next week
+- Reminder feature (requires in-app purchase)
+- Can schedule recurring events using natural language commands
+- Use of keyboard shortcuts while in app [^2]
 
-{TODO: Add a summary of competing products}
+#### Takeaways:
+- Use of hashtags for tagging
+- Use of keyboard shortcuts
+- On-screen shortcuts for particular features (e.g. postponing, making event recurring)
+<!--- @@author --->
 
+<!--- @@author A0147609X --->
+### Wunderlist
+#### Meets Specifications
+- Complete keyboard-only interaction for creating, reading, updating and deleting tasks (command line-like UI)
+- Quick-add feature allows natural language adding of items
+- Take in events with specified start and end times
+- Allow events with deadlines
+- Take in floating tasks  without user-specified start end times
+- Click to check item as done
+- Keeps track of uncompleted deadlines/tasks in chronological order
+- Keyword search
+- Track uncompleted to-do items past end time
+- Easily choose which to-do item to do next
+- Access to-do list without internet connection (only if not using web interface)
+
+#### Does not meet specifications
+- Data is locally stored but is not in a human-readable format
+
+#### Interesting features
+- Interface is very sleek and appealing
+- To-do list sharing for collaborators
+- Excellent multi-platform integration (e.g. iOS, Android, Windows, Mac, web interface)
+
+#### Takeaways
+- Use of multiplatform integration
+<!--- @@author --->
+
+<!--- @@author A0147609X --->
+### Google Calendar
+#### Meets Specifications
+- Take in events with specified start and end times
+- Allow events with deadlines
+- Allow floating tasks
+- Click to check item as done
+- Keeps track of uncompleted deadlines/tasks in chronological order
+- Quick-add feature allows natural language adding of items
+- Keyword search
+- Track uncompleted to-do items past end time
+- Easily choose which to-do item to do next
+- Block out multiple tentative start/end times for an event
+
+#### Does not meet specifications
+- No command line interface
+- No local storage of event/task data
+- Cannot be accessed without an internet connection
+
+#### Interesting features
+- Excellent multi-platform integration (e.g. iOS, Android, Windows, Mac, web interface)
+- "All-day" events
+- Multiple layers for calendar (e.g. a calendar for work, a personal calendar, a school calendar overlayed on top of each other)
+- Color-coding for multiple calendars
+- Different levels of views - per day, per four days, per week, per month 
+- Import/export to iCalendar file (for Google Calendar, Outlook, iCal)
+- Calendar sharing for collaborators
+
+#### Takeaways
+- Split pane views for tasks and events
+- Quick add functionality
+<!--- @@author --->
+
+<!--- @@author A0131560U --->
+### Apple Reminders
+#### Meets Specifications
+- Allows events with deadlines
+- Allows floating events
+- Click to mark item as done
+- Lists uncompleted items in chronological order past end-time (under "Scheduled")
+- Allows variable natural language input (buggy)
+
+#### Does not meet specifications
+- Not command line-based UI
+- Cannot take in events with specified start time
+- Cannot specify data storage location
+- Keyword search is not very user-friendly
+
+#### Interesting features
+- Desktop reminders
+- Multiple separate to-do lists
+
+#### Takeaways
+- Native support for Mac gives additional features (e.g. widgets, shortcuts in email etc.)
+
+[^2]: https://support.todoist.com/hc/en-us/articles/205063212-Keyboard-shortcuts
+<!--- @@author --->
