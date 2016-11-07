@@ -231,8 +231,9 @@ public class DateTimeParser {
      * @author darren
      */
     public static boolean isLastWeek(LocalDateTime ldt) {
-        LocalDateTime startOfCurrentWeek = LocalDateTime.now().with(DayOfWeek.MONDAY);
-        return ldt.isBefore(startOfCurrentWeek) && computeDaysTo(ldt) >= -7 && computeDaysTo(ldt) < 0;
+        LocalDate firstDayOfThisWeek = LocalDate.now().with(DayOfWeek.MONDAY);
+        LocalDate lastDayOfLastLastWeek = firstDayOfThisWeek.minusDays(8);
+        return ldt.toLocalDate().isBefore(firstDayOfThisWeek) && ldt.toLocalDate().isAfter(lastDayOfLastLastWeek);
     }
     
     /**
@@ -245,8 +246,9 @@ public class DateTimeParser {
      * @author darren
      */
     public static boolean isThisWeek(LocalDateTime ldt) {
-        LocalDateTime startOfCurrentWeek = LocalDateTime.now().with(DayOfWeek.MONDAY).minusDays(1);
-        return ldt.isAfter(startOfCurrentWeek) && computeDaysTo(ldt) >= 0 && computeDaysTo(ldt) < 7;
+        LocalDate lastDayOfLastWeek = LocalDate.now().with(DayOfWeek.MONDAY).minusDays(1);
+        LocalDate firstDayOfNextWeek = lastDayOfLastWeek.plusDays(8);
+        return ldt.toLocalDate().isAfter(lastDayOfLastWeek) && ldt.toLocalDate().isBefore(firstDayOfNextWeek);
     }
     
     /**
@@ -259,8 +261,9 @@ public class DateTimeParser {
      * @author darren
      */
     public static boolean isNextWeek(LocalDateTime ldt) {
-        LocalDateTime endOfCurrentWeek = LocalDateTime.now().with(DayOfWeek.SUNDAY);
-        return ldt.isAfter(endOfCurrentWeek) && computeDaysTo(ldt) >= 7 && computeDaysTo(ldt) < 14;
+        LocalDate endOfCurrentWeek = LocalDate.now().with(DayOfWeek.SUNDAY);
+        LocalDate firstDayOfNextNextWeek = endOfCurrentWeek.plusDays(8);
+        return ldt.toLocalDate().isAfter(endOfCurrentWeek) && ldt.toLocalDate().isBefore(firstDayOfNextNextWeek);
     }
     
     /**
