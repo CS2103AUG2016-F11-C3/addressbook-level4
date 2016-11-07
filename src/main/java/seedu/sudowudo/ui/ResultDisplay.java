@@ -92,6 +92,10 @@ public class ResultDisplay extends UiPart {
 		displayTextFlow.getStyleClass().set(1, "alert-success");
 	}
 
+	public boolean isSuccess() {
+		return displayTextFlow.getStyleClass().get(1) == "alert-danger";
+	}
+
 	public void setError() {
 		displayTextFlow.getStyleClass().set(1, "alert-danger");
 	}
