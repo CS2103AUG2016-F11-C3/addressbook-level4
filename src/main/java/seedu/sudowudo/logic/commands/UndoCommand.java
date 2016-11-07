@@ -1,10 +1,8 @@
+//@@author A0144750J
 package seedu.sudowudo.logic.commands;
 
 import java.util.EmptyStackException;
 
-/**
- * @@author A0144750J
- */
 public class UndoCommand extends Command {
 	
 	public static final String COMMAND_WORD = "undo";

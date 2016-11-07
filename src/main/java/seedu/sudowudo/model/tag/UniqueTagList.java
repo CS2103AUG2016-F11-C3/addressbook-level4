@@ -58,25 +58,10 @@ public class UniqueTagList implements Iterable<Tag> {
     }
 
     /**
-     * java set constructor, enforces no nulls.
-     */
-    public UniqueTagList(Set<Tag> tags) {
-        CollectionUtil.assertNoNullElements(tags);
-        internalList.addAll(tags);
-    }
-
-    /**
      * Copy constructor, insulates from changes in source.
      */
     public UniqueTagList(UniqueTagList source) {
         internalList.addAll(source.internalList); // insulate internal list from changes in argument
-    }
-
-    /**
-     * All tags in this list as a Set. This set is mutable and change-insulated against the internal list.
-     */
-    public Set<Tag> toSet() {
-        return new HashSet<>(internalList);
     }
 
     /**
@@ -85,18 +70,6 @@ public class UniqueTagList implements Iterable<Tag> {
     public void setTags(UniqueTagList replacement) {
         this.internalList.clear();
         this.internalList.addAll(replacement.internalList);
-    }
-
-    /**
-     * Adds every tag from the argument list that does not yet exist in this list.
-     */
-    public void mergeFrom(UniqueTagList tags) {
-        final Set<Tag> alreadyInside = this.toSet();
-        for (Tag tag : tags) {
-            if (!alreadyInside.contains(tag)) {
-                internalList.add(tag);
-            }
-        }
     }
 
     /**
@@ -120,17 +93,6 @@ public class UniqueTagList implements Iterable<Tag> {
         internalList.add(toAdd);
     }
     
-    //@@author A0131560U
-    public boolean delete(Tag toDelete) throws IllegalValueException{
-        assert toDelete != null;
-        boolean isDeleted;
-        try{
-            isDeleted = internalList.remove(toDelete);
-        } catch (Exception e){
-            throw new IllegalValueException("Could not find " + toDelete.toString());
-        }
-        return isDeleted;
-    }
 
     @Override
     //@@author
