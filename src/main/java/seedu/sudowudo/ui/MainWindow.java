@@ -221,10 +221,14 @@ public class MainWindow extends UiPart {
                         raise(new ListPageDownEvent());
                         break;
                     case UP: 
-                        raise(new PreviousCommandEvent());
+                        if (!ke.isMetaDown()) {
+                        	raise(new PreviousCommandEvent());
+                        }
                         break;
                     case DOWN:  
-                        raise(new NextCommandEvent());
+                        if (!ke.isMetaDown()) { 
+                        	raise(new NextCommandEvent());
+                        }
                         break;
                     default: return;                          
                 }
