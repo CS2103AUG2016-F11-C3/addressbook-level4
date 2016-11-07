@@ -283,12 +283,8 @@ public class Parser {
         if (index.isPresent()) {
             return new DeleteCommand(index.get());
         }
-        try {
-            final Set<String> keywordSet = extractKeywords(args);
-            return new DeleteCommand(keywordSet);
-        } catch (IllegalValueException e) {
-            return new IncorrectCommand(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
+        else{
+            return new IncorrectCommand(String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE));
         }
     }
 

@@ -140,7 +140,7 @@ Given below is the Sequence Diagram for interactions within the `Logic` componen
  API call.<br>
 
 <!---- @@author A0147609X-------------->
-<img src="images/DeleteItemSdForLogic.png" width="800"><br>
+<img src="images/SDforDeleteItem.png" width="800"><br>
 
 ### Model component
 
