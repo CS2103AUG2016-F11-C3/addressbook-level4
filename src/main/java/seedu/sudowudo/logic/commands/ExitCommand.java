@@ -1,5 +1,7 @@
 package seedu.sudowudo.logic.commands;
 
+import java.util.ArrayList;
+
 import seedu.sudowudo.commons.core.EventsCenter;
 import seedu.sudowudo.commons.events.ui.ExitAppRequestEvent;
 
@@ -13,6 +15,7 @@ public class ExitCommand extends Command {
     public static final String MESSAGE_EXIT_ACKNOWLEDGEMENT = "Exiting Sudowudo as requested ...";
 	public static final String MESSAGE_UNDO_FAILURE = "";
 
+    protected static ArrayList<Hint> hints = new ArrayList<>();
 
     public ExitCommand() {}
 
@@ -31,4 +34,15 @@ public class ExitCommand extends Command {
         return new CommandResult(MESSAGE_UNDO_FAILURE);
     }
 
+	/**
+	 * Method to return hints for this command
+	 * 
+	 * @@author A0092390E
+	 */
+	public static ArrayList<Hint> getHints() {
+		if (hints.size() == 0) {
+			hints.add(new Hint("exit", "exit", "exit"));
+		}
+		return hints;
+    }
 }

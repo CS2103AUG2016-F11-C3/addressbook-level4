@@ -14,3 +14,16 @@
 .tooltip-text {
     -fx-text-fill: white;
 }
+
+.table-cell{
+    -fx-background-color: rgba(0,0,0,0);
+}
+
+.table-view {
+    -fx-base: #1d1d1d;
+    -fx-control-inner-background: #1d1d1d;
+    -fx-background-color: #1d1d1d;
+    -fx-table-cell-border-color: transparent;
+    -fx-table-header-border-color: transparent;
+    -fx-padding: 0 10 0 10;
+}

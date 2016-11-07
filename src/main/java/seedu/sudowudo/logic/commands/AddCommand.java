@@ -1,6 +1,7 @@
 package seedu.sudowudo.logic.commands;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Set;
 
 import seedu.sudowudo.commons.exceptions.IllegalValueException;
@@ -33,11 +34,13 @@ public class AddCommand extends Command {
     private static final String EMPTY_STRING = "";
     private DateTimeParser dtParser = DateTimeParser.getInstance();
 
+    protected static ArrayList<Hint> hints = new ArrayList<>();
+
     private final Item toAdd;
     private Item toUndoAdd;
     private boolean hasTimeString = false;
     
-
+    //@@author A0144750J
     /**
      * Constructor using raw strings
      * 
@@ -47,7 +50,6 @@ public class AddCommand extends Command {
      *            the whole string containing start time and end time to be
      *            parsed. Not required
      * @throws IllegalValueException
-     * @@author A0144750J
      */
     public AddCommand(String descriptionStr, String timeStr, Set<String> tags)
             throws IllegalValueException {
@@ -66,6 +68,7 @@ public class AddCommand extends Command {
             this.toAdd = new Item(descriptionObj, startTimeObj, endTimeObj,
                     tagObj);
         }
+
     }
 
     private UniqueTagList setTagList(Set<String> tags)
@@ -120,6 +123,7 @@ public class AddCommand extends Command {
 
     }
     
+    //@@author A0144750J
     /**
      * If item was successfully addeed.
      * Push this command into undo stack with handle to newly added item
@@ -134,6 +138,19 @@ public class AddCommand extends Command {
         }
         return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, toUndoAdd),
                 toUndoAdd);
+    }
+
+	/**
+	 * Method to return hints for this command
+	 * 
+	 * @@author A0092390E
+	 */
+	public static ArrayList<Hint> getHints() {
+		if (hints.size() == 0) {
+			hints.add(new Hint("add task", "add", "add \"TASK_NAME\" [by DATETIME] [#tags]"));
+			hints.add(new Hint("add event", "add", "add \"EVENT_NAME\" DATETIME [to DATETIME] [#tags]"));
+		}
+		return hints;
     }
 
 }

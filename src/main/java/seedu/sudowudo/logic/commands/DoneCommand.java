@@ -1,12 +1,15 @@
 package seedu.sudowudo.logic.commands;
 
+import java.util.ArrayList;
+
 import javafx.collections.transformation.FilteredList;
 import seedu.sudowudo.commons.core.Messages;
 import seedu.sudowudo.model.item.Item;
 
+//@@author A0144750J
 /**
  * 
- * @@author A0144750J
+ *
  */
 public class DoneCommand extends Command {
 	public static final String COMMAND_WORD = "done";
@@ -17,7 +20,9 @@ public class DoneCommand extends Command {
 	public static final String MESSAGE_DONE_ITEM_SUCCESS = "Task marked as complete!";
 	public static final String MESSAGE_DONE_ITEM_FAIL = "Task already marked as complete!";
 
-	public final int targetIndex;
+    protected static ArrayList<Hint> hints = new ArrayList<>();
+
+	private final int targetIndex;
 
 	public DoneCommand(int index) {
 		this.targetIndex = index;
@@ -53,4 +58,15 @@ public class DoneCommand extends Command {
 		return new CommandResult(String.format(MESSAGE_UNDO_SUCCESS, itemToUndone), itemToUndone);
 	}
 
+	/**
+	 * Method to return hints for this command
+	 * 
+	 * @@author A0092390E
+	 */
+	public static ArrayList<Hint> getHints() {
+		if (hints.size() == 0) {
+			hints.add(new Hint("mark done", "done", "done CONTEXT_ID"));
+		}
+		return hints;
+    }
 }

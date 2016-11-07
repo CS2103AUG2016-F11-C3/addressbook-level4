@@ -1,5 +1,6 @@
 package seedu.sudowudo.logic.commands;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 /**
@@ -12,20 +13,12 @@ public class FindCommand extends Command {
     public static final String COMMAND_WORD = "find";
     public static final String MESSAGE_UNDO_FAILURE = "";
 
-	/**
-	 * never clear the command box, in case the user wants to refine their query
-	 * 
-	 */
-	@Override
-	public boolean ClearOnExecute() {
-		return false;
-	}
-
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all items that match at least "
             + "one of the given keywords \"[DESCRIPTION_KEYWORD]\", #[TAG_KEYWORD], [TIME_KEYWORD] "
             + "Example: " + COMMAND_WORD + " \"task\" \"CS2103\" #important tomorrow";
 
     private final Set<String> keywords;
+	protected static ArrayList<Hint> hints = new ArrayList<>();
 
     public FindCommand(Set<String> keywords) {
         this.keywords = keywords;
@@ -36,13 +29,26 @@ public class FindCommand extends Command {
     	hasUndo = false;
         model.updateFilteredItemList(keywords);
 		CommandResult res = new CommandResult(getMessageForItemListShownSummary(model.getFilteredItemList().size()));
-		res.setClear(false);
 		return res;
     }
     
+    //@@author A0144750J
     @Override
     public CommandResult undo() {
         return new CommandResult(MESSAGE_UNDO_FAILURE);
     }
 
+	/**
+	 * Method to return hints for this command
+	 * 
+	 * @@author A0092390E
+	 */
+	public static ArrayList<Hint> getHints() {
+		if (hints.size() == 0) {
+			hints.add(new Hint("find by name", "find", "find \"DESCRIPTOR\""));
+			hints.add(new Hint("find by date", "find", "find DATETIME"));
+			hints.add(new Hint("find by tag", "find", "find #TAG"));
+		}
+		return hints;
+    }
 }

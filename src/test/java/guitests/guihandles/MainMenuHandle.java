@@ -1,11 +1,11 @@
 package guitests.guihandles;
 
+import java.util.Arrays;
+
 import guitests.GuiRobot;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import seedu.sudowudo.TestApp;
-
-import java.util.Arrays;
 
 /**
  * Provides a handle to the main menu of the app.
@@ -20,14 +20,14 @@ public class MainMenuHandle extends GuiHandle {
         return this;
     }
 
-    public HelpWindowHandle openHelpWindowUsingMenu() {
+    public HintDisplayHandle openHelpWindowUsingMenu() {
         clickOn("Help", "F1");
-        return new HelpWindowHandle(guiRobot, primaryStage);
+		return new HintDisplayHandle(guiRobot, primaryStage, null);
     }
 
-    public HelpWindowHandle openHelpWindowUsingAccelerator() {
+    public HintDisplayHandle openHelpWindowUsingAccelerator() {
         useF1Accelerator();
-        return new HelpWindowHandle(guiRobot, primaryStage);
+		return new HintDisplayHandle(guiRobot, primaryStage, null);
     }
 
     private void useF1Accelerator() {

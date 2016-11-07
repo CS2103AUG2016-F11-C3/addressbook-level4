@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<!-- @@author A0092390E -->
+<?import java.net.URL?>
+<AnchorPane styleClass="anchor-pane-transparent" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="seedu.sudowudo.ui.HintDisplay" VBox.vgrow="NEVER" fx:id="hintDisplayPane">
+    <stylesheets>
+        <URL value="@DarkTheme.css" />
+        <URL value="@Extensions.css" />
+    </stylesheets>
+	<children>
+	    <StackPane fx:id="hintDisplayArea" id="hintDisplayArea" alignment="TOP_CENTER" >
+  	      <padding>
+		      <Insets top="0" bottom="0" left="10.0" right="0"/>
+		  </padding>
+  	      <TableView fx:id="hintTableView" id="hintTableView" HBox.hgrow="ALWAYS" prefWidth="550"
+  	      		styleClass="anchor-pane-transparent">
+	  	      	<TableColumn fx:id="labelColumn" styleClass="help-column" prefWidth="95" />
+	  	      	<TableColumn fx:id="usageColumn" styleClass="help-column" prefWidth="420" />
+  	      </TableView>
+	    </StackPane>
+    </children>
+</AnchorPane>

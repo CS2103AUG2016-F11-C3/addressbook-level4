@@ -1,5 +1,5 @@
 # A0144750Jreused
-###### /java/seedu/address/model/ReadOnlyTaskBook.java
+###### \java\seedu\sudowudo\model\ReadOnlyTaskBook.java
 ``` java
  */
 public interface ReadOnlyTaskBook {
@@ -13,7 +13,7 @@ public interface ReadOnlyTaskBook {
 
 }
 ```
-###### /java/seedu/address/model/TaskBook.java
+###### \java\seedu\sudowudo\model\TaskBook.java
 ``` java
  */
 public class TaskBook implements ReadOnlyTaskBook {
