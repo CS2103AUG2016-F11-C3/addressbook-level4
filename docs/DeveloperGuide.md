@@ -90,14 +90,13 @@ command `delete 3`.
 <img src="images/SDforDeleteItem.png" width="800">
 <!----@@author------->
 
->Note how the `Model` simply raises a `AddressBookChangedEvent` when the Address Book data are changed,
+>Note how the `Model` simply raises a `TaskBookChangedEvent` when the Task Book data are changed,
  instead of asking the `Storage` to save the updates to the hard disk.
 
-The diagram below shows how the `EventsCenter` reacts to that event, which eventually results in the updates
-being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time. <br>
-<img src="images/SDforDeleteItemEventHandling.png" width="800">
+The `EventsCenter` reacts to that event, which eventually results in the updates
+being saved to the hard disk and the status bar of the UI being updated to reflect the 'Last Updated' time.
 
-> Note how the event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having
+The event is propagated through the `EventsCenter` to the `Storage` and `UI` without `Model` having
   to be coupled to either of them. This is an example of how this Event Driven approach helps us reduce direct 
   coupling between components.
 
