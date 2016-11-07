@@ -2,6 +2,7 @@ package seedu.sudowudo.model;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import javafx.collections.transformation.FilteredList;
 import seedu.sudowudo.commons.core.UnmodifiableObservableList;
@@ -61,9 +62,14 @@ public interface Model {
     String returnCommandFromHistory(int index);
     // @@author
     
-    // @@author A0144750J
+    //@@author A0144750J
     /** Return the current size of command history */
     int getHistorySize();
+    //@@author
+    
+    //@@author A0144750J
+    /** Refresh the current list showing in the same predicate */
+    private void refreshInCurrentPredicate();
     //@@author
     
     /** Returns the filtered item list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
