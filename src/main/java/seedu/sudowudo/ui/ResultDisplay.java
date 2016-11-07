@@ -75,9 +75,11 @@ public class ResultDisplay extends UiPart {
     }
 
     public void postMessage(String message) {
-		showDisplay();
-		headerText.setText("");
-		messageText.setText(message);
+		if (message != null && message != "") {
+			showDisplay();
+			headerText.setText("");
+			messageText.setText(message);
+		}
     }
 
 	public void postMessage(String header, String message) {

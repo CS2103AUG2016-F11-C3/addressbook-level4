@@ -81,7 +81,7 @@ public class CommandBox extends UiPart {
 			spaceIndex = (spaceIndex == -1) ? previousCommandTest.length() : spaceIndex;
 			this.hintDisplay.updateHints(commandTextField.getText(0, spaceIndex));
 		} else {
-			this.hintDisplay.hideHints();
+			this.hintDisplay.updateHints("");
 		}
 		// resultDisplay.postMessage(previousCommandTest);
 	}

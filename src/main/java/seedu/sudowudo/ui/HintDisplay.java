@@ -101,6 +101,12 @@ public class HintDisplay extends UiPart {
 	}
 
 	public void updateHints(String search) {
+		if (showingAll && search == "") {
+			return;
+		} else if (search == "") {
+			this.hideHints();
+		}
+
 		// hide header
 		Pane header = (Pane) hintTableView.lookup(".column-header-background");
 		header.setVisible(true);
