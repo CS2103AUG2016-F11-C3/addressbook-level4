@@ -46,5 +46,6 @@ public class AddCommandTest extends TaskBookGuiTest {
         TestItem[] expectedList = TestUtil.addItemsToList(currentList, itemToAdd);
         assertTrue(itemListPanel.isListMatching(expectedList));
     }
+    //@@author
 
 }
