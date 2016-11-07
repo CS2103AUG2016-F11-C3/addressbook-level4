@@ -56,6 +56,7 @@ We are a project team [CS2103AUG2016-F11-C3](https://github.com/CS2103AUG2016-F1
    - Polymorphic `Item` class (with Yuchuan, Duc, Cara)
    - Miscellaneous parsing methods
    - Wrappers for `DateTimeParser` in `Item`
+   - Assist with command hinting
 
 -----
 
@@ -87,6 +88,7 @@ We are a project team [CS2103AUG2016-F11-C3](https://github.com/CS2103AUG2016-F1
    - `edit`
    - UI Modifications
    - Polymorphic `Item` behaviour
+   - Command hinting (for user help)
 - Code written: [[functional code](../collated/main/A0092390E.md)][[test code](../collated/test/A0092390E.md)][[docs](../collated/docs/A0092390E.md)]
 - Other major contributions:
   - [`Parser`](https://github.com/CS2103AUG2016-F11-C3/main/blob/master/src/main/java/seedu/address/logic/parser/Parser.java), [`DateTimeParser`](https://github.com/CS2103AUG2016-F11-C3/main/blob/master/src/main/java/seedu/address/logic/parser/DateTimeParser.java)

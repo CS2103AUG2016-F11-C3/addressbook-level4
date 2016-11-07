@@ -39,6 +39,9 @@ public class ItemListPanel extends UiPart {
     }
     
     //@@author A0144750J
+    /**
+     * @return number of items visible to user on screen
+     */
     public int getCardCount() {
         return (int) Math.floor(itemListView.getHeight() / itemListView.getFixedCellSize());
     }

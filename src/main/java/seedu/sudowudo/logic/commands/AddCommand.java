@@ -40,8 +40,7 @@ public class AddCommand extends Command {
     private Item toUndoAdd;
     private boolean hasTimeString = false;
     
-
-
+    //@@author A0144750J
     /**
      * Constructor using raw strings
      * 
@@ -51,7 +50,6 @@ public class AddCommand extends Command {
      *            the whole string containing start time and end time to be
      *            parsed. Not required
      * @throws IllegalValueException
-     * @@author A0144750J
      */
     public AddCommand(String descriptionStr, String timeStr, Set<String> tags)
             throws IllegalValueException {
@@ -125,6 +123,7 @@ public class AddCommand extends Command {
 
     }
     
+    //@@author A0144750J
     /**
      * If item was successfully addeed.
      * Push this command into undo stack with handle to newly added item

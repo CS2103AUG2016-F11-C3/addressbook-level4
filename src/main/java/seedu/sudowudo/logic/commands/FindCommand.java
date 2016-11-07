@@ -13,17 +13,6 @@ public class FindCommand extends Command {
     public static final String COMMAND_WORD = "find";
     public static final String MESSAGE_UNDO_FAILURE = "";
 
-    protected static ArrayList<Hint> hints = new ArrayList<>();
-
-	/**
-	 * never clear the command box, in case the user wants to refine their query
-	 * 
-	 */
-	@Override
-	public boolean ClearOnExecute() {
-		return false;
-	}
-
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all items that match at least "
             + "one of the given keywords \"[DESCRIPTION_KEYWORD]\", #[TAG_KEYWORD], [TIME_KEYWORD] "
             + "Example: " + COMMAND_WORD + " \"task\" \"CS2103\" #important tomorrow";
@@ -39,10 +28,10 @@ public class FindCommand extends Command {
     	hasUndo = false;
         model.updateFilteredItemList(keywords);
 		CommandResult res = new CommandResult(getMessageForItemListShownSummary(model.getFilteredItemList().size()));
-		res.setClear(false);
 		return res;
     }
     
+    //@@author A0144750J
     @Override
     public CommandResult undo() {
         return new CommandResult(MESSAGE_UNDO_FAILURE);

@@ -122,8 +122,9 @@ public class EditCommand extends Command {
     }
     // @@author
 
+    //@@author A0144750J
     /**
-     * @@author A0144750J
+     *
      */
     @Override
     public CommandResult undo() {

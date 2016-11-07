@@ -10,7 +10,9 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 
 /**
- * GUI test for undo commands for each: Add, Delete, Clear, Done and Edit command
+ * GUI test for undo commands for each: Add, Delete, Clear, Done and Edit
+ * command
+ * 
  * @author Darren Le
  * @@author A0144750J
  */
@@ -23,69 +25,97 @@ public class UndoCommandTest extends TaskBookGuiTest {
         TestItem itemToAdd = td.help;
         commandBox.runCommand(itemToAdd.getAddCommand());
         currentList = TestUtil.addItemsToList(currentList, itemToAdd);
-        
+
         // undo should succeed
         commandBox.runCommand("undo");
         assertNotFound(itemToAdd, currentList);
-        
+
         // add a bad command
         commandBox.runCommand("add \"wrong format add command from 2pm to 3pm tomorrow");
-        
+
         // undo should fail
         commandBox.runCommand("undo");
         assertResultMessage(UndoCommand.MESSAGE_FAILURE);
 
     }
-    
+
     @Test
     public void undo_delete() {
-    	// delete the first item from the list
-    	TestItem[] currentList = td.getTypicalItems();
-    	Arrays.sort(currentList);
-    	int targetIndex = 1;
+        // delete the first item from the list
+        TestItem[] currentList = td.getTypicalItems();
+        Arrays.sort(currentList);
+        int targetIndex = 1;
         commandBox.runCommand("delete " + targetIndex);
 
         // undo should succeed
         commandBox.runCommand("undo");
-        assertResultMessage("Undo delete task: " + currentList[targetIndex-1]);
-        
+        assertResultMessage("Undo delete task: " + currentList[targetIndex - 1]);
+
         // delete a bad command
         commandBox.runCommand("delete " + currentList.length + 2);
-        
+
         // undo should fail
         commandBox.runCommand("undo");
         assertResultMessage(UndoCommand.MESSAGE_FAILURE);
     }
-    
-    
+
     @Test
     public void undo_clear() {
-    	// clear a non-empty message and undo
+        // clear a non-empty message and undo
         assertTrue(itemListPanel.isListMatching(td.getTypicalItems()));
         commandBox.runCommand("clear");
         // undo should succeed
         commandBox.runCommand("undo");
         assertTrue(itemListPanel.isListMatching(td.getTypicalItems()));
-        
+
+    }
+
+    @Test
+    public void undo_done() {
+        TestItem[] currentList = td.getTypicalItems();
+        Arrays.sort(currentList);
+        int targetIndex = 1;
+        commandBox.runCommand("done " + targetIndex);
+
+        // undo should succeed
+        commandBox.runCommand("undo");
+        assertResultMessage("Undo set done task: " + currentList[targetIndex - 1]);
+    }
+
+    private void assertNotFound(TestItem itemToFind, TestItem... currentList) {
+        ItemCardHandle deletedCard = itemListPanel.navigateToItem(itemToFind);
+        assertTrue(deletedCard == null);
+    }
+
+    @Test
+    public void undo_find() {
+        // search for an item
+        TestItem[] currentList = td.getTypicalItems();
+        commandBox.runCommand("find \"" + currentList[0].getDescription().getFullDescription() + "\"");
+
+        // undo should succeed
+        commandBox.runCommand("undo");
+        assertResultMessage(UndoCommand.MESSAGE_FAILURE);
     }
     
     @Test
-    public void undo_done() {
-    	TestItem[] currentList = td.getTypicalItems();
-    	Arrays.sort(currentList);
-        int targetIndex = 1;
-        commandBox.runCommand("done " + targetIndex);
-        
+    public void undo_list() {
+        // search for an item
+        commandBox.runCommand("list");
+
         // undo should succeed
         commandBox.runCommand("undo");
-        assertResultMessage("Undo set done task: " + currentList[targetIndex-1]);
-    }
- 
-    private void assertNotFound(TestItem itemToFind, TestItem... currentList) {
-    	ItemCardHandle deletedCard = itemListPanel.navigateToItem(itemToFind);
-    	assertTrue(deletedCard == null);
+        assertResultMessage(UndoCommand.MESSAGE_FAILURE);
     }
     
-    
+    @Test
+    public void undo_incorrect() {
+        // search for an item
+        commandBox.runCommand("this is an invalid command");
+
+        // undo should succeed
+        commandBox.runCommand("undo");
+        assertResultMessage(UndoCommand.MESSAGE_FAILURE);
+    }
 
 }
