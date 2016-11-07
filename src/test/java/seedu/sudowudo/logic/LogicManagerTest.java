@@ -429,10 +429,6 @@ public class LogicManagerTest<E> {
         assertCommandBehavior(commandWord + " +1", expectedMessage);    // index should be signed
         assertCommandBehavior(commandWord + " -1", expectedMessage);    // index should be unsigned
         assertCommandBehavior(commandWord + " 0", expectedMessage);     // index cannot be zero
-    }
-    
-    private void assertIncorrectKeywordFormatBehaviorForCommand(String commandWord, String expectedMessage)
-            throws Exception {
         assertCommandBehavior(commandWord + " not_a_number", expectedMessage);
         assertCommandBehavior(commandWord + " friyay", expectedMessage);
         assertCommandBehavior(commandWord, expectedMessage);
@@ -473,61 +469,10 @@ public class LogicManagerTest<E> {
 
     @Test
     public void execute_deleteInvalidArgsFormat_errorMessageShown() throws Exception {
-        String expectedMessage = DeleteCommand.MESSAGE_ITEM_NOT_FOUND;
+        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE);
         assertIncorrectIndexFormatBehaviorForCommand("delete", expectedMessage);
     }
     
-    //@@author A0131560U
-    @Test
-    public void execute_deleteInvalidKeywordsFormat_errorMessageShown() throws Exception {
-        String expectedMessage = String.format(MESSAGE_INVALID_COMMAND_FORMAT, DeleteCommand.MESSAGE_USAGE);
-        assertIncorrectKeywordFormatBehaviorForCommand("delete", expectedMessage);
-    }
-    
-    @Test
-    public void execute_deleteMultipleResults_errorMessageShown() throws Exception {
-        TestDataHelper helper = new TestDataHelper();
-        Item target1 = helper.workingItemWithTags("important", "cool");
-        Item target2 = helper.workingItemWithTags("notimportant", "notcool");
-        Item notTarget1 = helper.workingItemWithTags("busy", "unlivable");
-        Item notTarget2 = helper.workingItemWithTags("busy", "important");
-        List<Item> allItems = helper.generateItemList(target1, target2, notTarget1, notTarget2);
-        List<Item> expectedItems = helper.generateItemList(target1, target2);
-        TaskBook expectedTaskBook = helper.generateTaskBook(allItems);
-        
-        helper.addToModel(model, allItems);
-        assertCommandBehavior("delete #cool #important", DeleteCommand.MESSAGE_UNIQUE_ITEM_NOT_FOUND, expectedTaskBook, expectedItems);
-        
-    }
-    
-    @Test
-    public void execute_deleteByKeyword_removesCorrectItem() throws Exception {
-        TestDataHelper helper = new TestDataHelper();
-        Item target = helper.workingItemWithTags("important", "cool");
-        Item notTarget1 = helper.workingItemWithTags("busy", "unlivable");
-        Item notTarget2 = helper.workingItemWithTags("busy", "important");
-        List<Item> allItems = helper.generateItemList(target, notTarget1, notTarget2);
-        List<Item> expectedItems = helper.generateItemList(notTarget1, notTarget2);
-        TaskBook expectedTaskBook = helper.generateTaskBook(expectedItems);
-        
-        helper.addToModel(model, allItems);
-        assertCommandBehavior("delete #cool #important", String.format(DeleteCommand.MESSAGE_DELETE_ITEM_SUCCESS, target), expectedTaskBook, expectedItems);
-    }
-    
-    @Test
-    public void execute_deleteKeywordNotFound_errorMessageShown() throws Exception {
-        TestDataHelper helper = new TestDataHelper();
-        Item target = helper.workingItemWithTags("important", "cool");
-        Item notTarget1 = helper.workingItemWithTags("busy", "unlivable");
-        Item notTarget2 = helper.workingItemWithTags("busy", "important");
-        List<Item> allItems = helper.generateItemList(target, notTarget1, notTarget2);
-        TaskBook expectedTaskBook = helper.generateTaskBook(allItems);
-        
-        helper.addToModel(model, allItems);
-        assertCommandBehavior("delete #cool #busy", DeleteCommand.MESSAGE_ITEM_NOT_FOUND, expectedTaskBook, allItems);
-    }
-
-    //@@author
     @Test
     public void execute_deleteIndexNotFound_errorMessageShown() throws Exception {
         assertIndexNotFoundBehaviorForCommand("delete");
