@@ -214,11 +214,13 @@ public class MainWindow extends UiPart {
             @Override
             public void handle(KeyEvent ke) {
                 switch (ke.getCode()) {
-                    case PAGE_UP: 
-                        raise(new ListPageUpEvent());
+                    case PAGE_UP:
+                        int jumpStep = itemListPanel.getCardCount();
+                        raise(new ListPageUpEvent(jumpStep));
                         break;
                     case PAGE_DOWN:  
-                        raise(new ListPageDownEvent());
+                        jumpStep = itemListPanel.getCardCount();
+                        raise(new ListPageDownEvent(jumpStep));
                         break;
                     case UP: 
                         if (!ke.isMetaDown()) {
@@ -239,9 +241,11 @@ public class MainWindow extends UiPart {
             @Override
             public void handle(KeyEvent ke) {
             	if (ke.getCode().equals(KeyCode.UP) && (ke.isMetaDown())) {
-            		raise(new ListPageUpEvent());
+                    int jumpStep = itemListPanel.getCardCount();
+            		raise(new ListPageUpEvent(jumpStep));
                 } else if (ke.getCode().equals(KeyCode.DOWN) && (ke.isMetaDown())) {
-                	raise(new ListPageDownEvent());
+                    int jumpStep = itemListPanel.getCardCount();
+                	raise(new ListPageDownEvent(jumpStep));
                 } else {
                 	return;
                 }
