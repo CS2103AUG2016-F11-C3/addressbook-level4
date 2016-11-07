@@ -1,7 +1,5 @@
 package seedu.sudowudo.ui;
 
-import java.awt.Toolkit;
-
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
