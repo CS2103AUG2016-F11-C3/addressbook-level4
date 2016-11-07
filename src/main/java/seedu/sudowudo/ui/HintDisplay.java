@@ -47,6 +47,7 @@ public class HintDisplay extends UiPart {
     private AnchorPane mainPane;
 
 	private FilteredList<Hint> hintList;
+	private boolean showingAll = false;
 
     public static HintDisplay load(Stage primaryStage, AnchorPane placeHolder) {
 		HintDisplay hintDisplay = UiPartLoader.loadUiPart(primaryStage, placeHolder, new HintDisplay());
@@ -96,6 +97,7 @@ public class HintDisplay extends UiPart {
 	public void showAllHints() {
 		mainPane.setVisible(true);
 		hintList.setPredicate(null);
+		showingAll = true;
 	}
 
 	public void updateHints(String search) {

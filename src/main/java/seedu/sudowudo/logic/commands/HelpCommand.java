@@ -1,6 +1,8 @@
 package seedu.sudowudo.logic.commands;
 
 
+import java.util.ArrayList;
+
 import seedu.sudowudo.commons.core.EventsCenter;
 import seedu.sudowudo.commons.events.ui.ShowHelpRequestEvent;
 
@@ -24,11 +26,23 @@ public class HelpCommand extends Command {
     public CommandResult execute() {
     	hasUndo = false;
         EventsCenter.getInstance().post(new ShowHelpRequestEvent());
-        return new CommandResult(SHOWING_HELP_MESSAGE);
+		return new CommandResult("");
     }
     
     @Override
     public CommandResult undo() {
         return new CommandResult(MESSAGE_UNDO_FAILURE);
     }
+
+	/**
+	 * Method to return hints for this command
+	 * 
+	 * @@author A0092390E
+	 */
+	public static ArrayList<Hint> getHints() {
+		ArrayList<Hint> hints = new ArrayList<>();
+		hints.add(new Hint("list commands", "help", "help"));
+		return hints;
+	}
+
 }
