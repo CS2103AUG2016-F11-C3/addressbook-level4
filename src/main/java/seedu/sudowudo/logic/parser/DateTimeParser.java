@@ -155,6 +155,7 @@ public class DateTimeParser {
     public static boolean isSameDay(LocalDateTime ldt1, LocalDateTime ldt2) {
         return ldt1.toLocalDate().equals(ldt2.toLocalDate());
     }
+
     /**
      * Check if the given java.time.LocalDateTime object is the same date as the
      * current date on local system time
@@ -221,28 +222,32 @@ public class DateTimeParser {
     }
 
     /**
-     * Check if the given java.time.LocalDateTime object is within the previous week
-     * from the local system time.
+     * Check if the given java.time.LocalDateTime object is within the previous
+     * week from the local system time.
      * 
      * A week starts on Monday.
      * 
      * @param ldt
-     * @return true if the LocalDateTime is within the previous week from local system time.
+     * @return true if the LocalDateTime is within the previous week from local
+     *         system time.
      * @author darren
      */
     public static boolean isLastWeek(LocalDateTime ldt) {
         LocalDate firstDayOfThisWeek = LocalDate.now().with(DayOfWeek.MONDAY);
         LocalDate lastDayOfLastLastWeek = firstDayOfThisWeek.minusDays(8);
-        return ldt.toLocalDate().isBefore(firstDayOfThisWeek) && ldt.toLocalDate().isAfter(lastDayOfLastLastWeek);
+        return ldt.toLocalDate().isBefore(firstDayOfThisWeek)
+                && ldt.toLocalDate().isAfter(lastDayOfLastLastWeek);
     }
-    
+
     /**
-     * Check if the given java.time.LocalDateTime object is within this week of the local system time.
+     * Check if the given java.time.LocalDateTime object is within this week of
+     * the local system time.
      * 
      * A week starts on Monday.
      * 
      * @param ldt
-     * @return true if the LocalDateTime is within this week in local system time.
+     * @return true if the LocalDateTime is within this week in local system
+     *         time.
      * @author darren
      */
     public static boolean isThisWeek(LocalDateTime ldt) {
@@ -250,22 +255,25 @@ public class DateTimeParser {
         LocalDate firstDayOfNextWeek = lastDayOfLastWeek.plusDays(8);
         return ldt.toLocalDate().isAfter(lastDayOfLastWeek) && ldt.toLocalDate().isBefore(firstDayOfNextWeek);
     }
-    
+
     /**
-     * Check if the given java.time.LocalDateTime object is within next week of the local system time.
+     * Check if the given java.time.LocalDateTime object is within next week of
+     * the local system time.
      * 
      * A week starts on Monday.
      * 
      * @param ldt
-     * @return true if the LocalDateTime is within the next week from local system time.
+     * @return true if the LocalDateTime is within the next week from local
+     *         system time.
      * @author darren
      */
     public static boolean isNextWeek(LocalDateTime ldt) {
         LocalDate endOfCurrentWeek = LocalDate.now().with(DayOfWeek.SUNDAY);
         LocalDate firstDayOfNextNextWeek = endOfCurrentWeek.plusDays(8);
-        return ldt.toLocalDate().isAfter(endOfCurrentWeek) && ldt.toLocalDate().isBefore(firstDayOfNextNextWeek);
+        return ldt.toLocalDate().isAfter(endOfCurrentWeek)
+                && ldt.toLocalDate().isBefore(firstDayOfNextNextWeek);
     }
-    
+
     /**
      * Helper method for casting java.util.Date to java.time.LocalDateTime
      * 
@@ -328,7 +336,8 @@ public class DateTimeParser {
      * @return pretty date for this week
      */
     public static String extractPrettyDateTime(LocalDateTime ldt) {
-        // special case for yesterday/today/tomorrow relative to local system time
+        // special case for yesterday/today/tomorrow relative to local system
+        // time
         if (isYesterday(ldt)) {
             return YESTERDAY_DATE_REF + PRETTY_COMMA_DELIMITER + extractTwelveHourTime(ldt);
         }
@@ -413,7 +422,7 @@ public class DateTimeParser {
         } else if (isNextWeek(ldt)) {
             return NEXT_WEEK_REF;
         }
-        
+
         // we should never reach this point
         return EMPTY_STRING;
     }
