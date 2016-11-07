@@ -1,9 +1,101 @@
-# Developer Guide
+# Developer Guide 
 
+* [Setting Up](#setting-up)
+* [Design](#design)
+* [Implementation](#implementation)
+* [Testing](#testing)
+* [Dev Ops](#dev-ops)
 * [Appendix A: User Stories](#appendix-a-user-stories)
 * [Appendix B: Use Cases](#appendix-b-use-cases)
 * [Appendic C: Non-Functional Requirements](#appendix-c-non-functional-product-requirements)
 * [Appendix D: Product Survey](#appendix-d-product-survey)
+
+## Setting up
+
+#### Prerequisites
+
+1. **JDK `1.8.0_60`**  or later<br>
+
+    > Having any Java 8 version is not enough. <br>
+    This app will not work with earlier versions of Java 8.
+    
+2. **Eclipse** IDE
+3. **e(fx)clipse** plugin for Eclipse (Do the steps 2 onwards given in
+   [this page](http://www.eclipse.org/efxclipse/install.html#for-the-ambitious))
+4. **Buildship Gradle Integration** plugin from the Eclipse Marketplace
+
+
+#### Importing the project into Eclipse
+
+0. Fork this repo, and clone the fork to your computer
+1. Open Eclipse (Note: Ensure you have installed the **e(fx)clipse** and **buildship** plugins as given 
+   in the prerequisites above)
+2. Click `File` > `Import`
+3. Click `Gradle` > `Gradle Project` > `Next` > `Next`
+4. Click `Browse`, then locate the project's directory
+5. Click `Finish`
+
+  > * If you are asked whether to 'keep' or 'overwrite' config files, choose to 'keep'.
+  > * Depending on your connection speed and server load, it can even take up to 30 minutes for the set up to finish
+      (This is because Gradle downloads library files from servers during the project set up process)
+  > * If Eclipse auto-changed any settings files during the import process, you can discard those changes.
+  
+#### Troubleshooting project setup
+
+**Problem: Eclipse reports compile errors after new commits are pulled from Git**
+* Reason: Eclipse fails to recognize new files that appeared due to the Git pull. 
+* Solution: Refresh the project in Eclipse:<br> 
+  Right click on the project (in Eclipse package explorer), choose `Gradle` -> `Refresh Gradle Project`.
+  
+**Problem: Eclipse reports some required libraries missing**
+* Reason: Required libraries may not have been downloaded during the project import. 
+* Solution: [Run tests using Gradle](UsingGradle.md) once (to refresh the libraries).
+ 
+
+  
+**Headless GUI Testing** :
+Thanks to the [TestFX](https://github.com/TestFX/TestFX) library we use,
+ our GUI tests can be run in the _headless_ mode. 
+ In the headless mode, GUI tests do not show up on the screen.
+ That means the developer can do other things on the Computer while the tests are running.<br>
+ See [UsingGradle.md](UsingGradle.md#running-tests) to learn how to run tests in headless mode.
+ 
+#### Troubleshooting tests
+ **Problem: Tests fail because NullPointException when AssertionError is expected**
+ * Reason: Assertions are not enabled for JUnit tests. 
+   This can happen if you are not using a recent Eclipse version (i.e. _Neon_ or later)
+ * Solution: Enable assertions in JUnit tests as described 
+   [here](http://stackoverflow.com/questions/2522897/eclipse-junit-ea-vm-option). <br>
+   Delete run configurations created when you ran tests earlier.
+  
+## Dev Ops
+
+### Build Automation
+
+See [UsingGradle.md](UsingGradle.md) to learn how to use Gradle for build automation.
+
+### Continuous Integration
+
+We use [Travis CI](https://travis-ci.org/) to perform _Continuous Integration_ on our projects.
+See [UsingTravis.md](UsingTravis.md) for more details.
+
+### Making a Release
+
+Here are the steps to create a new release.
+ 
+ 1. Generate a JAR file [using Gradle](UsingGradle.md#creating-the-jar-file).
+ 2. Tag the repo with the version number. e.g. `v0.1`
+ 2. [Crete a new release using GitHub](https://help.github.com/articles/creating-releases/) 
+    and upload the JAR file your created.
+   
+### Managing Dependencies
+
+A project often depends on third-party libraries. For example, Address Book depends on the
+[Jackson library](http://wiki.fasterxml.com/JacksonHome) for XML parsing. Managing these _dependencies_
+can be automated using Gradle. For example, Gradle can download the dependencies automatically, which
+is better than these alternatives.<br>
+a. Include those libraries in the repo (this bloats the repo size)<br>
+b. Require developers to download those libraries manually (this creates extra work for developers)<br>
 
 <!--- @@author A0131560U --->
 ## Appendix A: User Stories
