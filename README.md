@@ -28,5 +28,10 @@
 
 ### Acknowledgements
 
+* Libraries used:
+   * [`opencsv`](http://opencsv.sourceforge.net/)
+   * [`prettytime`](http://www.ocpsoft.org/prettytime/)
+   * [`prettytime-nlp`](http://ocpsoft.org/prettytime/nlp/)
+   * [`google-diff-match-patch`](https://code.google.com/p/google-diff-match-patch/)
 * The original product that this is based on is **addressbook-level4**, developed by the [NUS Software Engineering team](https://github.com/se-edu/)
 
