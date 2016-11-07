@@ -69,7 +69,7 @@ public interface Model {
     
     //@@author A0144750J
     /** Refresh the current list showing in the same predicate */
-    private void refreshInCurrentPredicate();
+    void refreshInCurrentPredicate();
     //@@author
     
     /** Returns the filtered item list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
