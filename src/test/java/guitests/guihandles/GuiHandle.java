@@ -47,8 +47,12 @@ public class GuiHandle {
     }
 
     protected Node getNode(String query) {
-        return guiRobot.lookup(query).tryQuery().get();
+		return guiRobot.lookup(query).tryQuery().get();
     }
+
+	protected Node getNodeFrom(String query, Node parentNode) {
+		return guiRobot.from(parentNode).lookup(query).tryQuery().get();
+	}
 
     protected String getTextFieldText(String filedName) {
         return ((TextField) getNode(filedName)).getText();

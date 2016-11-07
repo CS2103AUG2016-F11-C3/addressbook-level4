@@ -30,7 +30,7 @@ public class MainGuiHandle extends GuiHandle {
     }
 
 	public HintDisplayHandle getHintDisplay() {
-		return new HintDisplayHandle(guiRobot, primaryStage);
+		return new HintDisplayHandle(guiRobot, primaryStage, TestApp.APP_TITLE);
 	}
 
 }

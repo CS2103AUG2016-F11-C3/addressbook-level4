@@ -34,6 +34,6 @@ public class CommandBoxHandle extends GuiHandle{
     public HintDisplayHandle runHelpCommand() {
         enterCommand("help");
         pressEnter();
-        return new HintDisplayHandle(guiRobot, primaryStage);
+		return new HintDisplayHandle(guiRobot, primaryStage, null);
     }
 }
