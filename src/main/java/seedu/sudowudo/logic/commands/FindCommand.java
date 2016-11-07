@@ -3,9 +3,9 @@ package seedu.sudowudo.logic.commands;
 import java.util.Set;
 
 /**
- * Finds and lists all items in task book whose descriptions, tags or start/end
- * dates contains any of the argument keywords. Keyword matching is not case
- * sensitive.
+ * Finds and lists all items in task book whose descriptions, tags or start/end dates
+ * contains any of the argument keywords.
+ * Keyword matching is not case sensitive.
  */
 public class FindCommand extends Command {
 
@@ -13,8 +13,8 @@ public class FindCommand extends Command {
     public static final String MESSAGE_UNDO_FAILURE = "";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD + ": Finds all items that match at least "
-            + "one of the given keywords \"[DESCRIPTION_KEYWORD]\", #[TAG_KEYWORD], [TIME_KEYWORD] " + "Example: "
-            + COMMAND_WORD + " \"task\" \"CS2103\" #important tomorrow";
+            + "one of the given keywords \"[DESCRIPTION_KEYWORD]\", #[TAG_KEYWORD], [TIME_KEYWORD] "
+            + "Example: " + COMMAND_WORD + " \"task\" \"CS2103\" #important tomorrow";
 
     private final Set<String> keywords;
 
@@ -24,13 +24,12 @@ public class FindCommand extends Command {
 
     @Override
     public CommandResult execute() {
-        hasUndo = false;
+    	hasUndo = false;
         model.updateFilteredItemList(keywords);
-        CommandResult res = new CommandResult(getMessageForItemListShownSummary(model.getFilteredItemList().size()));
-        res.setClear(false);
-        return res;
+		CommandResult res = new CommandResult(getMessageForItemListShownSummary(model.getFilteredItemList().size()));
+		return res;
     }
-
+    
     @Override
     public CommandResult undo() {
         return new CommandResult(MESSAGE_UNDO_FAILURE);
