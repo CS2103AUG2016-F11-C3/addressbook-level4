@@ -7,6 +7,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -134,16 +135,33 @@ public class DateTimeParserTest {
         assertEquals(expected, DateTimeParser.extractPrettyDateTime(LDT_YESTERDAY));
     }
 
-    //@Test
-    public void extractPrettyDateTime_nextWeek_nextDayOfWeekReference() {
-        String expected = DateTimeParser.NEXT_WEEK_REF + "Monday" + DateTimeParser.PRETTY_COMMA_DELIMITER + "12:00PM";
-        assertEquals(expected, DateTimeParser.extractPrettyDateTime(LDT_NEXT_MONDAY));
+    @Test
+    public void extractPrettyDateTime_oneYearFromNow_explicitDateFormat() {
+        LocalDateTime oneYearFromNow = LDT_TODAY.plusYears(1);
+        DateTimeFormatter explicitFormat = DateTimeFormatter.ofPattern("EEE d MMM yyyy, hh:mma");
+        String expected = oneYearFromNow.format(explicitFormat);
+        assertEquals(expected, DateTimeParser.extractPrettyDateTime(oneYearFromNow));
+    }
+    
+    @Test
+    public void extractPrettyItemCardDateTime_nullStart_prettyEndDateTimeOnly() {
+        String expected = DateTimeParser.extractPrettyDateTime(LDT_TODAY);
+        assertEquals(expected, DateTimeParser.extractPrettyItemCardDateTime(null, LDT_TODAY));
     }
 
-    //@Test
-    public void extractPrettyDateTime_lastWeek_lastDayOfWeekReference() {
-        String expected = DateTimeParser.LAST_WEEK_REF + "Sunday" + DateTimeParser.PRETTY_COMMA_DELIMITER + "12:00PM";
-        assertEquals(expected, DateTimeParser.extractPrettyDateTime(LDT_LAST_SUNDAY));
+    @Test
+    public void extractPrettyItemCardDateTime_nullEnd_prettyStartDateTimeOnly() {
+        String expected = DateTimeParser.extractPrettyDateTime(LDT_TODAY);
+        assertEquals(expected, DateTimeParser.extractPrettyItemCardDateTime(LDT_TODAY, null));
+    }
+    
+    @Test
+    public void extractPrettyItemCardDateTime_sameDayStartEnd_sameDayPeriod() {
+        LocalDateTime start = LDT_TODAY;
+        LocalDateTime end = LDT_TODAY.plusMinutes(60);
+        assert start.isBefore(end);
+        String expected = DateTimeParser.extractPrettyDateTime(start) + DateTimeParser.PRETTY_TO_DELIMITER + DateTimeParser.extractTwelveHourTime(end);
+        assertEquals(expected, DateTimeParser.extractPrettyItemCardDateTime(start, end));
     }
     
     private static Date makeDate(int year, int month, int day, int hour, int minute) {
