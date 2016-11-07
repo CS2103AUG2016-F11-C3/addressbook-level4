@@ -17,9 +17,6 @@ public abstract class Command {
      * getter method for hasUndo
      * @@author A0144750J
      */
-	public boolean getUndo() {
-		return hasUndo;
-	}
     protected String rawCommand;
     
     //@@author A0144750J
@@ -31,7 +28,10 @@ public abstract class Command {
         this.rawCommand = rawCommand;
     }
 
-    //@@author
+    public boolean getUndo() {
+    	return hasUndo;
+    }
+    //@@author 
 
 	/**
 	 * Returns whether a command should result in clearing the command box.

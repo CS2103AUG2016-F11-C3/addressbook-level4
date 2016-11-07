@@ -2,6 +2,8 @@ package seedu.sudowudo.logic.commands;
 
 import java.util.ArrayList;
 
+import seedu.sudowudo.model.item.Item;
+
 /**
  * Lists all items in the task book to the user.
  */
@@ -61,19 +63,19 @@ public class ListCommand extends Command {
 		}
     }
 
-    private Type itemType;
+    private Item.Type itemType;
     
     //@@author 
     public ListCommand(String argument) {
-        this.itemType = Type.fromString(argument);
+        this.itemType = Item.Type.fromString(argument);
     }
 
     @Override
     //@@author A0131560U
     public CommandResult execute() {
-       model.updateDefaultPredicate(itemType.getTypeName());
+       model.updateDefaultPredicate(itemType);
     	hasUndo = false;
-		return new CommandResult(String.format(MESSAGE_SUCCESS, itemType));
+		return new CommandResult(String.format(MESSAGE_SUCCESS, itemType.getMessage()));
     }
 
     @Override

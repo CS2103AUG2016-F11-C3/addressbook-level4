@@ -20,27 +20,26 @@ import seedu.sudowudo.model.tag.UniqueTagList.DuplicateTagException;
 
 public class AddCommand extends Command {
 
-    private static final String EMPTY_STRING = "";
-
     public static final String COMMAND_WORD = "add";
-
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Adds a task to the to-do list. "
             + "Parameters: \"EVENT_NAME\" from START_TIME to END_TIME on DATE #TAGS"
             + "Example: " + COMMAND_WORD
             + "\"Be awesome\" from 1300 to 2359 on 07/10/2016 #cool #nice";
-
     public static final String MESSAGE_SUCCESS = "New %1$s added: %2$s";
-    public static final String MESSAGE_SUCCESS_TIME_NULL = "START or END time not found but new %1$s added!";
     public static final String MESSAGE_DUPLICATE_ITEM = "This task already exists in the to-do list";
     public static final String MESSAGE_UNDO_SUCCESS = "Undo add task: %1$s";
 
+    private static final String DEFAULT_ITEM_NAME = "BLOCK";
+    private static final String EMPTY_STRING = "";
+    private DateTimeParser dtParser = DateTimeParser.getInstance();
+
     protected static ArrayList<Hint> hints = new ArrayList<>();
 
-    private static final String DEFAULT_ITEM_NAME = "BLOCK";
     private final Item toAdd;
     private Item toUndoAdd;
     private boolean hasTimeString = false;
+    
 
 
     /**
@@ -91,15 +90,11 @@ public class AddCommand extends Command {
     }
 
     private LocalDateTime setEndDateTime(String timeStr) {
-        DateTimeParser parser = new DateTimeParser(timeStr);
-        LocalDateTime endTimeObj = parser.extractEndDate();
-        return endTimeObj;
+        return dtParser.parse(timeStr).extractEndDate();
     }
 
     private LocalDateTime setStartDateTime(String timeStr) {
-        DateTimeParser parser = new DateTimeParser(timeStr);
-        LocalDateTime startTimeObj = parser.extractStartDate();
-        return startTimeObj;
+        return dtParser.parse(timeStr).extractStartDate();
     }
 
     private Description setDescription(String descriptionStr)
@@ -120,15 +115,9 @@ public class AddCommand extends Command {
             // if user input something for time but it's not correct format
             hasUndo = true;
             toUndoAdd = toAdd;
-            if (this.hasTimeString && (this.toAdd.getStartDate() == null
-                    && this.toAdd.getEndDate() == null)) {
-                return new CommandResult(String.format(
-                        MESSAGE_SUCCESS_TIME_NULL, toAdd.getType()), toAdd);
-            } else {
-                return new CommandResult(
-                        String.format(MESSAGE_SUCCESS, toAdd.getType(), toAdd),
-                        toAdd);
-            }
+            return new CommandResult(
+                    String.format(MESSAGE_SUCCESS, toAdd.getType(), toAdd),
+                    toAdd);
         } catch (UniqueItemList.DuplicateItemException e) {
             hasUndo = false;
             return new CommandResult(MESSAGE_DUPLICATE_ITEM);

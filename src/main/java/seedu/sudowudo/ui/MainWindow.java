@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -235,23 +236,45 @@ public class MainWindow extends UiPart {
      */
     private void setKeyBoardListeners() {
         assert scene != null;
+        
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent ke) {
                 switch (ke.getCode()) {
-                    case PAGE_UP: 
-                        raise(new ListPageUpEvent());
+                    case PAGE_UP:
+                        int jumpStep = itemListPanel.getCardCount();
+                        raise(new ListPageUpEvent(jumpStep));
                         break;
                     case PAGE_DOWN:  
-                        raise(new ListPageDownEvent());
+                        jumpStep = itemListPanel.getCardCount();
+                        raise(new ListPageDownEvent(jumpStep));
                         break;
                     case UP: 
-                        raise(new PreviousCommandEvent());
+                        if (!ke.isMetaDown()) {
+                        	raise(new PreviousCommandEvent());
+                        }
                         break;
                     case DOWN:  
-                        raise(new NextCommandEvent());
+                        if (!ke.isMetaDown()) { 
+                        	raise(new NextCommandEvent());
+                        }
                         break;
                     default: return;                          
+                }
+            }
+        });
+        // Paging support for Mac
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent ke) {
+            	if (ke.getCode().equals(KeyCode.UP) && (ke.isMetaDown())) {
+                    int jumpStep = itemListPanel.getCardCount();
+            		raise(new ListPageUpEvent(jumpStep));
+                } else if (ke.getCode().equals(KeyCode.DOWN) && (ke.isMetaDown())) {
+                    int jumpStep = itemListPanel.getCardCount();
+                	raise(new ListPageDownEvent(jumpStep));
+                } else {
+                	return;
                 }
             }
         });

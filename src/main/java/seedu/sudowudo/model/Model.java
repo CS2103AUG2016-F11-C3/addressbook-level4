@@ -2,9 +2,11 @@ package seedu.sudowudo.model;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import javafx.collections.transformation.FilteredList;
 import seedu.sudowudo.commons.core.UnmodifiableObservableList;
+import seedu.sudowudo.commons.exceptions.IllegalValueException;
 import seedu.sudowudo.logic.commands.Command;
 import seedu.sudowudo.model.item.Item;
 import seedu.sudowudo.model.item.ReadOnlyItem;
@@ -27,13 +29,16 @@ public interface Model {
     void addItem(Item item) throws UniqueItemList.DuplicateItemException;
     
     /** Edit the given Item's description */
-    void setItemDesc(Item item, String desc);
+    void setItemDesc(Item item, String desc) throws IllegalValueException;
     
     /** Edit the given Item's start datetime */
-    void setItemStart(Item item, LocalDateTime start);
+    void setItemStart(Item item, LocalDateTime start) throws IllegalValueException;
     
     /** Edit the given Item's end datetime */
-    void setItemEnd(Item item, LocalDateTime end);
+    void setItemEnd(Item item, LocalDateTime end) throws IllegalValueException;
+    
+    /** Edit the given Item's start and end datetime */
+    void setPeriod(Item item, LocalDateTime start, LocalDateTime end) throws IllegalValueException;
     
     // @@author A0144750J
     /** Set the item isDone field to true */
@@ -61,9 +66,14 @@ public interface Model {
     String returnCommandFromHistory(int index);
     // @@author
     
-    // @@author A0144750J
+    //@@author A0144750J
     /** Return the current size of command history */
     int getHistorySize();
+    //@@author
+    
+    //@@author A0144750J
+    /** Refresh the current list showing in the same predicate */
+    void refreshInCurrentPredicate();
     //@@author
     
     /** Returns the filtered item list as an {@code UnmodifiableObservableList<ReadOnlyPerson>} */
@@ -79,6 +89,7 @@ public interface Model {
     void updateFilteredItemList(Set<String> keywords);
 
     /** Updates the default filter of the item list to filter by a specific task type limiter */
-    void updateDefaultPredicate(String taskType);
+    void updateDefaultPredicate(Item.Type taskType);
+
 
 }

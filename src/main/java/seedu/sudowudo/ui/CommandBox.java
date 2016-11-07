@@ -12,9 +12,11 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import seedu.sudowudo.commons.core.EventsCenter;
 import seedu.sudowudo.commons.core.LogsCenter;
 import seedu.sudowudo.commons.events.ui.CycleCommandHistoryEvent;
 import seedu.sudowudo.commons.events.ui.IncorrectCommandAttemptedEvent;
+import seedu.sudowudo.commons.events.ui.ItemChangeEvent;
 import seedu.sudowudo.commons.util.FxViewUtil;
 import seedu.sudowudo.logic.Logic;
 import seedu.sudowudo.logic.commands.CommandResult;
@@ -84,7 +86,10 @@ public class CommandBox extends UiPart {
          */
 		setStyleToIndicateCorrectCommand(true);
         mostRecentResult = logic.execute(previousCommandTest);
-		resultDisplay.postMessage(mostRecentResult.feedbackToUser);
+		setStyleToIndicateCorrectCommand(mostRecentResult.getClear());
+        resultDisplay.postMessage(mostRecentResult.feedbackToUser);
+		EventsCenter.getInstance().post(new ItemChangeEvent(mostRecentResult.getItem()));
+
         logger.info("Result: " + mostRecentResult.feedbackToUser);
     }
 
