@@ -31,6 +31,12 @@ public class ItemListPanel extends UiPart {
     public ItemListPanel() {
         super();
     }
+    
+    //@@author A0144750J
+    public int getCardCount() {
+        return (int) Math.floor(itemListView.getHeight() / itemListView.getFixedCellSize());
+    }
+    //@@author
 
     @Override
     public void setNode(Node node) {
