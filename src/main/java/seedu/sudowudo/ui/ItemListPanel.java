@@ -25,6 +25,8 @@ public class ItemListPanel extends UiPart {
     private VBox panel;
     private AnchorPane placeHolderPane;
 
+    private final int FIXED_CELL_SIZE = 115; // using fxml standard
+    
     @FXML
     private ListView<ReadOnlyItem> itemListView;
 
@@ -63,6 +65,7 @@ public class ItemListPanel extends UiPart {
 
     private void configure(ObservableList<ReadOnlyItem> itemList) {
         setConnections(itemList);
+        itemListView.setFixedCellSize(FIXED_CELL_SIZE);
         addToPlaceholder();
     }
 
