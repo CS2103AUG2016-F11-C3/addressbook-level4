@@ -253,8 +253,8 @@ You can scroll through the list of items on the main interface using keyboard sh
 
 |         | Scroll Up | Scroll Down |
 |---------|-----------|-------------|
-| Windows | `Page Up` | `Page Down  |
-| Mac     | `Command + Up` | `Command + Down` |
+| Windows | `Page Up` | `Page Down` |
+| Mac     | `⌘ ↑`  | `⌘ ↓`  |
 
 <!--- @@author --->
 
