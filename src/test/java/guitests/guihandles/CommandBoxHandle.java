@@ -1,8 +1,8 @@
 package guitests.guihandles;
 
 import guitests.GuiRobot;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-
 /**
  * A handle to the Command Box in the GUI.
  */
@@ -16,8 +16,11 @@ public class CommandBoxHandle extends GuiHandle{
 
     public void enterCommand(String command) {
         setTextField(COMMAND_INPUT_FIELD_ID, command);
-
     }
+
+	public void triggerKeyRelease() {
+		guiRobot.type(KeyCode.RIGHT).sleep(500);
+	}
 
     public String getCommandInput() {
         return getTextFieldText(COMMAND_INPUT_FIELD_ID);

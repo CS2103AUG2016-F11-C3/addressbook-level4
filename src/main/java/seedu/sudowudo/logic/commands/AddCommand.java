@@ -68,6 +68,7 @@ public class AddCommand extends Command {
             this.toAdd = new Item(descriptionObj, startTimeObj, endTimeObj,
                     tagObj);
         }
+
     }
 
     private UniqueTagList setTagList(Set<String> tags)
@@ -154,9 +155,10 @@ public class AddCommand extends Command {
 	 * @@author A0092390E
 	 */
 	public static ArrayList<Hint> getHints() {
-		ArrayList<Hint> hints = new ArrayList<>();
-		hints.add(new Hint("add task", "add", "add \"TASK_NAME\" [by DATETIME] [#tags]"));
-		hints.add(new Hint("add event", "add", "add \"EVENT_NAME\" DATETIME [to DATETIME] [#tags]"));
+		if (hints.size() == 0) {
+			hints.add(new Hint("add task", "add", "add \"TASK_NAME\" [by DATETIME] [#tags]"));
+			hints.add(new Hint("add event", "add", "add \"EVENT_NAME\" DATETIME [to DATETIME] [#tags]"));
+		}
 		return hints;
     }
 }

@@ -31,6 +31,7 @@ public class HelpCommandTest extends TaskBookGuiTest {
 	@Test
 	public void addCommands() {
 		commandBox.enterCommand("add");
+		commandBox.triggerKeyRelease();
 		assertTrue(hintDisplay.containsHintsExactly(AddCommand.getHints()));
 	}
 }

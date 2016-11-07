@@ -13,6 +13,7 @@ import seedu.sudowudo.model.Model;
 public abstract class Command {
     protected Model model;
     protected boolean hasUndo = false;
+	protected static ArrayList<Hint> hints = new ArrayList<>();
     /**
      * getter method for hasUndo
      * @@author A0144750J
