@@ -25,7 +25,7 @@ public class HelpCommandTest extends TaskBookGuiTest {
 	@Test
 	public void clearHelpPrompt() {
 		commandBox.runCommand("list");
-		assertEquals(0, hintDisplay.isVisible());
+		assertEquals(false, hintDisplay.isVisible());
 	}
 
 	@Test

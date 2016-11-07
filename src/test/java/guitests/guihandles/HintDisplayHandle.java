@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import guitests.GuiRobot;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import seedu.sudowudo.logic.commands.Hint;
 
@@ -14,10 +15,11 @@ import seedu.sudowudo.logic.commands.Hint;
  */
 public class HintDisplayHandle extends GuiHandle {
 
-	private static final String HINT_DISPLAY_ROOT_ID = "#hintDisplayPlaceholder";
+	private static final String HINT_DISPLAY_ROOT_ID = "#hintDisplayPane";
 	private static final String HINT_DISPLAY_TABLE_ID = "#hintTableView";
 
 	private TableView<Hint> tableView;
+	private AnchorPane rootPane;
 
 	public HintDisplayHandle(GuiRobot guiRobot, Stage primaryStage, String stageTitle) {
 		super(guiRobot, primaryStage, stageTitle);
@@ -36,8 +38,8 @@ public class HintDisplayHandle extends GuiHandle {
 	}
 
 	public boolean isVisible() {
-		this.tableView = (TableView) getNode(HINT_DISPLAY_TABLE_ID);
-		return tableView.isVisible();
+		this.rootPane = (AnchorPane) getNode(HINT_DISPLAY_ROOT_ID);
+		return rootPane.isVisible();
 	}
 
 	public boolean containsHintsExactly(ArrayList<Hint> hints) {
