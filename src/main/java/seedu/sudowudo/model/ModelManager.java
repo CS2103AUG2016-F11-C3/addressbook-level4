@@ -49,13 +49,10 @@ public class ModelManager extends ComponentManager implements Model {
         super();
         assert src != null;
         assert userPrefs != null;
-
         logger.fine("Initializing with address book: " + src + " and user prefs " + userPrefs);
-
         taskBook = new TaskBook(src);
         filteredItems = new FilteredList<>(taskBook.getItems());
-        commandStack = new Stack<>();
-        commandHistory = new ArrayList<String>();
+        init();
         this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
     }
 
@@ -67,10 +64,21 @@ public class ModelManager extends ComponentManager implements Model {
     public ModelManager(ReadOnlyTaskBook initialData, UserPrefs userPrefs) {
         taskBook = new TaskBook(initialData);
         filteredItems = new FilteredList<>(taskBook.getItems());
-        commandStack = new Stack<>();
-        commandHistory = new ArrayList<String>();
+        init();
         this.defaultPredicate = ListUtil.getInstance().setDefaultPredicate("item");
     }
+    
+    //@@author A0144750J
+    /**
+     * Prepare the command stack for undo
+     * And the history list for cycling
+     */
+    public void init() {
+    	commandStack = new Stack<>();
+        commandHistory = new ArrayList<String>();
+        commandHistory.add("");
+    }
+    //@@author
 
     @Override
     public void resetData(ReadOnlyTaskBook newData) {
@@ -222,6 +230,8 @@ public class ModelManager extends ComponentManager implements Model {
         // }
     }
     
+    // ========== Command History Helper Methods ==================================================
+    
     //@@author A0144750J
     @Override
     /**
@@ -231,7 +241,7 @@ public class ModelManager extends ComponentManager implements Model {
     public void addCommandToHistory(String command) {
         assert commandHistory != null;
         if (commandHistory.size() > HISTORY_LENGTH) {
-            commandHistory.remove(0);
+            commandHistory.remove(1); // remove the second command, the first one is always an empty string
             commandHistory.add(command);
         } else {
             commandHistory.add(command);
