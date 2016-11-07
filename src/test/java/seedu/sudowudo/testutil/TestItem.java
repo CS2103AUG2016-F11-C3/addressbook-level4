@@ -217,19 +217,20 @@ public class TestItem extends Observable implements ReadOnlyItem, Comparable<Tes
             otherStart = otherEnd;
         }
 
-        if (thisEnd.isBefore(otherEnd)) {
-            // this item ends earlier
-            return -1;
-        } else if (thisEnd.isAfter(otherEnd)) {
-            return 1;
-        } else if (thisStart.isBefore(otherStart)) {
+        if (thisStart.isBefore(otherStart)) {
             // this item starts earlier
             return -1;
         } else if (thisStart.isAfter(otherStart)) {
             // this item starts later
             return 1;
         }
-
+        else if (thisEnd.isBefore(otherEnd)) {
+            // this item ends earlier
+            return -1;
+        } else if (thisEnd.isAfter(otherEnd)) {
+            return 1;
+        }
+        
         // same start and end date
         // sort alphabetically by description
         return description.compareTo(other.getDescription());
