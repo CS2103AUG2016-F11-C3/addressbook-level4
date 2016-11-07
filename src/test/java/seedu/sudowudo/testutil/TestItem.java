@@ -204,31 +204,32 @@ public class TestItem extends Observable implements ReadOnlyItem, Comparable<Tes
      * @author darren
      */
     public int compareTo(TestItem other) {
-		LocalDateTime thisStart;
-		LocalDateTime thisEnd;
-		LocalDateTime otherStart;
-		LocalDateTime otherEnd;
-        
-        thisStart = assignDummyLDT(startDate);
-        thisEnd = assignDummyLDT(endDate);
-        otherStart = assignDummyLDT(other.getStartDate());
-        otherEnd = assignDummyLDT(other.getEndDate());
-        
-        if(thisStart.isBefore(otherStart)) {
+        LocalDateTime thisStart = assignDummyLDT(this.startDate);
+        LocalDateTime thisEnd = assignDummyLDT(this.endDate);
+        LocalDateTime otherStart = assignDummyLDT(other.getStartDate());
+        LocalDateTime otherEnd = assignDummyLDT(other.getEndDate());
+
+        // Assign same start/end date to a deadline for easier checking
+        if (this.is(Type.TASK)) {
+            thisStart = thisEnd;
+        }
+        if (other.is(Type.TASK)) {
+            otherStart = otherEnd;
+        }
+
+        if (thisEnd.isBefore(otherEnd)) {
+            // this item ends earlier
+            return -1;
+        } else if (thisEnd.isAfter(otherEnd)) {
+            return 1;
+        } else if (thisStart.isBefore(otherStart)) {
             // this item starts earlier
             return -1;
-        } else if(thisStart.isAfter(otherStart)) {
+        } else if (thisStart.isAfter(otherStart)) {
             // this item starts later
             return 1;
-        } else {
-            // both have same start datetime
-            if(thisEnd.isBefore(otherEnd)) {
-                return -1;
-            } else if(thisEnd.isAfter(otherEnd)){
-                return 1;
-            }
         }
-        
+
         // same start and end date
         // sort alphabetically by description
         return description.compareTo(other.getDescription());
