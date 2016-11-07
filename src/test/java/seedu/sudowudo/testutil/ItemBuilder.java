@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import seedu.sudowudo.commons.exceptions.IllegalValueException;
 import seedu.sudowudo.logic.parser.DateTimeParser;
 import seedu.sudowudo.model.item.Description;
+import seedu.sudowudo.model.item.Item;
 import seedu.sudowudo.model.tag.Tag;
 import seedu.sudowudo.model.tag.UniqueTagList;
 
@@ -24,8 +25,12 @@ public class ItemBuilder {
     public ItemBuilder withDates(String startdate) throws IllegalValueException{
     	DateTimeParser parser = new DateTimeParser(startdate);
 		LocalDateTime startTimeObj = parser.extractStartDate();
-		LocalDateTime endTimeObj = parser.extractStartDate();
-		this.item.setStartDate(startTimeObj);
+		LocalDateTime endTimeObj = parser.extractEndDate();
+
+		// if the item is an event
+		if (item.is(Item.Type.EVENT)){
+		    this.item.setStartDate(startTimeObj);
+		}
 		this.item.setEndDate(endTimeObj);
 		return this;
     }

@@ -1,17 +1,19 @@
 package seedu.sudowudo.storage;
 
+import seedu.sudowudo.commons.core.LogsCenter;
 import seedu.sudowudo.commons.exceptions.IllegalValueException;
 import seedu.sudowudo.model.tag.Tag;
-import seedu.sudowudo.model.tag.UniqueTagList;
 import seedu.sudowudo.model.ReadOnlyTaskBook;
 import seedu.sudowudo.model.item.ReadOnlyItem;
 import seedu.sudowudo.model.item.UniqueItemList;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -24,6 +26,8 @@ public class XmlSerializableTaskBook implements ReadOnlyTaskBook {
     private List<XmlAdaptedItem> items;
     @XmlElement
     private List<Tag> tags;
+
+    private static final Logger logger = LogsCenter.getLogger(XmlTaskBookStorage.class);
 
     {
         items = new ArrayList<>();
@@ -62,6 +66,7 @@ public class XmlSerializableTaskBook implements ReadOnlyTaskBook {
             try {
                 lists.add(i.toModelType());
             } catch (IllegalValueException e) {
+                logger.warning("Could not add item from XML list");
             }
         }
         return lists;
