@@ -34,7 +34,7 @@ public class HintDisplayHandle extends GuiHandle {
 	}
 
 	public boolean containsHintsExactly(ArrayList<Hint> hints) {
-		return tableView.getItems().containsAll(hints) && tableView.getItems().size() == hints.size();
+		return tableView.getItems().containsAll(hints) && numberOfEntries() == hints.size();
 
 	}
 
